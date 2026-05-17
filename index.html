@@ -146,4 +146,23 @@ async function renderConditions() {
   let html = `<h2>Condicionantes</h2>`;
   if (!list || list.length === 0) {
     html += '<div class="empty">Nenhuma condicionante ainda. Suba um PDF na aba Licenças.</div>';
-  } else {​​​​​​​​​​​​​​​​
+  } else {
+    html += list.map(c => {
+      let badge = '<span class="badge badge-pending">Pendente</span>';
+      if (c.status === 'completed') badge = '<span class="badge badge-completed">Concluída</span>';
+      else if (c.days_until_due !== null && c.days_until_due < 0) badge = '<span class="badge badge-overdue">Vencida</span>';
+      else if (c.days_until_due !== null && c.days_until_due <= 30) badge = '<span class="badge badge-upcoming">Próx. ' + c.days_until_due + ' dias</span>';
+      return `
+        <div class="card">
+          <div class="card-title">${c.description}</div>
+          <div class="card-meta">${badge} ${c.category} • ${c.license_number} • Vence ${c.due_date || 'sem data'}</div>
+        </div>`;
+    }).join('');
+  }
+  c.innerHTML = html;
+}
+
+show("dashboard");
+</script>
+</body>
+</html>
