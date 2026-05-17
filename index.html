@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EnvLicense MVP</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: #fafaf9; color: #1c1917; }
+  header { background: #0a2540; color: white; padding: 16px 24px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  header h1 { font-size: 20px; }
+  header h1 span { font-size: 11px; opacity: 0.6; margin-left: 6px; }
+  nav { display: flex; gap: 6px; }
+  nav button { background: transparent; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+  nav button.active { background: rgba(255,255,255,0.15); }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+  h2 { font-size: 26px; margin-bottom: 20px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; }
+  .kpi { background: white; padding: 18px; border-radius: 12px; border: 1px solid #e7e5e4; }
+  .kpi-label { font-size: 11px; color: #78716c; text-transform: uppercase; letter-spacing: 1px; }
+  .kpi-value { font-size: 32px; font-weight: 700; margin-top: 6px; }
+  .empty { background: white; padding: 48px; border-radius: 12px; border: 1px solid #e7e5e4; text-align: center; color: #a8a29e; }
+  .loading { text-align: center; padding: 32px; color: #a8a29e; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>EnvLicense <span>MVP</span></h1>
+  <nav>
+    <button class="active" onclick="show('dashboard', this)">Dashboard</button>
+    <button onclick="show('licenses', this)">Licenças</button>
+    <button onclick="show('conditions', this)">Condicionantes</button>
+  </nav>
+</header>
+
+<main id="content"><div class="loading">Carregando...</div></main>
+
+<script>
+const API = "https://envlicense-backend.onrender.com";
+
+async function show(tab, btn) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  const c = document.getElementById("content");
+  c.innerHTML = '<div class="loading">Carregando... (primeira vez pode demorar 30s)</div>';
+  try {
+    if (tab === "dashboard") await renderDashboard();
+    else if (tab === "licenses") await renderLicenses();
+    else await renderConditions();
+  } catch(e) {
+    c.innerHTML = '<div class="empty">Erro ao conectar com o servidor. Tente recarregar a página.</div>';
+  }
+}
+
+async function renderDashboard() {
+  const r = await fetch(`${API}/dashboard`).then(r=>r.json());
+  document.getElementById("content").innerHTML = `
+    <h2>Painel</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${r.total_licenses}</div></div>
+      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${r.total_conditions}</div></div>
+      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#ef4444">${r.overdue}</div></div>
+      <div class="kpi"><div class="kpi-label">Próx. 30 dias</div><div class="kpi-value" style="color:#f59e0b">${r.upcoming_30d}</div></div>
+      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#10b981">${r.completed}</div></div>
+    </div>`;
+}
+
+async function renderLicenses() {
+  document.getElementById("content").innerHTML = `
+    <h2>Licenças</h2>
+    <div class="empty">📄 Upload de PDF estará disponível em breve.<br><br>Por enquanto o backend está no modo mínimo.</div>`;
+}
+
+async function renderConditions() {
+  document.getElementById("content").innerHTML = `
+    <h2>Condicionantes</h2>
+    <div class="empty">📋 Lista de condicionantes estará disponível em breve.<br><br>Por enquanto o backend está no modo mínimo.</div>`;
+}
+
+show("dashboard");
+</script>
+</body>
+</html>
