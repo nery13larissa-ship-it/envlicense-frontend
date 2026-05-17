@@ -15,12 +15,27 @@
   nav button.active { background: rgba(255,255,255,0.15); }
   main { max-width: 1100px; margin: 0 auto; padding: 24px; }
   h2 { font-size: 26px; margin-bottom: 20px; }
+  h3 { font-size: 18px; margin: 16px 0 10px; }
   .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; }
   .kpi { background: white; padding: 18px; border-radius: 12px; border: 1px solid #e7e5e4; }
   .kpi-label { font-size: 11px; color: #78716c; text-transform: uppercase; letter-spacing: 1px; }
   .kpi-value { font-size: 32px; font-weight: 700; margin-top: 6px; }
   .empty { background: white; padding: 48px; border-radius: 12px; border: 1px solid #e7e5e4; text-align: center; color: #a8a29e; }
   .loading { text-align: center; padding: 32px; color: #a8a29e; }
+  .upload-box { background: white; padding: 24px; border-radius: 12px; border: 2px dashed #cbd5e1; text-align: center; margin-bottom: 20px; }
+  .upload-box input { margin: 12px 0; }
+  .upload-box button { background: #0a2540; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; cursor: pointer; }
+  .upload-box button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .card { background: white; padding: 16px; border-radius: 10px; border: 1px solid #e7e5e4; margin-bottom: 10px; }
+  .card-title { font-weight: 600; margin-bottom: 6px; }
+  .card-meta { font-size: 13px; color: #78716c; }
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 6px; }
+  .badge-overdue { background: #fee2e2; color: #991b1b; }
+  .badge-upcoming { background: #fef3c7; color: #92400e; }
+  .badge-pending { background: #e0e7ff; color: #3730a3; }
+  .badge-completed { background: #d1fae5; color: #065f46; }
+  .success { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 8px; margin: 12px 0; }
+  .error { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin: 12px 0; }
 </style>
 </head>
 <body>
@@ -49,7 +64,7 @@ async function show(tab, btn) {
     else if (tab === "licenses") await renderLicenses();
     else await renderConditions();
   } catch(e) {
-    c.innerHTML = '<div class="empty">Erro ao conectar com o servidor. Tente recarregar a página.</div>';
+    c.innerHTML = '<div class="error">Erro ao conectar. Tente recarregar.</div>';
   }
 }
 
@@ -67,18 +82,68 @@ async function renderDashboard() {
 }
 
 async function renderLicenses() {
-  document.getElementById("content").innerHTML = `
+  const c = document.getElementById("content");
+  c.innerHTML = `
     <h2>Licenças</h2>
-    <div class="empty">📄 Upload de PDF estará disponível em breve.<br><br>Por enquanto o backend está no modo mínimo.</div>`;
+    <div class="upload-box">
+      <h3>📄 Subir nova licença em PDF</h3>
+      <p style="color:#78716c; font-size:14px; margin-top:6px;">A IA vai ler o documento e extrair as condicionantes.</p>
+      <input type="file" id="pdfFile" accept=".pdf">
+      <br>
+      <button onclick="uploadPdf()" id="upBtn">Enviar para a IA</button>
+      <div id="upStatus"></div>
+    </div>
+    <div id="listLic"><div class="loading">Carregando licenças...</div></div>`;
+
+  const list = await fetch(`${API}/licenses`).then(r=>r.json());
+  const div = document.getElementById("listLic");
+  if (!list || list.length === 0) {
+    div.innerHTML = '<div class="empty">Nenhuma licença ainda. Suba um PDF acima.</div>';
+  } else {
+    div.innerHTML = list.map(l => `
+      <div class="card">
+        <div class="card-title">${l.number} <span class="badge badge-pending">${l.type}</span></div>
+        <div class="card-meta">${l.agency} • Vence em ${l.expiry_date || 'não informado'} • ${l.n_conditions} condicionantes</div>
+      </div>
+    `).join('');
+  }
+}
+
+async function uploadPdf() {
+  const fileInput = document.getElementById("pdfFile");
+  const status = document.getElementById("upStatus");
+  const btn = document.getElementById("upBtn");
+  if (!fileInput.files[0]) {
+    status.innerHTML = '<div class="error">Selecione um PDF primeiro.</div>';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = "Processando... (30-60s)";
+  status.innerHTML = '<div class="loading">🤖 A IA está lendo o PDF...</div>';
+
+  const fd = new FormData();
+  fd.append("file", fileInput.files[0]);
+
+  try {
+    const r = await fetch(`${API}/licenses/upload`, { method: "POST", body: fd }).then(r=>r.json());
+    if (r.error) {
+      status.innerHTML = `<div class="error">Erro: ${r.error}</div>`;
+    } else {
+      status.innerHTML = `<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! Recarregando...</div>`;
+      setTimeout(() => show('licenses', document.querySelector('nav button:nth-child(2)')), 1500);
+    }
+  } catch(e) {
+    status.innerHTML = `<div class="error">Erro: ${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Enviar para a IA";
+  }
 }
 
 async function renderConditions() {
-  document.getElementById("content").innerHTML = `
-    <h2>Condicionantes</h2>
-    <div class="empty">📋 Lista de condicionantes estará disponível em breve.<br><br>Por enquanto o backend está no modo mínimo.</div>`;
-}
-
-show("dashboard");
-</script>
-</body>
-</html>
+  const c = document.getElementById("content");
+  const list = await fetch(`${API}/conditions`).then(r=>r.json());
+  let html = `<h2>Condicionantes</h2>`;
+  if (!list || list.length === 0) {
+    html += '<div class="empty">Nenhuma condicionante ainda. Suba um PDF na aba Licenças.</div>';
+  } else {​​​​​​​​​​​​​​​​
