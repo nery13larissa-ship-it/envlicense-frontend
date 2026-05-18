@@ -3,163 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EnvLicense MVP</title>
+<title>EnvLicense — Gestão de Licenças Ambientais</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, system-ui, sans-serif; background: #fafaf9; color: #1c1917; }
-  header { background: #0a2540; color: white; padding: 16px 24px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
-  header h1 { font-size: 20px; }
-  header h1 span { font-size: 11px; opacity: 0.6; margin-left: 6px; }
-  nav { display: flex; gap: 6px; }
-  nav button { background: transparent; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-  nav button.active { background: rgba(255,255,255,0.15); }
-  main { max-width: 1100px; margin: 0 auto; padding: 24px; }
-  h2 { font-size: 26px; margin-bottom: 20px; }
-  h3 { font-size: 18px; margin: 16px 0 10px; }
-  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 12px; }
-  .kpi { background: white; padding: 18px; border-radius: 12px; border: 1px solid #e7e5e4; }
-  .kpi-label { font-size: 11px; color: #78716c; text-transform: uppercase; letter-spacing: 1px; }
-  .kpi-value { font-size: 32px; font-weight: 700; margin-top: 6px; }
-  .empty { background: white; padding: 48px; border-radius: 12px; border: 1px solid #e7e5e4; text-align: center; color: #a8a29e; }
-  .loading { text-align: center; padding: 32px; color: #a8a29e; }
-  .upload-box { background: white; padding: 24px; border-radius: 12px; border: 2px dashed #cbd5e1; text-align: center; margin-bottom: 20px; }
-  .upload-box input { margin: 12px 0; }
-  .upload-box button { background: #0a2540; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 15px; cursor: pointer; }
-  .upload-box button:disabled { opacity: 0.5; cursor: not-allowed; }
-  .card { background: white; padding: 16px; border-radius: 10px; border: 1px solid #e7e5e4; margin-bottom: 10px; }
-  .card-title { font-weight: 600; margin-bottom: 6px; }
-  .card-meta { font-size: 13px; color: #78716c; }
-  .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 6px; }
-  .badge-overdue { background: #fee2e2; color: #991b1b; }
-  .badge-upcoming { background: #fef3c7; color: #92400e; }
-  .badge-pending { background: #e0e7ff; color: #3730a3; }
-  .badge-completed { background: #d1fae5; color: #065f46; }
-  .success { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 8px; margin: 12px 0; }
-  .error { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin: 12px 0; }
+:root{--bg:#fafaf9;--surface:#fff;--border:#e5e5e5;--text:#111827;--text-2:#6b7280;--text-3:#9ca3af;--primary:#0f172a;--accent:#2563eb;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--r:10px;--rs:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+header{background:var(--primary);color:#fff;padding:14px 28px;display:flex;gap:32px;align-items:center;position:sticky;top:0;z-index:50}
+.brand{font-size:16px;font-weight:600}
+.brand-sub{font-size:10px;opacity:.5;margin-left:6px;text-transform:uppercase;letter-spacing:1px}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav button{background:transparent;color:rgba(255,255,255,.7);border:none;padding:7px 14px;border-radius:var(--rs);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
+nav button:hover{color:#fff;background:rgba(255,255,255,.08)}
+nav button.active{background:rgba(255,255,255,.15);color:#fff}
+main{max-width:1400px;margin:0 auto;padding:28px 24px}
+h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.subtitle{color:var(--text-2);margin-bottom:24px;font-size:14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:var(--surface);padding:16px 18px;border-radius:var(--r);border:1px solid var(--border)}
+.kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.kpi-value{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.02em}
+.kpi-sub{font-size:12px;color:var(--text-2);margin-top:4px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:600;margin-bottom:12px}
+.toolbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.input,.select{background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit}
+.input:focus,.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.input{flex:1;min-width:180px}
+.select{min-width:130px}
+.btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.9}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.table th{text-align:left;padding:11px 14px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--border);background:#fafafa}
+.table td{padding:12px 14px;border-bottom:1px solid #f3f4f6;font-size:13px}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover{background:#fafafa}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.2px}
+.b-ba{background:#dbeafe;color:#1e40af}
+.b-rn{background:#fef3c7;color:#92400e}
+.b-se{background:#dcfce7;color:#166534}
+.b-ce{background:#fce7f3;color:#9f1239}
+.b-prod{background:#dcfce7;color:#166534}
+.b-inj{background:#dbeafe;color:#1e40af}
+.b-other{background:#f3f4f6;color:#374151}
+.b-pend{background:#e0e7ff;color:#3730a3}
+.b-overdue{background:#fee2e2;color:#991b1b}
+.b-upcoming{background:#fef3c7;color:#92400e}
+.b-done{background:#d1fae5;color:#065f46}
+.empty{padding:40px;text-align:center;color:var(--text-3);font-size:14px}
+.loading{text-align:center;padding:32px;color:var(--text-3);font-size:13px}
+.error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
+.success{background:#d1fae5;color:#065f46;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
+.upload-box{background:var(--surface);padding:20px;border-radius:var(--r);border:2px dashed #cbd5e1;text-align:center;margin-bottom:16px}
+.upload-box h3{font-size:15px;margin-bottom:6px}
+.upload-box p{color:var(--text-2);font-size:13px;margin-bottom:10px}
+.upload-box input[type=file]{margin:8px 0}
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:12px;color:var(--text-2);font-size:13px}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:14px}
+.bar-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.bar-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.bar-label{min-width:90px;font-weight:500}
+.bar-track{flex:1;height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:4px}
+.bar-value{min-width:40px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
+.coord{font-size:11px;color:var(--text-3);font-family:ui-monospace,monospace}
+@media(max-width:640px){.table{font-size:12px}.table th,.table td{padding:8px}.kpi-value{font-size:22px}main{padding:18px 14px}}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>EnvLicense <span>MVP</span></h1>
-  <nav>
-    <button class="active" onclick="show('dashboard', this)">Dashboard</button>
-    <button onclick="show('licenses', this)">Licenças</button>
-    <button onclick="show('conditions', this)">Condicionantes</button>
-  </nav>
+<div class="brand">EnvLicense<span class="brand-sub">v3.1</span></div>
+<nav>
+<button class="active" data-tab="dashboard">Dashboard</button>
+<button data-tab="assets">Ativos</button>
+<button data-tab="licenses">Licenças</button>
+<button data-tab="conditions">Condicionantes</button>
+</nav>
 </header>
-
-<main id="content"><div class="loading">Carregando...</div></main>
-
+<main id="app"><div class="loading">Carregando...</div></main>
 <script>
-const API = "https://envlicense-backend.onrender.com";
+const API="https://envlicense-backend.onrender.com";
+let filterCache=null;
+let assetState={page:0,filters:{},search:""};
 
-async function show(tab, btn) {
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  if (btn) btn.classList.add("active");
-  const c = document.getElementById("content");
-  c.innerHTML = '<div class="loading">Carregando... (primeira vez pode demorar 30s)</div>';
-  try {
-    if (tab === "dashboard") await renderDashboard();
-    else if (tab === "licenses") await renderLicenses();
-    else await renderConditions();
-  } catch(e) {
-    c.innerHTML = '<div class="error">Erro ao conectar. Tente recarregar.</div>';
-  }
+document.querySelectorAll("nav button").forEach(b=>{
+  b.addEventListener("click",()=>show(b.dataset.tab,b));
+});
+
+async function show(tab,btn){
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  else document.querySelector(`nav button[data-tab="${tab}"]`).classList.add("active");
+  const app=document.getElementById("app");
+  app.innerHTML='<div class="loading">Carregando...</div>';
+  try{
+    if(tab==="dashboard") await renderDashboard();
+    else if(tab==="assets") await renderAssets();
+    else if(tab==="licenses") await renderLicenses();
+    else if(tab==="conditions") await renderConditions();
+  }catch(e){app.innerHTML=`<div class="error">Erro ao carregar: ${e.message}</div>`;}
 }
 
-async function renderDashboard() {
-  const r = await fetch(`${API}/dashboard`).then(r=>r.json());
-  document.getElementById("content").innerHTML = `
-    <h2>Painel</h2>
+function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'-'}</span>`;}
+function badgeSituation(s){
+  if(!s) return '<span class="badge b-other">-</span>';
+  if(s==="PRODUZINDO") return `<span class="badge b-prod">${s}</span>`;
+  if(s==="INJETANDO") return `<span class="badge b-inj">${s}</span>`;
+  return `<span class="badge b-other">${s}</span>`;
+}
+
+async function renderDashboard(){
+  const[dash,stats]=await Promise.all([
+    fetch(`${API}/dashboard`).then(r=>r.json()),
+    fetch(`${API}/assets/stats`).then(r=>r.json())
+  ]);
+  const app=document.getElementById("app");
+  const totalAssets=dash.total_assets||0;
+  const stateBars=(stats.by_state||[]).map(s=>{
+    const max=Math.max(...(stats.by_state||[]).map(x=>x.count));
+    const pct=max?(s.count/max*100):0;
+    return `<li class="bar-item"><span class="bar-label">${s.state||'-'}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span><span class="bar-value">${s.count}</span></li>`;
+  }).join('');
+  const agencyBars=(stats.by_agency||[]).map(s=>{
+    const max=Math.max(...(stats.by_agency||[]).map(x=>x.count));
+    const pct=max?(s.count/max*100):0;
+    return `<li class="bar-item"><span class="bar-label">${s.agency||'-'}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#10b981"></span></span><span class="bar-value">${s.count}</span></li>`;
+  }).join('');
+  const topFields=(stats.top_fields||[]).slice(0,8).map(f=>{
+    const max=Math.max(...(stats.top_fields||[]).map(x=>x.count));
+    const pct=max?(f.count/max*100):0;
+    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.count}</span></li>`;
+  }).join('');
+  const situations=(stats.by_situation||[]).slice(0,6).map(s=>{
+    const max=Math.max(...(stats.by_situation||[]).map(x=>x.count));
+    const pct=max?(s.count/max*100):0;
+    return `<li class="bar-item"><span class="bar-label">${(s.situation||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#6366f1"></span></span><span class="bar-value">${s.count}</span></li>`;
+  }).join('');
+  app.innerHTML=`
+    <h1>Dashboard</h1>
+    <p class="subtitle">Visão geral dos ativos e licenças ambientais</p>
     <div class="kpis">
-      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${r.total_licenses}</div></div>
-      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${r.total_conditions}</div></div>
-      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#ef4444">${r.overdue}</div></div>
-      <div class="kpi"><div class="kpi-label">Próx. 30 dias</div><div class="kpi-value" style="color:#f59e0b">${r.upcoming_30d}</div></div>
-      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#10b981">${r.completed}</div></div>
+      <div class="kpi"><div class="kpi-label">Ativos cadastrados</div><div class="kpi-value">${totalAssets}</div><div class="kpi-sub">poços ativos</div></div>
+      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">documentos</div></div>
+      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">obrigações</div></div>
+      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#ef4444">${dash.overdue||0}</div><div class="kpi-sub">requerem ação</div></div>
+      <div class="kpi"><div class="kpi-label">Próx. 30 dias</div><div class="kpi-value" style="color:#f59e0b">${dash.upcoming_30d||0}</div><div class="kpi-sub">a vencer</div></div>
+      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#10b981">${dash.completed||0}</div><div class="kpi-sub">atendidas</div></div>
+    </div>
+    <div class="chart-row">
+      <div class="card"><div class="card-title">Ativos por estado</div><ul class="bar-list">${stateBars}</ul></div>
+      <div class="card"><div class="card-title">Ativos por órgão ambiental</div><ul class="bar-list">${agencyBars}</ul></div>
+    </div>
+    <div class="chart-row">
+      <div class="card"><div class="card-title">Top campos (poços)</div><ul class="bar-list">${topFields}</ul></div>
+      <div class="card"><div class="card-title">Situação operacional</div><ul class="bar-list">${situations}</ul></div>
     </div>`;
 }
 
-async function renderLicenses() {
-  const c = document.getElementById("content");
-  c.innerHTML = `
-    <h2>Licenças</h2>
-    <div class="upload-box">
-      <h3>📄 Subir nova licença em PDF</h3>
-      <p style="color:#78716c; font-size:14px; margin-top:6px;">A IA vai ler o documento e extrair as condicionantes.</p>
-      <input type="file" id="pdfFile" accept=".pdf">
-      <br>
-      <button onclick="uploadPdf()" id="upBtn">Enviar para a IA</button>
-      <div id="upStatus"></div>
-    </div>
-    <div id="listLic"><div class="loading">Carregando licenças...</div></div>`;
-
-  const list = await fetch(`${API}/licenses`).then(r=>r.json());
-  const div = document.getElementById("listLic");
-  if (!list || list.length === 0) {
-    div.innerHTML = '<div class="empty">Nenhuma licença ainda. Suba um PDF acima.</div>';
-  } else {
-    div.innerHTML = list.map(l => `
-      <div class="card">
-        <div class="card-title">${l.number} <span class="badge badge-pending">${l.type}</span></div>
-        <div class="card-meta">${l.agency} • Vence em ${l.expiry_date || 'não informado'} • ${l.n_conditions} condicionantes</div>
-      </div>
-    `).join('');
+async function renderAssets(){
+  if(!filterCache){
+    filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
   }
+  const app=document.getElementById("app");
+  const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
+  app.innerHTML=`
+    <h1>Ativos</h1>
+    <p class="subtitle">Poços, campos e instalações da operação</p>
+    <div class="toolbar">
+      <input class="input" id="aSearch" placeholder="Buscar por código ou campo (ex: MIRANGA, 1-BR-1-RN)" value="${assetState.search}">
+      <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
+      <select class="select" id="aAgency"><option value="">Órgão: todos</option>${opt(filterCache.agencies||[])}</select>
+      <select class="select" id="aOperator"><option value="">Operadora: todas</option>${opt(filterCache.operators||[])}</select>
+      <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,50))}</select>
+      <select class="select" id="aSituation"><option value="">Situação: todas</option>${opt(filterCache.situations||[])}</select>
+      <button class="btn" id="aApply">Filtrar</button>
+      <button class="btn btn-ghost" id="aClear">Limpar</button>
+    </div>
+    <div id="aResults"><div class="loading">Carregando ativos...</div></div>`;
+  
+  ["aState","aAgency","aOperator","aField","aSituation"].forEach(id=>{
+    if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];
+  });
+  document.getElementById("aApply").onclick=()=>{
+    assetState.filters={
+      aState:document.getElementById("aState").value,
+      aAgency:document.getElementById("aAgency").value,
+      aOperator:document.getElementById("aOperator").value,
+      aField:document.getElementById("aField").value,
+      aSituation:document.getElementById("aSituation").value
+    };
+    assetState.search=document.getElementById("aSearch").value;
+    assetState.page=0;
+    loadAssets();
+  };
+  document.getElementById("aClear").onclick=()=>{
+    assetState={page:0,filters:{},search:""};
+    renderAssets();
+  };
+  document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("aApply").click();});
+  loadAssets();
 }
 
-async function uploadPdf() {
-  const fileInput = document.getElementById("pdfFile");
-  const status = document.getElementById("upStatus");
-  const btn = document.getElementById("upBtn");
-  if (!fileInput.files[0]) {
-    status.innerHTML = '<div class="error">Selecione um PDF primeiro.</div>';
+async function loadAssets(){
+  const params=new URLSearchParams();
+  if(assetState.filters.aState) params.set("state",assetState.filters.aState);
+  if(assetState.filters.aAgency) params.set("agency",assetState.filters.aAgency);
+  if(assetState.filters.aOperator) params.set("operator",assetState.filters.aOperator);
+  if(assetState.filters.aField) params.set("field",assetState.filters.aField);
+  if(assetState.filters.aSituation) params.set("situation",assetState.filters.aSituation);
+  if(assetState.search) params.set("search",assetState.search);
+  params.set("limit","50");
+  params.set("offset",String(assetState.page*50));
+  
+  const div=document.getElementById("aResults");
+  div.innerHTML='<div class="loading">Buscando...</div>';
+  const r=await fetch(`${API}/assets?${params}`).then(r=>r.json());
+  if(!r.items||r.items.length===0){
+    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado com esses filtros.</div></div>';
     return;
   }
-  btn.disabled = true;
-  btn.textContent = "Processando... (30-60s)";
-  status.innerHTML = '<div class="loading">🤖 A IA está lendo o PDF...</div>';
+  const rows=r.items.map(a=>`
+    <tr>
+      <td><strong>${a.code||'-'}</strong></td>
+      <td>${a.operator||'-'}</td>
+      <td>${badgeState(a.state)}</td>
+      <td>${a.agency||'-'}</td>
+      <td>${a.field||'-'}</td>
+      <td>${a.basin||'-'}</td>
+      <td>${badgeSituation(a.situation)}</td>
+      <td>${a.environment||'-'}</td>
+      <td class="coord">${a.latitude?a.latitude.toFixed(4):'-'}, ${a.longitude?a.longitude.toFixed(4):'-'}</td>
+      <td>${a.n_licenses||0}</td>
+    </tr>`).join('');
+  const totalPages=Math.ceil(r.total/50);
+  const curPage=assetState.page+1;
+  div.innerHTML=`
+    <table class="table">
+      <thead><tr>
+        <th>Código</th><th>Operadora</th><th>UF</th><th>Órgão</th><th>Campo</th><th>Bacia</th><th>Situação</th><th>Amb.</th><th>Coordenadas</th><th>Lic.</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="pagination">
+      <span>Mostrando ${r.items.length} de ${r.total} ativos · Página ${curPage} de ${totalPages}</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost" id="pPrev" ${assetState.page===0?'disabled':''}>← Anterior</button>
+        <button class="btn btn-ghost" id="pNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
+      </div>
+    </div>`;
+  document.getElementById("pPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
+  document.getElementById("pNext").onclick=()=>{if(curPage<totalPages){assetState.page++;loadAssets();}};
+}
 
-  const fd = new FormData();
-  fd.append("file", fileInput.files[0]);
+async function renderLicenses(){
+  const app=document.getElementById("app");
+  app.innerHTML=`
+    <h1>Licenças</h1>
+    <p class="subtitle">Documentos ambientais e suas condicionantes</p>
+    <div class="upload-box">
+      <h3>📄 Subir nova licença em PDF</h3>
+      <p>A IA vai ler o documento e extrair automaticamente as condicionantes.</p>
+      <input type="file" id="pdfFile" accept=".pdf">
+      <br><button class="btn" id="upBtn">Enviar para a IA</button>
+      <div id="upStatus"></div>
+    </div>
+    <div id="lList"><div class="loading">Carregando licenças...</div></div>`;
+  document.getElementById("upBtn").onclick=uploadPdf;
+  const list=await fetch(`${API}/licenses`).then(r=>r.json());
+  const div=document.getElementById("lList");
+  if(!list||list.length===0){
+    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada. Suba um PDF acima.</div></div>';
+    return;
+  }
+  const rows=list.map(l=>`
+    <tr>
+      <td><strong>${l.number}</strong></td>
+      <td><span class="badge b-pend">${l.type}</span></td>
+      <td>${l.agency||'-'}</td>
+      <td>${l.expiry_date||'-'}</td>
+      <td>${l.asset_code||'<span style="color:#9ca3af">não vinculado</span>'}</td>
+      <td>${l.n_conditions}</td>
+    </tr>`).join('');
+  div.innerHTML=`<table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Condicionantes</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
 
-  try {
-    const r = await fetch(`${API}/licenses/upload`, { method: "POST", body: fd }).then(r=>r.json());
-    if (r.error) {
-      status.innerHTML = `<div class="error">Erro: ${r.error}</div>`;
-    } else {
-      status.innerHTML = `<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! Recarregando...</div>`;
-      setTimeout(() => show('licenses', document.querySelector('nav button:nth-child(2)')), 1500);
+async function uploadPdf(){
+  const fileInput=document.getElementById("pdfFile");
+  const status=document.getElementById("upStatus");
+  const btn=document.getElementById("upBtn");
+  if(!fileInput.files[0]){
+    status.innerHTML='<div class="error">Selecione um PDF.</div>';return;
+  }
+  btn.disabled=true;
+  btn.textContent="Processando... (30-90s)";
+  status.innerHTML='<div class="loading">🤖 A IA está lendo o PDF...</div>';
+  const fd=new FormData();
+  fd.append("file",fileInput.files[0]);
+  try{
+    const r=await fetch(`${API}/licenses/upload`,{method:"POST",body:fd}).then(r=>r.json());
+    if(r.error){
+      status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;
+    }else{
+      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! Recarregando...</div>`;
+      setTimeout(()=>show("licenses"),1500);
     }
-  } catch(e) {
-    status.innerHTML = `<div class="error">Erro: ${e.message}</div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Enviar para a IA";
+  }catch(e){
+    status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Enviar para a IA";
   }
 }
 
-async function renderConditions() {
-  const c = document.getElementById("content");
-  const list = await fetch(`${API}/conditions`).then(r=>r.json());
-  let html = `<h2>Condicionantes</h2>`;
-  if (!list || list.length === 0) {
-    html += '<div class="empty">Nenhuma condicionante ainda. Suba um PDF na aba Licenças.</div>';
-  } else {
-    html += list.map(c => {
-      let badge = '<span class="badge badge-pending">Pendente</span>';
-      if (c.status === 'completed') badge = '<span class="badge badge-completed">Concluída</span>';
-      else if (c.days_until_due !== null && c.days_until_due < 0) badge = '<span class="badge badge-overdue">Vencida</span>';
-      else if (c.days_until_due !== null && c.days_until_due <= 30) badge = '<span class="badge badge-upcoming">Próx. ' + c.days_until_due + ' dias</span>';
-      return `
-        <div class="card">
-          <div class="card-title">${c.description}</div>
-          <div class="card-meta">${badge} ${c.category} • ${c.license_number} • Vence ${c.due_date || 'sem data'}</div>
-        </div>`;
+async function renderConditions(){
+  const app=document.getElementById("app");
+  const list=await fetch(`${API}/conditions`).then(r=>r.json());
+  let html=`<h1>Condicionantes</h1><p class="subtitle">Obrigações extraídas das licenças</p>`;
+  if(!list||list.length===0){
+    html+='<div class="card"><div class="empty">Nenhuma condicionante. Suba uma licença em PDF.</div></div>';
+  }else{
+    const rows=list.map(c=>{
+      let badge='<span class="badge b-pend">Pendente</span>';
+      if(c.status==='completed') badge='<span class="badge b-done">Concluída</span>';
+      else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue">Vencida</span>';
+      else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;
+      return `<tr><td>${c.description}</td><td><span class="badge b-other">${c.category}</span></td><td>${c.license_number}</td><td>${c.due_date||'-'}</td><td>${badge}</td></tr>`;
     }).join('');
+    html+=`<table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
   }
-  c.innerHTML = html;
+  app.innerHTML=html;
 }
 
 show("dashboard");
