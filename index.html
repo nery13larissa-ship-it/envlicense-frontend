@@ -18,11 +18,19 @@ nav button.active{background:rgba(255,255,255,.15);color:#fff}
 main{max-width:1400px;margin:0 auto;padding:28px 24px}
 h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
 .subtitle{color:var(--text-2);margin-bottom:24px;font-size:14px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
 .kpi{background:var(--surface);padding:16px 18px;border-radius:var(--r);border:1px solid var(--border)}
 .kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .kpi-value{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.02em}
 .kpi-sub{font-size:12px;color:var(--text-2);margin-top:4px}
+.kpi-warn{color:var(--danger);font-weight:600}
+.op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:24px}
+.op-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;border-left:4px solid var(--success)}
+.op-card.inj{border-left-color:var(--accent)}
+.op-title{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.op-value{font-size:32px;font-weight:700;margin-top:6px}
+.op-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text-2)}
+.op-meta strong{color:var(--danger)}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
 .card-title{font-size:15px;font-weight:600;margin-bottom:12px}
 .toolbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -33,23 +41,27 @@ h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
 .btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
 .btn:hover{opacity:.9}
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-success{background:var(--success)}
 .table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
 .table th{text-align:left;padding:11px 14px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--border);background:#fafafa}
 .table td{padding:12px 14px;border-bottom:1px solid #f3f4f6;font-size:13px}
 .table tr:last-child td{border-bottom:none}
 .table tr:hover{background:#fafafa}
-.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.2px}
-.b-ba{background:#dbeafe;color:#1e40af}
-.b-rn{background:#fef3c7;color:#92400e}
-.b-se{background:#dcfce7;color:#166534}
-.b-ce{background:#fce7f3;color:#9f1239}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
+.b-ok{background:#d1fae5;color:#065f46}
+.b-upcoming{background:#fef3c7;color:#92400e}
+.b-expired{background:#fee2e2;color:#991b1b}
+.b-missing{background:#fecaca;color:#7f1d1d}
 .b-prod{background:#dcfce7;color:#166534}
 .b-inj{background:#dbeafe;color:#1e40af}
 .b-other{background:#f3f4f6;color:#374151}
 .b-pend{background:#e0e7ff;color:#3730a3}
-.b-overdue{background:#fee2e2;color:#991b1b}
-.b-upcoming{background:#fef3c7;color:#92400e}
 .b-done{background:#d1fae5;color:#065f46}
+.b-overdue{background:#fee2e2;color:#991b1b}
+.b-ba{background:#dbeafe;color:#1e40af}
+.b-rn{background:#fef3c7;color:#92400e}
+.b-se{background:#dcfce7;color:#166534}
+.b-ce{background:#fce7f3;color:#9f1239}
 .empty{padding:40px;text-align:center;color:var(--text-3);font-size:14px}
 .loading{text-align:center;padding:32px;color:var(--text-3);font-size:13px}
 .error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
@@ -57,24 +69,26 @@ h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
 .upload-box{background:var(--surface);padding:20px;border-radius:var(--r);border:2px dashed #cbd5e1;text-align:center;margin-bottom:16px}
 .upload-box h3{font-size:15px;margin-bottom:6px}
 .upload-box p{color:var(--text-2);font-size:13px;margin-bottom:10px}
-.upload-box input[type=file]{margin:8px 0}
 .pagination{display:flex;justify-content:space-between;align-items:center;padding:12px;color:var(--text-2);font-size:13px}
-.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:14px}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-bottom:14px}
 .bar-list{list-style:none;display:flex;flex-direction:column;gap:8px}
 .bar-item{display:flex;align-items:center;gap:10px;font-size:13px}
-.bar-label{min-width:90px;font-weight:500}
+.bar-label{min-width:120px;font-weight:500;font-size:12px}
 .bar-track{flex:1;height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;background:var(--accent);border-radius:4px}
-.bar-value{min-width:40px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
-.coord{font-size:11px;color:var(--text-3);font-family:ui-monospace,monospace}
-@media(max-width:640px){.table{font-size:12px}.table th,.table td{padding:8px}.kpi-value{font-size:22px}main{padding:18px 14px}}
+.bar-value{min-width:60px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:12px}
+.bar-value strong{color:var(--danger)}
+.summary-bar{background:#f8fafc;border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--text-2)}
+.summary-bar strong{color:var(--text)}
+@media(max-width:640px){.table{font-size:12px}.table th,.table td{padding:8px}.kpi-value{font-size:22px}.op-value{font-size:26px}main{padding:18px 14px}}
 </style>
 </head>
 <body>
 <header>
-<div class="brand">EnvLicense<span class="brand-sub">v3.1</span></div>
+<div class="brand">EnvLicense<span class="brand-sub">v3.2</span></div>
 <nav>
 <button class="active" data-tab="dashboard">Dashboard</button>
+<button data-tab="compliance">Compliance</button>
 <button data-tab="assets">Ativos</button>
 <button data-tab="licenses">Licenças</button>
 <button data-tab="conditions">Condicionantes</button>
@@ -85,6 +99,7 @@ h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
 const API="https://envlicense-backend.onrender.com";
 let filterCache=null;
 let assetState={page:0,filters:{},search:""};
+let compState={page:0,filters:{},search:""};
 
 document.querySelectorAll("nav button").forEach(b=>{
   b.addEventListener("click",()=>show(b.dataset.tab,b));
@@ -98,66 +113,191 @@ async function show(tab,btn){
   app.innerHTML='<div class="loading">Carregando...</div>';
   try{
     if(tab==="dashboard") await renderDashboard();
+    else if(tab==="compliance") await renderCompliance();
     else if(tab==="assets") await renderAssets();
     else if(tab==="licenses") await renderLicenses();
     else if(tab==="conditions") await renderConditions();
-  }catch(e){app.innerHTML=`<div class="error">Erro ao carregar: ${e.message}</div>`;}
+  }catch(e){app.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
 }
 
-function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'-'}</span>`;}
+function badgeCompliance(s){
+  const map={ok:["b-ok","OK"],upcoming:["b-upcoming","Próx. 30d"],expired:["b-expired","Vencida"],missing:["b-missing","Sem licença"]};
+  const[cls,txt]=map[s]||["b-other",s];
+  return `<span class="badge ${cls}">${txt}</span>`;
+}
 function badgeSituation(s){
   if(!s) return '<span class="badge b-other">-</span>';
   if(s==="PRODUZINDO") return `<span class="badge b-prod">${s}</span>`;
   if(s==="INJETANDO") return `<span class="badge b-inj">${s}</span>`;
-  return `<span class="badge b-other">${s}</span>`;
+  return `<span class="badge b-other">${s.slice(0,18)}</span>`;
 }
+function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'-'}</span>`;}
 
 async function renderDashboard(){
-  const[dash,stats]=await Promise.all([
+  const[dash,comp,byField]=await Promise.all([
     fetch(`${API}/dashboard`).then(r=>r.json()),
-    fetch(`${API}/assets/stats`).then(r=>r.json())
+    fetch(`${API}/compliance/summary`).then(r=>r.json()),
+    fetch(`${API}/compliance/by_field`).then(r=>r.json())
   ]);
   const app=document.getElementById("app");
-  const totalAssets=dash.total_assets||0;
-  const stateBars=(stats.by_state||[]).map(s=>{
-    const max=Math.max(...(stats.by_state||[]).map(x=>x.count));
-    const pct=max?(s.count/max*100):0;
-    return `<li class="bar-item"><span class="bar-label">${s.state||'-'}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%"></span></span><span class="bar-value">${s.count}</span></li>`;
-  }).join('');
-  const agencyBars=(stats.by_agency||[]).map(s=>{
-    const max=Math.max(...(stats.by_agency||[]).map(x=>x.count));
-    const pct=max?(s.count/max*100):0;
-    return `<li class="bar-item"><span class="bar-label">${s.agency||'-'}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#10b981"></span></span><span class="bar-value">${s.count}</span></li>`;
-  }).join('');
-  const topFields=(stats.top_fields||[]).slice(0,8).map(f=>{
-    const max=Math.max(...(stats.top_fields||[]).map(x=>x.count));
-    const pct=max?(f.count/max*100):0;
-    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.count}</span></li>`;
-  }).join('');
-  const situations=(stats.by_situation||[]).slice(0,6).map(s=>{
-    const max=Math.max(...(stats.by_situation||[]).map(x=>x.count));
-    const pct=max?(s.count/max*100):0;
-    return `<li class="bar-item"><span class="bar-label">${(s.situation||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#6366f1"></span></span><span class="bar-value">${s.count}</span></li>`;
-  }).join('');
+  
+  // Top campos com problemas
+  const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical));
+  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{
+    const pct=(f.wells_critical/probMax*100);
+    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#ef4444"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> de ${f.total_wells}</span></li>`;
+  }).join('')||'<div class="empty" style="padding:16px">Nenhum problema detectado</div>';
+  
+  // Condicionantes por campo
+  const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions));
+  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{
+    const pct=(f.total_conditions/condMax*100);
+    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
+  }).join('')||'<div class="empty" style="padding:16px">Sem condicionantes cadastradas</div>';
+  
+  // Ativos por órgão
+  const sc=comp.status_counts||{};
+  
   app.innerHTML=`
     <h1>Dashboard</h1>
-    <p class="subtitle">Visão geral dos ativos e licenças ambientais</p>
+    <p class="subtitle">Visão geral de compliance e operação</p>
+    
     <div class="kpis">
-      <div class="kpi"><div class="kpi-label">Ativos cadastrados</div><div class="kpi-value">${totalAssets}</div><div class="kpi-sub">poços ativos</div></div>
-      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">documentos</div></div>
-      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">obrigações</div></div>
-      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#ef4444">${dash.overdue||0}</div><div class="kpi-sub">requerem ação</div></div>
-      <div class="kpi"><div class="kpi-label">Próx. 30 dias</div><div class="kpi-value" style="color:#f59e0b">${dash.upcoming_30d||0}</div><div class="kpi-sub">a vencer</div></div>
-      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#10b981">${dash.completed||0}</div><div class="kpi-sub">atendidas</div></div>
+      <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">cadastrados</div></div>
+      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div></div>
+      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div></div>
+      <div class="kpi"><div class="kpi-label">OK</div><div class="kpi-value" style="color:#10b981">${sc.ok||0}</div></div>
+      <div class="kpi"><div class="kpi-label">Atenção</div><div class="kpi-value" style="color:#f59e0b">${sc.upcoming||0}</div></div>
+      <div class="kpi"><div class="kpi-label">Críticos</div><div class="kpi-value" style="color:#ef4444">${(sc.expired||0)+(sc.missing||0)}</div></div>
     </div>
-    <div class="chart-row">
-      <div class="card"><div class="card-title">Ativos por estado</div><ul class="bar-list">${stateBars}</ul></div>
-      <div class="card"><div class="card-title">Ativos por órgão ambiental</div><ul class="bar-list">${agencyBars}</ul></div>
+    
+    <div class="op-row">
+      <div class="op-card">
+        <div class="op-title">🟢 Produzindo</div>
+        <div class="op-value">${comp.producing?.total||0}</div>
+        <div class="op-meta">
+          <span>Total operacional</span>
+          <span><strong>${comp.producing?.non_compliance||0} não-compliance (${comp.producing?.pct||0}%)</strong></span>
+        </div>
+      </div>
+      <div class="op-card inj">
+        <div class="op-title">🔵 Injetando</div>
+        <div class="op-value">${comp.injecting?.total||0}</div>
+        <div class="op-meta">
+          <span>Total operacional</span>
+          <span><strong>${comp.injecting?.non_compliance||0} não-compliance (${comp.injecting?.pct||0}%)</strong></span>
+        </div>
+      </div>
     </div>
+    
     <div class="chart-row">
-      <div class="card"><div class="card-title">Top campos (poços)</div><ul class="bar-list">${topFields}</ul></div>
-      <div class="card"><div class="card-title">Situação operacional</div><ul class="bar-list">${situations}</ul></div>
+      <div class="card">
+        <div class="card-title">🚨 Campos com poços não-compliance</div>
+        <ul class="bar-list">${probBars}</ul>
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Condicionantes por campo</div>
+        <ul class="bar-list">${condBars}</ul>
+      </div>
     </div>`;
+}
+
+async function renderCompliance(){
+  if(!filterCache){
+    filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
+  }
+  const app=document.getElementById("app");
+  const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
+  app.innerHTML=`
+    <h1>Compliance</h1>
+    <p class="subtitle">Análise de conformidade dos ativos</p>
+    <div class="toolbar">
+      <input class="input" id="cSearch" placeholder="Buscar por código ou campo" value="${compState.search}">
+      <select class="select" id="cState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
+      <select class="select" id="cField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
+      <select class="select" id="cOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations||[])}</select>
+      <select class="select" id="cStatus">
+        <option value="">Status: todos</option>
+        <option value="ok">OK</option>
+        <option value="upcoming">Próx. 30d</option>
+        <option value="expired">Vencida</option>
+        <option value="missing">Sem licença</option>
+      </select>
+      <button class="btn" id="cApply">Filtrar</button>
+      <button class="btn btn-ghost" id="cClear">Limpar</button>
+      <button class="btn btn-success" id="cExport">⬇ Exportar CSV</button>
+    </div>
+    <div id="cResults"><div class="loading">Carregando...</div></div>`;
+  
+  ["cState","cField","cOp","cStatus"].forEach(id=>{
+    if(compState.filters[id]) document.getElementById(id).value=compState.filters[id];
+  });
+  document.getElementById("cApply").onclick=()=>{
+    compState.filters={cState:document.getElementById("cState").value,cField:document.getElementById("cField").value,cOp:document.getElementById("cOp").value,cStatus:document.getElementById("cStatus").value};
+    compState.search=document.getElementById("cSearch").value;
+    compState.page=0;
+    loadCompliance();
+  };
+  document.getElementById("cClear").onclick=()=>{compState={page:0,filters:{},search:""};renderCompliance();};
+  document.getElementById("cExport").onclick=exportCompliance;
+  document.getElementById("cSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("cApply").click();});
+  loadCompliance();
+}
+
+function buildComplianceParams(){
+  const p=new URLSearchParams();
+  if(compState.filters.cState) p.set("state",compState.filters.cState);
+  if(compState.filters.cField) p.set("field",compState.filters.cField);
+  if(compState.filters.cOp) p.set("operational",compState.filters.cOp);
+  if(compState.filters.cStatus) p.set("compliance_status",compState.filters.cStatus);
+  if(compState.search) p.set("search",compState.search);
+  return p;
+}
+
+async function loadCompliance(){
+  const p=buildComplianceParams();
+  p.set("limit","50");
+  p.set("offset",String(compState.page*50));
+  const div=document.getElementById("cResults");
+  div.innerHTML='<div class="loading">Buscando...</div>';
+  const r=await fetch(`${API}/compliance/assets?${p}`).then(r=>r.json());
+  if(!r.items||r.items.length===0){
+    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado.</div></div>';
+    return;
+  }
+  const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
+  const rows=r.items.map(a=>`
+    <tr>
+      <td><strong>${a.code||'-'}</strong></td>
+      <td>${a.field||'-'}</td>
+      <td>${badgeState(a.state)}</td>
+      <td>${a.agency||'-'}</td>
+      <td>${badgeSituation(a.situation)}</td>
+      <td>${badgeCompliance(a.compliance_status)}</td>
+      <td>${a.n_licenses}</td>
+    </tr>`).join('');
+  const totalPages=Math.ceil(r.total/50);
+  const curPage=compState.page+1;
+  div.innerHTML=`
+    <div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div>
+    <table class="table">
+      <thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Compliance</th><th>Lic.</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="pagination">
+      <span>Página ${curPage} de ${totalPages}</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-ghost" id="cPrev" ${compState.page===0?'disabled':''}>← Anterior</button>
+        <button class="btn btn-ghost" id="cNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
+      </div>
+    </div>`;
+  document.getElementById("cPrev").onclick=()=>{if(compState.page>0){compState.page--;loadCompliance();}};
+  document.getElementById("cNext").onclick=()=>{if(curPage<totalPages){compState.page++;loadCompliance();}};
+}
+
+function exportCompliance(){
+  const p=buildComplianceParams();
+  window.open(`${API}/compliance/export?${p}`,'_blank');
 }
 
 async function renderAssets(){
@@ -170,36 +310,26 @@ async function renderAssets(){
     <h1>Ativos</h1>
     <p class="subtitle">Poços, campos e instalações da operação</p>
     <div class="toolbar">
-      <input class="input" id="aSearch" placeholder="Buscar por código ou campo (ex: MIRANGA, 1-BR-1-RN)" value="${assetState.search}">
+      <input class="input" id="aSearch" placeholder="Buscar (ex: MIRANGA, 1-BR-1-RN)" value="${assetState.search}">
       <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
       <select class="select" id="aAgency"><option value="">Órgão: todos</option>${opt(filterCache.agencies||[])}</select>
       <select class="select" id="aOperator"><option value="">Operadora: todas</option>${opt(filterCache.operators||[])}</select>
-      <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,50))}</select>
+      <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
       <select class="select" id="aSituation"><option value="">Situação: todas</option>${opt(filterCache.situations||[])}</select>
       <button class="btn" id="aApply">Filtrar</button>
       <button class="btn btn-ghost" id="aClear">Limpar</button>
     </div>
-    <div id="aResults"><div class="loading">Carregando ativos...</div></div>`;
-  
+    <div id="aResults"><div class="loading">Carregando...</div></div>`;
   ["aState","aAgency","aOperator","aField","aSituation"].forEach(id=>{
     if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];
   });
   document.getElementById("aApply").onclick=()=>{
-    assetState.filters={
-      aState:document.getElementById("aState").value,
-      aAgency:document.getElementById("aAgency").value,
-      aOperator:document.getElementById("aOperator").value,
-      aField:document.getElementById("aField").value,
-      aSituation:document.getElementById("aSituation").value
-    };
+    assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aOperator:document.getElementById("aOperator").value,aField:document.getElementById("aField").value,aSituation:document.getElementById("aSituation").value};
     assetState.search=document.getElementById("aSearch").value;
     assetState.page=0;
     loadAssets();
   };
-  document.getElementById("aClear").onclick=()=>{
-    assetState={page:0,filters:{},search:""};
-    renderAssets();
-  };
+  document.getElementById("aClear").onclick=()=>{assetState={page:0,filters:{},search:""};renderAssets();};
   document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("aApply").click();});
   loadAssets();
 }
@@ -214,12 +344,11 @@ async function loadAssets(){
   if(assetState.search) params.set("search",assetState.search);
   params.set("limit","50");
   params.set("offset",String(assetState.page*50));
-  
   const div=document.getElementById("aResults");
   div.innerHTML='<div class="loading">Buscando...</div>';
   const r=await fetch(`${API}/assets?${params}`).then(r=>r.json());
   if(!r.items||r.items.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado com esses filtros.</div></div>';
+    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado.</div></div>';
     return;
   }
   const rows=r.items.map(a=>`
@@ -229,23 +358,18 @@ async function loadAssets(){
       <td>${badgeState(a.state)}</td>
       <td>${a.agency||'-'}</td>
       <td>${a.field||'-'}</td>
-      <td>${a.basin||'-'}</td>
       <td>${badgeSituation(a.situation)}</td>
-      <td>${a.environment||'-'}</td>
-      <td class="coord">${a.latitude?a.latitude.toFixed(4):'-'}, ${a.longitude?a.longitude.toFixed(4):'-'}</td>
       <td>${a.n_licenses||0}</td>
     </tr>`).join('');
   const totalPages=Math.ceil(r.total/50);
   const curPage=assetState.page+1;
   div.innerHTML=`
     <table class="table">
-      <thead><tr>
-        <th>Código</th><th>Operadora</th><th>UF</th><th>Órgão</th><th>Campo</th><th>Bacia</th><th>Situação</th><th>Amb.</th><th>Coordenadas</th><th>Lic.</th>
-      </tr></thead>
+      <thead><tr><th>Código</th><th>Operadora</th><th>UF</th><th>Órgão</th><th>Campo</th><th>Situação</th><th>Lic.</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
     <div class="pagination">
-      <span>Mostrando ${r.items.length} de ${r.total} ativos · Página ${curPage} de ${totalPages}</span>
+      <span>Mostrando ${r.items.length} de ${r.total} · Página ${curPage} de ${totalPages}</span>
       <div style="display:flex;gap:6px">
         <button class="btn btn-ghost" id="pPrev" ${assetState.page===0?'disabled':''}>← Anterior</button>
         <button class="btn btn-ghost" id="pNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
@@ -262,38 +386,28 @@ async function renderLicenses(){
     <p class="subtitle">Documentos ambientais e suas condicionantes</p>
     <div class="upload-box">
       <h3>📄 Subir nova licença em PDF</h3>
-      <p>A IA vai ler o documento e extrair automaticamente as condicionantes.</p>
+      <p>A IA vai ler o documento e extrair as condicionantes.</p>
       <input type="file" id="pdfFile" accept=".pdf">
       <br><button class="btn" id="upBtn">Enviar para a IA</button>
       <div id="upStatus"></div>
     </div>
-    <div id="lList"><div class="loading">Carregando licenças...</div></div>`;
+    <div id="lList"><div class="loading">Carregando...</div></div>`;
   document.getElementById("upBtn").onclick=uploadPdf;
   const list=await fetch(`${API}/licenses`).then(r=>r.json());
   const div=document.getElementById("lList");
   if(!list||list.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada. Suba um PDF acima.</div></div>';
+    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada.</div></div>';
     return;
   }
-  const rows=list.map(l=>`
-    <tr>
-      <td><strong>${l.number}</strong></td>
-      <td><span class="badge b-pend">${l.type}</span></td>
-      <td>${l.agency||'-'}</td>
-      <td>${l.expiry_date||'-'}</td>
-      <td>${l.asset_code||'<span style="color:#9ca3af">não vinculado</span>'}</td>
-      <td>${l.n_conditions}</td>
-    </tr>`).join('');
-  div.innerHTML=`<table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Condicionantes</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const rows=list.map(l=>`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'-'}</td><td>${l.expiry_date||'-'}</td><td>${l.asset_code||'<span style="color:#9ca3af">não vinculado</span>'}</td><td>${l.n_conditions}</td></tr>`).join('');
+  div.innerHTML=`<table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 async function uploadPdf(){
   const fileInput=document.getElementById("pdfFile");
   const status=document.getElementById("upStatus");
   const btn=document.getElementById("upBtn");
-  if(!fileInput.files[0]){
-    status.innerHTML='<div class="error">Selecione um PDF.</div>';return;
-  }
+  if(!fileInput.files[0]){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
   btn.disabled=true;
   btn.textContent="Processando... (30-90s)";
   status.innerHTML='<div class="loading">🤖 A IA está lendo o PDF...</div>';
@@ -301,18 +415,13 @@ async function uploadPdf(){
   fd.append("file",fileInput.files[0]);
   try{
     const r=await fetch(`${API}/licenses/upload`,{method:"POST",body:fd}).then(r=>r.json());
-    if(r.error){
-      status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;
-    }else{
-      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! Recarregando...</div>`;
+    if(r.error){status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;}
+    else{
+      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas!</div>`;
       setTimeout(()=>show("licenses"),1500);
     }
-  }catch(e){
-    status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;
-  }finally{
-    btn.disabled=false;
-    btn.textContent="Enviar para a IA";
-  }
+  }catch(e){status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
+  finally{btn.disabled=false;btn.textContent="Enviar para a IA";}
 }
 
 async function renderConditions(){
@@ -320,7 +429,7 @@ async function renderConditions(){
   const list=await fetch(`${API}/conditions`).then(r=>r.json());
   let html=`<h1>Condicionantes</h1><p class="subtitle">Obrigações extraídas das licenças</p>`;
   if(!list||list.length===0){
-    html+='<div class="card"><div class="empty">Nenhuma condicionante. Suba uma licença em PDF.</div></div>';
+    html+='<div class="card"><div class="empty">Nenhuma condicionante.</div></div>';
   }else{
     const rows=list.map(c=>{
       let badge='<span class="badge b-pend">Pendente</span>';
