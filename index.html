@@ -3,46 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EnvLicense — Gestão de Licenças Ambientais</title>
+<title>EnvLicense — PetroRecôncavo</title>
 <style>
-:root{--bg:#fafaf9;--surface:#fff;--border:#e5e5e5;--text:#111827;--text-2:#6b7280;--text-3:#9ca3af;--primary:#0f172a;--accent:#2563eb;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--r:10px;--rs:6px}
+:root{--bg:#f8fafc;--surface:#fff;--border:#e5e7eb;--text:#0f172a;--text-2:#64748b;--text-3:#94a3b8;--primary:#064e3b;--primary-light:#10b981;--accent:#059669;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--r:12px;--rs:8px;--shadow:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
-header{background:var(--primary);color:#fff;padding:14px 28px;display:flex;gap:32px;align-items:center;position:sticky;top:0;z-index:50}
-.brand{font-size:16px;font-weight:600}
-.brand-sub{font-size:10px;opacity:.5;margin-left:6px;text-transform:uppercase;letter-spacing:1px}
-nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
-nav button{background:transparent;color:rgba(255,255,255,.7);border:none;padding:7px 14px;border-radius:var(--rs);cursor:pointer;font-size:13px;font-weight:500;transition:all .15s}
-nav button:hover{color:#fff;background:rgba(255,255,255,.08)}
-nav button.active{background:rgba(255,255,255,.15);color:#fff}
-main{max-width:1400px;margin:0 auto;padding:28px 24px}
-h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
-.subtitle{color:var(--text-2);margin-bottom:24px;font-size:14px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--surface);padding:16px 18px;border-radius:var(--r);border:1px solid var(--border)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+.brand-name{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand-sub{font-size:10px;color:var(--text-3);font-weight:500;letter-spacing:1px;text-transform:uppercase}
+.nav-section{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;font-weight:700;padding:8px;margin-top:8px}
+nav button{width:100%;background:transparent;color:var(--text-2);border:none;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:10px;transition:all .15s;text-align:left;font-family:inherit;margin-bottom:2px}
+nav button:hover{background:#f1f5f9;color:var(--text)}
+nav button.active{background:var(--primary);color:#fff;font-weight:600}
+nav button .icon{font-size:16px}
+.sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);text-align:center}
+main{flex:1;padding:28px 32px;max-width:100%;overflow-x:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.page-title{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.page-sub{color:var(--text-2);font-size:13px;margin-top:2px}
+h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.subtitle{color:var(--text-2);margin-bottom:20px;font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);padding:16px 18px;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
 .kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .kpi-value{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.02em}
 .kpi-sub{font-size:12px;color:var(--text-2);margin-top:4px}
-.kpi-warn{color:var(--danger);font-weight:600}
-.op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:24px}
-.op-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;border-left:4px solid var(--success)}
-.op-card.inj{border-left-color:var(--accent)}
+.op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:20px}
+.op-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;border-left:4px solid var(--success);box-shadow:var(--shadow)}
+.op-card.inj{border-left-color:#3b82f6}
 .op-title{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .op-value{font-size:32px;font-weight:700;margin-top:6px}
-.op-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text-2)}
+.op-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text-2);flex-wrap:wrap}
 .op-meta strong{color:var(--danger)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
-.card-title{font-size:15px;font-weight:600;margin-bottom:12px}
-.toolbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.input,.select{background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit}
-.input:focus,.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.toolbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
+.input,.select{background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit;transition:all .15s}
+.input:focus,.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
 .input{flex:1;min-width:180px}
 .select{min-width:130px}
-.btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
-.btn:hover{opacity:.9}
+.btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
+.btn:hover{background:#0a3a2a}
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
-.btn-success{background:var(--success)}
-.table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.btn-ghost:hover{background:#f1f5f9}
+.btn-success{background:var(--success);color:#fff}
+.btn-success:hover{background:#0ea35e}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
 .table th{text-align:left;padding:11px 14px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--border);background:#fafafa}
 .table td{padding:12px 14px;border-bottom:1px solid #f3f4f6;font-size:13px}
 .table tr:last-child td{border-bottom:none}
@@ -62,62 +71,113 @@ h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
 .b-rn{background:#fef3c7;color:#92400e}
 .b-se{background:#dcfce7;color:#166534}
 .b-ce{background:#fce7f3;color:#9f1239}
+.pdf-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+.pdf-link:hover{text-decoration:underline}
 .empty{padding:40px;text-align:center;color:var(--text-3);font-size:14px}
 .loading{text-align:center;padding:32px;color:var(--text-3);font-size:13px}
 .error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
 .success{background:#d1fae5;color:#065f46;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
-.upload-box{background:var(--surface);padding:20px;border-radius:var(--r);border:2px dashed #cbd5e1;text-align:center;margin-bottom:16px}
+.upload-box{background:var(--surface);padding:20px;border-radius:var(--r);border:2px dashed #cbd5e1;text-align:center;margin-bottom:16px;box-shadow:var(--shadow)}
 .upload-box h3{font-size:15px;margin-bottom:6px}
 .upload-box p{color:var(--text-2);font-size:13px;margin-bottom:10px}
 .pagination{display:flex;justify-content:space-between;align-items:center;padding:12px;color:var(--text-2);font-size:13px}
-.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-bottom:14px}
+.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:12px}
 .bar-list{list-style:none;display:flex;flex-direction:column;gap:8px}
 .bar-item{display:flex;align-items:center;gap:10px;font-size:13px}
 .bar-label{min-width:120px;font-weight:500;font-size:12px}
 .bar-track{flex:1;height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;background:var(--accent);border-radius:4px}
-.bar-value{min-width:60px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:12px}
+.bar-fill{height:100%;border-radius:4px;transition:width .3s}
+.bar-value{min-width:80px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:12px}
 .bar-value strong{color:var(--danger)}
-.summary-bar{background:#f8fafc;border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--text-2)}
+.summary-bar{background:#f8fafc;border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text-2)}
 .summary-bar strong{color:var(--text)}
-@media(max-width:640px){.table{font-size:12px}.table th,.table td{padding:8px}.kpi-value{font-size:22px}.op-value{font-size:26px}main{padding:18px 14px}}
+.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:skel 1.4s infinite;border-radius:4px;height:14px;margin:6px 0}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){
+.sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s;box-shadow:4px 0 20px rgba(0,0,0,.1)}
+.sidebar.open{left:0}
+main{padding:18px 16px}
+.menu-toggle{display:flex !important}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;display:none}
+.overlay.show{display:block}
+}
+.menu-toggle{display:none;background:var(--surface);border:1px solid var(--border);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:18px;align-items:center;gap:8px}
+.menu-toggle span{font-size:13px;font-weight:500}
 </style>
 </head>
 <body>
-<header>
-<div class="brand">EnvLicense<span class="brand-sub">v3.2</span></div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div class="brand-logo">PR</div>
+<div>
+<div class="brand-name">EnvLicense</div>
+<div class="brand-sub">PetroRecôncavo</div>
+</div>
+</div>
+<div class="nav-section">Geral</div>
 <nav>
-<button class="active" data-tab="dashboard">Dashboard</button>
-<button data-tab="compliance">Compliance</button>
-<button data-tab="assets">Ativos</button>
-<button data-tab="licenses">Licenças</button>
-<button data-tab="conditions">Condicionantes</button>
+<button class="active" data-tab="dashboard"><span class="icon">📊</span> Dashboard</button>
+<button data-tab="assets"><span class="icon">🛢️</span> Ativos & Compliance</button>
 </nav>
-</header>
-<main id="app"><div class="loading">Carregando...</div></main>
+<div class="nav-section">Documentos</div>
+<nav>
+<button data-tab="licenses"><span class="icon">📄</span> Licenças</button>
+<button data-tab="conditions"><span class="icon">✅</span> Condicionantes</button>
+</nav>
+<div class="sidebar-footer">EnvLicense v4.0 · Fase A</div>
+</aside>
+<main>
+<div class="topbar">
+<button class="menu-toggle" onclick="toggleMenu()">☰ <span>Menu</span></button>
+<div></div>
+</div>
+<div id="app"><div class="loading"><span class="spinner"></span> Carregando...</div></div>
+</main>
 <script>
 const API="https://envlicense-backend.onrender.com";
 let filterCache=null;
 let assetState={page:0,filters:{},search:""};
-let compState={page:0,filters:{},search:""};
+
+// Pre-aquece o backend ao abrir
+fetch(`${API}/health`).catch(()=>{});
+
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
+}
+function closeMenu(){
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
+}
 
 document.querySelectorAll("nav button").forEach(b=>{
-  b.addEventListener("click",()=>show(b.dataset.tab,b));
+  b.addEventListener("click",()=>{show(b.dataset.tab,b);closeMenu();});
 });
 
 async function show(tab,btn){
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
   if(btn) btn.classList.add("active");
-  else document.querySelector(`nav button[data-tab="${tab}"]`).classList.add("active");
+  else{const sel=document.querySelector(`nav button[data-tab="${tab}"]`);if(sel) sel.classList.add("active");}
   const app=document.getElementById("app");
-  app.innerHTML='<div class="loading">Carregando...</div>';
+  app.innerHTML=skeletonLoading();
   try{
     if(tab==="dashboard") await renderDashboard();
-    else if(tab==="compliance") await renderCompliance();
     else if(tab==="assets") await renderAssets();
     else if(tab==="licenses") await renderLicenses();
     else if(tab==="conditions") await renderConditions();
   }catch(e){app.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
+}
+
+function skeletonLoading(){
+  return `<div>
+    <div class="skeleton" style="width:200px;height:24px;margin-bottom:20px"></div>
+    <div class="kpis">${Array(6).fill('<div class="kpi"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%;height:24px;margin-top:8px"></div></div>').join('')}</div>
+    <div class="skeleton" style="height:120px;margin-bottom:12px"></div>
+    <div class="skeleton" style="height:240px"></div>
+  </div>`;
 }
 
 function badgeCompliance(s){
@@ -140,28 +200,20 @@ async function renderDashboard(){
     fetch(`${API}/compliance/by_field`).then(r=>r.json())
   ]);
   const app=document.getElementById("app");
-  
-  // Top campos com problemas
   const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical));
   const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{
     const pct=(f.wells_critical/probMax*100);
     return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#ef4444"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> de ${f.total_wells}</span></li>`;
   }).join('')||'<div class="empty" style="padding:16px">Nenhum problema detectado</div>';
-  
-  // Condicionantes por campo
   const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions));
   const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{
     const pct=(f.total_conditions/condMax*100);
     return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
   }).join('')||'<div class="empty" style="padding:16px">Sem condicionantes cadastradas</div>';
-  
-  // Ativos por órgão
   const sc=comp.status_counts||{};
-  
   app.innerHTML=`
     <h1>Dashboard</h1>
     <p class="subtitle">Visão geral de compliance e operação</p>
-    
     <div class="kpis">
       <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">cadastrados</div></div>
       <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div></div>
@@ -170,7 +222,6 @@ async function renderDashboard(){
       <div class="kpi"><div class="kpi-label">Atenção</div><div class="kpi-value" style="color:#f59e0b">${sc.upcoming||0}</div></div>
       <div class="kpi"><div class="kpi-label">Críticos</div><div class="kpi-value" style="color:#ef4444">${(sc.expired||0)+(sc.missing||0)}</div></div>
     </div>
-    
     <div class="op-row">
       <div class="op-card">
         <div class="op-title">🟢 Produzindo</div>
@@ -189,7 +240,6 @@ async function renderDashboard(){
         </div>
       </div>
     </div>
-    
     <div class="chart-row">
       <div class="card">
         <div class="card-title">🚨 Campos com poços não-compliance</div>
@@ -202,104 +252,6 @@ async function renderDashboard(){
     </div>`;
 }
 
-async function renderCompliance(){
-  if(!filterCache){
-    filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
-  }
-  const app=document.getElementById("app");
-  const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
-  app.innerHTML=`
-    <h1>Compliance</h1>
-    <p class="subtitle">Análise de conformidade dos ativos</p>
-    <div class="toolbar">
-      <input class="input" id="cSearch" placeholder="Buscar por código ou campo" value="${compState.search}">
-      <select class="select" id="cState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
-      <select class="select" id="cField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
-      <select class="select" id="cOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations||[])}</select>
-      <select class="select" id="cStatus">
-        <option value="">Status: todos</option>
-        <option value="ok">OK</option>
-        <option value="upcoming">Próx. 30d</option>
-        <option value="expired">Vencida</option>
-        <option value="missing">Sem licença</option>
-      </select>
-      <button class="btn" id="cApply">Filtrar</button>
-      <button class="btn btn-ghost" id="cClear">Limpar</button>
-      <button class="btn btn-success" id="cExport">⬇ Exportar CSV</button>
-    </div>
-    <div id="cResults"><div class="loading">Carregando...</div></div>`;
-  
-  ["cState","cField","cOp","cStatus"].forEach(id=>{
-    if(compState.filters[id]) document.getElementById(id).value=compState.filters[id];
-  });
-  document.getElementById("cApply").onclick=()=>{
-    compState.filters={cState:document.getElementById("cState").value,cField:document.getElementById("cField").value,cOp:document.getElementById("cOp").value,cStatus:document.getElementById("cStatus").value};
-    compState.search=document.getElementById("cSearch").value;
-    compState.page=0;
-    loadCompliance();
-  };
-  document.getElementById("cClear").onclick=()=>{compState={page:0,filters:{},search:""};renderCompliance();};
-  document.getElementById("cExport").onclick=exportCompliance;
-  document.getElementById("cSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("cApply").click();});
-  loadCompliance();
-}
-
-function buildComplianceParams(){
-  const p=new URLSearchParams();
-  if(compState.filters.cState) p.set("state",compState.filters.cState);
-  if(compState.filters.cField) p.set("field",compState.filters.cField);
-  if(compState.filters.cOp) p.set("operational",compState.filters.cOp);
-  if(compState.filters.cStatus) p.set("compliance_status",compState.filters.cStatus);
-  if(compState.search) p.set("search",compState.search);
-  return p;
-}
-
-async function loadCompliance(){
-  const p=buildComplianceParams();
-  p.set("limit","50");
-  p.set("offset",String(compState.page*50));
-  const div=document.getElementById("cResults");
-  div.innerHTML='<div class="loading">Buscando...</div>';
-  const r=await fetch(`${API}/compliance/assets?${p}`).then(r=>r.json());
-  if(!r.items||r.items.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado.</div></div>';
-    return;
-  }
-  const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
-  const rows=r.items.map(a=>`
-    <tr>
-      <td><strong>${a.code||'-'}</strong></td>
-      <td>${a.field||'-'}</td>
-      <td>${badgeState(a.state)}</td>
-      <td>${a.agency||'-'}</td>
-      <td>${badgeSituation(a.situation)}</td>
-      <td>${badgeCompliance(a.compliance_status)}</td>
-      <td>${a.n_licenses}</td>
-    </tr>`).join('');
-  const totalPages=Math.ceil(r.total/50);
-  const curPage=compState.page+1;
-  div.innerHTML=`
-    <div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div>
-    <table class="table">
-      <thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Compliance</th><th>Lic.</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    <div class="pagination">
-      <span>Página ${curPage} de ${totalPages}</span>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost" id="cPrev" ${compState.page===0?'disabled':''}>← Anterior</button>
-        <button class="btn btn-ghost" id="cNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
-      </div>
-    </div>`;
-  document.getElementById("cPrev").onclick=()=>{if(compState.page>0){compState.page--;loadCompliance();}};
-  document.getElementById("cNext").onclick=()=>{if(curPage<totalPages){compState.page++;loadCompliance();}};
-}
-
-function exportCompliance(){
-  const p=buildComplianceParams();
-  window.open(`${API}/compliance/export?${p}`,'_blank');
-}
-
 async function renderAssets(){
   if(!filterCache){
     filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
@@ -307,76 +259,101 @@ async function renderAssets(){
   const app=document.getElementById("app");
   const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
-    <h1>Ativos</h1>
-    <p class="subtitle">Poços, campos e instalações da operação</p>
+    <h1>Ativos & Compliance</h1>
+    <p class="subtitle">Visão completa dos ativos com status de conformidade</p>
     <div class="toolbar">
-      <input class="input" id="aSearch" placeholder="Buscar (ex: MIRANGA, 1-BR-1-RN)" value="${assetState.search}">
+      <input class="input" id="aSearch" placeholder="Buscar por código ou campo" value="${assetState.search}">
       <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
       <select class="select" id="aAgency"><option value="">Órgão: todos</option>${opt(filterCache.agencies||[])}</select>
-      <select class="select" id="aOperator"><option value="">Operadora: todas</option>${opt(filterCache.operators||[])}</select>
       <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
-      <select class="select" id="aSituation"><option value="">Situação: todas</option>${opt(filterCache.situations||[])}</select>
+      <select class="select" id="aOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations||[])}</select>
+      <select class="select" id="aStatus">
+        <option value="">Compliance: todos</option>
+        <option value="ok">OK</option>
+        <option value="upcoming">Próx. 30d</option>
+        <option value="expired">Vencida</option>
+        <option value="missing">Sem licença</option>
+      </select>
       <button class="btn" id="aApply">Filtrar</button>
       <button class="btn btn-ghost" id="aClear">Limpar</button>
+      <button class="btn btn-success" id="aExport">⬇ Exportar CSV</button>
     </div>
-    <div id="aResults"><div class="loading">Carregando...</div></div>`;
-  ["aState","aAgency","aOperator","aField","aSituation"].forEach(id=>{
+    <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando...</div></div>`;
+  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{
     if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];
   });
   document.getElementById("aApply").onclick=()=>{
-    assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aOperator:document.getElementById("aOperator").value,aField:document.getElementById("aField").value,aSituation:document.getElementById("aSituation").value};
+    assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aField:document.getElementById("aField").value,aOp:document.getElementById("aOp").value,aStatus:document.getElementById("aStatus").value};
     assetState.search=document.getElementById("aSearch").value;
     assetState.page=0;
     loadAssets();
   };
   document.getElementById("aClear").onclick=()=>{assetState={page:0,filters:{},search:""};renderAssets();};
+  document.getElementById("aExport").onclick=exportAssets;
   document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("aApply").click();});
   loadAssets();
 }
 
+function buildAssetParams(){
+  const p=new URLSearchParams();
+  if(assetState.filters.aState) p.set("state",assetState.filters.aState);
+  if(assetState.filters.aAgency) p.set("agency",assetState.filters.aAgency);
+  if(assetState.filters.aField) p.set("field",assetState.filters.aField);
+  if(assetState.filters.aOp) p.set("operational",assetState.filters.aOp);
+  if(assetState.filters.aStatus) p.set("compliance_status",assetState.filters.aStatus);
+  if(assetState.search) p.set("search",assetState.search);
+  return p;
+}
+
 async function loadAssets(){
-  const params=new URLSearchParams();
-  if(assetState.filters.aState) params.set("state",assetState.filters.aState);
-  if(assetState.filters.aAgency) params.set("agency",assetState.filters.aAgency);
-  if(assetState.filters.aOperator) params.set("operator",assetState.filters.aOperator);
-  if(assetState.filters.aField) params.set("field",assetState.filters.aField);
-  if(assetState.filters.aSituation) params.set("situation",assetState.filters.aSituation);
-  if(assetState.search) params.set("search",assetState.search);
-  params.set("limit","50");
-  params.set("offset",String(assetState.page*50));
+  const p=buildAssetParams();
+  p.set("limit","50");
+  p.set("offset",String(assetState.page*50));
   const div=document.getElementById("aResults");
-  div.innerHTML='<div class="loading">Buscando...</div>';
-  const r=await fetch(`${API}/assets?${params}`).then(r=>r.json());
+  div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando...</div>';
+  const r=await fetch(`${API}/assets/unified?${p}`).then(r=>r.json());
   if(!r.items||r.items.length===0){
     div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado.</div></div>';
     return;
   }
-  const rows=r.items.map(a=>`
-    <tr>
+  const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
+  const rows=r.items.map(a=>{
+    const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">📄 Ver</a>`:'<span style="color:#cbd5e1">—</span>';
+    return `<tr>
       <td><strong>${a.code||'-'}</strong></td>
-      <td>${a.operator||'-'}</td>
+      <td>${a.field||'-'}</td>
       <td>${badgeState(a.state)}</td>
       <td>${a.agency||'-'}</td>
-      <td>${a.field||'-'}</td>
       <td>${badgeSituation(a.situation)}</td>
-      <td>${a.n_licenses||0}</td>
-    </tr>`).join('');
+      <td>${badgeCompliance(a.compliance_status)}</td>
+      <td>${a.expiry_date||'<span style="color:#cbd5e1">—</span>'}</td>
+      <td>${pdfCell}</td>
+    </tr>`;
+  }).join('');
   const totalPages=Math.ceil(r.total/50);
   const curPage=assetState.page+1;
   div.innerHTML=`
+    <div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div>
+    <div style="overflow-x:auto">
     <table class="table">
-      <thead><tr><th>Código</th><th>Operadora</th><th>UF</th><th>Órgão</th><th>Campo</th><th>Situação</th><th>Lic.</th></tr></thead>
+      <thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Compliance</th><th>Validade</th><th>PDF</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
+    </div>
     <div class="pagination">
-      <span>Mostrando ${r.items.length} de ${r.total} · Página ${curPage} de ${totalPages}</span>
+      <span>Página ${curPage} de ${totalPages}</span>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost" id="pPrev" ${assetState.page===0?'disabled':''}>← Anterior</button>
-        <button class="btn btn-ghost" id="pNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
+        <button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>← Anterior</button>
+        <button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
       </div>
     </div>`;
-  document.getElementById("pPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
-  document.getElementById("pNext").onclick=()=>{if(curPage<totalPages){assetState.page++;loadAssets();}};
+  document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
+  document.getElementById("aNext").onclick=()=>{if(curPage<totalPages){assetState.page++;loadAssets();}};
+}
+
+function exportAssets(){
+  const p=buildAssetParams();
+  window.open(`${API}/assets/export?${p}`,'_blank');
 }
 
 async function renderLicenses(){
@@ -386,12 +363,12 @@ async function renderLicenses(){
     <p class="subtitle">Documentos ambientais e suas condicionantes</p>
     <div class="upload-box">
       <h3>📄 Subir nova licença em PDF</h3>
-      <p>A IA vai ler o documento e extrair as condicionantes.</p>
+      <p>A IA vai ler o documento e extrair as condicionantes. PDF será salvo permanentemente.</p>
       <input type="file" id="pdfFile" accept=".pdf">
-      <br><button class="btn" id="upBtn">Enviar para a IA</button>
+      <br><br><button class="btn" id="upBtn">Enviar para a IA</button>
       <div id="upStatus"></div>
     </div>
-    <div id="lList"><div class="loading">Carregando...</div></div>`;
+    <div id="lList"><div class="loading"><span class="spinner"></span> Carregando...</div></div>`;
   document.getElementById("upBtn").onclick=uploadPdf;
   const list=await fetch(`${API}/licenses`).then(r=>r.json());
   const div=document.getElementById("lList");
@@ -399,8 +376,11 @@ async function renderLicenses(){
     div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada.</div></div>';
     return;
   }
-  const rows=list.map(l=>`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'-'}</td><td>${l.expiry_date||'-'}</td><td>${l.asset_code||'<span style="color:#9ca3af">não vinculado</span>'}</td><td>${l.n_conditions}</td></tr>`).join('');
-  div.innerHTML=`<table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const rows=list.map(l=>{
+    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">📄 Ver</a>`:'<span style="color:#cbd5e1">—</span>';
+    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'-'}</td><td>${l.expiry_date||'-'}</td><td>${l.asset_code||'<span style="color:#cbd5e1">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td></tr>`;
+  }).join('');
+  div.innerHTML=`<div style="overflow-x:auto"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 async function uploadPdf(){
@@ -410,14 +390,14 @@ async function uploadPdf(){
   if(!fileInput.files[0]){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
   btn.disabled=true;
   btn.textContent="Processando... (30-90s)";
-  status.innerHTML='<div class="loading">🤖 A IA está lendo o PDF...</div>';
+  status.innerHTML='<div class="loading"><span class="spinner"></span> 🤖 A IA está lendo o PDF...</div>';
   const fd=new FormData();
   fd.append("file",fileInput.files[0]);
   try{
     const r=await fetch(`${API}/licenses/upload`,{method:"POST",body:fd}).then(r=>r.json());
     if(r.error){status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;}
     else{
-      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas!</div>`;
+      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! PDF salvo permanentemente.</div>`;
       setTimeout(()=>show("licenses"),1500);
     }
   }catch(e){status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
@@ -438,7 +418,7 @@ async function renderConditions(){
       else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;
       return `<tr><td>${c.description}</td><td><span class="badge b-other">${c.category}</span></td><td>${c.license_number}</td><td>${c.due_date||'-'}</td><td>${badge}</td></tr>`;
     }).join('');
-    html+=`<table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+    html+=`<div style="overflow-x:auto"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   app.innerHTML=html;
 }
