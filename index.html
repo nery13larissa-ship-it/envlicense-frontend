@@ -5,150 +5,571 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EnvLicense — PetroRecôncavo</title>
 <style>
-:root{--bg:#f8fafc;--surface:#fff;--border:#e5e7eb;--text:#0f172a;--text-2:#64748b;--text-3:#94a3b8;--primary:#064e3b;--primary-light:#10b981;--accent:#059669;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--r:12px;--rs:8px;--shadow:0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
-.sidebar{width:240px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh}
-.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 24px;border-bottom:1px solid var(--border);margin-bottom:16px}
-.brand-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
-.brand-name{font-weight:700;font-size:15px;letter-spacing:-.01em}
-.brand-sub{font-size:10px;color:var(--text-3);font-weight:500;letter-spacing:1px;text-transform:uppercase}
-.nav-section{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;font-weight:700;padding:8px;margin-top:8px}
-nav button{width:100%;background:transparent;color:var(--text-2);border:none;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:500;display:flex;align-items:center;gap:10px;transition:all .15s;text-align:left;font-family:inherit;margin-bottom:2px}
-nav button:hover{background:#f1f5f9;color:var(--text)}
-nav button.active{background:var(--primary);color:#fff;font-weight:600}
-nav button .icon{font-size:16px}
-.sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-3);text-align:center}
-main{flex:1;padding:28px 32px;max-width:100%;overflow-x:hidden}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.page-title{font-size:24px;font-weight:700;letter-spacing:-.02em}
-h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
-.subtitle{color:var(--text-2);margin-bottom:20px;font-size:13px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--surface);padding:16px 18px;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow)}
-.kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.kpi-value{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.02em}
-.kpi-sub{font-size:12px;color:var(--text-2);margin-top:4px}
-.donut-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;margin-bottom:16px}
-.donut-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
-.donut-card .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:6px}
-.donut-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center}
+:root{
+--primary:#007023;
+--primary-hover:#005a1c;
+--primary-light:#4EA72E;
+--primary-tint:#e8f5ec;
+--success:#4EA72E;
+--warning:#F9CE29;
+--warning-text:#7a5e00;
+--danger:#9D2928;
+--danger-tint:#fbeded;
+--info:#125E81;
+--text:#1d1d1f;
+--text-2:#6e6e73;
+--text-3:#86868b;
+--border:#d2d2d7;
+--border-light:#f5f5f7;
+--bg:#fbfbfd;
+--surface:#ffffff;
+--surface-elevated:#ffffff;
+--r-sm:8px;
+--r:12px;
+--r-lg:18px;
+--shadow-sm:0 1px 2px rgba(0,0,0,.04);
+--shadow:0 4px 16px rgba(0,0,0,.04);
+--ease:cubic-bezier(.4,0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+font-size:15px;
+line-height:1.47;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+display:flex;
+min-height:100vh;
+font-weight:400;
+letter-spacing:-.003em;
+}
+
+/* Sidebar */
+.sidebar{
+width:260px;
+background:var(--surface);
+border-right:1px solid var(--border-light);
+padding:24px 16px;
+display:flex;
+flex-direction:column;
+flex-shrink:0;
+position:sticky;
+top:0;
+height:100vh;
+}
+.brand{
+display:flex;
+align-items:center;
+gap:12px;
+padding:8px 12px 24px;
+margin-bottom:8px;
+}
+.brand-mark{
+width:36px;
+height:36px;
+background:linear-gradient(135deg,var(--primary),var(--primary-light));
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-weight:700;
+font-size:14px;
+letter-spacing:-.01em;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.2}
+.brand-name{font-weight:600;font-size:16px;letter-spacing:-.02em;color:var(--text)}
+.brand-sub{font-size:11px;color:var(--text-3);font-weight:400;letter-spacing:.02em;margin-top:2px}
+.nav-label{
+font-size:11px;
+color:var(--text-3);
+text-transform:uppercase;
+letter-spacing:.06em;
+font-weight:600;
+padding:16px 12px 8px;
+}
+nav button{
+width:100%;
+background:transparent;
+color:var(--text-2);
+border:none;
+padding:9px 12px;
+border-radius:8px;
+cursor:pointer;
+font-size:14px;
+font-weight:400;
+display:flex;
+align-items:center;
+gap:12px;
+transition:all .2s var(--ease);
+text-align:left;
+font-family:inherit;
+margin-bottom:1px;
+letter-spacing:-.01em;
+}
+nav button:hover{background:var(--border-light);color:var(--text)}
+nav button.active{background:var(--primary-tint);color:var(--primary);font-weight:500}
+nav button.active svg{stroke:var(--primary)}
+nav button svg{width:18px;height:18px;flex-shrink:0;stroke:var(--text-3);stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s var(--ease)}
+.sidebar-footer{
+margin-top:auto;
+padding:16px 12px;
+font-size:11px;
+color:var(--text-3);
+border-top:1px solid var(--border-light);
+letter-spacing:-.005em;
+}
+
+/* Main */
+main{
+flex:1;
+padding:32px 40px 64px;
+max-width:100%;
+overflow-x:hidden;
+}
+.topbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:32px;
+}
+.page-header{margin-bottom:28px}
+h1{
+font-size:32px;
+font-weight:600;
+letter-spacing:-.022em;
+color:var(--text);
+margin-bottom:6px;
+line-height:1.1;
+}
+.subtitle{
+color:var(--text-2);
+font-size:15px;
+font-weight:400;
+letter-spacing:-.003em;
+}
+
+/* KPIs */
+.kpis{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:16px;
+margin-bottom:24px;
+}
+.kpi{
+background:var(--surface);
+padding:20px 22px;
+border-radius:var(--r);
+border:1px solid var(--border-light);
+transition:all .2s var(--ease);
+}
+.kpi:hover{border-color:var(--border);transform:translateY(-1px)}
+.kpi-label{
+font-size:12px;
+color:var(--text-3);
+text-transform:uppercase;
+letter-spacing:.04em;
+font-weight:600;
+}
+.kpi-value{
+font-size:32px;
+font-weight:600;
+margin-top:8px;
+letter-spacing:-.022em;
+color:var(--text);
+line-height:1;
+}
+.kpi-sub{
+font-size:13px;
+color:var(--text-3);
+margin-top:6px;
+font-weight:400;
+}
+
+/* Donut cards */
+.donut-row{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+gap:16px;
+margin-bottom:24px;
+}
+.donut-card{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r);
+padding:24px;
+transition:border-color .2s var(--ease);
+}
+.donut-card:hover{border-color:var(--border)}
+.card-title{
+font-size:13px;
+font-weight:600;
+margin-bottom:20px;
+color:var(--text);
+letter-spacing:-.005em;
+text-transform:uppercase;
+letter-spacing:.04em;
+color:var(--text-3);
+}
+.donut-wrap{
+display:flex;
+align-items:center;
+gap:32px;
+flex-wrap:wrap;
+justify-content:center;
+}
 .donut-svg{position:relative;flex-shrink:0}
 .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.donut-center .big{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1}
-.donut-center .small{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;font-weight:600}
-.donut-legend{display:flex;flex-direction:column;gap:10px;min-width:160px}
-.legend-item{display:flex;align-items:center;gap:10px;font-size:13px}
-.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.legend-label{flex:1;color:var(--text-2)}
-.legend-value{font-weight:700;font-variant-numeric:tabular-nums;color:var(--text)}
-.legend-pct{font-size:11px;color:var(--text-3);margin-left:4px}
-.op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:20px}
-.op-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;border-left:4px solid var(--success);box-shadow:var(--shadow)}
-.op-card.inj{border-left-color:#3b82f6}
-.op-title{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
-.op-value{font-size:32px;font-weight:700;margin-top:6px}
-.op-meta{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--text-2);flex-wrap:wrap}
-.op-meta strong{color:var(--danger)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.toolbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
-.input,.select{background:#fff;border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:13px;color:var(--text);outline:none;font-family:inherit;transition:all .15s}
-.input:focus,.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.1)}
-.input{flex:1;min-width:180px}
-.select{min-width:130px}
-.btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit}
-.btn:hover{background:#0a3a2a}
-.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
-.btn-ghost:hover{background:#f1f5f9}
-.btn-success{background:var(--success);color:#fff}
-.btn-success:hover{background:#0ea35e}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:var(--r);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
-.table th{text-align:left;padding:11px 14px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;border-bottom:1px solid var(--border);background:#fafafa}
-.table td{padding:12px 14px;border-bottom:1px solid #f3f4f6;font-size:13px}
-.table tr:last-child td{border-bottom:none}
-.table tr:hover{background:#fafafa}
-.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;letter-spacing:.2px;white-space:nowrap}
-.b-ok{background:#d1fae5;color:#065f46}
-.b-upcoming{background:#fef3c7;color:#92400e}
-.b-expired{background:#fee2e2;color:#991b1b}
-.b-missing{background:#fecaca;color:#7f1d1d}
-.b-prod{background:#dcfce7;color:#166534}
-.b-inj{background:#dbeafe;color:#1e40af}
-.b-other{background:#f3f4f6;color:#374151}
-.b-pend{background:#e0e7ff;color:#3730a3}
-.b-done{background:#d1fae5;color:#065f46}
-.b-overdue{background:#fee2e2;color:#991b1b}
-.b-ba{background:#dbeafe;color:#1e40af}
-.b-rn{background:#fef3c7;color:#92400e}
-.b-se{background:#dcfce7;color:#166534}
-.b-ce{background:#fce7f3;color:#9f1239}
-.pdf-link{color:var(--accent);text-decoration:none;font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:4px}
-.pdf-link:hover{text-decoration:underline}
-.empty{padding:40px;text-align:center;color:var(--text-3);font-size:14px}
-.loading{text-align:center;padding:32px;color:var(--text-3);font-size:13px}
-.error{background:#fee2e2;color:#991b1b;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
-.success{background:#d1fae5;color:#065f46;padding:12px;border-radius:var(--rs);margin:12px 0;font-size:13px}
-.upload-box{background:var(--surface);padding:20px;border-radius:var(--r);border:2px dashed #cbd5e1;text-align:center;margin-bottom:16px;box-shadow:var(--shadow)}
-.upload-box h3{font-size:15px;margin-bottom:6px}
-.upload-box p{color:var(--text-2);font-size:13px;margin-bottom:10px}
-.pagination{display:flex;justify-content:space-between;align-items:center;padding:12px;color:var(--text-2);font-size:13px}
-.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:12px}
-.bar-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.bar-item{display:flex;align-items:center;gap:10px;font-size:13px}
-.bar-label{min-width:120px;font-weight:500;font-size:12px}
-.bar-track{flex:1;height:8px;background:#f3f4f6;border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;transition:width .3s}
-.bar-value{min-width:80px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:12px}
-.bar-value strong{color:var(--danger)}
-.summary-bar{background:#f8fafc;border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;margin-bottom:12px;font-size:13px;color:var(--text-2)}
-.summary-bar strong{color:var(--text)}
-.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:skel 1.4s infinite;border-radius:4px;height:14px;margin:6px 0}
-@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid #e5e7eb;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:900px){
-.sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s;box-shadow:4px 0 20px rgba(0,0,0,.1)}
-.sidebar.open{left:0}
-main{padding:18px 16px}
-.menu-toggle{display:flex !important}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;display:none}
-.overlay.show{display:block}
+.donut-center .big{font-size:32px;font-weight:600;letter-spacing:-.022em;line-height:1;color:var(--text)}
+.donut-center .small{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-top:6px;font-weight:600}
+.donut-legend{display:flex;flex-direction:column;gap:12px;min-width:180px;flex:1}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:14px}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.legend-label{flex:1;color:var(--text-2);font-weight:400}
+.legend-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
+.legend-pct{font-size:12px;color:var(--text-3);margin-left:6px;font-weight:400}
+
+/* Operational cards */
+.op-row{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:16px;
+margin-bottom:24px;
 }
-.menu-toggle{display:none;background:var(--surface);border:1px solid var(--border);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:18px;align-items:center;gap:8px}
-.menu-toggle span{font-size:13px;font-weight:500}
+.op-card{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r);
+padding:24px;
+position:relative;
+overflow:hidden;
+transition:all .2s var(--ease);
+}
+.op-card:hover{border-color:var(--border)}
+.op-card::before{
+content:"";
+position:absolute;
+left:0;top:0;bottom:0;
+width:3px;
+background:var(--success);
+}
+.op-card.inj::before{background:var(--info)}
+.op-header{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:12px;
+color:var(--text-3);
+text-transform:uppercase;
+letter-spacing:.05em;
+font-weight:600;
+margin-bottom:8px;
+}
+.op-dot{width:8px;height:8px;border-radius:50%;background:var(--success)}
+.op-card.inj .op-dot{background:var(--info)}
+.op-value{font-size:42px;font-weight:600;letter-spacing:-.024em;color:var(--text);line-height:1;margin-bottom:14px}
+.op-meta{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--text-2)}
+.op-meta strong{color:var(--danger);font-weight:600}
+
+/* Cards generic */
+.card{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r);
+padding:24px;
+margin-bottom:16px;
+transition:border-color .2s var(--ease);
+}
+.card:hover{border-color:var(--border)}
+
+/* Toolbar */
+.toolbar{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r);
+padding:14px;
+margin-bottom:16px;
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+align-items:center;
+}
+.input,.select{
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:var(--r-sm);
+padding:9px 14px;
+font-size:14px;
+color:var(--text);
+outline:none;
+font-family:inherit;
+transition:all .15s var(--ease);
+font-weight:400;
+letter-spacing:-.003em;
+}
+.input:focus,.select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(0,112,35,.1)}
+.input{flex:1;min-width:200px}
+.select{min-width:140px;background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-position:right 10px center;background-repeat:no-repeat;padding-right:30px;-webkit-appearance:none;appearance:none}
+.btn{
+background:var(--primary);
+color:#fff;
+border:none;
+padding:9px 18px;
+border-radius:var(--r-sm);
+font-size:14px;
+font-weight:500;
+cursor:pointer;
+transition:all .15s var(--ease);
+font-family:inherit;
+letter-spacing:-.003em;
+display:inline-flex;
+align-items:center;
+gap:6px;
+}
+.btn:hover{background:var(--primary-hover);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--border-light);color:var(--text);transform:none}
+.btn-success{background:var(--primary-light)}
+.btn-success:hover{background:#3d8b25}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* Table */
+.table-wrap{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r);
+overflow:hidden;
+overflow-x:auto;
+}
+.table{width:100%;border-collapse:collapse}
+.table th{
+text-align:left;
+padding:14px 16px;
+font-size:11px;
+color:var(--text-3);
+text-transform:uppercase;
+letter-spacing:.05em;
+font-weight:600;
+border-bottom:1px solid var(--border-light);
+background:var(--bg);
+}
+.table td{
+padding:14px 16px;
+border-bottom:1px solid var(--border-light);
+font-size:14px;
+color:var(--text);
+}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover td{background:var(--bg)}
+
+/* Badges */
+.badge{
+display:inline-flex;
+align-items:center;
+gap:5px;
+padding:3px 10px;
+border-radius:6px;
+font-size:12px;
+font-weight:500;
+letter-spacing:-.003em;
+white-space:nowrap;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%}
+.b-ok{background:#e8f5ec;color:#1f5f33}
+.b-ok .badge-dot{background:var(--success)}
+.b-upcoming{background:#fef7d8;color:var(--warning-text)}
+.b-upcoming .badge-dot{background:var(--warning)}
+.b-expired{background:var(--danger-tint);color:var(--danger)}
+.b-expired .badge-dot{background:var(--danger)}
+.b-missing{background:#f5d4d4;color:#6b1c1c}
+.b-missing .badge-dot{background:#6b1c1c}
+.b-prod{background:#e8f5ec;color:#1f5f33}
+.b-inj{background:#deeef5;color:#0d4a66}
+.b-other{background:var(--border-light);color:var(--text-2)}
+.b-pend{background:#e8ecf5;color:#1e3a8a}
+.b-done{background:#e8f5ec;color:#1f5f33}
+.b-overdue{background:var(--danger-tint);color:var(--danger)}
+.b-ba{background:#deeef5;color:#0d4a66}
+.b-rn{background:#fef7d8;color:var(--warning-text)}
+.b-se{background:#e8f5ec;color:#1f5f33}
+.b-ce{background:#fce4ec;color:#9f1239}
+
+.pdf-link{
+color:var(--primary);
+text-decoration:none;
+font-weight:500;
+font-size:13px;
+display:inline-flex;
+align-items:center;
+gap:5px;
+transition:opacity .15s var(--ease);
+}
+.pdf-link:hover{opacity:.7}
+.pdf-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* States */
+.empty{padding:48px 24px;text-align:center;color:var(--text-3);font-size:14px}
+.loading{text-align:center;padding:48px;color:var(--text-3);font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px}
+.error{background:var(--danger-tint);color:var(--danger);padding:14px 16px;border-radius:var(--r-sm);margin:12px 0;font-size:14px;border:1px solid #f5c6c6}
+.success{background:#e8f5ec;color:#1f5f33;padding:14px 16px;border-radius:var(--r-sm);margin:12px 0;font-size:14px;border:1px solid #c5e3d0}
+
+/* Upload */
+.upload-box{
+background:var(--surface);
+padding:32px;
+border-radius:var(--r);
+border:1.5px dashed var(--border);
+text-align:center;
+margin-bottom:20px;
+transition:all .2s var(--ease);
+}
+.upload-box:hover{border-color:var(--primary);background:var(--primary-tint)}
+.upload-box h3{font-size:17px;font-weight:600;margin-bottom:6px;color:var(--text);letter-spacing:-.01em}
+.upload-box p{color:var(--text-2);font-size:14px;margin-bottom:16px}
+.upload-box input[type="file"]{font-family:inherit;font-size:13px;color:var(--text-2);margin-bottom:16px}
+
+/* Pagination */
+.pagination{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 4px;
+color:var(--text-2);
+font-size:13px;
+}
+
+/* Charts */
+.chart-row{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+gap:16px;
+margin-bottom:16px;
+}
+.bar-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.bar-item{display:flex;align-items:center;gap:14px;font-size:13px}
+.bar-label{min-width:130px;font-weight:500;font-size:13px;color:var(--text)}
+.bar-track{flex:1;height:6px;background:var(--border-light);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .6s var(--ease)}
+.bar-value{min-width:90px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:13px;font-weight:400}
+.bar-value strong{color:var(--danger);font-weight:600}
+
+.summary-bar{
+background:var(--surface);
+border:1px solid var(--border-light);
+border-radius:var(--r-sm);
+padding:12px 16px;
+margin-bottom:14px;
+font-size:13px;
+color:var(--text-2);
+}
+.summary-bar strong{color:var(--text);font-weight:600}
+
+/* Skeleton */
+.skeleton{
+background:linear-gradient(90deg,var(--border-light) 25%,#ebebef 50%,var(--border-light) 75%);
+background-size:200% 100%;
+animation:skel 1.4s infinite;
+border-radius:6px;
+height:14px;
+margin:6px 0;
+}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* Spinner */
+.spinner{
+display:inline-block;
+width:18px;height:18px;
+border:2px solid var(--border-light);
+border-top-color:var(--primary);
+border-radius:50%;
+animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Mobile */
+@media(max-width:900px){
+.sidebar{position:fixed;left:-280px;z-index:100;transition:left .3s var(--ease);box-shadow:0 0 40px rgba(0,0,0,.1)}
+.sidebar.open{left:0}
+main{padding:20px 18px 48px}
+.menu-toggle{display:flex !important}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;display:none;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.overlay.show{display:block}
+h1{font-size:26px}
+.op-value{font-size:34px}
+.kpi-value{font-size:26px}
+}
+.menu-toggle{
+display:none;
+background:var(--surface);
+border:1px solid var(--border);
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+align-items:center;
+gap:8px;
+font-family:inherit;
+color:var(--text);
+font-size:14px;
+font-weight:500;
+}
+.menu-toggle svg{width:18px;height:18px;stroke:var(--text);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
 <aside class="sidebar" id="sidebar">
 <div class="brand">
-<div class="brand-logo">PR</div>
-<div>
-<div class="brand-name">EnvLicense</div>
-<div class="brand-sub">PetroRecôncavo</div>
+<div class="brand-mark">PR</div>
+<div class="brand-text">
+<span class="brand-name">EnvLicense</span>
+<span class="brand-sub">PetroRecôncavo</span>
 </div>
 </div>
-<div class="nav-section">Geral</div>
+
+<div class="nav-label">Geral</div>
 <nav>
-<button class="active" data-tab="dashboard"><span class="icon">📊</span> Dashboard</button>
-<button data-tab="assets"><span class="icon">🛢️</span> Ativos & Compliance</button>
+<button class="active" data-tab="dashboard">
+<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-5"/></svg>
+Dashboard
+</button>
+<button data-tab="assets">
+<svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
+Ativos & Compliance
+</button>
 </nav>
-<div class="nav-section">Documentos</div>
+
+<div class="nav-label">Documentos</div>
 <nav>
-<button data-tab="licenses"><span class="icon">📄</span> Licenças</button>
-<button data-tab="conditions"><span class="icon">✅</span> Condicionantes</button>
+<button data-tab="licenses">
+<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+Licenças
+</button>
+<button data-tab="conditions">
+<svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/></svg>
+Condicionantes
+</button>
 </nav>
-<div class="sidebar-footer">EnvLicense v4.1 · Fase A</div>
+
+<div class="sidebar-footer">EnvLicense · v4.2</div>
 </aside>
+
 <main>
 <div class="topbar">
-<button class="menu-toggle" onclick="toggleMenu()">☰ <span>Menu</span></button>
+<button class="menu-toggle" onclick="toggleMenu()">
+<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+Menu
+</button>
 <div></div>
 </div>
-<div id="app"><div class="loading"><span class="spinner"></span> Carregando...</div></div>
+<div id="app"><div class="loading"><span class="spinner"></span> Carregando</div></div>
 </main>
+
 <script>
 const API="https://envlicense-backend.onrender.com";
 let filterCache=null;
@@ -185,31 +606,31 @@ async function show(tab,btn){
 
 function skeletonLoading(){
   return `<div>
-    <div class="skeleton" style="width:200px;height:24px;margin-bottom:20px"></div>
-    <div class="kpis">${Array(3).fill('<div class="kpi"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%;height:24px;margin-top:8px"></div></div>').join('')}</div>
-    <div class="skeleton" style="height:220px;margin-bottom:12px"></div>
-    <div class="skeleton" style="height:240px"></div>
+    <div class="skeleton" style="width:240px;height:36px;margin-bottom:8px"></div>
+    <div class="skeleton" style="width:340px;height:18px;margin-bottom:28px"></div>
+    <div class="kpis">${Array(3).fill('<div class="kpi"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="width:35%;height:28px;margin-top:10px"></div></div>').join('')}</div>
+    <div class="skeleton" style="height:220px;margin-bottom:16px"></div>
+    <div class="skeleton" style="height:220px"></div>
   </div>`;
 }
 
 function badgeCompliance(s){
   const map={ok:["b-ok","OK"],upcoming:["b-upcoming","Próx. 30d"],expired:["b-expired","Vencida"],missing:["b-missing","Sem licença"]};
   const[cls,txt]=map[s]||["b-other",s];
-  return `<span class="badge ${cls}">${txt}</span>`;
+  return `<span class="badge ${cls}"><span class="badge-dot"></span>${txt}</span>`;
 }
 function badgeSituation(s){
-  if(!s) return '<span class="badge b-other">-</span>';
-  if(s==="PRODUZINDO") return `<span class="badge b-prod">${s}</span>`;
-  if(s==="INJETANDO") return `<span class="badge b-inj">${s}</span>`;
+  if(!s) return '<span class="badge b-other">—</span>';
+  if(s==="PRODUZINDO") return `<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;
+  if(s==="INJETANDO") return `<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;
   return `<span class="badge b-other">${s.slice(0,18)}</span>`;
 }
-function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'-'}</span>`;}
+function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'—'}</span>`;}
 
-// SVG donut chart com múltiplos segmentos
-function buildDonut(segments, size=160, thickness=22, centerBig, centerSmall){
+function buildDonut(segments, size=170, thickness=20, centerBig, centerSmall){
   const total = segments.reduce((s,x)=>s+x.value, 0);
   if(total===0){
-    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f1f5f9" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
+    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
   }
   const cx=size/2, cy=size/2, r=size/2-thickness/2;
   const C=2*Math.PI*r;
@@ -222,22 +643,18 @@ function buildDonut(segments, size=160, thickness=22, centerBig, centerSmall){
     offset+=len;
     return circle;
   }).join('');
-  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f1f5f9" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
+  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
 }
 
-// Pizza chart cheia (sem buraco no meio)
-function buildPie(segments, size=160){
+function buildPie(segments, size=170){
   const total = segments.reduce((s,x)=>s+x.value, 0);
-  if(total===0){
-    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f1f5f9"/></svg></div>`;
-  }
-  // Se só tem 1 segmento, desenha círculo cheio
-  if(segments.length===1 || segments.filter(s=>s.value>0).length===1){
+  if(total===0) return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f5f5f7"/></svg></div>`;
+  if(segments.filter(s=>s.value>0).length===1){
     const seg=segments.find(s=>s.value>0);
     return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;
   }
   const cx=size/2, cy=size/2, r=size/2-2;
-  let cumAngle=-Math.PI/2; // começa no topo
+  let cumAngle=-Math.PI/2;
   const paths=segments.map(seg=>{
     if(seg.value===0) return '';
     const frac=seg.value/total;
@@ -271,85 +688,84 @@ async function renderDashboard(){
   const sc=comp.status_counts||{};
   const totalCompliance = (sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
   
-  // Segmentos do donut de compliance (com gradação)
   const complianceSegs=[
-    {label:"OK", value:sc.ok||0, color:"#10b981", alwaysShow:true},
-    {label:"Atenção (30d)", value:sc.upcoming||0, color:"#f59e0b", alwaysShow:true},
-    {label:"Vencida", value:sc.expired||0, color:"#ef4444", alwaysShow:true},
-    {label:"Sem licença", value:sc.missing||0, color:"#991b1b", alwaysShow:true}
+    {label:"OK", value:sc.ok||0, color:"#4EA72E", alwaysShow:true},
+    {label:"Atenção (30d)", value:sc.upcoming||0, color:"#F9CE29", alwaysShow:true},
+    {label:"Vencida", value:sc.expired||0, color:"#9D2928", alwaysShow:true},
+    {label:"Sem licença", value:sc.missing||0, color:"#6b1c1c", alwaysShow:true}
   ];
   
-  // Pizza de condicionantes por categoria
-  const catColors={"monitoring":"#3b82f6","effluent":"#06b6d4","reporting":"#8b5cf6","infrastructure":"#f59e0b","other":"#94a3b8"};
-  const catSegs=(byCat.items||[]).map(c=>({label:c.label, value:c.count, color:catColors[c.category]||"#94a3b8"}));
+  const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+  const catSegs=(byCat.items||[]).map(c=>({label:c.label, value:c.count, color:catColors[c.category]||"#86868b"}));
   const totalCat=byCat.total||0;
   
-  // Top campos com problemas (mantido)
   const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical));
   const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{
     const pct=(f.wells_critical/probMax*100);
-    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#ef4444"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> de ${f.total_wells}</span></li>`;
-  }).join('')||'<div class="empty" style="padding:16px">Nenhum problema detectado</div>';
+    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`;
+  }).join('')||'<div class="empty">Nenhum problema detectado</div>';
   
   const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions));
   const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{
     const pct=(f.total_conditions/condMax*100);
-    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
-  }).join('')||'<div class="empty" style="padding:16px">Sem condicionantes cadastradas</div>';
+    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
+  }).join('')||'<div class="empty">Sem condicionantes cadastradas</div>';
   
   app.innerHTML=`
-    <h1>Dashboard</h1>
-    <p class="subtitle">Visão geral de compliance e operação</p>
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p class="subtitle">Visão geral de compliance e operação</p>
+    </div>
     
     <div class="kpis">
-      <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">cadastrados</div></div>
-      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">documentos</div></div>
-      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">obrigações</div></div>
+      <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">poços cadastrados</div></div>
+      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">documentos ativos</div></div>
+      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">obrigações monitoradas</div></div>
     </div>
     
     <div class="donut-row">
       <div class="donut-card">
-        <div class="card-title">📊 Compliance dos ativos</div>
+        <div class="card-title">Compliance dos ativos</div>
         <div class="donut-wrap">
-          ${buildDonut(complianceSegs, 170, 24, totalCompliance, "Total")}
+          ${buildDonut(complianceSegs, 180, 22, totalCompliance, "Total")}
           <div class="donut-legend">${legendHtml(complianceSegs, totalCompliance)}</div>
         </div>
       </div>
       <div class="donut-card">
-        <div class="card-title">📋 Condicionantes por categoria</div>
+        <div class="card-title">Condicionantes por categoria</div>
         <div class="donut-wrap">
-          ${buildPie(catSegs, 170)}
-          <div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty" style="padding:16px">Sem condicionantes</div>'}</div>
+          ${buildPie(catSegs, 180)}
+          <div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty">Sem condicionantes</div>'}</div>
         </div>
       </div>
     </div>
     
     <div class="op-row">
       <div class="op-card">
-        <div class="op-title">🟢 Produzindo</div>
+        <div class="op-header"><span class="op-dot"></span> Produzindo</div>
         <div class="op-value">${comp.producing?.total||0}</div>
         <div class="op-meta">
           <span>Total operacional</span>
-          <span><strong>${comp.producing?.non_compliance||0} não-compliance (${comp.producing?.pct||0}%)</strong></span>
+          <span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span>
         </div>
       </div>
       <div class="op-card inj">
-        <div class="op-title">🔵 Injetando</div>
+        <div class="op-header"><span class="op-dot"></span> Injetando</div>
         <div class="op-value">${comp.injecting?.total||0}</div>
         <div class="op-meta">
           <span>Total operacional</span>
-          <span><strong>${comp.injecting?.non_compliance||0} não-compliance (${comp.injecting?.pct||0}%)</strong></span>
+          <span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span>
         </div>
       </div>
     </div>
     
     <div class="chart-row">
       <div class="card">
-        <div class="card-title">🚨 Campos com poços não-compliance</div>
+        <div class="card-title">Campos com poços não-compliance</div>
         <ul class="bar-list">${probBars}</ul>
       </div>
       <div class="card">
-        <div class="card-title">📋 Condicionantes por campo</div>
+        <div class="card-title">Condicionantes por campo</div>
         <ul class="bar-list">${condBars}</ul>
       </div>
     </div>`;
@@ -362,8 +778,10 @@ async function renderAssets(){
   const app=document.getElementById("app");
   const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
-    <h1>Ativos & Compliance</h1>
-    <p class="subtitle">Visão completa dos ativos com status de conformidade</p>
+    <div class="page-header">
+      <h1>Ativos & Compliance</h1>
+      <p class="subtitle">Visão completa dos ativos com status de conformidade</p>
+    </div>
     <div class="toolbar">
       <input class="input" id="aSearch" placeholder="Buscar por código ou campo" value="${assetState.search}">
       <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
@@ -379,9 +797,9 @@ async function renderAssets(){
       </select>
       <button class="btn" id="aApply">Filtrar</button>
       <button class="btn btn-ghost" id="aClear">Limpar</button>
-      <button class="btn btn-success" id="aExport">⬇ Exportar CSV</button>
+      <button class="btn btn-success" id="aExport"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Exportar CSV</button>
     </div>
-    <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando...</div></div>`;
+    <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
   ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{
     if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];
   });
@@ -413,31 +831,34 @@ async function loadAssets(){
   p.set("limit","50");
   p.set("offset",String(assetState.page*50));
   const div=document.getElementById("aResults");
-  div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando...</div>';
+  div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
   const r=await fetch(`${API}/assets/unified?${p}`).then(r=>r.json());
   if(!r.items||r.items.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado.</div></div>';
+    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado</div></div>';
     return;
   }
   const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
+  const pdfIcon='<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
   const rows=r.items.map(a=>{
-    const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">📄 Ver</a>`:'<span style="color:#cbd5e1">—</span>';
+    const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';
     return `<tr>
-      <td><strong>${a.code||'-'}</strong></td>
-      <td>${a.field||'-'}</td>
+      <td><strong>${a.code||'—'}</strong></td>
+      <td>${a.field||'—'}</td>
       <td>${badgeState(a.state)}</td>
-      <td>${a.agency||'-'}</td>
+      <td>${a.agency||'—'}</td>
       <td>${badgeSituation(a.situation)}</td>
       <td>${badgeCompliance(a.compliance_status)}</td>
-      <td>${a.expiry_date||'<span style="color:#cbd5e1">—</span>'}</td>
+      <td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style="color:#c7c7cc">—</span>'}</td>
       <td>${pdfCell}</td>
     </tr>`;
   }).join('');
   const totalPages=Math.ceil(r.total/50);
   const curPage=assetState.page+1;
+  const prevSvg='<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>';
+  const nextSvg='<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>';
   div.innerHTML=`
     <div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div>
-    <div style="overflow-x:auto">
+    <div class="table-wrap">
     <table class="table">
       <thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Compliance</th><th>Validade</th><th>PDF</th></tr></thead>
       <tbody>${rows}</tbody>
@@ -445,9 +866,9 @@ async function loadAssets(){
     </div>
     <div class="pagination">
       <span>Página ${curPage} de ${totalPages}</span>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>← Anterior</button>
-        <button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>${prevSvg} Anterior</button>
+        <button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima ${nextSvg}</button>
       </div>
     </div>`;
   document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
@@ -462,28 +883,31 @@ function exportAssets(){
 async function renderLicenses(){
   const app=document.getElementById("app");
   app.innerHTML=`
-    <h1>Licenças</h1>
-    <p class="subtitle">Documentos ambientais e suas condicionantes</p>
+    <div class="page-header">
+      <h1>Licenças</h1>
+      <p class="subtitle">Documentos ambientais e suas condicionantes</p>
+    </div>
     <div class="upload-box">
-      <h3>📄 Subir nova licença em PDF</h3>
-      <p>A IA vai ler o documento e extrair as condicionantes. PDF será salvo permanentemente.</p>
+      <h3>Subir nova licença em PDF</h3>
+      <p>A IA vai ler o documento e extrair as condicionantes automaticamente. O PDF será armazenado permanentemente.</p>
       <input type="file" id="pdfFile" accept=".pdf">
-      <br><br><button class="btn" id="upBtn">Enviar para a IA</button>
+      <br><button class="btn" id="upBtn">Enviar para análise</button>
       <div id="upStatus"></div>
     </div>
-    <div id="lList"><div class="loading"><span class="spinner"></span> Carregando...</div></div>`;
+    <div id="lList"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
   document.getElementById("upBtn").onclick=uploadPdf;
   const list=await fetch(`${API}/licenses`).then(r=>r.json());
   const div=document.getElementById("lList");
   if(!list||list.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada.</div></div>';
+    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada</div></div>';
     return;
   }
+  const pdfIcon='<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
   const rows=list.map(l=>{
-    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">📄 Ver</a>`:'<span style="color:#cbd5e1">—</span>';
-    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'-'}</td><td>${l.expiry_date||'-'}</td><td>${l.asset_code||'<span style="color:#cbd5e1">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td></tr>`;
+    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';
+    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style="color:#c7c7cc">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td></tr>`;
   }).join('');
-  div.innerHTML=`<div style="overflow-x:auto"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 async function uploadPdf(){
@@ -493,37 +917,37 @@ async function uploadPdf(){
   if(!fileInput.files[0]){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
   btn.disabled=true;
   btn.textContent="Processando... (30-90s)";
-  status.innerHTML='<div class="loading"><span class="spinner"></span> 🤖 A IA está lendo o PDF...</div>';
+  status.innerHTML='<div class="loading"><span class="spinner"></span> A IA está analisando o documento</div>';
   const fd=new FormData();
   fd.append("file",fileInput.files[0]);
   try{
     const r=await fetch(`${API}/licenses/upload`,{method:"POST",body:fd}).then(r=>r.json());
     if(r.error){status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;}
     else{
-      status.innerHTML=`<div class="success">✅ ${r.conditions_extracted} condicionantes extraídas! PDF salvo permanentemente.</div>`;
+      status.innerHTML=`<div class="success">${r.conditions_extracted} condicionantes extraídas. PDF armazenado.</div>`;
       setTimeout(()=>show("licenses"),1500);
     }
   }catch(e){status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
-  finally{btn.disabled=false;btn.textContent="Enviar para a IA";}
+  finally{btn.disabled=false;btn.textContent="Enviar para análise";}
 }
 
 async function renderConditions(){
   const app=document.getElementById("app");
   const list=await fetch(`${API}/conditions`).then(r=>r.json());
-  let html=`<h1>Condicionantes</h1><p class="subtitle">Obrigações extraídas das licenças</p>`;
+  let html=`<div class="page-header"><h1>Condicionantes</h1><p class="subtitle">Obrigações extraídas das licenças ambientais</p></div>`;
   if(!list||list.length===0){
-    html+='<div class="card"><div class="empty">Nenhuma condicionante.</div></div>';
+    html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';
   }else{
     const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
     const rows=list.map(c=>{
-      let badge='<span class="badge b-pend">Pendente</span>';
-      if(c.status==='completed') badge='<span class="badge b-done">Concluída</span>';
-      else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue">Vencida</span>';
-      else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;
+      let badge='<span class="badge b-pend"><span class="badge-dot" style="background:#1e3a8a"></span>Pendente</span>';
+      if(c.status==='completed') badge='<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>';
+      else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue"><span class="badge-dot" style="background:#9D2928"></span>Vencida</span>';
+      else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming"><span class="badge-dot" style="background:#F9CE29"></span>${c.days_until_due}d</span>`;
       const catLabel=catMap[c.category]||c.category;
-      return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td>${c.due_date||'-'}</td><td>${badge}</td></tr>`;
+      return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td style="font-variant-numeric:tabular-nums">${c.due_date||'—'}</td><td>${badge}</td></tr>`;
     }).join('');
-    html+=`<div style="overflow-x:auto"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    html+=`<div class="table-wrap"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   app.innerHTML=html;
 }
