@@ -22,7 +22,6 @@ nav button .icon{font-size:16px}
 main{flex:1;padding:28px 32px;max-width:100%;overflow-x:hidden}
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
 .page-title{font-size:24px;font-weight:700;letter-spacing:-.02em}
-.page-sub{color:var(--text-2);font-size:13px;margin-top:2px}
 h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .subtitle{color:var(--text-2);margin-bottom:20px;font-size:13px}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
@@ -30,6 +29,20 @@ h1{font-size:24px;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
 .kpi-value{font-size:26px;font-weight:700;margin-top:6px;letter-spacing:-.02em}
 .kpi-sub{font-size:12px;color:var(--text-2);margin-top:4px}
+.donut-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px;margin-bottom:16px}
+.donut-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.donut-card .card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.donut-wrap{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center}
+.donut-svg{position:relative;flex-shrink:0}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-center .big{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1}
+.donut-center .small{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px;font-weight:600}
+.donut-legend{display:flex;flex-direction:column;gap:10px;min-width:160px}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-label{flex:1;color:var(--text-2)}
+.legend-value{font-weight:700;font-variant-numeric:tabular-nums;color:var(--text)}
+.legend-pct{font-size:11px;color:var(--text-3);margin-left:4px}
 .op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:20px}
 .op-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;border-left:4px solid var(--success);box-shadow:var(--shadow)}
 .op-card.inj{border-left-color:#3b82f6}
@@ -127,7 +140,7 @@ main{padding:18px 16px}
 <button data-tab="licenses"><span class="icon">📄</span> Licenças</button>
 <button data-tab="conditions"><span class="icon">✅</span> Condicionantes</button>
 </nav>
-<div class="sidebar-footer">EnvLicense v4.0 · Fase A</div>
+<div class="sidebar-footer">EnvLicense v4.1 · Fase A</div>
 </aside>
 <main>
 <div class="topbar">
@@ -141,7 +154,6 @@ const API="https://envlicense-backend.onrender.com";
 let filterCache=null;
 let assetState={page:0,filters:{},search:""};
 
-// Pre-aquece o backend ao abrir
 fetch(`${API}/health`).catch(()=>{});
 
 function toggleMenu(){
@@ -174,8 +186,8 @@ async function show(tab,btn){
 function skeletonLoading(){
   return `<div>
     <div class="skeleton" style="width:200px;height:24px;margin-bottom:20px"></div>
-    <div class="kpis">${Array(6).fill('<div class="kpi"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%;height:24px;margin-top:8px"></div></div>').join('')}</div>
-    <div class="skeleton" style="height:120px;margin-bottom:12px"></div>
+    <div class="kpis">${Array(3).fill('<div class="kpi"><div class="skeleton" style="width:60%"></div><div class="skeleton" style="width:40%;height:24px;margin-top:8px"></div></div>').join('')}</div>
+    <div class="skeleton" style="height:220px;margin-bottom:12px"></div>
     <div class="skeleton" style="height:240px"></div>
   </div>`;
 }
@@ -193,35 +205,125 @@ function badgeSituation(s){
 }
 function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'-'}</span>`;}
 
+// SVG donut chart com múltiplos segmentos
+function buildDonut(segments, size=160, thickness=22, centerBig, centerSmall){
+  const total = segments.reduce((s,x)=>s+x.value, 0);
+  if(total===0){
+    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f1f5f9" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
+  }
+  const cx=size/2, cy=size/2, r=size/2-thickness/2;
+  const C=2*Math.PI*r;
+  let offset=0;
+  const circles=segments.map(seg=>{
+    const frac=seg.value/total;
+    const len=C*frac;
+    const dashArray=`${len} ${C-len}`;
+    const circle=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${dashArray}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})" stroke-linecap="butt"/>`;
+    offset+=len;
+    return circle;
+  }).join('');
+  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f1f5f9" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
+}
+
+// Pizza chart cheia (sem buraco no meio)
+function buildPie(segments, size=160){
+  const total = segments.reduce((s,x)=>s+x.value, 0);
+  if(total===0){
+    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f1f5f9"/></svg></div>`;
+  }
+  // Se só tem 1 segmento, desenha círculo cheio
+  if(segments.length===1 || segments.filter(s=>s.value>0).length===1){
+    const seg=segments.find(s=>s.value>0);
+    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;
+  }
+  const cx=size/2, cy=size/2, r=size/2-2;
+  let cumAngle=-Math.PI/2; // começa no topo
+  const paths=segments.map(seg=>{
+    if(seg.value===0) return '';
+    const frac=seg.value/total;
+    const angle=frac*2*Math.PI;
+    const x1=cx+r*Math.cos(cumAngle);
+    const y1=cy+r*Math.sin(cumAngle);
+    cumAngle+=angle;
+    const x2=cx+r*Math.cos(cumAngle);
+    const y2=cy+r*Math.sin(cumAngle);
+    const largeArc=angle>Math.PI?1:0;
+    return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;
+  }).join('');
+  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg></div>`;
+}
+
+function legendHtml(segments, total){
+  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{
+    const pct = total>0 ? Math.round(s.value/total*100) : 0;
+    return `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${pct}%)</span></span></div>`;
+  }).join('');
+}
+
 async function renderDashboard(){
-  const[dash,comp,byField]=await Promise.all([
+  const[dash,comp,byField,byCat]=await Promise.all([
     fetch(`${API}/dashboard`).then(r=>r.json()),
     fetch(`${API}/compliance/summary`).then(r=>r.json()),
-    fetch(`${API}/compliance/by_field`).then(r=>r.json())
+    fetch(`${API}/compliance/by_field`).then(r=>r.json()),
+    fetch(`${API}/conditions/by_category`).then(r=>r.json()).catch(()=>({items:[]}))
   ]);
   const app=document.getElementById("app");
+  const sc=comp.status_counts||{};
+  const totalCompliance = (sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
+  
+  // Segmentos do donut de compliance (com gradação)
+  const complianceSegs=[
+    {label:"OK", value:sc.ok||0, color:"#10b981", alwaysShow:true},
+    {label:"Atenção (30d)", value:sc.upcoming||0, color:"#f59e0b", alwaysShow:true},
+    {label:"Vencida", value:sc.expired||0, color:"#ef4444", alwaysShow:true},
+    {label:"Sem licença", value:sc.missing||0, color:"#991b1b", alwaysShow:true}
+  ];
+  
+  // Pizza de condicionantes por categoria
+  const catColors={"monitoring":"#3b82f6","effluent":"#06b6d4","reporting":"#8b5cf6","infrastructure":"#f59e0b","other":"#94a3b8"};
+  const catSegs=(byCat.items||[]).map(c=>({label:c.label, value:c.count, color:catColors[c.category]||"#94a3b8"}));
+  const totalCat=byCat.total||0;
+  
+  // Top campos com problemas (mantido)
   const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical));
   const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{
     const pct=(f.wells_critical/probMax*100);
     return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#ef4444"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> de ${f.total_wells}</span></li>`;
   }).join('')||'<div class="empty" style="padding:16px">Nenhum problema detectado</div>';
+  
   const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions));
   const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{
     const pct=(f.total_conditions/condMax*100);
     return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,18)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#f59e0b"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
   }).join('')||'<div class="empty" style="padding:16px">Sem condicionantes cadastradas</div>';
-  const sc=comp.status_counts||{};
+  
   app.innerHTML=`
     <h1>Dashboard</h1>
     <p class="subtitle">Visão geral de compliance e operação</p>
+    
     <div class="kpis">
       <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">cadastrados</div></div>
-      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div></div>
-      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div></div>
-      <div class="kpi"><div class="kpi-label">OK</div><div class="kpi-value" style="color:#10b981">${sc.ok||0}</div></div>
-      <div class="kpi"><div class="kpi-label">Atenção</div><div class="kpi-value" style="color:#f59e0b">${sc.upcoming||0}</div></div>
-      <div class="kpi"><div class="kpi-label">Críticos</div><div class="kpi-value" style="color:#ef4444">${(sc.expired||0)+(sc.missing||0)}</div></div>
+      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">documentos</div></div>
+      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">obrigações</div></div>
     </div>
+    
+    <div class="donut-row">
+      <div class="donut-card">
+        <div class="card-title">📊 Compliance dos ativos</div>
+        <div class="donut-wrap">
+          ${buildDonut(complianceSegs, 170, 24, totalCompliance, "Total")}
+          <div class="donut-legend">${legendHtml(complianceSegs, totalCompliance)}</div>
+        </div>
+      </div>
+      <div class="donut-card">
+        <div class="card-title">📋 Condicionantes por categoria</div>
+        <div class="donut-wrap">
+          ${buildPie(catSegs, 170)}
+          <div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty" style="padding:16px">Sem condicionantes</div>'}</div>
+        </div>
+      </div>
+    </div>
+    
     <div class="op-row">
       <div class="op-card">
         <div class="op-title">🟢 Produzindo</div>
@@ -240,6 +342,7 @@ async function renderDashboard(){
         </div>
       </div>
     </div>
+    
     <div class="chart-row">
       <div class="card">
         <div class="card-title">🚨 Campos com poços não-compliance</div>
@@ -411,12 +514,14 @@ async function renderConditions(){
   if(!list||list.length===0){
     html+='<div class="card"><div class="empty">Nenhuma condicionante.</div></div>';
   }else{
+    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
     const rows=list.map(c=>{
       let badge='<span class="badge b-pend">Pendente</span>';
       if(c.status==='completed') badge='<span class="badge b-done">Concluída</span>';
       else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue">Vencida</span>';
       else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;
-      return `<tr><td>${c.description}</td><td><span class="badge b-other">${c.category}</span></td><td>${c.license_number}</td><td>${c.due_date||'-'}</td><td>${badge}</td></tr>`;
+      const catLabel=catMap[c.category]||c.category;
+      return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td>${c.due_date||'-'}</td><td>${badge}</td></tr>`;
     }).join('');
     html+=`<div style="overflow-x:auto"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
