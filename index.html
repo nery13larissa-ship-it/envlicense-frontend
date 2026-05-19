@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EnvLicense — PetroRecôncavo</title>
 <style>
-:root{--primary:#007023;--primary-hover:#005a1c;--primary-light:#4EA72E;--primary-tint:#e8f5ec;--success:#4EA72E;--warning:#F9CE29;--warning-text:#7a5e00;--danger:#9D2928;--danger-tint:#fbeded;--info:#125E81;--text:#1d1d1f;--text-2:#6e6e73;--text-3:#86868b;--border:#d2d2d7;--border-light:#f5f5f7;--bg:#fbfbfd;--surface:#ffffff;--r-sm:8px;--r:12px;--r-lg:18px;--ease:cubic-bezier(.4,0,.2,1)}
+:root{--primary:#007023;--primary-hover:#005a1c;--primary-light:#4EA72E;--primary-tint:#e8f5ec;--success:#4EA72E;--warning:#F9CE29;--warning-text:#7a5e00;--danger:#9D2928;--danger-hover:#7a1f1e;--danger-tint:#fbeded;--info:#125E81;--text:#1d1d1f;--text-2:#6e6e73;--text-3:#86868b;--border:#d2d2d7;--border-light:#f5f5f7;--bg:#fbfbfd;--surface:#ffffff;--r-sm:8px;--r:12px;--r-lg:18px;--ease:cubic-bezier(.4,0,.2,1)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.47;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display:flex;min-height:100vh;font-weight:400;letter-spacing:-.003em}
@@ -75,8 +75,13 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .btn-ghost:hover{background:var(--border-light);color:var(--text)}
 .btn-success{background:var(--primary-light)}
 .btn-success:hover{background:#3d8b25}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:var(--danger-hover)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.icon-btn{background:transparent;border:none;cursor:pointer;padding:6px;border-radius:6px;color:var(--text-3);transition:all .15s var(--ease);display:inline-flex;align-items:center;justify-content:center}
+.icon-btn:hover{background:var(--danger-tint);color:var(--danger)}
+.icon-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .table-wrap{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);overflow:hidden;overflow-x:auto}
 .table{width:100%;border-collapse:collapse}
 .table th{text-align:left;padding:13px 16px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;border-bottom:1px solid var(--border-light);background:var(--bg)}
@@ -153,6 +158,28 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .sp-item-title{font-size:14px;font-weight:500;color:var(--text);letter-spacing:-.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sp-item-sub{font-size:12px;color:var(--text-3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sp-empty{padding:32px 20px;text-align:center;color:var(--text-3);font-size:13.5px}
+
+/* Modal genérico (duplicata, exclusão) */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;animation:fadeIn .15s var(--ease)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border-radius:14px;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,.18);overflow:hidden;animation:slideDown .2s var(--ease)}
+.modal-header{padding:22px 24px 12px}
+.modal-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.modal-icon.warn{background:#fef7d8;color:var(--warning-text)}
+.modal-icon.danger{background:var(--danger-tint);color:var(--danger)}
+.modal-icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.modal-title{font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.01em;margin-bottom:6px}
+.modal-subtitle{font-size:14px;color:var(--text-2);line-height:1.5}
+.modal-body{padding:8px 24px 0}
+.modal-info{background:var(--bg);border:1px solid var(--border-light);border-radius:var(--r-sm);padding:14px 16px;font-size:13px;color:var(--text-2);margin:12px 0}
+.modal-info strong{color:var(--text);font-weight:600}
+.modal-info .row{display:flex;justify-content:space-between;padding:3px 0}
+.modal-actions{padding:20px 24px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid var(--border-light);margin-top:18px}
+@media(max-width:600px){
+.modal-actions{flex-direction:column-reverse}
+.modal-actions .btn{width:100%;justify-content:center}
+}
+
 @media(max-width:900px){
 .sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s var(--ease);box-shadow:0 0 40px rgba(0,0,0,.1);width:240px}
 .sidebar.open{left:0}
@@ -181,20 +208,17 @@ h1{font-size:24px}
 <span class="brand-sub">PetroRecôncavo</span>
 </div>
 </div>
-
 <div class="nav-label">Geral</div>
 <nav>
 <button class="active" data-tab="dashboard">Visão executiva</button>
 <button data-tab="assets">Ativos & Compliance</button>
 </nav>
-
 <div class="nav-label">Documentos</div>
 <nav>
 <button data-tab="licenses">Licenças</button>
 <button data-tab="conditions">Condicionantes</button>
 </nav>
-
-<div class="sidebar-footer">EnvLicense · v4.4</div>
+<div class="sidebar-footer">EnvLicense · v4.5</div>
 </aside>
 
 <main>
@@ -225,52 +249,40 @@ h1{font-size:24px}
 </div>
 </div>
 
+<!-- Modal genérico -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+<div class="modal" id="modalContent"></div>
+</div>
+
 <script>
 const API="https://envlicense-backend.onrender.com";
 let filterCache=null;
 let assetState={page:0,filters:{},search:""};
 let searchTimer=null;
+let pendingFile=null;
 
 fetch(`${API}/health`).catch(()=>{});
 
-function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("open");
-  document.getElementById("overlay").classList.toggle("show");
-}
-function closeMenu(){
-  document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("overlay").classList.remove("show");
-}
+function toggleMenu(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show");}
+function closeMenu(){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
 
-document.querySelectorAll("nav button").forEach(b=>{
-  b.addEventListener("click",()=>{show(b.dataset.tab,b);closeMenu();});
-});
+document.querySelectorAll("nav button").forEach(b=>{b.addEventListener("click",()=>{show(b.dataset.tab,b);closeMenu();});});
 
-function openSpotlight(){
-  document.getElementById("spotlight").classList.add("show");
-  setTimeout(()=>document.getElementById("spotlightInput").focus(),50);
-}
-function closeSpotlight(){
-  document.getElementById("spotlight").classList.remove("show");
-  document.getElementById("spotlightInput").value="";
-  document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';
-}
+function openSpotlight(){document.getElementById("spotlight").classList.add("show");setTimeout(()=>document.getElementById("spotlightInput").focus(),50);}
+function closeSpotlight(){document.getElementById("spotlight").classList.remove("show");document.getElementById("spotlightInput").value="";document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';}
+
+function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalOverlay").classList.add("show");}
+function closeModal(){document.getElementById("modalOverlay").classList.remove("show");}
 
 document.addEventListener("keydown",e=>{
-  if((e.metaKey||e.ctrlKey)&&e.key==="k"){
-    e.preventDefault();
-    openSpotlight();
-  }
-  if(e.key==="Escape") closeSpotlight();
+  if((e.metaKey||e.ctrlKey)&&e.key==="k"){e.preventDefault();openSpotlight();}
+  if(e.key==="Escape"){closeSpotlight();closeModal();}
 });
 
 document.getElementById("spotlightInput").addEventListener("input",e=>{
   const q=e.target.value.trim();
   clearTimeout(searchTimer);
-  if(q.length<2){
-    document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';
-    return;
-  }
+  if(q.length<2){document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';return;}
   searchTimer=setTimeout(()=>doSearch(q),250);
 });
 
@@ -279,10 +291,7 @@ async function doSearch(q){
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
   try{
     const r=await fetch(`${API}/search?q=${encodeURIComponent(q)}`).then(r=>r.json());
-    if(r.total===0){
-      div.innerHTML=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
-      return;
-    }
+    if(r.total===0){div.innerHTML=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;return;}
     let html='';
     if(r.assets.length){
       html+='<div class="sp-section"><div class="sp-section-title">Ativos</div>';
@@ -291,10 +300,7 @@ async function doSearch(q){
     }
     if(r.licenses.length){
       html+='<div class="sp-section"><div class="sp-section-title">Licenças</div>';
-      html+=r.licenses.map(l=>{
-        const link=l.pdf_url?`onclick="window.open('${l.pdf_url}','_blank')"`:'';
-        return `<div class="sp-item" ${link}><div class="sp-item-icon l">LI</div><div class="sp-item-content"><div class="sp-item-title">${l.number||'—'} <span style="color:#86868b;font-weight:400">· ${l.type||''}</span></div><div class="sp-item-sub">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div></div>`;
-      }).join('');
+      html+=r.licenses.map(l=>{const link=l.pdf_url?`onclick="window.open('${l.pdf_url}','_blank')"`:'';return `<div class="sp-item" ${link}><div class="sp-item-icon l">LI</div><div class="sp-item-content"><div class="sp-item-title">${l.number||'—'} <span style="color:#86868b;font-weight:400">· ${l.type||''}</span></div><div class="sp-item-sub">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div></div>`;}).join('');
       html+='</div>';
     }
     if(r.conditions.length){
@@ -303,16 +309,10 @@ async function doSearch(q){
       html+='</div>';
     }
     div.innerHTML=html;
-  }catch(e){
-    div.innerHTML=`<div class="sp-empty">Erro na busca: ${e.message}</div>`;
-  }
+  }catch(e){div.innerHTML=`<div class="sp-empty">Erro na busca: ${e.message}</div>`;}
 }
 
-function goToAsset(code){
-  closeSpotlight();
-  assetState={page:0,filters:{},search:code};
-  show("assets");
-}
+function goToAsset(code){closeSpotlight();assetState={page:0,filters:{},search:code};show("assets");}
 
 async function show(tab,btn){
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
@@ -329,76 +329,34 @@ async function show(tab,btn){
 }
 
 function skeletonLoading(){
-  return `<div>
-    <div class="skeleton" style="width:240px;height:34px;margin-bottom:8px"></div>
-    <div class="skeleton" style="width:280px;height:18px;margin-bottom:24px"></div>
-    <div class="kpis">${Array(3).fill('<div class="kpi"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="width:35%;height:26px;margin-top:10px"></div></div>').join('')}</div>
-    <div class="skeleton" style="height:200px;margin-bottom:14px"></div>
-    <div class="skeleton" style="height:200px"></div>
-  </div>`;
+  return `<div><div class="skeleton" style="width:240px;height:34px;margin-bottom:8px"></div><div class="skeleton" style="width:280px;height:18px;margin-bottom:24px"></div><div class="kpis">${Array(3).fill('<div class="kpi"><div class="skeleton" style="width:50%"></div><div class="skeleton" style="width:35%;height:26px;margin-top:10px"></div></div>').join('')}</div><div class="skeleton" style="height:200px;margin-bottom:14px"></div><div class="skeleton" style="height:200px"></div></div>`;
 }
 
-function badgeCompliance(s){
-  const map={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};
-  const[cls,txt]=map[s]||["b-other",s];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span>${txt}</span>`;
-}
-function badgeSituation(s){
-  if(!s) return '<span class="badge b-other">—</span>';
-  if(s==="PRODUZINDO") return `<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;
-  if(s==="INJETANDO") return `<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;
-  return `<span class="badge b-other">${s.slice(0,18)}</span>`;
-}
+function badgeCompliance(s){const map={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[cls,txt]=map[s]||["b-other",s];return `<span class="badge ${cls}"><span class="badge-dot"></span>${txt}</span>`;}
+function badgeSituation(s){if(!s) return '<span class="badge b-other">—</span>';if(s==="PRODUZINDO") return `<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;if(s==="INJETANDO") return `<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;return `<span class="badge b-other">${s.slice(0,18)}</span>`;}
 function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'—'}</span>`;}
 
 function buildDonut(segments, size=180, thickness=22, centerBig, centerSmall){
   const total = segments.reduce((s,x)=>s+x.value, 0);
-  if(total===0){
-    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
-  }
-  const cx=size/2, cy=size/2, r=size/2-thickness/2;
-  const C=2*Math.PI*r;
+  if(total===0) return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
+  const cx=size/2, cy=size/2, r=size/2-thickness/2, C=2*Math.PI*r;
   let offset=0;
-  const circles=segments.map(seg=>{
-    const frac=seg.value/total;
-    const len=C*frac;
-    const dashArray=`${len} ${C-len}`;
-    const circle=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${dashArray}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;
-    offset+=len;
-    return circle;
-  }).join('');
+  const circles=segments.map(seg=>{const frac=seg.value/total;const len=C*frac;const dashArray=`${len} ${C-len}`;const circle=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${dashArray}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;offset+=len;return circle;}).join('');
   return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
 }
 
 function buildPie(segments, size=180){
   const total = segments.reduce((s,x)=>s+x.value, 0);
   if(total===0) return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f5f5f7"/></svg></div>`;
-  if(segments.filter(s=>s.value>0).length===1){
-    const seg=segments.find(s=>s.value>0);
-    return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;
-  }
+  if(segments.filter(s=>s.value>0).length===1){const seg=segments.find(s=>s.value>0);return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;}
   const cx=size/2, cy=size/2, r=size/2-2;
   let cumAngle=-Math.PI/2;
-  const paths=segments.map(seg=>{
-    if(seg.value===0) return '';
-    const frac=seg.value/total;
-    const angle=frac*2*Math.PI;
-    const x1=cx+r*Math.cos(cumAngle);
-    const y1=cy+r*Math.sin(cumAngle);
-    cumAngle+=angle;
-    const x2=cx+r*Math.cos(cumAngle);
-    const y2=cy+r*Math.sin(cumAngle);
-    const largeArc=angle>Math.PI?1:0;
-    return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;
-  }).join('');
+  const paths=segments.map(seg=>{if(seg.value===0) return '';const frac=seg.value/total;const angle=frac*2*Math.PI;const x1=cx+r*Math.cos(cumAngle);const y1=cy+r*Math.sin(cumAngle);cumAngle+=angle;const x2=cx+r*Math.cos(cumAngle);const y2=cy+r*Math.sin(cumAngle);const largeArc=angle>Math.PI?1:0;return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;}).join('');
   return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg></div>`;
 }
 
 function legendHtml(segments, total){
-  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{
-    const pct = total>0 ? Math.round(s.value/total*100) : 0;
-    return `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${pct}%)</span></span></div>`;
-  }).join('');
+  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{const pct = total>0 ? Math.round(s.value/total*100) : 0;return `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${pct}%)</span></span></div>`;}).join('');
 }
 
 async function renderDashboard(){
@@ -411,128 +369,60 @@ async function renderDashboard(){
   const app=document.getElementById("app");
   const sc=comp.status_counts||{};
   const totalCompliance = (sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
-  
   const complianceSegs=[
     {label:"Licença ativa", value:sc.ok||0, color:"#4EA72E", alwaysShow:true},
     {label:"Próxima ao vencimento", value:sc.upcoming||0, color:"#F9CE29", alwaysShow:true},
     {label:"Licença vencida", value:sc.expired||0, color:"#9D2928", alwaysShow:true},
     {label:"Sem licença", value:sc.missing||0, color:"#6b1c1c", alwaysShow:true}
   ];
-  
   const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
   const catSegs=(byCat.items||[]).map(c=>({label:c.label, value:c.count, color:catColors[c.category]||"#86868b"}));
   const totalCat=byCat.total||0;
-  
   const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical));
-  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{
-    const pct=(f.wells_critical/probMax*100);
-    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`;
-  }).join('')||'<div class="empty">Nenhum problema detectado</div>';
-  
+  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{const pct=(f.wells_critical/probMax*100);return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`;}).join('')||'<div class="empty">Nenhum problema detectado</div>';
   const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions));
-  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{
-    const pct=(f.total_conditions/condMax*100);
-    return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;
-  }).join('')||'<div class="empty">Sem condicionantes cadastradas</div>';
-  
+  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{const pct=(f.total_conditions/condMax*100);return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;}).join('')||'<div class="empty">Sem condicionantes cadastradas</div>';
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Visão executiva</h1>
-      <p class="subtitle">Compliance regulatório e operação</p>
-    </div>
-    
+    <div class="page-header"><h1>Visão executiva</h1><p class="subtitle">Compliance regulatório e operação</p></div>
     <div class="kpis">
       <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">monitorados</div></div>
       <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">vigentes</div></div>
       <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">ativas</div></div>
     </div>
-    
     <div class="donut-row">
-      <div class="donut-card">
-        <div class="card-title">Status regulatório</div>
-        <div class="donut-wrap">
-          ${buildDonut(complianceSegs, 180, 22, totalCompliance, "Total")}
-          <div class="donut-legend">${legendHtml(complianceSegs, totalCompliance)}</div>
-        </div>
-      </div>
-      <div class="donut-card">
-        <div class="card-title">Condicionantes por categoria</div>
-        <div class="donut-wrap">
-          ${buildPie(catSegs, 180)}
-          <div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty">Sem condicionantes</div>'}</div>
-        </div>
-      </div>
+      <div class="donut-card"><div class="card-title">Status regulatório</div><div class="donut-wrap">${buildDonut(complianceSegs, 180, 22, totalCompliance, "Total")}<div class="donut-legend">${legendHtml(complianceSegs, totalCompliance)}</div></div></div>
+      <div class="donut-card"><div class="card-title">Condicionantes por categoria</div><div class="donut-wrap">${buildPie(catSegs, 180)}<div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty">Sem condicionantes</div>'}</div></div></div>
     </div>
-    
     <div class="op-row">
-      <div class="op-card">
-        <div class="op-header"><span class="op-dot"></span> Em produção</div>
-        <div class="op-value">${comp.producing?.total||0}</div>
-        <div class="op-meta">
-          <span>Ativos operacionais</span>
-          <span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span>
-        </div>
-      </div>
-      <div class="op-card inj">
-        <div class="op-header"><span class="op-dot"></span> Em injeção</div>
-        <div class="op-value">${comp.injecting?.total||0}</div>
-        <div class="op-meta">
-          <span>Ativos operacionais</span>
-          <span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span>
-        </div>
-      </div>
+      <div class="op-card"><div class="op-header"><span class="op-dot"></span> Em produção</div><div class="op-value">${comp.producing?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span></div></div>
+      <div class="op-card inj"><div class="op-header"><span class="op-dot"></span> Em injeção</div><div class="op-value">${comp.injecting?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span></div></div>
     </div>
-    
     <div class="chart-row">
-      <div class="card">
-        <div class="card-title">Campos em risco regulatório</div>
-        <ul class="bar-list">${probBars}</ul>
-      </div>
-      <div class="card">
-        <div class="card-title">Condicionantes por campo</div>
-        <ul class="bar-list">${condBars}</ul>
-      </div>
+      <div class="card"><div class="card-title">Campos em risco regulatório</div><ul class="bar-list">${probBars}</ul></div>
+      <div class="card"><div class="card-title">Condicionantes por campo</div><ul class="bar-list">${condBars}</ul></div>
     </div>`;
 }
 
 async function renderAssets(){
-  if(!filterCache){
-    filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
-  }
+  if(!filterCache) filterCache=await fetch(`${API}/assets/filters`).then(r=>r.json());
   const app=document.getElementById("app");
   const opt=(arr)=>arr.map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Ativos & Compliance</h1>
-      <p class="subtitle">Status regulatório dos ativos</p>
-    </div>
+    <div class="page-header"><h1>Ativos & Compliance</h1><p class="subtitle">Status regulatório dos ativos</p></div>
     <div class="toolbar">
       <input class="input" id="aSearch" placeholder="Buscar por código ou campo" value="${assetState.search}">
       <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states||[])}</select>
       <select class="select" id="aAgency"><option value="">Órgão: todos</option>${opt(filterCache.agencies||[])}</select>
       <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
       <select class="select" id="aOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations||[])}</select>
-      <select class="select" id="aStatus">
-        <option value="">Status regulatório: todos</option>
-        <option value="ok">Licença ativa</option>
-        <option value="upcoming">Próxima ao vencimento</option>
-        <option value="expired">Licença vencida</option>
-        <option value="missing">Sem licença</option>
-      </select>
+      <select class="select" id="aStatus"><option value="">Status regulatório: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao vencimento</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option></select>
       <button class="btn" id="aApply">Filtrar</button>
       <button class="btn btn-ghost" id="aClear">Limpar</button>
       <button class="btn btn-success" id="aExport"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Exportar CSV</button>
     </div>
     <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
-  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{
-    if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];
-  });
-  document.getElementById("aApply").onclick=()=>{
-    assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aField:document.getElementById("aField").value,aOp:document.getElementById("aOp").value,aStatus:document.getElementById("aStatus").value};
-    assetState.search=document.getElementById("aSearch").value;
-    assetState.page=0;
-    loadAssets();
-  };
+  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];});
+  document.getElementById("aApply").onclick=()=>{assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aField:document.getElementById("aField").value,aOp:document.getElementById("aOp").value,aStatus:document.getElementById("aStatus").value};assetState.search=document.getElementById("aSearch").value;assetState.page=0;loadAssets();};
   document.getElementById("aClear").onclick=()=>{assetState={page:0,filters:{},search:""};renderAssets();};
   document.getElementById("aExport").onclick=exportAssets;
   document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("aApply").click();});
@@ -552,65 +442,29 @@ function buildAssetParams(){
 
 async function loadAssets(){
   const p=buildAssetParams();
-  p.set("limit","50");
-  p.set("offset",String(assetState.page*50));
+  p.set("limit","50");p.set("offset",String(assetState.page*50));
   const div=document.getElementById("aResults");
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
   const r=await fetch(`${API}/assets/unified?${p}`).then(r=>r.json());
-  if(!r.items||r.items.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado</div></div>';
-    return;
-  }
+  if(!r.items||r.items.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
   const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
   const pdfIcon='<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-  const rows=r.items.map(a=>{
-    const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';
-    return `<tr>
-      <td><strong>${a.code||'—'}</strong></td>
-      <td>${a.field||'—'}</td>
-      <td>${badgeState(a.state)}</td>
-      <td>${a.agency||'—'}</td>
-      <td>${badgeSituation(a.situation)}</td>
-      <td>${badgeCompliance(a.compliance_status)}</td>
-      <td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style="color:#c7c7cc">—</span>'}</td>
-      <td>${pdfCell}</td>
-    </tr>`;
-  }).join('');
+  const rows=r.items.map(a=>{const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';return `<tr><td><strong>${a.code||'—'}</strong></td><td>${a.field||'—'}</td><td>${badgeState(a.state)}</td><td>${a.agency||'—'}</td><td>${badgeSituation(a.situation)}</td><td>${badgeCompliance(a.compliance_status)}</td><td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style="color:#c7c7cc">—</span>'}</td><td>${pdfCell}</td></tr>`;}).join('');
   const totalPages=Math.ceil(r.total/50);
   const curPage=assetState.page+1;
   const prevSvg='<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>';
   const nextSvg='<svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>';
-  div.innerHTML=`
-    <div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div>
-    <div class="table-wrap">
-    <table class="table">
-      <thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-    </div>
-    <div class="pagination">
-      <span>Página ${curPage} de ${totalPages}</span>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>${prevSvg} Anterior</button>
-        <button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima ${nextSvg}</button>
-      </div>
-    </div>`;
+  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div><div class="table-wrap"><table class="table"><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pagination"><span>Página ${curPage} de ${totalPages}</span><div style="display:flex;gap:8px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>${prevSvg} Anterior</button><button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima ${nextSvg}</button></div></div>`;
   document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
   document.getElementById("aNext").onclick=()=>{if(curPage<totalPages){assetState.page++;loadAssets();}};
 }
 
-function exportAssets(){
-  const p=buildAssetParams();
-  window.open(`${API}/assets/export?${p}`,'_blank');
-}
+function exportAssets(){const p=buildAssetParams();window.open(`${API}/assets/export?${p}`,'_blank');}
 
 async function renderLicenses(){
   const app=document.getElementById("app");
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Licenças</h1>
-      <p class="subtitle">Documentos ambientais e suas condicionantes</p>
-    </div>
+    <div class="page-header"><h1>Licenças</h1><p class="subtitle">Documentos ambientais e suas condicionantes</p></div>
     <div class="upload-box">
       <h3>Subir nova licença em PDF</h3>
       <p>A IA vai ler o documento e extrair as condicionantes automaticamente. O PDF será armazenado permanentemente.</p>
@@ -619,49 +473,144 @@ async function renderLicenses(){
       <div id="upStatus"></div>
     </div>
     <div id="lList"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
-  document.getElementById("upBtn").onclick=uploadPdf;
-  const list=await fetch(`${API}/licenses`).then(r=>r.json());
-  const div=document.getElementById("lList");
-  if(!list||list.length===0){
-    div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada</div></div>';
-    return;
-  }
-  const pdfIcon='<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-  const rows=list.map(l=>{
-    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';
-    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style="color:#c7c7cc">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td></tr>`;
-  }).join('');
-  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  document.getElementById("upBtn").onclick=()=>uploadPdf("ask");
+  await loadLicensesList();
 }
 
-async function uploadPdf(){
+async function loadLicensesList(){
+  const list=await fetch(`${API}/licenses`).then(r=>r.json());
+  const div=document.getElementById("lList");
+  if(!list||list.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada</div></div>';return;}
+  const pdfIcon='<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+  const trashIcon='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+  const rows=list.map(l=>{
+    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">${pdfIcon} Ver</a>`:'<span style="color:#c7c7cc">—</span>';
+    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style="color:#c7c7cc">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td><td><button class="icon-btn" title="Excluir licença" onclick='confirmDeleteLicense(${JSON.stringify(l).replace(/'/g,"&apos;")})'>${trashIcon}</button></td></tr>`;
+  }).join('');
+  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function confirmDeleteLicense(lic){
+  const warnSvg='<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+  openModal(`
+    <div class="modal-header">
+      <div class="modal-icon danger">${warnSvg}</div>
+      <div class="modal-title">Excluir licença?</div>
+      <div class="modal-subtitle">Esta ação não pode ser desfeita. A licença e todas as condicionantes vinculadas serão removidas permanentemente.</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">
+        <div class="row"><span>Número</span><strong>${lic.number||'—'}</strong></div>
+        <div class="row"><span>Tipo</span><strong>${lic.type||'—'}</strong></div>
+        <div class="row"><span>Órgão</span><strong>${lic.agency||'—'}</strong></div>
+        <div class="row"><span>Ativo vinculado</span><strong>${lic.asset_code||'não vinculado'}</strong></div>
+        <div class="row"><span>Condicionantes que serão excluídas</span><strong style="color:#9D2928">${lic.n_conditions}</strong></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-danger" onclick="deleteLicense(${lic.id})">Excluir definitivamente</button>
+    </div>
+  `);
+}
+
+async function deleteLicense(id){
+  const btn=event.target;
+  btn.disabled=true;
+  btn.textContent="Excluindo...";
+  try{
+    const r=await fetch(`${API}/licenses/${id}`,{method:"DELETE"}).then(r=>r.json());
+    closeModal();
+    if(r.error){alert("Erro ao excluir: "+r.error);return;}
+    await loadLicensesList();
+  }catch(e){alert("Erro: "+e.message);}
+}
+
+async function uploadPdf(onDuplicate, fileToUse){
   const fileInput=document.getElementById("pdfFile");
   const status=document.getElementById("upStatus");
   const btn=document.getElementById("upBtn");
-  if(!fileInput.files[0]){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
-  btn.disabled=true;
-  btn.textContent="Processando... (30-90s)";
+  const file = fileToUse || (fileInput && fileInput.files[0]);
+  if(!file){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
+  if(btn){btn.disabled=true;btn.textContent="Processando... (30-90s)";}
   status.innerHTML='<div class="loading"><span class="spinner"></span> A IA está analisando o documento</div>';
+  pendingFile=file;
   const fd=new FormData();
-  fd.append("file",fileInput.files[0]);
+  fd.append("file",file);
   try{
-    const r=await fetch(`${API}/licenses/upload`,{method:"POST",body:fd}).then(r=>r.json());
+    const r=await fetch(`${API}/licenses/upload?on_duplicate=${onDuplicate}`,{method:"POST",body:fd}).then(r=>r.json());
     if(r.error){status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;}
+    else if(r.duplicate){
+      status.innerHTML='';
+      showDuplicateModal(r.existing, r.new_data);
+    }
+    else if(r.cancelled){
+      status.innerHTML='<div class="error">Upload cancelado.</div>';
+    }
     else{
-      status.innerHTML=`<div class="success">${r.conditions_extracted} condicionantes extraídas. PDF armazenado.</div>`;
-      setTimeout(()=>show("licenses"),1500);
+      const actionMsg=r.action==="replace"?"substituída":r.action==="keep_both"?"adicionada (mantendo a anterior)":"cadastrada";
+      status.innerHTML=`<div class="success">Licença ${actionMsg}. ${r.conditions_extracted} condicionantes extraídas. PDF armazenado.</div>`;
+      pendingFile=null;
+      setTimeout(()=>show("licenses"),1800);
     }
   }catch(e){status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
-  finally{btn.disabled=false;btn.textContent="Enviar para análise";}
+  finally{if(btn){btn.disabled=false;btn.textContent="Enviar para análise";}}
+}
+
+function showDuplicateModal(existing, newData){
+  const warnSvg='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  openModal(`
+    <div class="modal-header">
+      <div class="modal-icon warn">${warnSvg}</div>
+      <div class="modal-title">Licença duplicada detectada</div>
+      <div class="modal-subtitle">Já existe uma licença com o mesmo número, órgão e ativo cadastrada no sistema. O que você quer fazer?</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-info">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#86868b;font-weight:600;margin-bottom:8px">Licença existente</div>
+        <div class="row"><span>Número</span><strong>${existing.number||'—'}</strong></div>
+        <div class="row"><span>Tipo</span><strong>${existing.type||'—'}</strong></div>
+        <div class="row"><span>Órgão</span><strong>${existing.agency||'—'}</strong></div>
+        <div class="row"><span>Validade</span><strong>${existing.expiry_date||'—'}</strong></div>
+        <div class="row"><span>Ativo</span><strong>${existing.asset_code||'não vinculado'}</strong></div>
+        <div class="row"><span>Condicionantes</span><strong>${existing.n_conditions}</strong></div>
+        <div class="row"><span>Arquivo PDF</span><strong style="font-size:11px">${existing.pdf_filename||'—'}</strong></div>
+      </div>
+      <div class="modal-info">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#86868b;font-weight:600;margin-bottom:8px">Novo upload</div>
+        <div class="row"><span>Número</span><strong>${newData.number||'—'}</strong></div>
+        <div class="row"><span>Tipo</span><strong>${newData.type||'—'}</strong></div>
+        <div class="row"><span>Órgão</span><strong>${newData.agency||'—'}</strong></div>
+        <div class="row"><span>Validade</span><strong>${newData.expiry_date||'—'}</strong></div>
+        <div class="row"><span>Condicionantes extraídas</span><strong>${newData.n_conditions_extracted}</strong></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="cancelDuplicate()">Cancelar upload</button>
+      <button class="btn btn-ghost" onclick="resolveDuplicate('keep_both')">Manter ambas</button>
+      <button class="btn btn-danger" onclick="resolveDuplicate('replace')">Substituir a existente</button>
+    </div>
+  `);
+}
+
+function cancelDuplicate(){
+  closeModal();
+  pendingFile=null;
+  document.getElementById("upStatus").innerHTML='<div class="error">Upload cancelado.</div>';
+}
+
+async function resolveDuplicate(action){
+  if(!pendingFile){closeModal();return;}
+  closeModal();
+  await uploadPdf(action, pendingFile);
 }
 
 async function renderConditions(){
   const app=document.getElementById("app");
   const list=await fetch(`${API}/conditions`).then(r=>r.json());
   let html=`<div class="page-header"><h1>Condicionantes</h1><p class="subtitle">Obrigações técnicas extraídas das licenças ambientais</p></div>`;
-  if(!list||list.length===0){
-    html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';
-  }else{
+  if(!list||list.length===0){html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';}
+  else{
     const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
     const rows=list.map(c=>{
       let badge='<span class="badge b-pend"><span class="badge-dot" style="background:#1e3a8a"></span>Pendente</span>';
