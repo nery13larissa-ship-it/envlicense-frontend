@@ -70,6 +70,7 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
 .btn-ghost:hover{background:var(--border-light);color:var(--text)}
 .btn-success{background:var(--primary-light)}
+.btn-success:hover{background:#3d8f22}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-danger:hover{background:var(--danger-hover)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
@@ -105,9 +106,9 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .pdf-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .empty{padding:40px 20px;text-align:center;color:var(--text-3);font-size:14px}
 .loading{text-align:center;padding:40px;color:var(--text-3);font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px}
-.error{background:var(--danger-tint);color:var(--danger);padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #f5c6c6}
+.error-msg{background:var(--danger-tint);color:var(--danger);padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #f5c6c6}
 .warn{background:#fef7d8;color:var(--warning-text);padding:10px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13px;border:1px solid #f0d878}
-.success{background:#e8f5ec;color:#1f5f33;padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #c5e3d0}
+.success-msg{background:#e8f5ec;color:#1f5f33;padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #c5e3d0}
 .upload-box{background:var(--surface);padding:28px;border-radius:var(--r);border:1.5px dashed var(--border);text-align:center;margin-bottom:18px}
 .upload-box h3{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
 .upload-box p{color:var(--text-2);font-size:13.5px;margin-bottom:14px}
@@ -150,7 +151,6 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .modal-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
 .modal-icon.warn{background:#fef7d8;color:var(--warning-text)}
 .modal-icon.danger{background:var(--danger-tint);color:var(--danger)}
-.modal-icon svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .modal-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px}
 .modal-subtitle{font-size:14px;color:var(--text-2);line-height:1.5}
 .modal-body{padding:8px 24px 0}
@@ -158,6 +158,8 @@ h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margi
 .modal-info strong{color:var(--text);font-weight:600}
 .modal-info .row{display:flex;justify-content:space-between;padding:3px 0}
 .modal-actions{padding:20px 24px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid var(--border-light);margin-top:18px}
+.cond-card{background:#fff;border:1px solid #f0f0f0;border-radius:10px;padding:16px 18px;margin-bottom:10px;transition:box-shadow .15s}
+.cond-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
 @media(max-width:900px){
 .sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s var(--ease);box-shadow:0 0 40px rgba(0,0,0,.1);width:240px}
 .sidebar.open{left:0}
@@ -178,10 +180,7 @@ h1{font-size:24px}
 <aside class="sidebar" id="sidebar">
 <div class="brand">
 <div class="brand-mark">PR</div>
-<div class="brand-text">
-<span class="brand-name">EnvLicense</span>
-<span class="brand-sub">PetroRecôncavo</span>
-</div>
+<div class="brand-text"><span class="brand-name">EnvLicense</span><span class="brand-sub">PetroRecôncavo</span></div>
 </div>
 <div class="nav-label">Geral</div>
 <nav>
@@ -193,13 +192,11 @@ h1{font-size:24px}
 <button data-tab="licenses">Licenças</button>
 <button data-tab="conditions">Condicionantes</button>
 </nav>
-<div class="sidebar-footer">EnvLicense · v4.6</div>
+<div class="sidebar-footer">EnvLicense · v4.7</div>
 </aside>
 <main>
 <div class="topbar">
-<button class="menu-toggle" onclick="toggleMenu()">
-<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
+<button class="menu-toggle" onclick="toggleMenu()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
 <div></div>
 <button class="search-trigger" onclick="openSpotlight()">
 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -210,20 +207,18 @@ h1{font-size:24px}
 <div id="app"><div class="loading"><span class="spinner"></span> Carregando</div></div>
 </main>
 
-<div class="spotlight-overlay" id="spotlight" onclick="if(event.target===this) closeSpotlight()">
+<div class="spotlight-overlay" id="spotlight" onclick="if(event.target===this)closeSpotlight()">
 <div class="spotlight">
 <div class="spotlight-input-wrap">
 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
 <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar ativos, licenças, condicionantes...">
 <button class="spotlight-close" onclick="closeSpotlight()">esc</button>
 </div>
-<div class="spotlight-results" id="spotlightResults">
-<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>
-</div>
+<div class="spotlight-results" id="spotlightResults"><div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div></div>
 </div>
 </div>
 
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) closeModal()">
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
 <div class="modal" id="modalContent"></div>
 </div>
 
@@ -234,32 +229,25 @@ let assetState={page:0,filters:{},search:""};
 let searchTimer=null;
 let pendingFile=null;
 
-// ===== Helpers de fetch com timeout e tratamento de erro =====
-async function safeFetch(url, options={}){
-  const ctrl = new AbortController();
-  const timeoutMs = options.timeout || 60000;
-  const timer = setTimeout(()=>ctrl.abort(), timeoutMs);
+async function safeFetch(url,options={}){
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),options.timeout||15000);
   try{
-    const r = await fetch(url, {...options, signal: ctrl.signal});
+    const r=await fetch(url,{...options,signal:ctrl.signal});
     clearTimeout(timer);
+    if(!r.ok){console.error("HTTP error:",url,r.status);return null;}
     return await r.json();
-  }catch(e){
-    clearTimeout(timer);
-    console.error("Fetch error:", url, e);
-    return null;
-  }
+  }catch(e){clearTimeout(timer);console.error("Fetch:",url,e.message);return null;}
 }
 
 fetch(`${API}/health`).catch(()=>{});
 
 function toggleMenu(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show");}
 function closeMenu(){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
-
 document.querySelectorAll("nav button").forEach(b=>{b.addEventListener("click",()=>{show(b.dataset.tab,b);closeMenu();});});
 
 function openSpotlight(){document.getElementById("spotlight").classList.add("show");setTimeout(()=>document.getElementById("spotlightInput").focus(),50);}
 function closeSpotlight(){document.getElementById("spotlight").classList.remove("show");document.getElementById("spotlightInput").value="";document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';}
-
 function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalOverlay").classList.add("show");}
 function closeModal(){document.getElementById("modalOverlay").classList.remove("show");}
 
@@ -278,25 +266,13 @@ document.getElementById("spotlightInput").addEventListener("input",e=>{
 async function doSearch(q){
   const div=document.getElementById("spotlightResults");
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  const r = await safeFetch(`${API}/search?q=${encodeURIComponent(q)}`);
+  const r=await safeFetch(`${API}/search?q=${encodeURIComponent(q)}`);
   if(!r){div.innerHTML='<div class="sp-empty">Erro na busca</div>';return;}
   if(r.total===0){div.innerHTML=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;return;}
   let html='';
-  if(r.assets&&r.assets.length){
-    html+='<div><div class="sp-section-title">Ativos</div>';
-    html+=r.assets.map(a=>`<div class="sp-item" onclick="goToAsset('${(a.code||'').replace(/'/g,"")}')"><div class="sp-item-icon a">AT</div><div class="sp-item-content"><div class="sp-item-title">${a.code||'—'}</div><div class="sp-item-sub">${a.field||'—'} · ${a.state||'—'} · ${a.situation||'—'}</div></div></div>`).join('');
-    html+='</div>';
-  }
-  if(r.licenses&&r.licenses.length){
-    html+='<div><div class="sp-section-title">Licenças</div>';
-    html+=r.licenses.map(l=>{const link=l.pdf_url?`onclick="window.open('${l.pdf_url}','_blank')"`:'';return `<div class="sp-item" ${link}><div class="sp-item-icon l">LI</div><div class="sp-item-content"><div class="sp-item-title">${l.number||'—'}</div><div class="sp-item-sub">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div></div>`;}).join('');
-    html+='</div>';
-  }
-  if(r.conditions&&r.conditions.length){
-    html+='<div><div class="sp-section-title">Condicionantes</div>';
-    html+=r.conditions.map(c=>`<div class="sp-item" onclick="show('conditions')"><div class="sp-item-icon c">CD</div><div class="sp-item-content"><div class="sp-item-title">${c.description||'—'}</div><div class="sp-item-sub">${c.category||'—'} · ${c.due_date||'sem vencimento'}</div></div></div>`).join('');
-    html+='</div>';
-  }
+  if(r.assets&&r.assets.length){html+='<div><div class="sp-section-title">Ativos</div>';html+=r.assets.map(a=>`<div class="sp-item" onclick="goToAsset('${(a.code||'').replace(/'/g,"")}')"><div class="sp-item-icon a">AT</div><div class="sp-item-content"><div class="sp-item-title">${a.code||'—'}</div><div class="sp-item-sub">${a.field||'—'} · ${a.state||'—'}</div></div></div>`).join('');html+='</div>';}
+  if(r.licenses&&r.licenses.length){html+='<div><div class="sp-section-title">Licenças</div>';html+=r.licenses.map(l=>`<div class="sp-item" ${l.pdf_url?`onclick="window.open('${l.pdf_url}','_blank')"`:''}>  <div class="sp-item-icon l">LI</div><div class="sp-item-content"><div class="sp-item-title">${l.number||'—'}</div><div class="sp-item-sub">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div></div>`).join('');html+='</div>';}
+  if(r.conditions&&r.conditions.length){html+='<div><div class="sp-section-title">Condicionantes</div>';html+=r.conditions.map(c=>`<div class="sp-item" onclick="show('conditions')"><div class="sp-item-icon c">CD</div><div class="sp-item-content"><div class="sp-item-title">${c.description||'—'}</div><div class="sp-item-sub">${c.category||'—'}</div></div></div>`).join('');html+='</div>';}
   div.innerHTML=html;
 }
 
@@ -304,72 +280,69 @@ function goToAsset(code){closeSpotlight();assetState={page:0,filters:{},search:c
 
 async function show(tab,btn){
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
-  else{const sel=document.querySelector(`nav button[data-tab="${tab}"]`);if(sel) sel.classList.add("active");}
+  if(btn)btn.classList.add("active");
+  else{const s=document.querySelector(`nav button[data-tab="${tab}"]`);if(s)s.classList.add("active");}
   const app=document.getElementById("app");
   app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
   try{
-    if(tab==="dashboard") await renderDashboard();
-    else if(tab==="assets") await renderAssets();
-    else if(tab==="licenses") await renderLicenses();
-    else if(tab==="conditions") await renderConditions();
-  }catch(e){
-    console.error("Render error:", e);
-    app.innerHTML=`<div class="error">Erro ao carregar: ${e.message}<br><br>Verifique o console (F12) para detalhes.</div>`;
-  }
+    if(tab==="dashboard")await renderDashboard();
+    else if(tab==="assets")await renderAssets();
+    else if(tab==="licenses")await renderLicenses();
+    else if(tab==="conditions")await renderConditions();
+  }catch(e){app.innerHTML=`<div class="error-msg">Erro: ${e.message}</div>`;}
 }
 
-function badgeCompliance(s){const map={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[cls,txt]=map[s]||["b-other",s];return `<span class="badge ${cls}"><span class="badge-dot"></span>${txt}</span>`;}
-function badgeSituation(s){if(!s) return '<span class="badge b-other">—</span>';if(s==="PRODUZINDO") return `<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;if(s==="INJETANDO") return `<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;return `<span class="badge b-other">${s.slice(0,18)}</span>`;}
-function badgeState(s){return `<span class="badge b-${(s||'').toLowerCase()}">${s||'—'}</span>`;}
+function badgeCompliance(s){const m={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[c,t]=m[s]||["b-other",s];return `<span class="badge ${c}"><span class="badge-dot"></span>${t}</span>`;}
+function badgeSituation(s){if(!s)return'<span class="badge b-other">—</span>';if(s==="PRODUZINDO")return`<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;if(s==="INJETANDO")return`<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;return`<span class="badge b-other">${s.slice(0,18)}</span>`;}
+function badgeState(s){return`<span class="badge b-${(s||'').toLowerCase()}">${s||'—'}</span>`;}
 
-function buildDonut(segments, size=180, thickness=22, centerBig, centerSmall){
-  const total = segments.reduce((s,x)=>s+x.value, 0);
-  if(total===0) return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
-  const cx=size/2, cy=size/2, r=size/2-thickness/2, C=2*Math.PI*r;
+function buildDonut(segments,size=180,thickness=22,centerBig,centerSmall){
+  const total=segments.reduce((s,x)=>s+x.value,0);
+  if(total===0)return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
+  const cx=size/2,cy=size/2,r=size/2-thickness/2,C=2*Math.PI*r;
   let offset=0;
-  const circles=segments.map(seg=>{const frac=seg.value/total;const len=C*frac;const dashArray=`${len} ${C-len}`;const circle=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${dashArray}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;offset+=len;return circle;}).join('');
-  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
+  const circles=segments.map(seg=>{const frac=seg.value/total;const len=C*frac;const d=`${len} ${C-len}`;const c=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${d}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;offset+=len;return c;}).join('');
+  return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
 }
 
-function buildPie(segments, size=180){
-  const total = segments.reduce((s,x)=>s+x.value, 0);
-  if(total===0) return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f5f5f7"/></svg></div>`;
-  if(segments.filter(s=>s.value>0).length===1){const seg=segments.find(s=>s.value>0);return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;}
-  const cx=size/2, cy=size/2, r=size/2-2;
-  let cumAngle=-Math.PI/2;
-  const paths=segments.map(seg=>{if(seg.value===0) return '';const frac=seg.value/total;const angle=frac*2*Math.PI;const x1=cx+r*Math.cos(cumAngle);const y1=cy+r*Math.sin(cumAngle);cumAngle+=angle;const x2=cx+r*Math.cos(cumAngle);const y2=cy+r*Math.sin(cumAngle);const largeArc=angle>Math.PI?1:0;return `<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;}).join('');
-  return `<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg></div>`;
+function buildPie(segments,size=180){
+  const total=segments.reduce((s,x)=>s+x.value,0);
+  if(total===0)return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f5f5f7"/></svg></div>`;
+  if(segments.filter(s=>s.value>0).length===1){const seg=segments.find(s=>s.value>0);return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;}
+  const cx=size/2,cy=size/2,r=size/2-2;let ca=-Math.PI/2;
+  const paths=segments.map(seg=>{if(seg.value===0)return'';const f=seg.value/total;const a=f*2*Math.PI;const x1=cx+r*Math.cos(ca),y1=cy+r*Math.sin(ca);ca+=a;const x2=cx+r*Math.cos(ca),y2=cy+r*Math.sin(ca);const la=a>Math.PI?1:0;return`<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${la} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;}).join('');
+  return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg></div>`;
 }
 
-function legendHtml(segments, total){
-  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{const pct = total>0 ? Math.round(s.value/total*100) : 0;return `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${pct}%)</span></span></div>`;}).join('');
+function legendHtml(segments,total){
+  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{const p=total>0?Math.round(s.value/total*100):0;return`<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${p}%)</span></span></div>`;}).join('');
 }
 
 async function renderDashboard(){
   const app=document.getElementById("app");
-  // Carrega endpoints com tratamento individual
-  const dash = await safeFetch(`${API}/dashboard`) || {};
-  const comp = await safeFetch(`${API}/compliance/summary`) || {};
-  const byField = await safeFetch(`${API}/compliance/by_field`) || {problem_fields:[],conditions_by_field:[]};
-  const byCat = await safeFetch(`${API}/conditions/by_category`) || {items:[],total:0};
-  
+  const[dashR,compR,byFieldR,byCatR]=await Promise.all([
+    safeFetch(`${API}/dashboard`),
+    safeFetch(`${API}/compliance/summary`),
+    safeFetch(`${API}/compliance/by_field`),
+    safeFetch(`${API}/conditions/by_category`)
+  ]);
+  const dash=dashR||{};const comp=compR||{};
+  const byField=byFieldR||{problem_fields:[],conditions_by_field:[]};
+  const byCat=byCatR||{items:[],total:0};
   const sc=comp.status_counts||{};
-  const totalCompliance = (sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
-  const complianceSegs=[
-    {label:"Licença ativa", value:sc.ok||0, color:"#4EA72E", alwaysShow:true},
-    {label:"Próxima ao vencimento", value:sc.upcoming||0, color:"#F9CE29", alwaysShow:true},
-    {label:"Licença vencida", value:sc.expired||0, color:"#9D2928", alwaysShow:true},
-    {label:"Sem licença", value:sc.missing||0, color:"#6b1c1c", alwaysShow:true}
+  const totalC=(sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
+  const compSegs=[
+    {label:"Licença ativa",value:sc.ok||0,color:"#4EA72E",alwaysShow:true},
+    {label:"Próxima ao vencimento",value:sc.upcoming||0,color:"#F9CE29",alwaysShow:true},
+    {label:"Licença vencida",value:sc.expired||0,color:"#9D2928",alwaysShow:true},
+    {label:"Sem licença",value:sc.missing||0,color:"#6b1c1c",alwaysShow:true}
   ];
   const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
-  const catSegs=(byCat.items||[]).map(c=>({label:c.label, value:c.count, color:catColors[c.category]||"#86868b"}));
-  const totalCat=byCat.total||0;
+  const catSegs=(byCat.items||[]).map(c=>({label:c.label,value:c.count,color:catColors[c.category]||"#86868b"}));
   const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical||0));
-  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>{const pct=(f.wells_critical/probMax*100);return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`;}).join('')||'<div class="empty">Nenhum problema detectado</div>';
+  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>`<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${f.wells_critical/probMax*100}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`).join('')||'<div class="empty">Nenhum problema detectado</div>';
   const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions||0));
-  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>{const pct=(f.total_conditions/condMax*100);return `<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`;}).join('')||'<div class="empty">Sem condicionantes cadastradas</div>';
-  
+  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>`<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${f.total_conditions/condMax*100}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`).join('')||'<div class="empty">Sem condicionantes</div>';
   app.innerHTML=`
     <div class="page-header"><h1>Visão executiva</h1><p class="subtitle">Compliance regulatório e operação</p></div>
     <div class="kpis">
@@ -378,12 +351,12 @@ async function renderDashboard(){
       <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">ativas</div></div>
     </div>
     <div class="donut-row">
-      <div class="donut-card"><div class="card-title">Status regulatório</div><div class="donut-wrap">${buildDonut(complianceSegs, 180, 22, totalCompliance, "Total")}<div class="donut-legend">${legendHtml(complianceSegs, totalCompliance)}</div></div></div>
-      <div class="donut-card"><div class="card-title">Condicionantes por categoria</div><div class="donut-wrap">${buildPie(catSegs, 180)}<div class="donut-legend">${catSegs.length>0?legendHtml(catSegs, totalCat):'<div class="empty">Sem condicionantes</div>'}</div></div></div>
+      <div class="donut-card"><div class="card-title">Status regulatório</div><div class="donut-wrap">${buildDonut(compSegs,180,22,totalC,"Total")}<div class="donut-legend">${legendHtml(compSegs,totalC)}</div></div></div>
+      <div class="donut-card"><div class="card-title">Condicionantes por categoria</div><div class="donut-wrap">${buildPie(catSegs,180)}<div class="donut-legend">${catSegs.length?legendHtml(catSegs,byCat.total||0):'<div class="empty">Sem condicionantes</div>'}</div></div></div>
     </div>
     <div class="op-row">
-      <div class="op-card"><div class="op-header"><span class="op-dot"></span> Em produção</div><div class="op-value">${comp.producing?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span></div></div>
-      <div class="op-card inj"><div class="op-header"><span class="op-dot"></span> Em injeção</div><div class="op-value">${comp.injecting?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span></div></div>
+      <div class="op-card"><div class="op-header"><span class="op-dot"></span>Em produção</div><div class="op-value">${comp.producing?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span></div></div>
+      <div class="op-card inj"><div class="op-header"><span class="op-dot"></span>Em injeção</div><div class="op-value">${comp.injecting?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span></div></div>
     </div>
     <div class="chart-row">
       <div class="card"><div class="card-title">Campos em risco regulatório</div><ul class="bar-list">${probBars}</ul></div>
@@ -392,7 +365,7 @@ async function renderDashboard(){
 }
 
 async function renderAssets(){
-  if(!filterCache){filterCache = await safeFetch(`${API}/assets/filters`) || {states:[],agencies:[],fields:[],situations:[],operators:[]};}
+  if(!filterCache){filterCache=await safeFetch(`${API}/assets/filters`)||{states:[],agencies:[],fields:[],situations:[],operators:[]};}
   const app=document.getElementById("app");
   const opt=(arr)=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
@@ -409,39 +382,37 @@ async function renderAssets(){
       <button class="btn btn-success" id="aExport">Exportar CSV</button>
     </div>
     <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
-  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{if(assetState.filters[id]) document.getElementById(id).value=assetState.filters[id];});
+  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{if(assetState.filters[id])document.getElementById(id).value=assetState.filters[id];});
   document.getElementById("aApply").onclick=()=>{assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aField:document.getElementById("aField").value,aOp:document.getElementById("aOp").value,aStatus:document.getElementById("aStatus").value};assetState.search=document.getElementById("aSearch").value;assetState.page=0;loadAssets();};
   document.getElementById("aClear").onclick=()=>{assetState={page:0,filters:{},search:""};renderAssets();};
   document.getElementById("aExport").onclick=exportAssets;
-  document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter") document.getElementById("aApply").click();});
+  document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter")document.getElementById("aApply").click();});
   loadAssets();
 }
 
 function buildAssetParams(){
   const p=new URLSearchParams();
-  if(assetState.filters.aState) p.set("state",assetState.filters.aState);
-  if(assetState.filters.aAgency) p.set("agency",assetState.filters.aAgency);
-  if(assetState.filters.aField) p.set("field",assetState.filters.aField);
-  if(assetState.filters.aOp) p.set("operational",assetState.filters.aOp);
-  if(assetState.filters.aStatus) p.set("compliance_status",assetState.filters.aStatus);
-  if(assetState.search) p.set("search",assetState.search);
+  if(assetState.filters.aState)p.set("state",assetState.filters.aState);
+  if(assetState.filters.aAgency)p.set("agency",assetState.filters.aAgency);
+  if(assetState.filters.aField)p.set("field",assetState.filters.aField);
+  if(assetState.filters.aOp)p.set("operational",assetState.filters.aOp);
+  if(assetState.filters.aStatus)p.set("compliance_status",assetState.filters.aStatus);
+  if(assetState.search)p.set("search",assetState.search);
   return p;
 }
 
 async function loadAssets(){
-  const p=buildAssetParams();
-  p.set("limit","50");p.set("offset",String(assetState.page*50));
+  const p=buildAssetParams();p.set("limit","50");p.set("offset",String(assetState.page*50));
   const div=document.getElementById("aResults");
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  const r = await safeFetch(`${API}/assets/unified?${p}`);
+  const r=await safeFetch(`${API}/assets/unified?${p}`,{timeout:30000});
   if(!r||!r.items||r.items.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
   const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
-  const rows=r.items.map(a=>{const pdfCell=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">Ver PDF</a>`:'<span style="color:#c7c7cc">—</span>';return `<tr><td><strong>${a.code||'—'}</strong></td><td>${a.field||'—'}</td><td>${badgeState(a.state)}</td><td>${a.agency||'—'}</td><td>${badgeSituation(a.situation)}</td><td>${badgeCompliance(a.compliance_status)}</td><td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style=\"color:#c7c7cc\">—</span>'}</td><td>${pdfCell}</td></tr>`;}).join('');
-  const totalPages=Math.ceil(r.total/50);
-  const curPage=assetState.page+1;
-  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> em estado crítico nesta página</div><div class="table-wrap"><table class="table"><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pagination"><span>Página ${curPage} de ${totalPages}</span><div style="display:flex;gap:8px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>← Anterior</button><button class="btn btn-ghost" id="aNext" ${curPage>=totalPages?'disabled':''}>Próxima →</button></div></div>`;
+  const rows=r.items.map(a=>{const pdf=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">Ver PDF</a>`:'<span style="color:#c7c7cc">—</span>';return`<tr><td><strong>${a.code||'—'}</strong></td><td>${a.field||'—'}</td><td>${badgeState(a.state)}</td><td>${a.agency||'—'}</td><td>${badgeSituation(a.situation)}</td><td>${badgeCompliance(a.compliance_status)}</td><td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style="color:#c7c7cc">—</span>'}</td><td>${pdf}</td></tr>`;}).join('');
+  const totalPages=Math.ceil(r.total/50);const cur=assetState.page+1;
+  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> críticos nesta página</div><div class="table-wrap"><table class="table"><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pagination"><span>Página ${cur} de ${totalPages}</span><div style="display:flex;gap:8px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>← Anterior</button><button class="btn btn-ghost" id="aNext" ${cur>=totalPages?'disabled':''}>Próxima →</button></div></div>`;
   document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
-  document.getElementById("aNext").onclick=()=>{if(curPage<totalPages){assetState.page++;loadAssets();}};
+  document.getElementById("aNext").onclick=()=>{if(cur<totalPages){assetState.page++;loadAssets();}};
 }
 
 function exportAssets(){const p=buildAssetParams();window.open(`${API}/assets/export?${p}`,'_blank');}
@@ -463,151 +434,142 @@ async function renderLicenses(){
 }
 
 async function loadLicensesList(){
-  const list = await safeFetch(`${API}/licenses`) || [];
+  const list=await safeFetch(`${API}/licenses`)||[];
   const div=document.getElementById("lList");
   if(!list||list.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada</div></div>';return;}
-  const trashSvg='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
-  const rows=list.map(l=>{
-    const pdfCell=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">Ver</a>`:'<span style="color:#c7c7cc">—</span>';
-    const lj = JSON.stringify(l).replace(/"/g,'&quot;');
-    return `<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style=\"color:#c7c7cc\">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdfCell}</td><td><button class="icon-btn" title="Excluir" data-lic="${lj}">${trashSvg}</button></td></tr>`;
-  }).join('');
-  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  // attach delete handlers
-  document.querySelectorAll(".icon-btn[data-lic]").forEach(btn=>{
-    btn.onclick=()=>{
-      try{const lic=JSON.parse(btn.getAttribute("data-lic").replace(/&quot;/g,'"'));confirmDeleteLicense(lic);}
-      catch(e){console.error(e);alert("Erro ao abrir confirmação");}
-    };
-  });
+  const trash='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+  const rows=list.map(l=>{const pdf=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">Ver</a>`:'<span style="color:#c7c7cc">—</span>';const lj=JSON.stringify(l).replace(/"/g,'&quot;');return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style="color:#c7c7cc">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdf}</td><td><button class="icon-btn" data-lic="${lj}">${trash}</button></td></tr>`;}).join('');
+  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  document.querySelectorAll(".icon-btn[data-lic]").forEach(btn=>{btn.onclick=()=>{try{const l=JSON.parse(btn.getAttribute("data-lic").replace(/&quot;/g,'"'));confirmDeleteLicense(l);}catch(e){alert("Erro ao abrir confirmação");}};});
 }
 
 function confirmDeleteLicense(lic){
-  const warnSvg='<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-  openModal(`
-    <div class="modal-header">
-      <div class="modal-icon danger">${warnSvg}</div>
-      <div class="modal-title">Excluir licença?</div>
-      <div class="modal-subtitle">Esta ação não pode ser desfeita. A licença e todas as condicionantes vinculadas serão removidas permanentemente.</div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-info">
-        <div class="row"><span>Número</span><strong>${lic.number||'—'}</strong></div>
-        <div class="row"><span>Tipo</span><strong>${lic.type||'—'}</strong></div>
-        <div class="row"><span>Órgão</span><strong>${lic.agency||'—'}</strong></div>
-        <div class="row"><span>Ativo vinculado</span><strong>${lic.asset_code||'não vinculado'}</strong></div>
-        <div class="row"><span>Condicionantes a excluir</span><strong style="color:#9D2928">${lic.n_conditions}</strong></div>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger" onclick="deleteLicense(${lic.id})">Excluir definitivamente</button>
-    </div>
-  `);
+  const w='<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+  openModal(`<div class="modal-header"><div class="modal-icon danger">${w}</div><div class="modal-title">Excluir licença?</div><div class="modal-subtitle">Esta ação não pode ser desfeita.</div></div><div class="modal-body"><div class="modal-info"><div class="row"><span>Número</span><strong>${lic.number||'—'}</strong></div><div class="row"><span>Órgão</span><strong>${lic.agency||'—'}</strong></div><div class="row"><span>Ativo(s)</span><strong>${lic.asset_code||'não vinculado'}</strong></div><div class="row"><span>Condicionantes a excluir</span><strong style="color:#9D2928">${lic.n_conditions}</strong></div></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" onclick="deleteLicense(${lic.id})">Excluir definitivamente</button></div>`);
 }
 
 async function deleteLicense(id){
   closeModal();
-  const r = await safeFetch(`${API}/licenses/${id}`,{method:"DELETE"});
+  const r=await safeFetch(`${API}/licenses/${id}`,{method:"DELETE"});
   if(!r||r.error){alert("Erro ao excluir: "+(r?r.error:'sem resposta'));return;}
   await loadLicensesList();
 }
 
-async function uploadPdf(onDuplicate, fileToUse){
+async function uploadPdf(onDuplicate,fileToUse){
   const fileInput=document.getElementById("pdfFile");
   const status=document.getElementById("upStatus");
   const btn=document.getElementById("upBtn");
-  const file = fileToUse || (fileInput && fileInput.files[0]);
-  if(!file){status.innerHTML='<div class="error">Selecione um PDF.</div>';return;}
+  const file=fileToUse||(fileInput&&fileInput.files[0]);
+  if(!file){status.innerHTML='<div class="error-msg">Selecione um PDF.</div>';return;}
   if(btn){btn.disabled=true;btn.textContent="Processando... (30-90s)";}
   status.innerHTML='<div class="loading"><span class="spinner"></span> A IA está analisando o documento</div>';
   pendingFile=file;
-  const fd=new FormData();
-  fd.append("file",file);
+  const fd=new FormData();fd.append("file",file);
   try{
     const r=await fetch(`${API}/licenses/upload?on_duplicate=${onDuplicate}`,{method:"POST",body:fd}).then(r=>r.json());
-    if(r.error){status.innerHTML=`<div class="error">Erro: ${r.error}</div>`;}
-    else if(r.duplicate){status.innerHTML='';showDuplicateModal(r.existing, r.new_data);}
-    else if(r.cancelled){status.innerHTML='<div class="error">Upload cancelado.</div>';}
+    if(r.error){status.innerHTML=`<div class="error-msg">Erro: ${r.error}</div>`;}
+    else if(r.duplicate){status.innerHTML='';showDuplicateModal(r.existing,r.new_data);}
+    else if(r.cancelled){status.innerHTML='<div class="error-msg">Upload cancelado.</div>';}
     else{
-      const actionMsg=r.action==="replace"?"substituída":r.action==="keep_both"?"adicionada (mantendo a anterior)":"cadastrada";
-      status.innerHTML=`<div class="success">Licença ${actionMsg}. ${r.conditions_extracted} condicionantes extraídas.</div>`;
+      const linkedMsg=r.assets_linked&&r.assets_linked.length?` Vinculada a: ${r.assets_linked.map(a=>a.code).join(', ')}.`:'';
+      status.innerHTML=`<div class="success-msg">Licença cadastrada. ${r.conditions_extracted} condicionantes extraídas.${linkedMsg}</div>`;
       pendingFile=null;
-      setTimeout(()=>show("licenses"),1800);
+      setTimeout(()=>show("licenses"),2000);
     }
-  }catch(e){status.innerHTML=`<div class="error">Erro: ${e.message}</div>`;}
+  }catch(e){status.innerHTML=`<div class="error-msg">Erro: ${e.message}</div>`;}
   finally{if(btn){btn.disabled=false;btn.textContent="Enviar para análise";}}
 }
 
-function showDuplicateModal(existing, newData){
-  const warnSvg='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+function showDuplicateModal(existing,newData){
+  const i='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  const assetsFoundHtml=newData.assets_found&&newData.assets_found.length?`<div class="row"><span>Ativos encontrados</span><strong style="color:#007023">${newData.assets_found.map(a=>a.code).join(', ')}</strong></div>`:'';
+  openModal(`<div class="modal-header"><div class="modal-icon warn">${i}</div><div class="modal-title">Licença duplicada</div><div class="modal-subtitle">Já existe uma licença com este número e órgão.</div></div><div class="modal-body"><div class="modal-info"><div style="font-size:11px;text-transform:uppercase;color:#86868b;font-weight:600;margin-bottom:8px">Existente</div><div class="row"><span>Número</span><strong>${existing.number||'—'}</strong></div><div class="row"><span>Validade</span><strong>${existing.expiry_date||'—'}</strong></div><div class="row"><span>Ativo(s)</span><strong>${existing.asset_code||'não vinculado'}</strong></div><div class="row"><span>Condicionantes</span><strong>${existing.n_conditions}</strong></div></div><div class="modal-info"><div style="font-size:11px;text-transform:uppercase;color:#86868b;font-weight:600;margin-bottom:8px">Novo upload</div><div class="row"><span>Número</span><strong>${newData.number||'—'}</strong></div><div class="row"><span>Condicionantes extraídas</span><strong>${newData.n_conditions_extracted}</strong></div>${assetsFoundHtml}</div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="cancelDuplicate()">Cancelar</button><button class="btn btn-ghost" onclick="resolveDuplicate('keep_both')">Manter ambas</button><button class="btn btn-danger" onclick="resolveDuplicate('replace')">Substituir</button></div>`);
+}
+
+function cancelDuplicate(){closeModal();pendingFile=null;document.getElementById("upStatus").innerHTML='<div class="error-msg">Upload cancelado.</div>';}
+async function resolveDuplicate(action){if(!pendingFile){closeModal();return;}closeModal();await uploadPdf(action,pendingFile);}
+
+async function renderConditions(){
+  const app=document.getElementById("app");
+  const list=await safeFetch(`${API}/conditions`)||[];
+  let html=`<div class="page-header"><h1>Condicionantes</h1><p class="subtitle">Obrigações técnicas extraídas das licenças ambientais</p></div>`;
+  if(!list||list.length===0){
+    html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';
+  } else {
+    const total=list.length;
+    const concluidas=list.filter(c=>c.status==='completed').length;
+    const vencidas=list.filter(c=>c.days_until_due!==null&&c.days_until_due<0&&c.status!=='completed').length;
+    const pct=total>0?Math.round(concluidas/total*100):0;
+    html+=`<div class="kpis" style="margin-bottom:16px">
+      <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-value">${total}</div></div>
+      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#4EA72E">${concluidas}</div><div class="kpi-sub">${pct}% atendidas</div></div>
+      <div class="kpi"><div class="kpi-label">Pendentes</div><div class="kpi-value">${total-concluidas}</div></div>
+      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#9D2928">${vencidas}</div></div>
+    </div>`;
+    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
+    const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+    const cards=list.map(c=>{
+      let statusBadge='<span class="badge b-pend"><span class="badge-dot" style="background:#1e3a8a"></span>Pendente</span>';
+      let borderColor='#d2d2d7';
+      if(c.status==='completed'){statusBadge='<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>';borderColor='#4EA72E';}
+      else if(c.days_until_due!==null&&c.days_until_due<0){statusBadge='<span class="badge b-overdue"><span class="badge-dot" style="background:#9D2928"></span>Vencida</span>';borderColor='#9D2928';}
+      else if(c.days_until_due!==null&&c.days_until_due<=30){statusBadge=`<span class="badge b-upcoming"><span class="badge-dot" style="background:#F9CE29"></span>${c.days_until_due}d</span>`;borderColor='#F9CE29';}
+      const catLabel=catMap[c.category]||c.category;
+      const catColor=catColors[c.category]||'#86868b';
+      const desc=c.description||'';
+      const longa=desc.length>200;
+      const descHtml=longa
+        ?`<p style="font-size:14px;color:#1d1d1f;line-height:1.6;margin:0 0 12px">${desc.slice(0,200)}<span id="more-${c.id}" style="display:none">${desc.slice(200)}</span>… <button onclick="expandDesc(${c.id})" id="btn-more-${c.id}" style="background:none;border:none;color:#007023;font-size:13px;cursor:pointer;font-family:inherit;padding:0;font-weight:500">ver mais</button></p>`
+        :`<p style="font-size:14px;color:#1d1d1f;line-height:1.6;margin:0 0 12px">${desc}</p>`;
+      const btnAtender=c.status==='completed'
+        ?`<span style="color:#4EA72E;font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Atendida</span>`
+        :`<button class="btn btn-success" style="padding:6px 14px;font-size:13px;white-space:nowrap" onclick="confirmarAtendimento(${c.id})">Atender condicionante</button>`;
+      return`<div class="cond-card" style="border-left:3px solid ${borderColor}">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span style="background:${catColor}18;color:${catColor};font-size:11px;font-weight:600;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em">${catLabel}</span>
+            ${statusBadge}
+            ${c.due_date?`<span style="font-size:12px;color:#6e6e73">Vence: ${c.due_date}</span>`:''}
+            <span style="font-size:12px;color:#6e6e73">Licença: <strong>${c.license_number||'—'}</strong></span>
+          </div>
+          <div style="flex-shrink:0">${btnAtender}</div>
+        </div>
+        ${descHtml}
+      </div>`;
+    }).join('');
+    html+=`<div>${cards}</div>`;
+  }
+  app.innerHTML=html;
+}
+
+function expandDesc(id){
+  const m=document.getElementById(`more-${id}`);
+  const b=document.getElementById(`btn-more-${id}`);
+  if(m&&b){m.style.display='inline';b.style.display='none';}
+}
+
+function confirmarAtendimento(id){
   openModal(`
     <div class="modal-header">
-      <div class="modal-icon warn">${warnSvg}</div>
-      <div class="modal-title">Licença duplicada detectada</div>
-      <div class="modal-subtitle">Já existe uma licença com o mesmo número, órgão e ativo. O que você quer fazer?</div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-info">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#86868b;font-weight:600;margin-bottom:8px">Licença existente</div>
-        <div class="row"><span>Número</span><strong>${existing.number||'—'}</strong></div>
-        <div class="row"><span>Tipo</span><strong>${existing.type||'—'}</strong></div>
-        <div class="row"><span>Validade</span><strong>${existing.expiry_date||'—'}</strong></div>
-        <div class="row"><span>Ativo</span><strong>${existing.asset_code||'não vinculado'}</strong></div>
-        <div class="row"><span>Condicionantes</span><strong>${existing.n_conditions}</strong></div>
+      <div class="modal-icon" style="background:#e8f5ec">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#007023" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <div class="modal-info">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#86868b;font-weight:600;margin-bottom:8px">Novo upload</div>
-        <div class="row"><span>Número</span><strong>${newData.number||'—'}</strong></div>
-        <div class="row"><span>Validade</span><strong>${newData.expiry_date||'—'}</strong></div>
-        <div class="row"><span>Condicionantes extraídas</span><strong>${newData.n_conditions_extracted}</strong></div>
-      </div>
+      <div class="modal-title">Atender condicionante?</div>
+      <div class="modal-subtitle">Confirme que esta condicionante foi cumprida. O status será alterado para <strong>Concluída</strong> e não poderá ser revertido.</div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="cancelDuplicate()">Cancelar</button>
-      <button class="btn btn-ghost" onclick="resolveDuplicate('keep_both')">Manter ambas</button>
-      <button class="btn btn-danger" onclick="resolveDuplicate('replace')">Substituir</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn" style="background:#007023" onclick="atenderCondicionante(${id})">Confirmar atendimento</button>
     </div>
   `);
 }
 
-function cancelDuplicate(){closeModal();pendingFile=null;document.getElementById("upStatus").innerHTML='<div class="error">Upload cancelado.</div>';}
-
-async function resolveDuplicate(action){if(!pendingFile){closeModal();return;}closeModal();await uploadPdf(action, pendingFile);}
-
-async function renderConditions(){
-  const app=document.getElementById("app");
-  const list = await safeFetch(`${API}/conditions`) || [];
-  let html=`<div class="page-header"><h1>Condicionantes</h1><p class="subtitle">Obrigações técnicas extraídas das licenças ambientais</p></div>`;
-  if(!list||list.length===0){html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';}
-  else{
-    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
-    const rows=list.map(c=>{
-      let badge='<span class="badge b-pend"><span class="badge-dot" style="background:#1e3a8a"></span>Pendente</span>';
-      if(c.status==='completed') badge='<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>';
-      else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue"><span class="badge-dot" style="background:#9D2928"></span>Vencida</span>';
-      else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming"><span class="badge-dot" style="background:#F9CE29"></span>${c.days_until_due}d</span>`;
-      const catLabel=catMap[c.category]||c.category;
-      const btnConcluir = c.status === 'completed'   ? `<span style="color:#4EA72E;font-size:13px;font-weight:500">✓ Concluída</span>`   : `<button class="btn btn-success" style="padding:4px 12px;font-size:12px" onclick="concluirCondicionante(${c.id}, this)">Concluído</button>`; return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td style="font-variant-numeric:tabular-nums">${c.due_date||'—'}</td><td>${badge}</td><td>${btnConcluir}</td></tr>`;
-    }).join('');
-    html+=`<div class="table-wrap"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  }
-  app.innerHTML=html;
-}
-async function concluirCondicionante(id, btn){
-  btn.disabled = true;
-  btn.textContent = "Salvando...";
-  const r = await safeFetch(`${API}/conditions/${id}/complete`, {method: "PATCH"});
-  if(r && r.status === "completed"){
-    const td = btn.parentElement;
-    td.innerHTML = `<span style="color:#4EA72E;font-size:13px;font-weight:500">✓ Concluída</span>`;
-    // Atualiza badge de status na célula anterior
-    const row = td.parentElement;
-    const statusTd = row.children[4];
-    statusTd.innerHTML = `<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>`;
+async function atenderCondicionante(id){
+  closeModal();
+  const r=await safeFetch(`${API}/conditions/${id}/complete`,{method:"PATCH"});
+  if(r&&r.status==='completed'){
+    await renderConditions();
   } else {
-    btn.disabled = false;
-    btn.textContent = "Concluído";
     alert("Erro ao salvar. Tente novamente.");
   }
 }
@@ -616,4 +578,3 @@ show("dashboard");
 </script>
 </body>
 </html>
-
