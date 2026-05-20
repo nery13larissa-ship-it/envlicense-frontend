@@ -588,11 +588,28 @@ async function renderConditions(){
       else if(c.days_until_due!==null&&c.days_until_due<0) badge='<span class="badge b-overdue"><span class="badge-dot" style="background:#9D2928"></span>Vencida</span>';
       else if(c.days_until_due!==null&&c.days_until_due<=30) badge=`<span class="badge b-upcoming"><span class="badge-dot" style="background:#F9CE29"></span>${c.days_until_due}d</span>`;
       const catLabel=catMap[c.category]||c.category;
-      return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td style="font-variant-numeric:tabular-nums">${c.due_date||'—'}</td><td>${badge}</td></tr>`;
+      const btnConcluir = c.status === 'completed'   ? `<span style="color:#4EA72E;font-size:13px;font-weight:500">✓ Concluída</span>`   : `<button class="btn btn-success" style="padding:4px 12px;font-size:12px" onclick="concluirCondicionante(${c.id}, this)">Concluído</button>`; return `<tr><td>${c.description}</td><td><span class="badge b-other">${catLabel}</span></td><td>${c.license_number}</td><td style="font-variant-numeric:tabular-nums">${c.due_date||'—'}</td><td>${badge}</td><td>${btnConcluir}</td></tr>`;
     }).join('');
     html+=`<div class="table-wrap"><table class="table"><thead><tr><th>Descrição</th><th>Categoria</th><th>Licença</th><th>Vencimento</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   app.innerHTML=html;
+}
+async function concluirCondicionante(id, btn){
+  btn.disabled = true;
+  btn.textContent = "Salvando...";
+  const r = await safeFetch(`${API}/conditions/${id}/complete`, {method: "PATCH"});
+  if(r && r.status === "completed"){
+    const td = btn.parentElement;
+    td.innerHTML = `<span style="color:#4EA72E;font-size:13px;font-weight:500">✓ Concluída</span>`;
+    // Atualiza badge de status na célula anterior
+    const row = td.parentElement;
+    const statusTd = row.children[4];
+    statusTd.innerHTML = `<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>`;
+  } else {
+    btn.disabled = false;
+    btn.textContent = "Concluído";
+    alert("Erro ao salvar. Tente novamente.");
+  }
 }
 
 show("dashboard");
