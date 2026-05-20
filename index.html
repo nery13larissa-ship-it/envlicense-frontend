@@ -2,1089 +2,867 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EnvLicense — PetroRecôncavo</title>
 <style>
 :root{
-  --primary:#007023;--primary-h:#005a1c;--primary-l:#4EA72E;--primary-t:#e8f5ec;
-  --warn:#F9CE29;--warn-t:#7a5e00;--danger:#9D2928;--danger-h:#7a1f1e;--danger-t:#fbeded;
-  --info:#125E81;--accent:#8FBF21;
+  --p:#007023;--ph:#005a1c;--pl:#4EA72E;--pt:#e8f5ec;
+  --w:#F9CE29;--wt:#7a5e00;--wg:#8FBF21;--wgt:#f0f7e0;
+  --r:#9D2928;--rh:#7a1f1e;--rt:#fbeded;
+  --b:#125E81;--bt:#deeef5;
   --t1:#1d1d1f;--t2:#6e6e73;--t3:#86868b;--t4:#aeaeb2;
-  --bd:#d2d2d7;--bd-l:#f0f0f5;--bg:#f5f5f7;--surf:#ffffff;
-  --r:12px;--r-sm:8px;--r-xs:6px;
-  --ease:cubic-bezier(.4,0,.2,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
-  --sidebar-w:56px;--sidebar-exp:220px;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
-  --shadow-lg:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.08);
+  --bd:#d2d2d7;--bdl:#f0f0f5;--bg:#f5f5f7;--s:#fff;
+  --rad:12px;--rads:8px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --sh:0 1px 3px rgba(0,0,0,.07),0 4px 14px rgba(0,0,0,.05);
+  --shl:0 8px 32px rgba(0,0,0,.11),0 2px 8px rgba(0,0,0,.07);
+  --sw:56px;--se:220px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;display:flex}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;display:flex}
 
-/* ===== SIDEBAR ===== */
-.sidebar{
-  width:var(--sidebar-w);background:var(--surf);border-right:1px solid var(--bd-l);
-  display:flex;flex-direction:column;flex-shrink:0;height:100vh;position:fixed;left:0;top:0;z-index:100;
-  overflow:hidden;transition:width .25s var(--ease);
-}
-.sidebar:hover{width:var(--sidebar-exp);}
-.brand{display:flex;align-items:center;gap:10px;padding:18px 14px 14px;border-bottom:1px solid var(--bd-l);min-height:60px;overflow:hidden;white-space:nowrap}
-.brand-mark{width:28px;height:28px;min-width:28px;background:linear-gradient(135deg,var(--primary),var(--primary-l));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;letter-spacing:-.5px}
-.brand-text{opacity:0;transform:translateX(-8px);transition:all .2s var(--ease);pointer-events:none}
-.sidebar:hover .brand-text{opacity:1;transform:translateX(0)}
-.brand-name{font-weight:600;font-size:14px;letter-spacing:-.02em;color:var(--t1);white-space:nowrap}
-.brand-sub{font-size:10px;color:var(--t3);letter-spacing:.02em}
-.nav-section{padding:8px 0}
-.nav-label{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;font-weight:700;padding:8px 18px 4px;opacity:0;transition:opacity .2s var(--ease);white-space:nowrap}
-.sidebar:hover .nav-label{opacity:1}
-.nav-btn{width:100%;background:transparent;border:none;padding:8px 14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:11px;color:var(--t2);border-radius:0;transition:all .15s var(--ease);position:relative;min-height:40px;overflow:hidden;white-space:nowrap}
-.nav-btn:hover{background:var(--bd-l);color:var(--t1)}
-.nav-btn.active{background:var(--primary-t);color:var(--primary)}
-.nav-btn.active .nav-icon{color:var(--primary)}
-.nav-icon{width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nav-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.nav-label-text{font-size:13.5px;font-weight:400;opacity:0;transform:translateX(-6px);transition:all .2s var(--ease);pointer-events:none}
-.sidebar:hover .nav-label-text{opacity:1;transform:translateX(0)}
-.nav-btn.active .nav-label-text{font-weight:500}
-.sidebar-footer{margin-top:auto;padding:12px 14px;border-top:1px solid var(--bd-l);overflow:hidden;white-space:nowrap}
-.sidebar-footer-text{font-size:10px;color:var(--t4);opacity:0;transition:opacity .2s var(--ease)}
-.sidebar:hover .sidebar-footer-text{opacity:1}
-.sidebar-version{width:28px;height:28px;min-width:28px;background:var(--bd-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+/* SIDEBAR */
+.sb{width:var(--sw);background:var(--s);border-right:1px solid var(--bdl);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:100;overflow:hidden;transition:width .22s var(--ease)}
+.sb:hover{width:var(--se)}
+.sb-brand{display:flex;align-items:center;gap:10px;padding:16px 14px 14px;border-bottom:1px solid var(--bdl);min-height:58px;overflow:hidden;white-space:nowrap}
+.sb-mark{width:28px;height:28px;min-width:28px;background:linear-gradient(135deg,var(--p),var(--pl));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px}
+.sb-text{opacity:0;transform:translateX(-8px);transition:all .18s var(--ease)}
+.sb:hover .sb-text{opacity:1;transform:none}
+.sb-name{font-weight:600;font-size:13.5px;letter-spacing:-.02em;white-space:nowrap}
+.sb-sub{font-size:10px;color:var(--t3)}
+.sb-section{padding:6px 0}
+.sb-lbl{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;font-weight:700;padding:7px 16px 3px;opacity:0;transition:opacity .18s var(--ease);white-space:nowrap}
+.sb:hover .sb-lbl{opacity:1}
+.nb{width:100%;background:transparent;border:none;padding:7px 14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:11px;color:var(--t2);transition:all .13s var(--ease);min-height:38px;overflow:hidden;white-space:nowrap}
+.nb:hover{background:var(--bdl);color:var(--t1)}
+.nb.on{background:var(--pt);color:var(--p)}
+.nb-ic{width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nb-ic svg{width:15px;height:15px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nb-lbl{font-size:13px;opacity:0;transform:translateX(-5px);transition:all .18s var(--ease);white-space:nowrap}
+.sb:hover .nb-lbl{opacity:1;transform:none}
+.nb.on .nb-lbl{font-weight:500}
+.sb-foot{margin-top:auto;padding:10px 14px;border-top:1px solid var(--bdl);overflow:hidden;white-space:nowrap}
+.sb-ver{width:28px;height:28px;min-width:28px;background:var(--bdl);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+.sb-ft{font-size:10px;color:var(--t4);opacity:0;transition:opacity .18s var(--ease)}
+.sb:hover .sb-ft{opacity:1}
 
-/* ===== MAIN ===== */
-main{margin-left:var(--sidebar-w);flex:1;height:100vh;overflow-y:auto;transition:margin-left .25s var(--ease);display:flex;flex-direction:column}
-.sidebar:hover ~ main{margin-left:var(--sidebar-exp);}
-.topbar{background:var(--surf);border-bottom:1px solid var(--bd-l);padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;flex-shrink:0}
-.topbar-title{font-size:15px;font-weight:600;letter-spacing:-.02em;color:var(--t1);flex:1}
-.search-box{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bd-l);border-radius:9px;padding:7px 13px;cursor:pointer;color:var(--t3);font-size:13px;font-family:inherit;transition:all .15s var(--ease);width:320px}
-.search-box:hover{border-color:var(--bd);background:var(--surf)}
-.search-box svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.search-box .s-placeholder{flex:1;text-align:left;color:var(--t3)}
-.search-box .s-shortcut{font-size:11px;background:var(--surf);border:1px solid var(--bd);padding:1px 5px;border-radius:4px;color:var(--t3)}
-.content{flex:1;padding:28px 32px 64px}
+/* MAIN */
+main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;transition:margin-left .22s var(--ease);display:flex;flex-direction:column}
+.sb:hover~main{margin-left:var(--se)}
+.topbar{background:var(--s);border-bottom:1px solid var(--bdl);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;flex-shrink:0}
+.tb-title{font-size:14.5px;font-weight:600;letter-spacing:-.02em;flex:1}
+.sp-btn{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bdl);border-radius:9px;padding:6px 12px;cursor:pointer;color:var(--t3);font-size:12.5px;font-family:inherit;transition:all .13s var(--ease);width:300px}
+.sp-btn:hover{border-color:var(--bd)}
+.sp-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sp-ph{flex:1;text-align:left}
+.sp-kc{font-size:11px;background:var(--s);border:1px solid var(--bd);padding:1px 5px;border-radius:4px;color:var(--t3)}
+.cnt{flex:1;padding:24px 28px 56px}
 
-/* ===== PAGE HEADER ===== */
-.page-header{margin-bottom:20px}
-.page-header h1{font-size:26px;font-weight:600;letter-spacing:-.025em;color:var(--t1);line-height:1.15;margin-bottom:3px}
-.page-header .sub{font-size:13.5px;color:var(--t2)}
+/* TOKENS */
+.ph{margin-bottom:18px}
+.ph h1{font-size:24px;font-weight:600;letter-spacing:-.025em;margin-bottom:2px}
+.ph .sub{font-size:13px;color:var(--t2)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:11px;margin-bottom:14px}
+.kpi{background:var(--s);padding:16px 18px;border-radius:var(--rad);border:1px solid var(--bdl);box-shadow:var(--sh)}
+.kl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:7px}
+.kv{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.ks{font-size:11.5px;color:var(--t3);margin-top:4px}
+.kdelta{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:500;padding:2px 6px;border-radius:4px;margin-top:4px}
+.dg{background:#e8f5ec;color:#1f5f33}.dr{background:var(--rt);color:var(--r)}.df{background:var(--bdl);color:var(--t2)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:1050px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr}}
+.card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:18px;box-shadow:var(--sh)}
+.ct{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px}
 
-/* ===== KPIs ===== */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--surf);padding:18px 20px;border-radius:var(--r);border:1px solid var(--bd-l);box-shadow:var(--shadow)}
-.kpi-label{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:8px}
-.kpi-value{font-size:28px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:5px}
-.kpi-sub{font-size:12px;color:var(--t3)}
-.kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:2px 6px;border-radius:4px;margin-top:4px}
-.delta-up{background:#e8f5ec;color:#1f5f33}
-.delta-down{background:var(--danger-t);color:var(--danger)}
-.delta-flat{background:var(--bd-l);color:var(--t2)}
+/* THERMOMETER */
+.thermo{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:16px 20px;margin-bottom:14px;box-shadow:var(--sh);position:relative}
+.th-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
+.th-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.th-pct{font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.th-label{font-size:12.5px;color:var(--t2);margin-top:3px}
+.th-badge{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:help;position:relative}
+.th-tooltip{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--t1);color:#fff;font-size:11.5px;padding:8px 12px;border-radius:8px;white-space:nowrap;z-index:10;max-width:280px;white-space:normal;line-height:1.5}
+.th-badge:hover .th-tooltip{display:block}
+.th-bar-bg{height:5px;background:var(--bdl);border-radius:3px;overflow:hidden;margin:10px 0 8px}
+.th-bar{height:100%;border-radius:3px;transition:width .8s var(--ease)}
+.th-meta{display:flex;gap:18px;flex-wrap:wrap}
+.th-stat{font-size:11.5px;color:var(--t2)}
+.th-stat strong{color:var(--t1);font-weight:600}
 
-/* ===== TERMÔMETRO ===== */
-.thermometer{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:18px 22px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.thermo-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
-.thermo-title{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
-.thermo-badge{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
-.thermo-pct{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1}
-.thermo-label{font-size:13px;color:var(--t2);margin-top:2px}
-.thermo-bar-wrap{height:6px;background:var(--bd-l);border-radius:3px;overflow:hidden;margin:12px 0 8px}
-.thermo-bar{height:100%;border-radius:3px;transition:width .8s var(--ease)}
-.thermo-meta{display:flex;gap:20px;flex-wrap:wrap}
-.thermo-stat{font-size:12px;color:var(--t2)}
-.thermo-stat strong{color:var(--t1);font-weight:600}
-.thermo-tooltip{position:absolute;top:14px;right:14px;width:18px;height:18px;background:var(--bd-l);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:help;font-size:10px;font-weight:700;color:var(--t3)}
+/* BARS */
+.blist{list-style:none;display:flex;flex-direction:column;gap:9px}
+.bitem{display:flex;align-items:center;gap:9px}
+.blbl{font-size:12px;font-weight:500;min-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btrack{flex:1;height:5px;background:var(--bdl);border-radius:3px;overflow:hidden}
+.bfill{height:100%;border-radius:3px;transition:width .7s var(--ease)}
+.bval{font-size:11.5px;color:var(--t2);min-width:55px;text-align:right;font-variant-numeric:tabular-nums}
 
-/* ===== GRID 2 COLUNAS ===== */
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
-@media(max-width:1100px){.grid-2{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}}
+/* SCENARIO */
+.scenario{border-radius:var(--rad);padding:16px 18px;border:1px solid}
+.sc-head{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.sc-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-icon svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sc-item{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;line-height:1.5;margin-bottom:5px}
+.sc-item svg{width:13px;height:13px;flex-shrink:0;margin-top:2px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-/* ===== CARD ===== */
-.card{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
-.card-title{font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
+/* OP CARDS */
+.op-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+.op-card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:16px;position:relative;overflow:hidden;box-shadow:var(--sh)}
+.op-acc{position:absolute;left:0;top:0;bottom:0;width:3px}
+.op-hdr{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.op-dot{width:6px;height:6px;border-radius:50%}
+.op-val{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:7px}
+.op-meta{font-size:12px;color:var(--t2)}
+.op-crit{color:var(--r);font-weight:600}
 
-/* ===== AGENDA ===== */
-.agenda-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd-l)}
-.agenda-item:last-child{border-bottom:none}
-.agenda-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.agenda-info{flex:1;min-width:0}
-.agenda-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.agenda-sub{font-size:11.5px;color:var(--t3);margin-top:1px}
-.agenda-days{font-size:12px;font-weight:600;white-space:nowrap;padding:3px 8px;border-radius:5px}
-
-/* ===== BAR CHARTS ===== */
-.bar-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.bar-item{display:flex;align-items:center;gap:10px}
-.bar-label{font-size:12.5px;font-weight:500;color:var(--t1);min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar-track{flex:1;height:5px;background:var(--bd-l);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .7s var(--ease)}
-.bar-val{font-size:12px;color:var(--t2);min-width:60px;text-align:right;font-variant-numeric:tabular-nums}
-.bar-val strong{color:var(--danger);font-weight:600}
-
-/* ===== CENÁRIO RECOMENDADO ===== */
-.scenario{background:linear-gradient(135deg,#f0f7f0 0%,#e8f5ec 100%);border:1px solid #c5e3d0;border-radius:var(--r);padding:18px 20px;margin-bottom:14px}
-.scenario-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.scenario-icon{width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
-.scenario-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.scenario-title{font-size:13px;font-weight:600;color:var(--primary)}
-.scenario-sub{font-size:11.5px;color:#3d7a4a;margin-top:1px}
-.scenario-items{display:flex;flex-direction:column;gap:6px}
-.scenario-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t1)}
-.scenario-item svg{width:14px;height:14px;stroke:var(--primary);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-
-/* ===== DONUT ===== */
-.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:center}
-.donut-svg-wrap{position:relative;flex-shrink:0}
-.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.donut-center .big{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
-.donut-center .sm{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;font-weight:600}
-.legend{display:flex;flex-direction:column;gap:8px;flex:1;min-width:140px}
-.legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px}
-.legend-dot{width:8px;height:8px;border-radius:2.5px;flex-shrink:0}
-.legend-lbl{flex:1;color:var(--t2)}
-.legend-val{font-weight:600;color:var(--t1);font-variant-numeric:tabular-nums}
-.legend-pct{font-size:11px;color:var(--t3);margin-left:4px}
-
-/* ===== OP CARDS ===== */
-.op-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.op-card{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
-.op-accent{position:absolute;left:0;top:0;bottom:0;width:3px}
-.op-header{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.op-header-dot{width:6px;height:6px;border-radius:50%}
-.op-value{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:8px}
-.op-meta{font-size:12.5px;color:var(--t2)}
-.op-critical{color:var(--danger);font-weight:600}
-
-/* ===== TABELA ===== */
-.table-wrap{border:1px solid var(--bd-l);border-radius:var(--r);overflow:hidden;overflow-x:auto;background:var(--surf)}
+/* TABLE */
+.tw{border:1px solid var(--bdl);border-radius:var(--rad);overflow:hidden;overflow-x:auto;background:var(--s)}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:11px 14px;font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid var(--bd-l);background:var(--bg);white-space:nowrap}
-td{padding:12px 14px;border-bottom:1px solid var(--bd-l);font-size:13px;color:var(--t1);vertical-align:middle}
+th{text-align:left;padding:10px 13px;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid var(--bdl);background:var(--bg);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--bdl);font-size:12.5px;color:var(--t1);vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(0,112,35,.025)}
+tr:hover td{background:rgba(0,112,35,.02)}
 
-/* ===== BADGES ===== */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:11.5px;font-weight:500;white-space:nowrap}
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500;white-space:nowrap}
 .bdot{width:5px;height:5px;border-radius:50%}
 .b-ok{background:#e8f5ec;color:#1f5f33}
-.b-upcoming{background:#fef7d8;color:var(--warn-t)}
-.b-expired{background:var(--danger-t);color:var(--danger)}
-.b-missing{background:#f0d8d8;color:#6b1c1c}
-.b-partial{background:#fff0d8;color:#7a4400}
-.b-pend{background:#e8ecf5;color:#1e3a8a}
-.b-done{background:#e8f5ec;color:#1f5f33}
-.b-overdue{background:var(--danger-t);color:var(--danger)}
-.b-other{background:var(--bd-l);color:var(--t2)}
+.b-up{background:#fef7d8;color:var(--wt)}
+.b-ex{background:var(--rt);color:var(--r)}
+.b-mi{background:#f0d8d8;color:#6b1c1c}
+.b-cr{background:#fde8e8;color:#7a0000}
+.b-pt{background:#fff0d8;color:#7a4400}
+.b-pe{background:#e8ecf5;color:#1e3a8a}
+.b-dn{background:#e8f5ec;color:#1f5f33}
+.b-ot{background:var(--bdl);color:var(--t2)}
 
-/* ===== TOOLBAR ===== */
-.toolbar{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:10px 12px;margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
-.inp{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:all .15s var(--ease);flex:1;min-width:180px}
-.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,112,35,.08);background:var(--surf)}
-.sel{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;min-width:130px;cursor:pointer;transition:border-color .15s var(--ease)}
-.sel:focus{border-color:var(--primary)}
-.btn{background:var(--primary);color:#fff;border:none;padding:7px 15px;border-radius:var(--r-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);font-family:inherit;display:inline-flex;align-items:center;gap:5px}
-.btn:hover{background:var(--primary-h)}
+/* TOOLBAR */
+.toolbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:9px 11px;margin-bottom:11px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;box-shadow:var(--sh)}
+.inp{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:border-color .13s var(--ease);flex:1;min-width:160px}
+.inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(0,112,35,.07)}
+.sel{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:6px 10px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;min-width:120px;cursor:pointer}
+.sel:focus{border-color:var(--p)}
+.btn{background:var(--p);color:#fff;border:none;padding:6px 14px;border-radius:var(--rads);font-size:13px;font-weight:500;cursor:pointer;transition:background .13s var(--ease);font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--ph)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--bd)}
-.btn-ghost:hover{background:var(--bd-l);color:var(--t1)}
-.btn-danger{background:var(--danger)}
-.btn-danger:hover{background:var(--danger-h)}
-.btn-accent{background:var(--primary-l)}
-.btn-accent:hover{background:#3d8f22}
-.icon-btn{background:transparent;border:none;cursor:pointer;padding:5px;border-radius:5px;color:var(--t3);transition:all .15s var(--ease);display:inline-flex;align-items:center}
-.icon-btn:hover{background:var(--danger-t);color:var(--danger)}
-.icon-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.btn-g{background:transparent;color:var(--t2);border:1px solid var(--bd)}
+.btn-g:hover{background:var(--bdl);color:var(--t1)}
+.btn-r{background:var(--r)}.btn-r:hover{background:var(--rh)}
+.btn-a{background:var(--pl)}.btn-a:hover{background:#3d8f22}
+.btn-yg{background:var(--wg);color:#fff}.btn-yg:hover{background:#749e18}
+.ib{background:transparent;border:none;cursor:pointer;padding:4px;border-radius:5px;color:var(--t3);transition:all .13s var(--ease);display:inline-flex;align-items:center}
+.ib:hover{background:var(--rt);color:var(--r)}
+.ib svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-/* ===== CONDICIONANTES ===== */
-.cond-card{background:var(--surf);border:1px solid var(--bd-l);border-left:3px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;transition:box-shadow .15s var(--ease);box-shadow:var(--shadow)}
-.cond-card:hover{box-shadow:var(--shadow-lg)}
-.cond-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
-.cond-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.cond-cat{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
-.cond-desc{font-size:13.5px;color:var(--t1);line-height:1.6;margin-bottom:10px}
-.cond-desc-short{display:block}
-.cond-desc-more{display:none}
-.cond-progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.progress-bar-wrap{flex:1;min-width:80px;height:4px;background:var(--bd-l);border-radius:2px;overflow:hidden}
-.progress-bar{height:100%;border-radius:2px;transition:width .5s var(--ease)}
-.progress-label{font-size:11.5px;color:var(--t2);white-space:nowrap}
-.asset-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
-.asset-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:5px;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);border:1px solid transparent}
-.chip-done{background:#e8f5ec;color:#1f5f33;border-color:#c5e3d0}
-.chip-pending{background:var(--bg);color:var(--t2);border-color:var(--bd)}
-.chip-pending:hover{background:var(--primary-t);color:var(--primary);border-color:var(--primary)}
-.chip-check{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+/* CONDITIONS */
+.ccard{background:var(--s);border:1px solid var(--bdl);border-left:3px solid var(--bd);border-radius:var(--rad);padding:13px 15px;margin-bottom:8px;transition:box-shadow .13s var(--ease);box-shadow:var(--sh)}
+.ccard:hover{box-shadow:var(--shl)}
+.ctop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.cmeta{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.ccat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.cdesc{font-size:13px;color:var(--t1);line-height:1.6;margin-bottom:9px}
+.cprog{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.cpbar{flex:1;min-width:70px;height:4px;background:var(--bdl);border-radius:2px;overflow:hidden}
+.cpfill{height:100%;border-radius:2px;transition:width .5s var(--ease)}
+.cplbl{font-size:11px;color:var(--t2);white-space:nowrap}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:5px;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .13s var(--ease);border:1px solid transparent;white-space:nowrap}
+.chip-ok{background:#e8f5ec;color:#1f5f33;border-color:#c5e3d0;cursor:default}
+.chip-pend{background:var(--bg);color:var(--t2);border-color:var(--bd)}
+.chip-pend:hover{background:var(--pt);color:var(--p);border-color:var(--p)}
+.chip-done-icon{width:11px;height:11px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-/* ===== UPLOAD ===== */
-.upload-zone{border:1.5px dashed var(--bd);border-radius:var(--r);padding:28px 20px;text-align:center;margin-bottom:16px;cursor:pointer;transition:all .2s var(--ease);background:var(--bg)}
-.upload-zone:hover,.upload-zone.drag-over{border-color:var(--primary);background:var(--primary-t)}
-.upload-zone h3{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--t1)}
-.upload-zone p{color:var(--t2);font-size:13px;margin-bottom:12px}
-#pdfFile{display:none}
+/* UPLOAD */
+.upzone{border:1.5px dashed var(--bd);border-radius:var(--rad);padding:24px 18px;text-align:center;margin-bottom:14px;cursor:pointer;transition:all .18s var(--ease);background:var(--bg)}
+.upzone:hover,.upzone.dov{border-color:var(--p);background:var(--pt)}
+#pdfFile,#billetFile{display:none}
 
-/* ===== SPOTLIGHT ===== */
-.overlay-bg{position:fixed;inset:0;background:rgba(0,0,0,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
-.overlay-bg.show{display:flex}
-.spotlight{background:var(--surf);border-radius:16px;width:100%;max-width:620px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--bd-l)}
-.sp-input-wrap{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bd-l)}
-.sp-input-wrap svg{width:18px;height:18px;stroke:var(--t3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.sp-input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;color:var(--t1);background:transparent}
-.sp-close{font-size:10.5px;background:var(--bd-l);padding:2px 7px;border-radius:4px;color:var(--t2);cursor:pointer;border:none;font-family:inherit}
-.sp-results{max-height:55vh;overflow-y:auto;padding:6px 0}
-.sp-section{font-size:9.5px;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:8px 20px 5px}
-.sp-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;transition:background .1s}
-.sp-item:hover{background:var(--bg)}
-.sp-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0}
-.sp-icon.a{background:var(--primary-t);color:var(--primary)}
-.sp-icon.l{background:#deeef5;color:#0d4a66}
-.sp-icon.c{background:#fef7d8;color:var(--warn-t)}
-.sp-item-t{font-size:13.5px;font-weight:500;color:var(--t1)}
-.sp-item-s{font-size:11.5px;color:var(--t3);margin-top:1px}
-.sp-empty{padding:28px 20px;text-align:center;color:var(--t3);font-size:13px}
-.sp-hints{padding:10px 20px;border-top:1px solid var(--bd-l)}
-.sp-hint{display:inline-block;background:var(--bg);border:1px solid var(--bd-l);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--t3);margin:2px;cursor:pointer;transition:all .1s}
-.sp-hint:hover{background:var(--primary-t);color:var(--primary);border-color:var(--primary)}
+/* COST REF */
+.cref-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.cref-card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:14px 16px}
+.cref-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bdl)}
+.cref-row:last-child{border-bottom:none}
+.cref-lbl{flex:1;font-size:12.5px;color:var(--t1)}
+.cref-inp{background:var(--bg);border:1px solid var(--bdl);border-radius:6px;padding:4px 8px;font-size:12.5px;color:var(--t1);outline:none;width:120px;text-align:right;font-family:inherit}
+.cref-inp:focus{border-color:var(--p)}
+.cref-save{background:var(--p);color:#fff;border:none;padding:3px 9px;border-radius:5px;font-size:11.5px;cursor:pointer;font-family:inherit}
 
-/* ===== MODAL ===== */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-bg.show{display:flex}
-.modal{background:var(--surf);border-radius:16px;width:100%;max-width:500px;box-shadow:var(--shadow-lg);overflow:hidden}
-.modal-head{padding:22px 22px 12px}
-.modal-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-.modal-icon-wrap svg{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.modal-ttl{font-size:17px;font-weight:600;margin-bottom:5px}
-.modal-sub{font-size:13.5px;color:var(--t2);line-height:1.5}
-.modal-body{padding:6px 22px 0}
-.modal-info{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:12px 14px;font-size:12.5px;color:var(--t2);margin:10px 0}
-.modal-row{display:flex;justify-content:space-between;padding:2.5px 0}
-.modal-row strong{color:var(--t1);font-weight:600}
-.modal-actions{padding:18px 22px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd-l);margin-top:16px;flex-wrap:wrap}
+/* FINANCIAL */
+.fin-chart{height:160px;display:flex;align-items:flex-end;gap:3px;padding:0 4px}
+.fin-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
+.fin-bar-stk{width:100%;display:flex;flex-direction:column;align-items:stretch;border-radius:3px 3px 0 0;overflow:hidden}
+.fin-bar-seg{width:100%;transition:height .6s var(--ease)}
+.fin-xlabel{font-size:9px;color:var(--t4);text-align:center;white-space:nowrap}
+.fin-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+.fin-leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2)}
+.fin-leg-dot{width:8px;height:8px;border-radius:2px}
+.proj-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.proj-card{min-width:110px;background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:12px;text-align:center;flex-shrink:0}
+.proj-year{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.proj-val{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:4px}
+.proj-conf{font-size:11px;color:var(--t2)}
 
-/* ===== MISC ===== */
-.loading{text-align:center;padding:36px;color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--bd-l);border-top-color:var(--primary);border-radius:50%;animation:spin .65s linear infinite}
+/* SPOTLIGHT */
+.spov{position:fixed;inset:0;background:rgba(0,0,0,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
+.spov.on{display:flex}
+.spbox{background:var(--s);border-radius:14px;width:100%;max-width:600px;box-shadow:var(--shl);overflow:hidden;border:1px solid var(--bdl)}
+.sp-iw{display:flex;align-items:center;gap:11px;padding:14px 18px;border-bottom:1px solid var(--bdl)}
+.sp-iw svg{width:16px;height:16px;stroke:var(--t3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sp-i{flex:1;border:none;outline:none;font-size:15px;font-family:inherit;color:var(--t1);background:transparent}
+.sp-esc{font-size:10px;background:var(--bdl);padding:2px 7px;border-radius:4px;color:var(--t2);cursor:pointer;border:none;font-family:inherit}
+.sp-res{max-height:52vh;overflow-y:auto;padding:5px 0}
+.sp-sec{font-size:9.5px;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:7px 18px 4px}
+.sp-it{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;transition:background .1s}
+.sp-it:hover{background:var(--bg)}
+.sp-ico{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.sp-ico.a{background:var(--pt);color:var(--p)}.sp-ico.l{background:var(--bt);color:var(--b)}.sp-ico.c{background:#fef7d8;color:var(--wt)}
+.sp-t{font-size:13px;font-weight:500;color:var(--t1)}
+.sp-s{font-size:11px;color:var(--t3);margin-top:1px}
+.sp-empty{padding:24px 18px;text-align:center;color:var(--t3);font-size:12.5px}
+.hints{padding:9px 18px;border-top:1px solid var(--bdl)}
+.hint{display:inline-block;background:var(--bg);border:1px solid var(--bdl);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--t3);margin:2px;cursor:pointer;transition:all .1s}
+.hint:hover{background:var(--pt);color:var(--p);border-color:var(--p)}
+
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:18px}
+.mov.on{display:flex}
+.mbox{background:var(--s);border-radius:14px;width:100%;max-width:480px;box-shadow:var(--shl);overflow:hidden}
+.mhead{padding:20px 20px 10px}
+.mic{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+.mic svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mttl{font-size:16px;font-weight:600;margin-bottom:4px}
+.msub{font-size:13px;color:var(--t2);line-height:1.5}
+.mbody{padding:5px 20px 0}
+.minfo{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:11px 13px;font-size:12px;color:var(--t2);margin:9px 0}
+.mrow{display:flex;justify-content:space-between;padding:2px 0}
+.mrow strong{color:var(--t1);font-weight:600}
+.mact{padding:16px 20px;display:flex;gap:7px;justify-content:flex-end;border-top:1px solid var(--bdl);margin-top:14px;flex-wrap:wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--t1);color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:500;opacity:0;transform:translateY(8px);transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shl)}
+.toast.show{opacity:1;transform:none}
+
+/* MISC */
+.loading{text-align:center;padding:32px;color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
+.spin{display:inline-block;width:15px;height:15px;border:2px solid var(--bdl);border-top-color:var(--p);border-radius:50%;animation:spin .65s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty{padding:36px;text-align:center;color:var(--t3);font-size:13px}
-.err-msg{background:var(--danger-t);color:var(--danger);padding:10px 13px;border-radius:var(--r-sm);font-size:13px;border:1px solid #f5c6c6;margin:8px 0}
-.ok-msg{background:#e8f5ec;color:#1f5f33;padding:10px 13px;border-radius:var(--r-sm);font-size:13px;border:1px solid #c5e3d0;margin:8px 0}
-.pagination{display:flex;justify-content:space-between;align-items:center;padding:10px 2px;color:var(--t2);font-size:12.5px}
-.summary-bar{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:9px 13px;margin-bottom:10px;font-size:12.5px;color:var(--t2)}
-.summary-bar strong{color:var(--t1);font-weight:600}
-.pdf-link{color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px;display:inline-flex;align-items:center;gap:4px}
-.pdf-link svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-a{color:var(--primary);text-decoration:none}
+.empty{padding:32px;text-align:center;color:var(--t3);font-size:13px}
+.emsg{background:var(--rt);color:var(--r);padding:9px 12px;border-radius:var(--rads);font-size:12.5px;border:1px solid #f5c6c6;margin:7px 0}
+.omsg{background:#e8f5ec;color:#1f5f33;padding:9px 12px;border-radius:var(--rads);font-size:12.5px;border:1px solid #c5e3d0;margin:7px 0}
+.pag{display:flex;justify-content:space-between;align-items:center;padding:9px 2px;color:var(--t2);font-size:12px}
+.sbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads);padding:8px 12px;margin-bottom:9px;font-size:12px;color:var(--t2)}
+.sbar strong{color:var(--t1);font-weight:600}
+.plink{color:var(--p);text-decoration:none;font-weight:500;font-size:12px;display:inline-flex;align-items:center;gap:4px}
+.plink svg{width:11px;height:11px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.fmt-brl{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="brand-mark">PR</div>
-    <div class="brand-text">
-      <div class="brand-name">EnvLicense</div>
-      <div class="brand-sub">PetroRecôncavo</div>
-    </div>
+<aside class="sb" id="sb">
+  <div class="sb-brand">
+    <div class="sb-mark">PR</div>
+    <div class="sb-text"><div class="sb-name">EnvLicense</div><div class="sb-sub">PetroRecôncavo</div></div>
   </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Geral</div>
-    <button class="nav-btn active" data-tab="dashboard">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
-      <span class="nav-label-text">Visão executiva</span>
-    </button>
+  <div class="sb-section">
+    <div class="sb-lbl">Geral</div>
+    <button class="nb on" data-tab="dashboard"><span class="nb-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span><span class="nb-lbl">Visão executiva</span></button>
   </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Documentos</div>
-    <button class="nav-btn" data-tab="licenses">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-      <span class="nav-label-text">Licenças</span>
-    </button>
-    <button class="nav-btn" data-tab="assets">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
-      <span class="nav-label-text">Ativos</span>
-    </button>
-    <button class="nav-btn" data-tab="conditions">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-      <span class="nav-label-text">Condicionantes</span>
-    </button>
+  <div class="sb-section">
+    <div class="sb-lbl">Documentos</div>
+    <button class="nb" data-tab="docs"><span class="nb-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="nb-lbl">Central documental</span></button>
+    <button class="nb" data-tab="assets"><span class="nb-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span><span class="nb-lbl">Ativos</span></button>
+    <button class="nb" data-tab="conditions"><span class="nb-ic"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="nb-lbl">Condicionantes</span></button>
   </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Planejamento</div>
-    <button class="nav-btn" data-tab="planning">
-      <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-      <span class="nav-label-text">Planejamento regulatório</span>
-    </button>
+  <div class="sb-section">
+    <div class="sb-lbl">Planejamento</div>
+    <button class="nb" data-tab="planning"><span class="nb-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span><span class="nb-lbl">Gestão financeira regulatória</span></button>
   </div>
-
-  <div class="sidebar-footer">
-    <div style="display:flex;align-items:center;gap:8px">
-      <div class="sidebar-version">v5</div>
-      <div class="sidebar-footer-text">EnvLicense · v5.3</div>
-    </div>
+  <div class="sb-foot">
+    <div style="display:flex;align-items:center;gap:8px"><div class="sb-ver">v5</div><div class="sb-ft">EnvLicense · v5.4</div></div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <main id="main">
   <div class="topbar">
-    <div class="topbar-title" id="topbar-title">Visão executiva</div>
-    <button class="search-box" onclick="openSpotlight()">
+    <div class="tb-title" id="tb-ttl">Visão executiva</div>
+    <button class="sp-btn" onclick="openSp()">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span class="s-placeholder">Buscar ativos, licenças, campos…</span>
-      <span class="s-shortcut">⌘K</span>
+      <span class="sp-ph">Buscar ativos, licenças, campos…</span>
+      <span class="sp-kc">⌘K</span>
     </button>
   </div>
-  <div class="content">
-    <div id="app"><div class="loading"><span class="spinner"></span> Carregando</div></div>
-  </div>
+  <div class="cnt"><div id="app"><div class="loading"><span class="spin"></span> Carregando</div></div></div>
 </main>
 
-<!-- SPOTLIGHT -->
-<div class="overlay-bg" id="spotlight" onclick="if(event.target===this)closeSpotlight()">
-  <div class="spotlight">
-    <div class="sp-input-wrap">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="sp-input" id="spInput" placeholder="Buscar ou tentar: 'licenças vencendo', 'ativos sem licença'…">
-      <button class="sp-close" onclick="closeSpotlight()">esc</button>
-    </div>
-    <div class="sp-results" id="spResults">
-      <div class="sp-hints">
-        <div style="font-size:10.5px;color:var(--t4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Sugestões</div>
-        <span class="sp-hint" onclick="runHint('ativos sem licença')">ativos sem licença</span>
-        <span class="sp-hint" onclick="runHint('licenças vencendo')">licenças vencendo</span>
-        <span class="sp-hint" onclick="runHint('condicionantes pendentes')">condicionantes pendentes</span>
-        <span class="sp-hint" onclick="runHint('INEMA')">INEMA</span>
-        <span class="sp-hint" onclick="runHint('PRODUZINDO')">em produção</span>
-      </div>
-    </div>
+<div class="spov" id="spov" onclick="if(event.target===this)closeSp()">
+  <div class="spbox">
+    <div class="sp-iw"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sp-i" id="sp-i" placeholder="Buscar ou tentar: 'ativos sem licença', 'INEMA'…"><button class="sp-esc" onclick="closeSp()">esc</button></div>
+    <div class="sp-res" id="sp-r"></div>
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modalContent"></div>
+<div class="mov" id="mov" onclick="if(event.target===this)closeMod()">
+  <div class="mbox" id="mbox"></div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const API="https://envlicense-backend.onrender.com";
-let filterCache=null, assetState={page:0,filters:{},search:""}, spTimer=null, pendingFile=null;
+let filterCache=null,assetState={page:0,filters:{},search:""},spT=null,pendingFile=null;
+const TABS={"dashboard":"Visão executiva","docs":"Central documental","assets":"Ativos","conditions":"Condicionantes","planning":"Gestão financeira regulatória"};
 
-const PAGES={
-  "dashboard":"Visão executiva",
-  "assets":"Ativos",
-  "licenses":"Licenças",
-  "conditions":"Condicionantes",
-  "planning":"Planejamento regulatório"
-};
-
-// ===== SAFE FETCH =====
+// ===== UTILS =====
 async function sf(url,opts={}){
   const ctrl=new AbortController();
-  const t=setTimeout(()=>ctrl.abort(),opts.timeout||15000);
-  try{
-    const r=await fetch(url,{...opts,signal:ctrl.signal});
-    clearTimeout(t);
-    if(!r.ok){console.error("HTTP",r.status,url);return null;}
-    return await r.json();
-  }catch(e){clearTimeout(t);console.error("fetch",e.message,url);return null;}
+  const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
+  try{const r=await fetch(url,{...opts,signal:ctrl.signal});clearTimeout(t);if(!r.ok)return null;return await r.json();}
+  catch(e){clearTimeout(t);console.error("fetch",e.message,url);return null;}
 }
-
-// Pré-aquece backend
+function fmtBRL(v){if(!v&&v!==0)return"—";return"R$ "+Number(v).toLocaleString("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:0});}
+function showToast(msg,dur=2800){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),dur);}
 fetch(`${API}/health`).catch(()=>{});
 
 // ===== NAV =====
-document.querySelectorAll(".nav-btn").forEach(b=>{
-  b.addEventListener("click",()=>show(b.dataset.tab,b));
-});
-
+document.querySelectorAll(".nb").forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab,b)));
 async function show(tab,btn){
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
-  else{const s=document.querySelector(`.nav-btn[data-tab="${tab}"]`);if(s)s.classList.add("active");}
-  document.getElementById("topbar-title").textContent=PAGES[tab]||tab;
+  document.querySelectorAll(".nb").forEach(b=>b.classList.remove("on"));
+  if(btn)btn.classList.add("on");
+  else{const s=document.querySelector(`.nb[data-tab="${tab}"]`);if(s)s.classList.add("on");}
+  document.getElementById("tb-ttl").textContent=TABS[tab]||tab;
   const app=document.getElementById("app");
-  app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
+  app.innerHTML='<div class="loading"><span class="spin"></span> Carregando</div>';
   try{
-    if(tab==="dashboard") await renderDashboard();
-    else if(tab==="assets") await renderAssets();
-    else if(tab==="licenses") await renderLicenses();
-    else if(tab==="conditions") await renderConditions();
-    else if(tab==="planning") await renderPlanning();
-  }catch(e){app.innerHTML=`<div class="err-msg">Erro: ${e.message}</div>`;}
+    if(tab==="dashboard")await renderDashboard();
+    else if(tab==="docs")await renderDocs();
+    else if(tab==="assets")await renderAssets();
+    else if(tab==="conditions")await renderConditions();
+    else if(tab==="planning")await renderPlanning();
+  }catch(e){app.innerHTML=`<div class="emsg">Erro: ${e.message}</div>`;}
 }
 
 // ===== SPOTLIGHT =====
-function openSpotlight(){
-  document.getElementById("spotlight").classList.add("show");
-  setTimeout(()=>document.getElementById("spInput").focus(),50);
-}
-function closeSpotlight(){
-  document.getElementById("spotlight").classList.remove("show");
-  document.getElementById("spInput").value="";
-  resetSpotlight();
-}
-function resetSpotlight(){
-  document.getElementById("spResults").innerHTML=`<div class="sp-hints">
-    <div style="font-size:10.5px;color:var(--t4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Sugestões</div>
-    <span class="sp-hint" onclick="runHint('ativos sem licença')">ativos sem licença</span>
-    <span class="sp-hint" onclick="runHint('licenças vencendo')">licenças vencendo</span>
-    <span class="sp-hint" onclick="runHint('condicionantes pendentes')">condicionantes pendentes</span>
-    <span class="sp-hint" onclick="runHint('INEMA')">INEMA</span>
-    <span class="sp-hint" onclick="runHint('PRODUZINDO')">em produção</span>
-  </div>`;
-}
-function runHint(q){document.getElementById("spInput").value=q;doSearch(q);}
-document.getElementById("spInput").addEventListener("input",e=>{
-  const q=e.target.value.trim();
-  clearTimeout(spTimer);
-  if(q.length<2){resetSpotlight();return;}
-  spTimer=setTimeout(()=>doSearch(q),250);
-});
-document.addEventListener("keydown",e=>{
-  if((e.metaKey||e.ctrlKey)&&e.key==="k"){e.preventDefault();openSpotlight();}
-  if(e.key==="Escape"){closeSpotlight();closeModal();}
-});
-
+function openSp(){document.getElementById("spov").classList.add("on");setTimeout(()=>document.getElementById("sp-i").focus(),50);}
+function closeSp(){document.getElementById("spov").classList.remove("on");document.getElementById("sp-i").value="";showHints();}
+function showHints(){document.getElementById("sp-r").innerHTML=`<div class="hints"><div style="font-size:9.5px;color:var(--t4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Sugestões</div><span class="hint" onclick="runHint('ativos sem licença')">ativos sem licença</span><span class="hint" onclick="runHint('licenças vencendo')">licenças vencendo</span><span class="hint" onclick="runHint('condicionantes pendentes')">condicionantes pendentes</span><span class="hint" onclick="runHint('INEMA')">INEMA</span><span class="hint" onclick="runHint('PRODUZINDO')">em produção</span></div>`;}
+showHints();
+function runHint(q){document.getElementById("sp-i").value=q;doSearch(q);}
+document.getElementById("sp-i").addEventListener("input",e=>{const q=e.target.value.trim();clearTimeout(spT);if(q.length<2){showHints();return;}spT=setTimeout(()=>doSearch(q),250);});
+document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key==="k"){e.preventDefault();openSp();}if(e.key==="Escape"){closeSp();closeMod();}});
 async function doSearch(q){
-  const div=document.getElementById("spResults");
-  div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  // Interpretação semântica básica
-  let url=`${API}/search?q=${encodeURIComponent(q)}`;
-  const ql=q.toLowerCase();
-  let extraFilter="";
-  if(ql.includes("sem licença")||ql.includes("sem licenca")) extraFilter="missing";
-  else if(ql.includes("vencendo")||ql.includes("vencida")) extraFilter="expired";
-
-  const r=await sf(url);
+  const div=document.getElementById("sp-r");
+  div.innerHTML='<div class="loading"><span class="spin"></span></div>';
+  const ql=q.toLowerCase();let extra="";
+  if(ql.includes("sem licença"))extra="missing";else if(ql.includes("vencendo")||ql.includes("vencida"))extra="expired";
+  const r=await sf(`${API}/search?q=${encodeURIComponent(q)}`);
   if(!r){div.innerHTML='<div class="sp-empty">Erro na busca</div>';return;}
-
   let html="";
-  // Atalhos semânticos
-  if(extraFilter){
-    html+=`<div class="sp-section">Ação rápida</div>
-    <div class="sp-item" onclick="closeSpotlight();assetState={page:0,filters:{aStatus:'${extraFilter}'},search:''};show('assets')">
-      <div class="sp-icon a">→</div>
-      <div><div class="sp-item-t">Ver ativos: ${extraFilter==="missing"?"sem licença":"licença vencida"}</div><div class="sp-item-s">Filtrar automaticamente na aba Ativos</div></div>
-    </div>`;
-  }
-  if(r.assets?.length){
-    html+=`<div class="sp-section">Ativos</div>`;
-    html+=r.assets.map(a=>`<div class="sp-item" onclick="closeSpotlight();assetState={page:0,filters:{},search:'${a.code}'};show('assets')">
-      <div class="sp-icon a">AT</div><div><div class="sp-item-t">${a.code||'—'}</div><div class="sp-item-s">${a.field||'—'} · ${a.state||'—'} · ${a.situation||'—'}</div></div>
-    </div>`).join('');
-  }
-  if(r.licenses?.length){
-    html+=`<div class="sp-section">Licenças</div>`;
-    html+=r.licenses.map(l=>`<div class="sp-item" onclick="closeSpotlight();show('licenses')">
-      <div class="sp-icon l">LI</div><div><div class="sp-item-t">${l.number||'—'}</div><div class="sp-item-s">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div>
-    </div>`).join('');
-  }
-  if(r.conditions?.length){
-    html+=`<div class="sp-section">Condicionantes</div>`;
-    html+=r.conditions.map(c=>`<div class="sp-item" onclick="closeSpotlight();show('conditions')">
-      <div class="sp-icon c">CD</div><div><div class="sp-item-t">${(c.description||'').slice(0,60)}…</div><div class="sp-item-s">${c.category||'—'} · ${c.status||'—'}</div></div>
-    </div>`).join('');
-  }
-  if(!html) html=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
+  if(extra) html+=`<div class="sp-sec">Ação rápida</div><div class="sp-it" onclick="closeSp();assetState={page:0,filters:{aSt:'${extra}'},search:''};show('assets')"><div class="sp-ico a">→</div><div><div class="sp-t">Ver ativos: ${extra==="missing"?"sem licença":"licença vencida"}</div><div class="sp-s">Filtrar automaticamente</div></div></div>`;
+  if(r.assets?.length){html+=`<div class="sp-sec">Ativos</div>`;html+=r.assets.map(a=>`<div class="sp-it" onclick="closeSp();assetState={page:0,filters:{},search:'${a.code}'};show('assets')"><div class="sp-ico a">AT</div><div><div class="sp-t">${a.code||'—'}</div><div class="sp-s">${a.field||'—'} · ${a.state||'—'}</div></div></div>`).join('');}
+  if(r.licenses?.length){html+=`<div class="sp-sec">Licenças</div>`;html+=r.licenses.map(l=>`<div class="sp-it" onclick="closeSp();show('docs')"><div class="sp-ico l">LI</div><div><div class="sp-t">${l.number||'—'}</div><div class="sp-s">${l.agency||'—'}</div></div></div>`).join('');}
+  if(r.conditions?.length){html+=`<div class="sp-sec">Condicionantes</div>`;html+=r.conditions.map(c=>`<div class="sp-it" onclick="closeSp();show('conditions')"><div class="sp-ico c">CD</div><div><div class="sp-t">${(c.description||'').slice(0,55)}…</div><div class="sp-s">${c.status||'—'}</div></div></div>`).join('');}
+  if(!html)html=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
   div.innerHTML=html;
 }
 
 // ===== MODAL =====
-function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalBg").classList.add("show");}
-function closeModal(){document.getElementById("modalBg").classList.remove("show");}
+function openMod(html){document.getElementById("mbox").innerHTML=html;document.getElementById("mov").classList.add("on");}
+function closeMod(){document.getElementById("mov").classList.remove("on");}
 
-// ===== HELPERS VISUAIS =====
-function bCompliance(s){const m={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[c,t]=m[s]||["b-other",s];return`<span class="badge ${c}"><span class="bdot" style="background:currentColor;opacity:.5"></span>${t}</span>`;}
-function bSit(s){if(!s)return'<span class="badge b-other">—</span>';const m={"PRODUZINDO":"b-ok","INJETANDO":"b-pend"};return`<span class="badge ${m[s]||'b-other'}">${s.slice(0,16)}</span>`;}
-function bState(s){return`<span class="badge b-other">${s||'—'}</span>`;}
+// ===== VISUAL HELPERS =====
+function bComp(s){const m={ok:["b-ok","Licença ativa"],upcoming:["b-up","Próxima ao venc."],expired:["b-ex","Licença vencida"],missing:["b-mi","Sem licença"],critical:["b-cr","⚠ Crítico"]};const[c,t]=m[s]||["b-ot",s];return`<span class="badge ${c}">${t}</span>`;}
+function bSit(s){if(!s)return'<span class="badge b-ot">—</span>';const m={"PRODUZINDO":"b-ok","INJETANDO":"b-pe"};return`<span class="badge ${m[s]||'b-ot'}">${s.slice(0,16)}</span>`;}
+function bState(s){return`<span class="badge b-ot">${s||'—'}</span>`;}
 
-function buildDonut(segs,size=160,thick=20,cBig,cSm){
-  const tot=segs.reduce((a,x)=>a+x.v,0);
-  const cx=size/2,cy=size/2,r=size/2-thick/2,C=2*Math.PI*r;
-  if(!tot)return`<div class="donut-svg-wrap"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bd-l)" stroke-width="${thick}"/></svg><div class="donut-center"><div class="big">0</div><div class="sm">${cSm||''}</div></div></div>`;
-  let off=0;
-  const circles=segs.map(seg=>{const f=seg.v/tot;const len=C*f;const d=`${len} ${C-len}`;const c=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.c}" stroke-width="${thick}" stroke-dasharray="${d}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"/>`;off+=len;return c;}).join('');
-  return`<div class="donut-svg-wrap"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bd-l)" stroke-width="${thick}"/>${circles}</svg><div class="donut-center"><div class="big">${cBig}</div><div class="sm">${cSm||''}</div></div></div>`;
+// ===== THERMOMETER =====
+function renderThermo(th,compact=false){
+  const cols={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",red:"#9D2928",gray:"#86868b"};
+  const bgs={green:"#e8f5ec","yellow-green":"#f0f7e0",yellow:"#fef7d8",red:"#fbeded",gray:"var(--bdl)"};
+  const col=cols[th.level]||"#86868b";
+  const bg=bgs[th.level]||"var(--bdl)";
+  if(compact) return `
+    <div class="thermo" style="margin-bottom:12px">
+      <div class="th-top">
+        <div><div class="th-title">Indicador de conformidade de condicionantes</div><div class="th-pct" style="color:${col};font-size:24px">${th.pct}%</div><div class="th-label" style="font-size:12px">${th.label}</div></div>
+        <div class="th-badge" style="background:${bg};color:${col}"><span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${th.level==="green"?"Adequado":th.level==="yellow-green"?"Operacionais OK":th.level==="red"?"Crítico":"Atenção"}<div class="th-tooltip">${th.tooltip||th.label}</div></div>
+      </div>
+      <div class="th-bar-bg"><div class="th-bar" style="width:${th.pct}%;background:${col}"></div></div>
+    </div>`;
+  return `
+    <div class="thermo">
+      <div class="th-top">
+        <div><div class="th-title">Indicador de conformidade de condicionantes</div><div class="th-pct" style="color:${col}">${th.pct}%</div><div class="th-label">${th.label}</div></div>
+        <div style="text-align:right">
+          <div class="th-badge" style="background:${bg};color:${col}"><span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${th.level==="green"?"Adequado":th.level==="yellow-green"?"Operacionais OK":th.level==="red"?"Crítico":"Atenção necessária"}<div class="th-tooltip">${th.tooltip||th.label}</div></div>
+          <div style="font-size:11px;color:var(--t3);margin-top:7px">Poços ativos: <strong style="color:${col}">${th.pct_active||0}%</strong></div>
+          ${th.critical_overdue>0?`<div style="font-size:11px;color:var(--r);margin-top:3px;font-weight:600">⚠ ${th.critical_overdue} críticas vencidas</div>`:""}
+        </div>
+      </div>
+      <div class="th-bar-bg"><div class="th-bar" style="width:${th.pct}%;background:${col}"></div></div>
+      <div class="th-meta">
+        <span class="th-stat"><strong>${th.completed_pairs||0}</strong> / ${th.total_pairs||0} pares atendidos</span>
+        <span class="th-stat">Ativos operacionais: <strong>${th.active_completed||0}</strong>/${th.active_total||0}</span>
+      </div>
+    </div>`;
 }
-function buildLegend(segs,tot){return segs.map(s=>{const p=tot?Math.round(s.v/tot*100):0;return`<div class="legend-item"><span class="legend-dot" style="background:${s.c}"></span><span class="legend-lbl">${s.l}</span><span class="legend-val">${s.v}<span class="legend-pct">(${p}%)</span></span></div>`;}).join('');}
 
 // ===== DASHBOARD =====
 async function renderDashboard(){
   const app=document.getElementById("app");
-  const [dash,comp,byField,byCat,thermo]=await Promise.all([
-    sf(`${API}/dashboard`),
-    sf(`${API}/compliance/summary`),
-    sf(`${API}/compliance/by_field`),
-    sf(`${API}/conditions/by_category`),
-    sf(`${API}/conditions/thermometer`)
+  const [dash,comp,byField,thermo,finSum]=await Promise.all([
+    sf(`${API}/dashboard`),sf(`${API}/compliance/summary`),sf(`${API}/compliance/by_field`),
+    sf(`${API}/conditions/thermometer`),sf(`${API}/financial/summary`)
   ]);
   const d=dash||{},c=comp||{},sc=c.status_counts||{};
-  const th=thermo||{pct:0,level:"gray",label:"Sem dados",pct_active:0};
-  const bf=byField||{problem_fields:[],conditions_by_field:[]};
-  const bc=byCat||{items:[],total:0};
+  const th=thermo||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0};
+  const bf=byField||{all_fields:[],conditions_by_field:[]};
+  const fs=finSum||{total_realizado:0,total_provisionado:0,grand_total:0};
+  const nCrit=(sc.critical||0)+(sc.expired||0)+(sc.missing||0);
+  const nTotal=d.total_assets||0;
+  // Resumo executivo automático
+  const topField=(bf.all_fields||[]).find(f=>f.wells_critical>0);
+  let execSummary=`<strong>${nTotal}</strong> ativos monitorados.`;
+  if(th.critical_overdue>0) execSummary+=` <span style="color:var(--r);font-weight:600">${th.critical_overdue} condicionantes críticas vencidas.</span>`;
+  if(nCrit>0) execSummary+=` ${nCrit} ativos sem cobertura regulatória adequada.`;
+  if(topField) execSummary+=` Campo <strong>${topField.field}</strong> concentra maior exposição.`;
+  execSummary+=` Conformidade geral: <strong style="color:${th.level==='green'?'var(--p)':th.level==='red'?'var(--r)':'var(--wt)'}">${th.pct}%</strong>.`;
 
-  // Termômetro
-  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
-  const thermoCol=thermoColors[th.level]||"var(--bd)";
-  const thermoBg={green:"#e8f5ec","yellow-green":"#f0f7e0",yellow:"#fef7d8",gray:"var(--bd-l)"};
-  const thermoBadgeBg=thermoBg[th.level]||"var(--bd-l)";
-  const thermoTextColor={green:"#1f5f33","yellow-green":"#3d5a00",yellow:"#7a5e00",gray:"var(--t2)"};
+  // Barras campos
+  const maxW=Math.max(1,...(bf.all_fields||[]).map(x=>x.total_wells||0));
+  const fieldBars=(bf.all_fields||[]).slice(0,6).map(f=>{
+    const lic=f.wells_licensed||0;const pct=Math.round(lic/f.total_wells*100);
+    const col=pct===100?"var(--p)":pct>=70?"var(--wg)":"var(--r)";
+    return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(lic/maxW*100)}%;background:${col}"></span></span><span class="bval">${lic}/${f.total_wells}<span style="font-size:10px;color:var(--t3)"> (${pct}%)</span></span></li>`;
+  }).join('')||'<div class="empty">Sem dados de campos</div>';
 
-  // Agenda regulatória — simula vencimentos próximos
-  const today=new Date();
-  function daysTo(dateStr){if(!dateStr)return null;return Math.round((new Date(dateStr)-today)/(1000*60*60*24));}
-
-  // Barras campos licenciados
-  const maxW=Math.max(1,...(bf.conditions_by_field||[]).map(x=>x.total_conditions||0));
+  const maxC=Math.max(1,...(bf.conditions_by_field||[]).map(x=>x.total_conditions||0));
   const condBars=(bf.conditions_by_field||[]).slice(0,6).map(f=>{
-    const pct=Math.round((f.total_conditions||0)/maxW*100);
-    const atd=f.total_conditions-(f.expired_conditions||0);
-    return`<li class="bar-item"><span class="bar-label" title="${f.field}">${(f.field||'').slice(0,16)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:var(--primary-l)"></span></span><span class="bar-val">${atd}/<strong style="color:var(--t2)">${f.total_conditions}</strong></span></li>`;
-  }).join('')||'<div class="empty">Sem dados</div>';
-
-  const maxWP=Math.max(1,...(bf.problem_fields||[]).map(x=>x.total_wells||0));
-  const assetBars=(bf.problem_fields||[]).slice(0,6).map(f=>{
-    const lic=f.total_wells-(f.wells_critical||0);
-    const pct=Math.round(lic/f.total_wells*100);
-    return`<li class="bar-item"><span class="bar-label" title="${f.field}">${(f.field||'').slice(0,16)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:var(--primary)"></span></span><span class="bar-val">${lic}/${f.total_wells} <span style="font-size:11px;color:var(--t3)">(${pct}%)</span></span></li>`;
-  }).join('')||'<div class="empty">Sem campos críticos</div>';
-
-  // Donut compliance
-  const compSegs=[
-    {l:"Licença ativa",v:sc.ok||0,c:"#4EA72E"},
-    {l:"Próxima ao vencimento",v:sc.upcoming||0,c:"#F9CE29"},
-    {l:"Licença vencida",v:sc.expired||0,c:"#9D2928"},
-    {l:"Sem licença",v:sc.missing||0,c:"#6b1c1c"}
-  ];
-  const totC=compSegs.reduce((a,x)=>a+x.v,0);
-
-  // Cenário recomendado
-  const nCritical=(sc.expired||0)+(sc.missing||0);
-  const nActive=(c.producing?.total||0)+(c.injecting?.total||0);
-  const nActiveCritical=(c.producing?.non_compliance||0)+(c.injecting?.non_compliance||0);
-  const scenarioItems=[];
-  if(nActiveCritical>0) scenarioItems.push(`<b>${nActiveCritical}</b> ativos operacionais sem cobertura regulatória — prioridade máxima`);
-  if(th.pct<100&&th.pct_active===100) scenarioItems.push(`Conformidade de poços ativos: 100% — focar nos demais ativos`);
-  if(th.pct===100) scenarioItems.push(`Conformidade total atingida — manter monitoramento`);
-  else if(nCritical>0) scenarioItems.push(`Regularizar ${nCritical} ativos para ampliar cobertura`);
-  scenarioItems.push(`Próximo passo: vincular licenças existentes aos ativos cadastrados`);
+    const atd=f.total_conditions-(f.expired_conditions||0);const pct=f.total_conditions?Math.round(atd/f.total_conditions*100):0;
+    return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(atd/maxC*100)}%;background:var(--pl)"></span></span><span class="bval">${atd}/${f.total_conditions}</span></li>`;
+  }).join('')||'<div class="empty">Sem condicionantes por campo</div>';
 
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Visão executiva</h1>
-      <p class="sub">Conformidade regulatória · ${d.total_assets||0} ativos monitorados</p>
-    </div>
-
-    <!-- KPIs -->
+    <div class="ph"><h1>Visão executiva</h1><p class="sub">Conformidade regulatória · ${nTotal} ativos</p></div>
+    <div style="background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--t2);line-height:1.6;box-shadow:var(--sh)">${execSummary}</div>
     <div class="kpis">
-      <div class="kpi">
-        <div class="kpi-label">Ativos monitorados</div>
-        <div class="kpi-value">${d.total_assets||0}</div>
-        <div class="kpi-sub">${d.total_licenses||0} licenças ativas</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Condicionantes</div>
-        <div class="kpi-value">${d.total_conditions||0}</div>
-        <div class="kpi-sub">${d.upcoming_30d||0} vencem em 30 dias</div>
-        ${d.overdue>0?`<span class="kpi-delta delta-down">▼ ${d.overdue} vencidas</span>`:''}
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Em produção</div>
-        <div class="kpi-value" style="color:var(--primary)">${c.producing?.total||0}</div>
-        <div class="kpi-sub">${c.producing?.non_compliance||0} sem cobertura</div>
-        ${(c.producing?.non_compliance||0)>0?`<span class="kpi-delta delta-down">${c.producing?.pct||0}% expostos</span>`:``}
-      </div>
-      <div class="kpi">
-        <div class="kpi-label">Em injeção</div>
-        <div class="kpi-value" style="color:var(--info)">${c.injecting?.total||0}</div>
-        <div class="kpi-sub">${c.injecting?.non_compliance||0} sem cobertura</div>
-        ${(c.injecting?.non_compliance||0)>0?`<span class="kpi-delta delta-down">${c.injecting?.pct||0}% expostos</span>`:``}
-      </div>
+      <div class="kpi"><div class="kl">Ativos</div><div class="kv">${nTotal}</div><div class="ks">${d.total_licenses||0} licenças</div></div>
+      <div class="kpi"><div class="kl">Condicionantes</div><div class="kv">${d.total_conditions||0}</div><div class="ks">${d.upcoming_30d||0} vencem em 30d</div>${(d.overdue||0)>0?`<span class="kdelta dr">▼ ${d.overdue} vencidas</span>`:''}</div>
+      <div class="kpi"><div class="kl">Em produção</div><div class="kv" style="color:var(--p)">${c.producing?.total||0}</div><div class="ks">${c.producing?.non_compliance||0} sem cobertura</div></div>
+      <div class="kpi"><div class="kl">Em injeção</div><div class="kv" style="color:var(--b)">${c.injecting?.total||0}</div><div class="ks">${c.injecting?.non_compliance||0} sem cobertura</div></div>
+      <div class="kpi"><div class="kl">Provisionado</div><div class="kv fmt-brl" style="font-size:18px">${fmtBRL(fs.total_provisionado)}</div><div class="ks">Realizado: ${fmtBRL(fs.total_realizado)}</div></div>
     </div>
-
-    <!-- TERMÔMETRO -->
-    <div class="thermometer">
-      <div class="thermo-top">
-        <div>
-          <div class="thermo-title">Indicador de conformidade de condicionantes</div>
-          <div class="thermo-pct" style="color:${thermoCol}">${th.pct}%</div>
-          <div class="thermo-label">${th.label}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">Nível de conformidade</div>
-          <span class="thermo-badge" style="background:${thermoBadgeBg};color:${thermoCol}">
-            <span style="width:8px;height:8px;border-radius:50%;background:${thermoCol};display:inline-block"></span>
-            ${th.level==="green"?"Adequado":th.level==="yellow-green"?"Poços ativos OK":"Atenção necessária"}
-          </span>
-          <div style="font-size:11px;color:var(--t3);margin-top:8px">Poços ativos: <strong style="color:${thermoCol}">${th.pct_active||0}%</strong></div>
-        </div>
-      </div>
-      <div class="thermo-bar-wrap"><div class="thermo-bar" style="width:${th.pct}%;background:${thermoCol}"></div></div>
-      <div class="thermo-meta">
-        <span class="thermo-stat"><strong>${th.completed_pairs||0}</strong> / ${th.total_pairs||0} pares condicionante × ativo atendidos</span>
-        <span class="thermo-stat">Poços ativos: <strong>${th.active_completed||0}</strong> / ${th.active_total||0}</span>
-      </div>
-      <div class="thermo-tooltip" title="Verde: 100% de todas as condicionantes atendidas. Amarelo-esverdeado: 100% dos poços em produção/injeção atendidos. Amarelo: outros cenários.">?</div>
+    ${renderThermo(th)}
+    <div class="g2">
+      <div class="card"><div class="ct">Ativos licenciados por campo</div><ul class="blist">${fieldBars}</ul></div>
+      <div class="card"><div class="ct">Condicionantes por campo</div><ul class="blist">${condBars}</ul></div>
     </div>
-
-    <!-- GRID PRINCIPAL -->
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Status regulatório</div>
-        <div class="donut-wrap">
-          ${buildDonut(compSegs,160,20,totC,"Total")}
-          <div class="legend">${buildLegend(compSegs,totC)}</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">Ativos licenciados por campo</div>
-        <ul class="bar-list">${assetBars}</ul>
-      </div>
-    </div>
-
-    <!-- OP CARDS -->
     <div class="op-row">
-      <div class="op-card">
-        <div class="op-accent" style="background:var(--primary-l)"></div>
-        <div class="op-header"><span class="op-header-dot" style="background:var(--primary-l)"></span>Em produção</div>
-        <div class="op-value">${c.producing?.total||0}</div>
-        <div class="op-meta">
-          <span>${c.producing?.non_compliance||0} sem cobertura regulatória</span>
-          ${(c.producing?.pct||0)>0?`<span class="op-critical">${c.producing?.pct||0}% em exposição</span>`:'<span style="color:var(--primary-l)">Sem exposição crítica</span>'}
-        </div>
-      </div>
-      <div class="op-card">
-        <div class="op-accent" style="background:var(--info)"></div>
-        <div class="op-header"><span class="op-header-dot" style="background:var(--info)"></span>Em injeção</div>
-        <div class="op-value">${c.injecting?.total||0}</div>
-        <div class="op-meta">
-          <span>${c.injecting?.non_compliance||0} sem cobertura regulatória</span>
-          ${(c.injecting?.pct||0)>0?`<span class="op-critical">${c.injecting?.pct||0}% em exposição</span>`:'<span style="color:var(--primary-l)">Sem exposição crítica</span>'}
-        </div>
-      </div>
-    </div>
-
-    <!-- CONDICIONANTES POR CAMPO + CENÁRIO -->
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Condicionantes por campo</div>
-        <ul class="bar-list">${condBars}</ul>
-      </div>
-      <div class="scenario">
-        <div class="scenario-header">
-          <div class="scenario-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-          <div>
-            <div class="scenario-title">Cenário recomendado</div>
-            <div class="scenario-sub">Baseado no status atual dos ativos</div>
-          </div>
-        </div>
-        <div class="scenario-items">
-          ${scenarioItems.map(i=>`<div class="scenario-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>${i}</span></div>`).join('')}
-        </div>
-      </div>
+      <div class="op-card"><div class="op-acc" style="background:var(--pl)"></div><div class="op-hdr"><span class="op-dot" style="background:var(--pl)"></span>Em produção</div><div class="op-val">${c.producing?.total||0}</div><div class="op-meta">${c.producing?.non_compliance||0} sem cobertura ${(c.producing?.pct||0)>0?`<span class="op-crit">· ${c.producing?.pct}% expostos</span>`:''}</div></div>
+      <div class="op-card"><div class="op-acc" style="background:var(--b)"></div><div class="op-hdr"><span class="op-dot" style="background:var(--b)"></span>Em injeção</div><div class="op-val">${c.injecting?.total||0}</div><div class="op-meta">${c.injecting?.non_compliance||0} sem cobertura ${(c.injecting?.pct||0)>0?`<span class="op-crit">· ${c.injecting?.pct}% expostos</span>`:''}</div></div>
     </div>`;
 }
 
-// ===== ASSETS =====
-async function renderAssets(){
-  if(!filterCache){filterCache=await sf(`${API}/assets/filters`)||{states:[],agencies:[],fields:[],situations:[]};}
+// ===== CENTRAL DOCUMENTAL =====
+async function renderDocs(){
   const app=document.getElementById("app");
-  const opt=arr=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
+  const costRef=await sf(`${API}/cost-reference`)||{licenses:[],conditions:[]};
   app.innerHTML=`
-    <div class="page-header"><h1>Ativos</h1><p class="sub">Status regulatório dos ativos cadastrados</p></div>
-    <div class="toolbar">
-      <input class="inp" id="aS" placeholder="Buscar código ou campo…" value="${assetState.search}">
-      <select class="sel" id="aAg"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
-      <select class="sel" id="aOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations)}</select>
-      <select class="sel" id="aSt"><option value="">Status: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao vencimento</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option></select>
-      <button class="btn" id="aApply">Filtrar</button>
-      <button class="btn btn-accent" id="aExp">↓ CSV</button>
+    <div class="ph"><h1>Central documental</h1><p class="sub">Upload de licenças e boletos — a IA extrai dados e vincula ativos automaticamente</p></div>
+    <div class="g2" style="margin-bottom:14px">
+      <div>
+        <div class="upzone" id="upzone" onclick="document.getElementById('pdfFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'license')">
+          <div style="font-size:28px;margin-bottom:6px">📄</div>
+          <strong style="font-size:14px">Upload de Licença</strong>
+          <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF da licença ambiental — extração automática de condicionantes e ativos</p>
+          <input type="file" id="pdfFile" accept=".pdf" onchange="uploadDoc('license')">
+          <button class="btn" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
+          <div id="upStatus"></div>
+        </div>
+      </div>
+      <div>
+        <div class="upzone" id="bzone" onclick="document.getElementById('billetFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'billet')">
+          <div style="font-size:28px;margin-bottom:6px">🧾</div>
+          <strong style="font-size:14px">Upload de Boleto</strong>
+          <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF do boleto de taxa — extrai valor real e atualiza custo da licença</p>
+          <input type="file" id="billetFile" accept=".pdf" onchange="uploadDoc('billet')">
+          <button class="btn btn-yg" onclick="event.stopPropagation();document.getElementById('billetFile').click()">Selecionar Boleto</button>
+          <div id="billetStatus"></div>
+        </div>
+      </div>
     </div>
-    <div id="aRes"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
-  ["aAg","aOp","aSt"].forEach(id=>{if(assetState.filters[id])document.getElementById(id).value=assetState.filters[id];});
-  document.getElementById("aApply").onclick=()=>{
-    assetState.filters={aAg:document.getElementById("aAg").value,aOp:document.getElementById("aOp").value,aSt:document.getElementById("aSt").value};
-    assetState.search=document.getElementById("aS").value;assetState.page=0;loadAssets();
-  };
-  document.getElementById("aS").addEventListener("keypress",e=>{if(e.key==="Enter")document.getElementById("aApply").click();});
-  document.getElementById("aExp").onclick=exportAssets;
-  loadAssets();
-}
 
-function buildAParams(){
-  const p=new URLSearchParams();
-  if(assetState.filters.aAg) p.set("agency",assetState.filters.aAg);
-  if(assetState.filters.aOp) p.set("operational",assetState.filters.aOp);
-  if(assetState.filters.aSt) p.set("compliance_status",assetState.filters.aSt);
-  if(assetState.search) p.set("search",assetState.search);
-  return p;
-}
-
-async function loadAssets(){
-  const p=buildAParams();p.set("limit","50");p.set("offset",String(assetState.page*50));
-  const div=document.getElementById("aRes");
-  div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  const r=await sf(`${API}/assets/unified?${p}`,{timeout:30000});
-  if(!r?.items?.length){div.innerHTML='<div class="table-wrap"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
-  const crit=r.items.filter(i=>i.compliance_status==="expired"||i.compliance_status==="missing").length;
-  const rows=r.items.map(a=>{
-    const pdf=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`:'—';
-    return`<tr><td><strong style="font-size:13px">${a.code||'—'}</strong></td><td style="color:var(--t2)">${a.field||'—'}</td><td>${bState(a.state)}</td><td style="color:var(--t2)">${a.agency||'—'}</td><td>${bSit(a.situation)}</td><td>${bCompliance(a.compliance_status)}</td><td style="font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums">${a.expiry_date||'—'}</td><td>${pdf}</td></tr>`;
-  }).join('');
-  const tp=Math.ceil(r.total/50),cur=assetState.page+1;
-  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${crit}</strong> críticos nesta página</div>
-    <div class="table-wrap"><table><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="pagination"><span>Página ${cur} de ${tp}</span><div style="display:flex;gap:6px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?"disabled":""}>← Ant.</button><button class="btn btn-ghost" id="aNext" ${cur>=tp?"disabled":""}>Próx. →</button></div></div>`;
-  document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
-  document.getElementById("aNext").onclick=()=>{if(cur<tp){assetState.page++;loadAssets();}};
-}
-function exportAssets(){window.open(`${API}/assets/export?${buildAParams()}`,'_blank');}
-
-// ===== LICENSES =====
-async function renderLicenses(){
-  const app=document.getElementById("app");
-  app.innerHTML=`
-    <div class="page-header"><h1>Licenças</h1><p class="sub">Documentos ambientais — upload, rastreabilidade e vinculação</p></div>
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfFile').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
-      <div style="font-size:32px;margin-bottom:8px">📄</div>
-      <h3>Subir nova licença em PDF</h3>
-      <p>Clique ou arraste o PDF aqui — a IA extrai condicionantes e vincula ativos automaticamente</p>
-      <input type="file" id="pdfFile" accept=".pdf" onchange="uploadPdf('ask')">
-      <button class="btn" style="margin-top:8px" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
-      <div id="upStatus"></div>
+    <!-- REFERÊNCIA DE CUSTOS -->
+    <div style="margin-bottom:14px">
+      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Valores históricos de referência</div>
+      <div class="cref-grid">
+        <div class="cref-card">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Por tipo de licença</div>
+          ${(costRef.licenses||[]).map(r=>`
+            <div class="cref-row">
+              <span class="cref-lbl">${r.type}</span>
+              <span style="font-size:11px;color:var(--t3);margin-right:4px">Aquisição</span>
+              <input class="cref-inp" type="number" id="lic-acq-${r.type}" value="${r.acquisition||0}" placeholder="R$">
+              <button class="cref-save" onclick="saveLicCost('${r.type}')">✓</button>
+            </div>`).join('')}
+        </div>
+        <div class="cref-card">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Por categoria de condicionante</div>
+          ${(costRef.conditions||[]).map(r=>`
+            <div class="cref-row">
+              <span class="cref-lbl">${r.label}</span>
+              <input class="cref-inp" type="number" id="cond-avg-${r.category}" value="${r.avg_cost||0}" placeholder="R$">
+              <button class="cref-save" onclick="saveCondCost('${r.category}')">✓</button>
+            </div>`).join('')}
+        </div>
+      </div>
     </div>
-    <div id="lList"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
-  await loadLicenses();
-}
-function handleDrop(e){e.preventDefault();document.getElementById("uploadZone").classList.remove("drag-over");const f=e.dataTransfer.files[0];if(f&&f.type==="application/pdf"){const dt=new DataTransfer();dt.items.add(f);document.getElementById("pdfFile").files=dt.files;uploadPdf("ask");}}
 
-async function loadLicenses(){
+    <div id="docList"><div class="loading"><span class="spin"></span> Carregando</div></div>`;
+  await loadDocList();
+}
+
+async function loadDocList(){
   const list=await sf(`${API}/licenses`)||[];
-  const div=document.getElementById("lList");
-  if(!list?.length){div.innerHTML='<div class="table-wrap"><div class="empty">Nenhuma licença cadastrada</div></div>';return;}
-  const trashSvg='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+  const div=document.getElementById("docList");
+  if(!list?.length){div.innerHTML='<div class="tw"><div class="empty">Nenhum documento cadastrado</div></div>';return;}
+  const trash='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
   const rows=list.map(l=>{
-    const pdf=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Abrir</a>`:'—';
+    const pdf=l.pdf_url?`<a class="plink" href="${l.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`:'—';
+    const bol=l.billet_url?`<a class="plink" href="${l.billet_url}" target="_blank" style="color:var(--wg)"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Boleto</a>`:'—';
+    const cost=l.billet_cost?`<span style="color:var(--p);font-weight:600">${fmtBRL(l.billet_cost)}</span>`:l.acquisition_cost?fmtBRL(l.acquisition_cost):'—';
     const lj=JSON.stringify(l).replace(/"/g,'&quot;');
-    return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td style="color:var(--t2)">${l.agency||'—'}</td><td style="font-size:12px;font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td style="color:${l.asset_code?'var(--t1)':'var(--t3)'}"><small>${l.asset_code||'não vinculado'}</small></td><td>${l.n_conditions}</td><td>${pdf}</td><td><button class="icon-btn" data-lic="${lj}">${trashSvg}</button></td></tr>`;
+    return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pe">${l.type}</span></td><td style="color:var(--t2)">${l.agency||'—'}</td><td style="font-size:11.5px">${l.expiry_date||'—'}</td><td style="color:${l.asset_code?'var(--t1)':'var(--t3)'}"><small>${l.asset_code||'não vinculado'}</small></td><td>${l.n_conditions}</td><td>${cost}</td><td>${pdf}</td><td>${bol}</td><td><button class="ib" data-lic="${lj}">${trash}</button></td></tr>`;
   }).join('');
-  div.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  document.querySelectorAll(".icon-btn[data-lic]").forEach(btn=>{btn.onclick=()=>{try{confirmDeleteLicense(JSON.parse(btn.getAttribute("data-lic").replace(/&quot;/g,'"')));}catch(e){alert("Erro");}}; });
+  div.innerHTML=`<div class="tw"><table><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>Custo</th><th>PDF</th><th>Boleto</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  document.querySelectorAll(".ib[data-lic]").forEach(b=>{b.onclick=()=>{try{confirmDel(JSON.parse(b.getAttribute("data-lic").replace(/&quot;/g,'"')));}catch(e){alert("Erro");}};});
 }
 
-function confirmDeleteLicense(l){
-  openModal(`<div class="modal-head"><div class="modal-icon-wrap" style="background:var(--danger-t);color:var(--danger)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="modal-ttl">Excluir licença?</div><div class="modal-sub">Esta ação não pode ser desfeita. As condicionantes vinculadas também serão removidas.</div></div><div class="modal-body"><div class="modal-info"><div class="modal-row"><span>Número</span><strong>${l.number}</strong></div><div class="modal-row"><span>Órgão</span><strong>${l.agency||'—'}</strong></div><div class="modal-row"><span>Ativo(s)</span><strong>${l.asset_code||'não vinculado'}</strong></div><div class="modal-row"><span>Condicionantes</span><strong style="color:var(--danger)">${l.n_conditions}</strong></div></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" onclick="deleteLicense(${l.id})">Excluir</button></div>`);
+async function saveLicCost(type){
+  const acq=parseFloat(document.getElementById(`lic-acq-${type}`)?.value)||0;
+  const r=await fetch(`${API}/cost-reference/license/${type}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({acquisition:acq,renewal:acq*0.5,notes:""})}).then(r=>r.json());
+  if(r.ok)showToast(`Referência ${type} salva`);
 }
-async function deleteLicense(id){closeModal();const r=await sf(`${API}/licenses/${id}`,{method:"DELETE"});if(r?.deleted)await loadLicenses();else alert("Erro ao excluir");}
+async function saveCondCost(cat){
+  const avg=parseFloat(document.getElementById(`cond-avg-${cat}`)?.value)||0;
+  const r=await fetch(`${API}/cost-reference/condition/${cat}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({avg_cost:avg,notes:""})}).then(r=>r.json());
+  if(r.ok)showToast(`Referência ${cat} salva`);
+}
 
-async function uploadPdf(onDup,fileToUse){
-  const fi=document.getElementById("pdfFile");
-  const stat=document.getElementById("upStatus");
-  const file=fileToUse||(fi?.files[0]);
-  if(!file){stat.innerHTML='<div class="err-msg">Selecione um PDF.</div>';return;}
+function handleDrop(e,type){e.preventDefault();document.getElementById(type==="license"?"upzone":"bzone").classList.remove("dov");const f=e.dataTransfer.files[0];if(f&&f.type==="application/pdf"){const dt=new DataTransfer();dt.items.add(f);document.getElementById(type==="license"?"pdfFile":"billetFile").files=dt.files;uploadDoc(type);}}
+
+async function uploadDoc(docType){
+  const fi=document.getElementById(docType==="license"?"pdfFile":"billetFile");
+  const stat=document.getElementById(docType==="license"?"upStatus":"billetStatus");
+  const file=fi?.files[0]; if(!file){return;}
   pendingFile=file;
-  stat.innerHTML='<div class="loading"><span class="spinner"></span> IA analisando… (30–90s)</div>';
+  stat.innerHTML='<div class="loading" style="padding:8px 0"><span class="spin"></span> IA analisando… (30–90s)</div>';
   const fd=new FormData();fd.append("file",file);
   try{
-    const r=await fetch(`${API}/licenses/upload?on_duplicate=${onDup}`,{method:"POST",body:fd}).then(r=>r.json());
-    if(r.error) stat.innerHTML=`<div class="err-msg">Erro: ${r.error}</div>`;
-    else if(r.duplicate){stat.innerHTML='';showDuplicateModal(r.existing,r.new_data);}
-    else if(r.cancelled) stat.innerHTML='<div class="err-msg">Upload cancelado.</div>';
-    else{
-      const linked=r.assets_linked?.length?` Vinculada a: <strong>${r.assets_linked.map(a=>a.code).join(', ')}</strong>.`:'';
-      stat.innerHTML=`<div class="ok-msg">✓ ${r.conditions_extracted} condicionantes extraídas.${linked}</div>`;
-      pendingFile=null;setTimeout(()=>loadLicenses(),1800);
+    const r=await fetch(`${API}/licenses/upload?on_duplicate=ask&doc_type=${docType}`,{method:"POST",body:fd}).then(r=>r.json());
+    if(r.error) stat.innerHTML=`<div class="emsg">Erro: ${r.error}</div>`;
+    else if(r.type==="billet"){
+      stat.innerHTML=`<div class="omsg">✓ Boleto ${r.linked?"vinculado à licença "+r.license_number:"salvo (não vinculado automaticamente)"}. Valor: <strong>${fmtBRL(r.valor)}</strong></div>`;
+      setTimeout(()=>loadDocList(),1500);
     }
-  }catch(e){stat.innerHTML=`<div class="err-msg">Erro: ${e.message}</div>`;}
+    else if(r.duplicate){stat.innerHTML='';showDuplicateModal(r.existing,r.new_data);}
+    else if(r.cancelled) stat.innerHTML='<div class="emsg">Cancelado.</div>';
+    else{
+      const lnk=r.assets_linked?.length?` Vinculada a: <strong>${r.assets_linked.map(a=>a.code).join(', ')}</strong>.`:'';
+      stat.innerHTML=`<div class="omsg">✓ ${r.conditions_extracted} condicionantes extraídas.${lnk}</div>`;
+      pendingFile=null;setTimeout(()=>loadDocList(),1600);
+    }
+  }catch(e){stat.innerHTML=`<div class="emsg">Erro: ${e.message}</div>`;}
 }
 
 function showDuplicateModal(ex,nw){
-  const af=nw.assets_found?.length?`<div class="modal-row"><span>Ativos detectados</span><strong style="color:var(--primary)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>`:'';
-  openModal(`<div class="modal-head"><div class="modal-icon-wrap" style="background:#fef7d8;color:var(--warn-t)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="modal-ttl">Licença duplicada</div><div class="modal-sub">Já existe uma licença com este número e órgão.</div></div><div class="modal-body"><div class="modal-info"><div style="font-size:10px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Existente</div><div class="modal-row"><span>Número</span><strong>${ex.number}</strong></div><div class="modal-row"><span>Validade</span><strong>${ex.expiry_date||'—'}</strong></div><div class="modal-row"><span>Ativo(s)</span><strong>${ex.asset_code||'não vinculado'}</strong></div><div class="modal-row"><span>Condicionantes</span><strong>${ex.n_conditions}</strong></div></div><div class="modal-info"><div style="font-size:10px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Novo upload</div><div class="modal-row"><span>Condicionantes</span><strong>${nw.n_conditions_extracted}</strong></div>${af}</div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal();pendingFile=null">Cancelar</button><button class="btn btn-ghost" onclick="closeModal();uploadPdf('keep_both',pendingFile)">Manter ambas</button><button class="btn btn-danger" onclick="closeModal();uploadPdf('replace',pendingFile)">Substituir</button></div>`);
+  const af=nw.assets_found?.length?`<div class="mrow"><span>Ativos detectados</span><strong style="color:var(--p)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>`:'';
+  openMod(`<div class="mhead"><div class="mic" style="background:#fef7d8;color:var(--wt)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mttl">Licença duplicada</div><div class="msub">Já existe uma licença com este número e órgão.</div></div><div class="mbody"><div class="minfo"><div style="font-size:9.5px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Existente</div><div class="mrow"><span>Número</span><strong>${ex.number}</strong></div><div class="mrow"><span>Validade</span><strong>${ex.expiry_date||'—'}</strong></div><div class="mrow"><span>Condicionantes</span><strong>${ex.n_conditions}</strong></div></div><div class="minfo"><div style="font-size:9.5px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Novo upload</div><div class="mrow"><span>Condicionantes extraídas</span><strong>${nw.n_conditions_extracted}</strong></div>${af}</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod();pendingFile=null">Cancelar</button><button class="btn btn-g" onclick="closeMod();uploadPdfWith('keep_both')">Manter ambas</button><button class="btn btn-r" onclick="closeMod();uploadPdfWith('replace')">Substituir</button></div>`);
 }
+async function uploadPdfWith(dup){if(!pendingFile)return;const fd=new FormData();fd.append("file",pendingFile);const stat=document.getElementById("upStatus");stat.innerHTML='<div class="loading" style="padding:8px 0"><span class="spin"></span></div>';try{const r=await fetch(`${API}/licenses/upload?on_duplicate=${dup}&doc_type=license`,{method:"POST",body:fd}).then(r=>r.json());if(r.error)stat.innerHTML=`<div class="emsg">${r.error}</div>`;else{stat.innerHTML=`<div class="omsg">✓ Concluído. ${r.conditions_extracted||0} condicionantes.</div>`;pendingFile=null;setTimeout(()=>loadDocList(),1500);}}catch(e){stat.innerHTML=`<div class="emsg">${e.message}</div>`;}}
+
+function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Esta ação não pode ser desfeita.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Ativo(s)</span><strong>${l.asset_code||'não vinculado'}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
+async function doDelLic(id){closeMod();await sf(`${API}/licenses/${id}`,{method:"DELETE"});await loadDocList();}
+
+// ===== ASSETS =====
+async function renderAssets(){
+  if(!filterCache){filterCache=await sf(`${API}/assets/filters`)||{agencies:[],situations:[]};}
+  const app=document.getElementById("app");
+  const opt=arr=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
+  app.innerHTML=`
+    <div class="ph"><h1>Ativos</h1><p class="sub">Status regulatório dos ativos cadastrados</p></div>
+    <div class="toolbar">
+      <input class="inp" id="aS" placeholder="Código ou campo…" value="${assetState.search}">
+      <select class="sel" id="aAg"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
+      <select class="sel" id="aOp"><option value="">Situação: todas</option>${opt(filterCache.situations)}</select>
+      <select class="sel" id="aSt"><option value="">Status: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao venc.</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option><option value="critical">Crítico</option></select>
+      <button class="btn" id="aAp">Filtrar</button>
+      <button class="btn btn-a" id="aEx">↓ CSV</button>
+    </div>
+    <div id="aRes"><div class="loading"><span class="spin"></span></div></div>`;
+  ["aAg","aOp","aSt"].forEach(id=>{if(assetState.filters[id])document.getElementById(id).value=assetState.filters[id];});
+  document.getElementById("aAp").onclick=()=>{assetState.filters={aAg:document.getElementById("aAg").value,aOp:document.getElementById("aOp").value,aSt:document.getElementById("aSt").value};assetState.search=document.getElementById("aS").value;assetState.page=0;loadAssets();};
+  document.getElementById("aS").addEventListener("keypress",e=>{if(e.key==="Enter")document.getElementById("aAp").click();});
+  document.getElementById("aEx").onclick=exportAssets;
+  loadAssets();
+}
+function buildAP(){const p=new URLSearchParams();if(assetState.filters.aAg)p.set("agency",assetState.filters.aAg);if(assetState.filters.aOp)p.set("operational",assetState.filters.aOp);if(assetState.filters.aSt)p.set("compliance_status",assetState.filters.aSt);if(assetState.search)p.set("search",assetState.search);return p;}
+async function loadAssets(){
+  const p=buildAP();p.set("limit","50");p.set("offset",String(assetState.page*50));
+  const div=document.getElementById("aRes");div.innerHTML='<div class="loading"><span class="spin"></span></div>';
+  const r=await sf(`${API}/assets/unified?${p}`,{timeout:30000});
+  if(!r?.items?.length){div.innerHTML='<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
+  const crit=r.items.filter(i=>["expired","missing","critical"].includes(i.compliance_status)).length;
+  const rows=r.items.map(a=>{const pdf=a.pdf_url?`<a class="plink" href="${a.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></a>`:'—';return`<tr><td><strong style="font-size:12.5px">${a.code||'—'}</strong></td><td style="color:var(--t2)">${a.field||'—'}</td><td>${bState(a.state)}</td><td style="color:var(--t2)">${a.agency||'—'}</td><td>${bSit(a.situation)}</td><td>${bComp(a.compliance_status)}</td><td style="font-size:11.5px;color:var(--t2)">${a.expiry_date||'—'}</td><td>${pdf}</td></tr>`;}).join('');
+  const tp=Math.ceil(r.total/50),cur=assetState.page+1;
+  div.innerHTML=`<div class="sbar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> · <strong>${crit}</strong> críticos</div><div class="tw"><table><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação</th><th>Status</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pag"><span>Pág ${cur}/${tp}</span><div style="display:flex;gap:6px"><button class="btn btn-g" id="aPv" ${assetState.page===0?"disabled":""}>← Ant.</button><button class="btn btn-g" id="aNx" ${cur>=tp?"disabled":""}>Próx. →</button></div></div>`;
+  document.getElementById("aPv").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
+  document.getElementById("aNx").onclick=()=>{if(cur<tp){assetState.page++;loadAssets();}};
+}
+function exportAssets(){window.open(`${API}/assets/export?${buildAP()}`,'_blank');}
 
 // ===== CONDITIONS =====
 async function renderConditions(){
   const app=document.getElementById("app");
-  app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
-
+  app.innerHTML='<div class="loading"><span class="spin"></span></div>';
   const [fields,thermo]=await Promise.all([sf(`${API}/conditions/fields`),sf(`${API}/conditions/thermometer`)]);
   const fieldList=fields||[];
-  const th=thermo||{pct:0,level:"gray",label:"Sem dados"};
-  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
-  const thermoCol=thermoColors[th.level]||"var(--bd)";
-
-  let selectedField="";
+  const th=thermo||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0};
+  let selField="";
 
   async function reload(){
-    const listDiv=document.getElementById("cond-list");
-    if(listDiv) listDiv.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
-    const url=selectedField?`${API}/conditions?field=${encodeURIComponent(selectedField)}`:`${API}/conditions`;
+    const listDiv=document.getElementById("clist");
+    if(listDiv)listDiv.innerHTML='<div class="loading"><span class="spin"></span></div>';
+    const url=selField?`${API}/conditions?field=${encodeURIComponent(selField)}`:`${API}/conditions`;
     const list=await sf(url)||[];
-    if(!list?.length){if(listDiv)listDiv.innerHTML='<div class="table-wrap"><div class="empty">Nenhuma condicionante encontrada</div></div>';return;}
-    const total=list.length,conc=list.filter(c=>c.status==="completed").length;
+    if(!list?.length){if(listDiv)listDiv.innerHTML='<div class="tw"><div class="empty">Nenhuma condicionante</div></div>';return;}
+    const tot=list.length,conc=list.filter(c=>c.status==="completed").length;
     const venc=list.filter(c=>c.days_until_due!==null&&c.days_until_due<0&&c.status!=="completed").length;
     const parc=list.filter(c=>c.status==="partial").length;
-    const pct=total?Math.round(conc/total*100):0;
-    const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
-    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
+    const pct=tot?Math.round(conc/tot*100):0;
+    const catC={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+    const catN={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
 
     const cards=list.map(c=>{
-      let borderColor="var(--bd)",statusBadge='<span class="badge b-pend">Pendente</span>';
-      if(c.status==="completed"){borderColor="var(--primary-l)";statusBadge='<span class="badge b-done">Concluída</span>';}
-      else if(c.status==="partial"){borderColor="var(--warn)";statusBadge=`<span class="badge b-partial">Parcial ${c.n_completed}/${c.n_assets}</span>`;}
-      else if(c.days_until_due!==null&&c.days_until_due<0){borderColor="var(--danger)";statusBadge='<span class="badge b-overdue">Vencida</span>';}
-      else if(c.days_until_due!==null&&c.days_until_due<=30){borderColor="var(--warn)";statusBadge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;}
-      const catC=catColors[c.category]||"#86868b";
-      const catL=catMap[c.category]||c.category;
+      let bColor="var(--bd)",sBadge='<span class="badge b-pe">Pendente</span>';
+      if(c.status==="completed"){bColor="var(--pl)";sBadge='<span class="badge b-dn">Concluída</span>';}
+      else if(c.status==="partial"){bColor="var(--w)";sBadge=`<span class="badge b-pt">Parcial ${c.n_completed}/${c.n_assets}</span>`;}
+      else if(c.is_critical&&c.days_until_due!==null&&c.days_until_due<0){bColor="var(--r)";sBadge='<span class="badge b-cr">⚠ Crítica vencida</span>';}
+      else if(c.days_until_due!==null&&c.days_until_due<0){bColor="var(--r)";sBadge='<span class="badge b-ex">Vencida</span>';}
+      else if(c.days_until_due!==null&&c.days_until_due<=30){bColor="var(--w)";sBadge=`<span class="badge b-up">${c.days_until_due}d</span>`;}
+      const cc=catC[c.category]||"#86868b";
+      const cn=catN[c.category]||c.category;
       const desc=c.description||'';
-      const longa=desc.length>220;
+      const longa=desc.length>200;
       const descHtml=longa
-        ?`<div class="cond-desc"><span class="cond-desc-short" id="ds-${c.id}">${desc.slice(0,220)}… <button onclick="expandCond(${c.id})" style="background:none;border:none;color:var(--primary);font-size:12.5px;cursor:pointer;font-family:inherit;padding:0;font-weight:500">ver mais</button></span><span class="cond-desc-more" id="dm-${c.id}">${desc}</span></div>`
-        :`<div class="cond-desc">${desc}</div>`;
+        ?`<div class="cdesc"><span id="ds${c.id}">${desc.slice(0,200)}… <button onclick="expDesc(${c.id})" style="background:none;border:none;color:var(--p);font-size:12px;cursor:pointer;font-family:inherit;padding:0;font-weight:500">ver mais</button></span><span id="dm${c.id}" style="display:none">${desc}</span></div>`
+        :`<div class="cdesc">${desc}</div>`;
+      const pctD=c.n_assets>0?Math.round(c.n_completed/c.n_assets*100):(c.status==="completed"?100:0);
+      const progCol=pctD===100?"var(--pl)":pctD>0?"var(--w)":"var(--bd)";
+      const progHtml=c.n_assets>0?`<div class="cprog"><div class="cpbar"><div class="cpfill" style="width:${pctD}%;background:${progCol}"></div></div><span class="cplbl">${c.n_completed}/${c.n_assets} ativos (${pctD}%)</span></div>`:(c.status==="completed"?`<div class="cprog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>`:'');
+      const chipsHtml=c.assets?.length>0?`<div class="chips">${c.assets.map(a=>{const done=c.completions?.some(x=>x.asset_id===a.id)||c.status==="completed";return done?`<span class="chip chip-ok"><svg class="chip-done-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${a.code}</span>`:`<span class="chip chip-pend" onclick="confirmAtend(${c.id},${a.id},'${a.code}')" title="Dar baixa: ${a.code}">${a.code}</span>`;}).join('')}</div>`:'';
 
-      // Progress bar
-      const pctDone=c.n_assets>0?Math.round(c.n_completed/c.n_assets*100):(c.status==="completed"?100:0);
-      const progressHtml=c.n_assets>0?`
-        <div class="cond-progress" style="margin-bottom:8px">
-          <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pctDone}%;background:${pctDone===100?"var(--primary-l)":pctDone>0?"var(--warn)":"var(--bd)"}"></div></div>
-          <span class="progress-label">${c.n_completed}/${c.n_assets} ativos</span>
-        </div>`:
-        c.status==="completed"?`<div class="cond-progress" style="margin-bottom:8px"><div class="progress-bar-wrap"><div class="progress-bar" style="width:100%;background:var(--primary-l)"></div></div><span class="progress-label">Concluída</span></div>`:
-        ``;
+      // Botão "Dar baixa" para condicionantes sem ativos vinculados
+      const btnBaixa=c.assets?.length===0&&c.status!=="completed"
+        ?`<button class="btn" style="padding:5px 12px;font-size:12px;background:var(--p)" onclick="confirmBaixaSimples(${c.id})">Dar baixa</button>`:'';
 
-      // Asset chips
-      const chipsHtml=c.assets?.length>0?`<div class="asset-chips">
-        ${c.assets.map(a=>{
-          const done=c.completions?.some(x=>x.asset_id===a.id);
-          return done
-            ?`<span class="asset-chip chip-done"><svg class="chip-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${a.code}</span>`
-            :`<span class="asset-chip chip-pending" onclick="confirmarAtendimento(${c.id},${a.id},'${a.code}')" title="Marcar ${a.code} como atendido">${a.code}</span>`;
-        }).join('')}
-      </div>`:'';
+      const custo=c.estimated_cost>0?`<span style="font-size:11px;color:var(--t3)">Estimado: ${fmtBRL(c.estimated_cost)}</span>`:'';
 
-      return`<div class="cond-card" style="border-left-color:${borderColor}">
-        <div class="cond-top">
-          <div class="cond-meta">
-            <span class="cond-cat" style="background:${catC}18;color:${catC}">${catL}</span>
-            ${statusBadge}
-            ${c.due_date?`<span style="font-size:11.5px;color:var(--t3)">Vence ${c.due_date}</span>`:''}
-            <span style="font-size:11.5px;color:var(--t3)">Lic. <strong>${c.license_number||'—'}</strong></span>
+      return`<div class="ccard" style="border-left-color:${bColor}">
+        <div class="ctop">
+          <div class="cmeta">
+            <span class="ccat" style="background:${cc}18;color:${cc}">${cn}</span>
+            ${sBadge}
+            ${c.is_critical?'<span class="badge b-cr">Crítica</span>':''}
+            ${c.due_date?`<span style="font-size:11px;color:var(--t3)">Vence ${c.due_date}</span>`:''}
+            <span style="font-size:11px;color:var(--t3)">Lic. <strong>${c.license_number||'—'}</strong></span>
+            ${custo}
           </div>
+          ${btnBaixa}
         </div>
-        ${descHtml}
-        ${progressHtml}
-        ${chipsHtml}
+        ${descHtml}${progHtml}${chipsHtml}
       </div>`;
     }).join('');
 
-    if(listDiv) listDiv.innerHTML=`
-      <div class="kpis" style="margin-bottom:12px">
-        <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-value">${total}</div></div>
-        <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:var(--primary)">${conc}</div><div class="kpi-sub">${pct}% atendidas</div></div>
-        <div class="kpi"><div class="kpi-label">Parciais</div><div class="kpi-value" style="color:var(--warn-t)">${parc}</div></div>
-        <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:var(--danger)">${venc}</div></div>
+    if(listDiv)listDiv.innerHTML=`
+      <div class="kpis" style="margin-bottom:11px">
+        <div class="kpi"><div class="kl">Total</div><div class="kv">${tot}</div></div>
+        <div class="kpi"><div class="kl">Concluídas</div><div class="kv" style="color:var(--p)">${conc}</div><div class="ks">${pct}% atendidas</div></div>
+        <div class="kpi"><div class="kl">Parciais</div><div class="kv" style="color:var(--wt)">${parc}</div></div>
+        <div class="kpi"><div class="kl">Vencidas</div><div class="kv" style="color:var(--r)">${venc}</div></div>
       </div>
       <div>${cards}</div>`;
   }
 
-  // Monta página
-  const fieldOpts=fieldList.map(f=>`<option value="${f}">${f}</option>`).join('');
+  const fopts=fieldList.map(f=>`<option value="${f}">${f}</option>`).join('');
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Condicionantes</h1>
-      <p class="sub">Obrigações técnicas extraídas das licenças ambientais</p>
-    </div>
-    <div class="thermometer" style="margin-bottom:14px">
-      <div class="thermo-top">
-        <div>
-          <div class="thermo-title">Indicador de conformidade de condicionantes</div>
-          <div class="thermo-pct" style="color:${thermoCol};font-size:26px">${th.pct}%</div>
-          <div class="thermo-label">${th.label}</div>
-        </div>
-        <div>
-          <span class="thermo-badge" style="background:${thermoCol}18;color:${thermoCol}">Poços ativos: ${th.pct_active||0}%</span>
-        </div>
-      </div>
-      <div class="thermo-bar-wrap"><div class="thermo-bar" style="width:${th.pct}%;background:${thermoCol}"></div></div>
-    </div>
+    <div class="ph"><h1>Condicionantes</h1><p class="sub">Obrigações técnicas extraídas das licenças ambientais</p></div>
+    ${renderThermo(th,true)}
     <div class="toolbar">
-      <select class="sel" id="fieldFilter" style="min-width:180px">
-        <option value="">Campo: todos</option>${fieldOpts}
-      </select>
-      <button class="btn" onclick="applyFieldFilter()">Filtrar</button>
-      <button class="btn btn-ghost" onclick="document.getElementById('fieldFilter').value='';selectedField='';reload()">Limpar</button>
-      <button class="btn btn-accent" onclick="exportConditions()">↓ CSV</button>
+      <select class="sel" id="fField" style="min-width:170px"><option value="">Campo: todos</option>${fopts}</select>
+      <button class="btn" onclick="selField=document.getElementById('fField').value;reload()">Filtrar</button>
+      <button class="btn btn-g" onclick="document.getElementById('fField').value='';selField='';reload()">Limpar</button>
     </div>
-    <div id="cond-list"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
+    <div id="clist"><div class="loading"><span class="spin"></span></div></div>`;
 
-  window.applyFieldFilter=()=>{selectedField=document.getElementById("fieldFilter").value;reload();};
-  window.exportConditions=()=>{const url=selectedField?`${API}/conditions?field=${encodeURIComponent(selectedField)}`:`${API}/conditions`;alert("Exportação de condicionantes em breve.");};
+  // expõe selField e reload para onclick inline
+  window.selField="";
+  window.reload=reload;
   await reload();
 }
+function expDesc(id){document.getElementById(`ds${id}`).style.display="none";document.getElementById(`dm${id}`).style.display="inline";}
 
-function expandCond(id){
-  document.getElementById(`ds-${id}`).style.display='none';
-  document.getElementById(`dm-${id}`).style.display='block';
+function confirmAtend(cid,aid,code){
+  openMod(`<div class="mhead"><div class="mic" style="background:#e8f5ec;color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="mttl">Dar baixa na condicionante?</div><div class="msub">Confirma que o ativo <strong>${code}</strong> atendeu esta condicionante?<br><br>A ação será registrada e não poderá ser revertida.</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn" style="background:var(--p)" onclick="doAtend(${cid},${aid})">Confirmar</button></div>`);
+}
+function confirmBaixaSimples(cid){
+  openMod(`<div class="mhead"><div class="mic" style="background:#e8f5ec;color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="mttl">Dar baixa na condicionante?</div><div class="msub">Confirma o atendimento desta condicionante?<br>O status será alterado para <strong>Concluída</strong>.</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn" style="background:var(--p)" onclick="doBaixaSimples(${cid})">Confirmar</button></div>`);
+}
+async function doAtend(cid,aid){
+  closeMod();
+  const r=await sf(`${API}/conditions/${cid}/complete-asset/${aid}`,{method:"POST"});
+  if(r&&!r.error){showToast("✓ Condicionante concluída com sucesso");await window.reload();}
+  else alert("Erro: "+(r?.error||"sem resposta"));
+}
+async function doBaixaSimples(cid){
+  closeMod();
+  const r=await sf(`${API}/conditions/${cid}/complete`,{method:"PATCH"});
+  if(r&&!r.error){showToast("✓ Condicionante concluída com sucesso");await window.reload();}
+  else alert("Erro");
 }
 
-function confirmarAtendimento(condId,assetId,assetCode){
-  openModal(`<div class="modal-head">
-    <div class="modal-icon-wrap" style="background:#e8f5ec;color:var(--primary)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <div class="modal-ttl">Atender condicionante?</div>
-    <div class="modal-sub">Confirma que o ativo <strong>${assetCode}</strong> atendeu esta condicionante?<br><br>Esta ação registrará o cumprimento e não poderá ser revertida.</div>
-  </div>
-  <div class="modal-actions">
-    <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-    <button class="btn" style="background:var(--primary)" onclick="atenderCondicionante(${condId},${assetId})">Confirmar atendimento</button>
-  </div>`);
-}
-
-async function atenderCondicionante(condId,assetId){
-  closeModal();
-  const r=await sf(`${API}/conditions/${condId}/complete-asset/${assetId}`,{method:"POST"});
-  if(r&&!r.error){
-    // Re-renderiza condicionantes
-    await renderConditions();
-  }else{alert("Erro ao registrar: "+(r?.error||"sem resposta"));}
-}
-
-// ===== PLANNING =====
+// ===== PLANNING / GESTÃO FINANCEIRA =====
 async function renderPlanning(){
   const app=document.getElementById("app");
-  const [dash,comp,thermo]=await Promise.all([sf(`${API}/dashboard`),sf(`${API}/compliance/summary`),sf(`${API}/conditions/thermometer`)]);
-  const d=dash||{},c=comp||{},th=thermo||{pct:0};
-  const sc=c.status_counts||{};
-  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
-  const thermoCol=thermoColors[th.level]||"var(--bd)";
+  app.innerHTML='<div class="loading"><span class="spin"></span></div>';
+  const [finSum,byMonth,byField,byCat,proj,thermo]=await Promise.all([
+    sf(`${API}/financial/summary`),sf(`${API}/financial/by_month`),
+    sf(`${API}/financial/by_field`),sf(`${API}/financial/by_category`),
+    sf(`${API}/financial/projection`),sf(`${API}/conditions/thermometer`)
+  ]);
+  const fs=finSum||{total_realizado:0,total_provisionado:0,grand_total:0,conditions:{realizado:0,provisionado:0},licenses:{realizado:0,provisionado:0}};
+  const months=byMonth||[];
+  const fields=byField||[];
+  const cats=byCat||[];
+  const projs=proj||[];
+  const th=thermo||{pct:0,pct_active:0,level:"gray"};
 
-  // Simulação de cenários (com dados reais + estimativas)
-  const totalAtivos=d.total_assets||0;
-  const semLicenca=sc.missing||0;
-  const vencidas=sc.expired||0;
-  const ativas=sc.ok||0;
+  // Gráfico de barras mensais
+  const maxMonth=Math.max(1,...months.map(m=>m.realizado+m.provisionado));
+  const recentMonths=months.slice(-12);
+  const monthBars=recentMonths.map(m=>{
+    const hR=Math.round((m.realizado/maxMonth)*140);
+    const hP=Math.round((m.provisionado/maxMonth)*140);
+    const isPast=new Date(`${m.year}-${String(m.month).padStart(2,'0')}-01`)<=new Date();
+    return`<div class="fin-bar-wrap">
+      <div class="fin-bar-stk" style="height:${hR+hP}px;justify-content:flex-end">
+        ${m.realizado>0?`<div class="fin-bar-seg" style="height:${hR}px;background:var(--p);opacity:${isPast?'1':'.4'}"></div>`:''}
+        ${m.provisionado>0?`<div class="fin-bar-seg" style="height:${hP}px;background:var(--p);opacity:.2;border-top:1.5px dashed var(--p)"></div>`:''}
+      </div>
+      <div class="fin-xlabel">${m.label.split('/')[0]}</div>
+    </div>`;
+  }).join('');
+
+  // Barras por campo
+  const maxF=Math.max(1,...fields.map(f=>f.total));
+  const fieldBars=fields.slice(0,8).map(f=>`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,14)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(f.realizado/maxF*100)}%;background:var(--p)"></span><span class="bfill" style="width:${Math.round(f.provisionado/maxF*100)}%;background:var(--p);opacity:.25"></span></span><span class="bval">${fmtBRL(f.total)}</span></li>`).join('')||'<div class="empty">Sem dados</div>';
+
+  // Barras por categoria
+  const maxCat=Math.max(1,...cats.map(c=>c.estimado));
+  const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+  const catBars=cats.map(c=>`<li class="bitem"><span class="blbl">${c.label}</span><span class="btrack"><span class="bfill" style="width:${Math.round(c.estimado/maxCat*100)}%;background:${catColors[c.category]||'#86868b'}"></span></span><span class="bval">${fmtBRL(c.estimado)}</span></li>`).join('')||'<div class="empty">Sem dados</div>';
+
+  // Projeção quinquenal
+  const projCards=projs.map(p=>`<div class="proj-card"><div class="proj-year">${p.year}</div><div class="proj-val">${fmtBRL(p.total)}</div><div class="proj-conf" style="color:${p.conformidade_est>=80?"var(--p)":p.conformidade_est>=60?"var(--wg)":"var(--r)"}">${p.conformidade_est}% conformidade</div></div>`).join('')||'<div class="empty">Sem dados de projeção</div>';
+
+  // Cenários com dados reais
   const pctAtual=th.pct||0;
+  const pctAtivos=th.pct_active||0;
+  const totalProv=fs.total_provisionado||0;
+  const totalReal=fs.total_realizado||0;
+  const incrementalExc=totalProv;
+  const incrementalBal=totalProv*0.6;
 
   app.innerHTML=`
-    <div class="page-header">
-      <h1>Planejamento regulatório</h1>
-      <p class="sub">Análise de conformidade, cenários e projeções regulatórias</p>
+    <div class="ph"><h1>Gestão financeira regulatória</h1><p class="sub">Análise de conformidade, projeções e simulação de cenários</p></div>
+
+    <!-- KPIs FINANCEIROS -->
+    <div class="kpis">
+      <div class="kpi"><div class="kl">Total realizado</div><div class="kv fmt-brl" style="font-size:20px">${fmtBRL(totalReal)}</div><div class="ks">Executado no período</div></div>
+      <div class="kpi"><div class="kl">Total provisionado</div><div class="kv fmt-brl" style="font-size:20px">${fmtBRL(totalProv)}</div><div class="ks">Estimativa a executar</div></div>
+      <div class="kpi"><div class="kl">Condicionantes</div><div class="kv fmt-brl" style="font-size:18px">${fmtBRL(fs.conditions?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.conditions?.provisionado)}</div></div>
+      <div class="kpi"><div class="kl">Licenças</div><div class="kv fmt-brl" style="font-size:18px">${fmtBRL(fs.licenses?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.licenses?.provisionado)}</div></div>
+      <div class="kpi"><div class="kl">Conformidade</div><div class="kv" style="font-size:22px;color:${pctAtual===100?"var(--p)":pctAtual>=70?"var(--wg)":"var(--r)"}">${pctAtual}%</div><div class="ks">Ativos op.: ${pctAtivos}%</div></div>
     </div>
 
-    <!-- STATUS ATUAL -->
-    <div class="card" style="margin-bottom:14px">
-      <div class="card-title">Status atual de conformidade</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
-        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:var(--r-sm)">
-          <div style="font-size:28px;font-weight:700;color:${thermoCol}">${pctAtual}%</div>
-          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Conformidade atual</div>
-        </div>
-        <div style="text-align:center;padding:12px;background:#e8f5ec;border-radius:var(--r-sm)">
-          <div style="font-size:28px;font-weight:700;color:var(--primary)">${ativas}</div>
-          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Licenças ativas</div>
-        </div>
-        <div style="text-align:center;padding:12px;background:var(--danger-t);border-radius:var(--r-sm)">
-          <div style="font-size:28px;font-weight:700;color:var(--danger)">${vencidas}</div>
-          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Licenças vencidas</div>
-        </div>
-        <div style="text-align:center;padding:12px;background:#f0d8d8;border-radius:var(--r-sm)">
-          <div style="font-size:28px;font-weight:700;color:#6b1c1c">${semLicenca}</div>
-          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Sem licença</div>
-        </div>
+    <!-- GRÁFICO MENSAL -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="ct">Curva financeira mensal — realizado vs provisionado</div>
+      <div class="fin-chart">${monthBars}</div>
+      <div class="fin-legend">
+        <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado</div>
+        <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p);opacity:.25;border:1.5px dashed var(--p)"></div>Provisionado</div>
       </div>
+    </div>
+
+    <!-- DISTRIBUIÇÃO -->
+    <div class="g2">
+      <div class="card"><div class="ct">Custo por campo (estimado + realizado)</div><ul class="blist">${fieldBars}</ul></div>
+      <div class="card"><div class="ct">Custo por categoria de condicionante</div><ul class="blist">${catBars}</ul></div>
+    </div>
+
+    <!-- PROJEÇÃO QUINQUENAL -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="ct">Projeção quinquenal</div>
+      <div class="proj-row">${projCards}</div>
+      <div style="font-size:11.5px;color:var(--t3);margin-top:10px">* Projeção baseada em dados históricos com crescimento moderado de 5% a.a. Conformidade estimada com base no ritmo atual de atendimento.</div>
     </div>
 
     <!-- SIMULADOR DE CENÁRIOS -->
-    <div class="card-title" style="margin-bottom:10px">Simulador de cenários regulatórios</div>
-    <div class="grid-3" style="margin-bottom:14px">
-      <!-- EXCELÊNCIA -->
-      <div style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border:1px solid #c5e3d0;border-radius:var(--r);padding:18px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <div style="width:10px;height:10px;background:#007023;border-radius:50%"></div>
-          <div style="font-size:12px;font-weight:700;color:#007023;text-transform:uppercase;letter-spacing:.04em">Cenário Excelência</div>
+    <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px">Simulador de cenários regulatórios</div>
+    <div class="g3">
+      <div class="scenario" style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border-color:#c5e3d0">
+        <div class="sc-head">
+          <div class="sc-icon" style="background:#007023;color:#fff"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><div style="font-size:11px;font-weight:700;color:#007023;text-transform:uppercase;letter-spacing:.04em">Excelência</div><div style="font-size:11px;color:#3d7a4a">100% de conformidade</div></div>
         </div>
-        <div style="font-size:30px;font-weight:700;color:#007023;margin-bottom:4px">100%</div>
-        <div style="font-size:12px;color:#3d7a4a;margin-bottom:12px">Conformidade total</div>
-        <div style="font-size:12.5px;color:#1f5f33;line-height:1.7">
-          • Todas as ${totalAtivos} licenças vigentes<br>
-          • 100% das condicionantes atendidas<br>
-          • Regularização integral<br>
-          • Exposição regulatória: zero
-        </div>
-        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:#007023">
-          <strong>Indicação:</strong> Meta de longo prazo / auditoria externa
-        </div>
+        <div style="font-size:26px;font-weight:700;color:#007023;margin-bottom:3px">100%</div>
+        <div style="font-size:11.5px;color:#3d7a4a;margin-bottom:10px">Custo incremental: ${fmtBRL(incrementalExc)}</div>
+        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% das licenças vigentes</div>
+        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% das condicionantes atendidas</div>
+        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Exposição regulatória: zero</div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#007023"><strong>Meta:</strong> Longo prazo / auditoria externa</div>
       </div>
-
-      <!-- BALANCEADO -->
-      <div style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border:1px solid #d0e8a0;border-radius:var(--r);padding:18px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <div style="width:10px;height:10px;background:#8FBF21;border-radius:50%"></div>
-          <div style="font-size:12px;font-weight:700;color:#5a7a00;text-transform:uppercase;letter-spacing:.04em">Cenário Balanceado</div>
+      <div class="scenario" style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border-color:#d0e8a0">
+        <div class="sc-head">
+          <div class="sc-icon" style="background:#8FBF21;color:#fff"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div><div style="font-size:11px;font-weight:700;color:#5a7a00;text-transform:uppercase;letter-spacing:.04em">Balanceado</div><div style="font-size:11px;color:#5a7a00">Ativos operacionais</div></div>
         </div>
-        <div style="font-size:30px;font-weight:700;color:#8FBF21;margin-bottom:4px">${th.pct_active||0}%</div>
-        <div style="font-size:12px;color:#5a7a00;margin-bottom:12px">Poços operacionais conformes</div>
-        <div style="font-size:12.5px;color:#3d5a00;line-height:1.7">
-          • 100% dos ativos em produção/injeção<br>
-          • Priorização por criticidade operacional<br>
-          • Foco em produtores e injetores<br>
-          • Redução significativa de exposição
-        </div>
-        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:#5a7a00">
-          <strong>Indicação:</strong> Meta de curto prazo recomendada
-        </div>
+        <div style="font-size:26px;font-weight:700;color:#8FBF21;margin-bottom:3px">${pctAtivos}%</div>
+        <div style="font-size:11.5px;color:#5a7a00;margin-bottom:10px">Custo incremental: ${fmtBRL(incrementalBal)}</div>
+        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% dos ativos em produção/injeção</div>
+        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priorização por criticidade operacional</div>
+        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Redução significativa de exposição</div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#5a7a00"><strong>Meta:</strong> Curto prazo recomendado</div>
       </div>
-
-      <!-- CONSERVADOR -->
-      <div style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border:1px solid #f0d878;border-radius:var(--r);padding:18px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <div style="width:10px;height:10px;background:#F9CE29;border-radius:50%"></div>
-          <div style="font-size:12px;font-weight:700;color:var(--warn-t);text-transform:uppercase;letter-spacing:.04em">Cenário Conservador</div>
+      <div class="scenario" style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border-color:#f0d878">
+        <div class="sc-head">
+          <div class="sc-icon" style="background:#F9CE29;color:#fff"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
+          <div><div style="font-size:11px;font-weight:700;color:var(--wt);text-transform:uppercase;letter-spacing:.04em">Conservador</div><div style="font-size:11px;color:var(--wt)">Mínimo regulatório</div></div>
         </div>
-        <div style="font-size:30px;font-weight:700;color:#c4a000;margin-bottom:4px">${pctAtual}%</div>
-        <div style="font-size:12px;color:var(--warn-t);margin-bottom:12px">Situação atual</div>
-        <div style="font-size:12.5px;color:var(--warn-t);line-height:1.7">
-          • Atendimento mínimo regulatório<br>
-          • Foco em itens críticos e vencidos<br>
-          • Execução seletiva por criticidade<br>
-          • Backlog: ${semLicenca+vencidas} ativos expostos
-        </div>
-        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:var(--warn-t)">
-          <strong>Atenção:</strong> Risco regulatório elevado
-        </div>
-      </div>
-    </div>
-
-    <!-- AGENDA REGULATÓRIA -->
-    <div class="card">
-      <div class="card-title">Agenda regulatória — próximos 90 dias</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
-        <div style="padding:12px;background:var(--danger-t);border-radius:var(--r-sm);border-left:3px solid var(--danger)">
-          <div style="font-size:10.5px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Próximos 30 dias</div>
-          <div style="font-size:22px;font-weight:700;color:var(--danger)">${d.upcoming_30d||0}</div>
-          <div style="font-size:11.5px;color:var(--t3)">condicionantes</div>
-        </div>
-        <div style="padding:12px;background:#fef7d8;border-radius:var(--r-sm);border-left:3px solid var(--warn)">
-          <div style="font-size:10.5px;font-weight:700;color:var(--warn-t);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">31–60 dias</div>
-          <div style="font-size:22px;font-weight:700;color:#c4a000">—</div>
-          <div style="font-size:11.5px;color:var(--t3)">a verificar</div>
-        </div>
-        <div style="padding:12px;background:var(--bg);border-radius:var(--r-sm);border-left:3px solid var(--bd)">
-          <div style="font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">61–90 dias</div>
-          <div style="font-size:22px;font-weight:700;color:var(--t2)">—</div>
-          <div style="font-size:11.5px;color:var(--t3)">a verificar</div>
-        </div>
-      </div>
-      <div style="padding:14px;background:var(--bg);border-radius:var(--r-sm);font-size:13px;color:var(--t2);border:1px dashed var(--bd)">
-        📅 <strong>Em breve:</strong> Calendário executivo com vencimentos de licenças, renovações e condicionantes críticas por período.
+        <div style="font-size:26px;font-weight:700;color:#c4a000;margin-bottom:3px">${pctAtual}%</div>
+        <div style="font-size:11.5px;color:var(--wt);margin-bottom:10px">Situação atual</div>
+        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Apenas itens críticos e vencidos</div>
+        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Execução seletiva por criticidade</div>
+        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Economia estimada: ${fmtBRL(incrementalExc-incrementalBal)}</div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:var(--wt)"><strong>Atenção:</strong> Risco regulatório elevado</div>
       </div>
     </div>`;
 }
 
-// INICIALIZA
 show("dashboard");
 </script>
 </body>
