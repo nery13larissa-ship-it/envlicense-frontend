@@ -5,575 +5,1086 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EnvLicense — PetroRecôncavo</title>
 <style>
-:root{--primary:#007023;--primary-hover:#005a1c;--primary-light:#4EA72E;--primary-tint:#e8f5ec;--success:#4EA72E;--warning:#F9CE29;--warning-text:#7a5e00;--danger:#9D2928;--danger-hover:#7a1f1e;--danger-tint:#fbeded;--info:#125E81;--text:#1d1d1f;--text-2:#6e6e73;--text-3:#86868b;--border:#d2d2d7;--border-light:#f5f5f7;--bg:#fbfbfd;--surface:#ffffff;--r-sm:8px;--r:12px;--ease:cubic-bezier(.4,0,.2,1)}
+:root{
+  --primary:#007023;--primary-h:#005a1c;--primary-l:#4EA72E;--primary-t:#e8f5ec;
+  --warn:#F9CE29;--warn-t:#7a5e00;--danger:#9D2928;--danger-h:#7a1f1e;--danger-t:#fbeded;
+  --info:#125E81;--accent:#8FBF21;
+  --t1:#1d1d1f;--t2:#6e6e73;--t3:#86868b;--t4:#aeaeb2;
+  --bd:#d2d2d7;--bd-l:#f0f0f5;--bg:#f5f5f7;--surf:#ffffff;
+  --r:12px;--r-sm:8px;--r-xs:6px;
+  --ease:cubic-bezier(.4,0,.2,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --sidebar-w:56px;--sidebar-exp:220px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.08);
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.47;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh;font-weight:400;letter-spacing:-.003em}
-.sidebar{width:200px;background:var(--surface);border-right:1px solid var(--border-light);padding:24px 14px;display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:0;height:100vh}
-.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 20px;margin-bottom:4px}
-.brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
-.brand-text{display:flex;flex-direction:column;line-height:1.2}
-.brand-name{font-weight:600;font-size:15px;letter-spacing:-.02em;color:var(--text)}
-.brand-sub{font-size:10px;color:var(--text-3);font-weight:400;letter-spacing:.02em;margin-top:2px}
-.nav-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:14px 10px 6px}
-nav button{width:100%;background:transparent;color:var(--text-2);border:none;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:14px;font-weight:400;display:flex;align-items:center;transition:all .2s var(--ease);text-align:left;font-family:inherit;margin-bottom:1px}
-nav button:hover{background:var(--border-light);color:var(--text)}
-nav button.active{background:var(--primary-tint);color:var(--primary);font-weight:500}
-.sidebar-footer{margin-top:auto;padding:14px 10px;font-size:11px;color:var(--text-3);border-top:1px solid var(--border-light)}
-main{flex:1;padding:24px 36px 64px;max-width:100%;overflow-x:hidden}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px}
-.search-trigger{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--text-3);font-size:13px;font-family:inherit;transition:all .15s var(--ease);min-width:280px;max-width:380px}
-.search-trigger:hover{border-color:var(--border);background:var(--bg)}
-.search-trigger svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.search-trigger .placeholder{flex:1;text-align:left}
-.search-trigger .shortcut{font-size:11px;background:var(--border-light);padding:2px 6px;border-radius:4px;color:var(--text-2);font-weight:500}
-.page-header{margin-bottom:24px}
-h1{font-size:30px;font-weight:600;letter-spacing:-.022em;color:var(--text);margin-bottom:4px;line-height:1.1}
-.subtitle{color:var(--text-2);font-size:15px;font-weight:400}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
-.kpi{background:var(--surface);padding:20px 22px;border-radius:var(--r);border:1px solid var(--border-light)}
-.kpi-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
-.kpi-value{font-size:30px;font-weight:600;margin-top:8px;letter-spacing:-.022em;color:var(--text);line-height:1}
-.kpi-sub{font-size:13px;color:var(--text-3);margin-top:6px}
-.donut-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:20px}
-.donut-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);padding:22px}
-.card-title{font-size:11px;font-weight:600;margin-bottom:18px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em}
-.donut-wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center}
-.donut-svg{position:relative;flex-shrink:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;display:flex}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:var(--sidebar-w);background:var(--surf);border-right:1px solid var(--bd-l);
+  display:flex;flex-direction:column;flex-shrink:0;height:100vh;position:fixed;left:0;top:0;z-index:100;
+  overflow:hidden;transition:width .25s var(--ease);
+}
+.sidebar:hover{width:var(--sidebar-exp);}
+.brand{display:flex;align-items:center;gap:10px;padding:18px 14px 14px;border-bottom:1px solid var(--bd-l);min-height:60px;overflow:hidden;white-space:nowrap}
+.brand-mark{width:28px;height:28px;min-width:28px;background:linear-gradient(135deg,var(--primary),var(--primary-l));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;letter-spacing:-.5px}
+.brand-text{opacity:0;transform:translateX(-8px);transition:all .2s var(--ease);pointer-events:none}
+.sidebar:hover .brand-text{opacity:1;transform:translateX(0)}
+.brand-name{font-weight:600;font-size:14px;letter-spacing:-.02em;color:var(--t1);white-space:nowrap}
+.brand-sub{font-size:10px;color:var(--t3);letter-spacing:.02em}
+.nav-section{padding:8px 0}
+.nav-label{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;font-weight:700;padding:8px 18px 4px;opacity:0;transition:opacity .2s var(--ease);white-space:nowrap}
+.sidebar:hover .nav-label{opacity:1}
+.nav-btn{width:100%;background:transparent;border:none;padding:8px 14px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:11px;color:var(--t2);border-radius:0;transition:all .15s var(--ease);position:relative;min-height:40px;overflow:hidden;white-space:nowrap}
+.nav-btn:hover{background:var(--bd-l);color:var(--t1)}
+.nav-btn.active{background:var(--primary-t);color:var(--primary)}
+.nav-btn.active .nav-icon{color:var(--primary)}
+.nav-icon{width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-label-text{font-size:13.5px;font-weight:400;opacity:0;transform:translateX(-6px);transition:all .2s var(--ease);pointer-events:none}
+.sidebar:hover .nav-label-text{opacity:1;transform:translateX(0)}
+.nav-btn.active .nav-label-text{font-weight:500}
+.sidebar-footer{margin-top:auto;padding:12px 14px;border-top:1px solid var(--bd-l);overflow:hidden;white-space:nowrap}
+.sidebar-footer-text{font-size:10px;color:var(--t4);opacity:0;transition:opacity .2s var(--ease)}
+.sidebar:hover .sidebar-footer-text{opacity:1}
+.sidebar-version{width:28px;height:28px;min-width:28px;background:var(--bd-l);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+
+/* ===== MAIN ===== */
+main{margin-left:var(--sidebar-w);flex:1;height:100vh;overflow-y:auto;transition:margin-left .25s var(--ease);display:flex;flex-direction:column}
+.sidebar:hover ~ main{margin-left:var(--sidebar-exp);}
+.topbar{background:var(--surf);border-bottom:1px solid var(--bd-l);padding:0 32px;height:56px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;flex-shrink:0}
+.topbar-title{font-size:15px;font-weight:600;letter-spacing:-.02em;color:var(--t1);flex:1}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bd-l);border-radius:9px;padding:7px 13px;cursor:pointer;color:var(--t3);font-size:13px;font-family:inherit;transition:all .15s var(--ease);width:320px}
+.search-box:hover{border-color:var(--bd);background:var(--surf)}
+.search-box svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.search-box .s-placeholder{flex:1;text-align:left;color:var(--t3)}
+.search-box .s-shortcut{font-size:11px;background:var(--surf);border:1px solid var(--bd);padding:1px 5px;border-radius:4px;color:var(--t3)}
+.content{flex:1;padding:28px 32px 64px}
+
+/* ===== PAGE HEADER ===== */
+.page-header{margin-bottom:20px}
+.page-header h1{font-size:26px;font-weight:600;letter-spacing:-.025em;color:var(--t1);line-height:1.15;margin-bottom:3px}
+.page-header .sub{font-size:13.5px;color:var(--t2)}
+
+/* ===== KPIs ===== */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surf);padding:18px 20px;border-radius:var(--r);border:1px solid var(--bd-l);box-shadow:var(--shadow)}
+.kpi-label{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:8px}
+.kpi-value{font-size:28px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:5px}
+.kpi-sub{font-size:12px;color:var(--t3)}
+.kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:500;padding:2px 6px;border-radius:4px;margin-top:4px}
+.delta-up{background:#e8f5ec;color:#1f5f33}
+.delta-down{background:var(--danger-t);color:var(--danger)}
+.delta-flat{background:var(--bd-l);color:var(--t2)}
+
+/* ===== TERMÔMETRO ===== */
+.thermometer{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:18px 22px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.thermo-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.thermo-title{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
+.thermo-badge{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.thermo-pct{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.thermo-label{font-size:13px;color:var(--t2);margin-top:2px}
+.thermo-bar-wrap{height:6px;background:var(--bd-l);border-radius:3px;overflow:hidden;margin:12px 0 8px}
+.thermo-bar{height:100%;border-radius:3px;transition:width .8s var(--ease)}
+.thermo-meta{display:flex;gap:20px;flex-wrap:wrap}
+.thermo-stat{font-size:12px;color:var(--t2)}
+.thermo-stat strong{color:var(--t1);font-weight:600}
+.thermo-tooltip{position:absolute;top:14px;right:14px;width:18px;height:18px;background:var(--bd-l);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:help;font-size:10px;font-weight:700;color:var(--t3)}
+
+/* ===== GRID 2 COLUNAS ===== */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:1100px){.grid-2{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr}}
+
+/* ===== CARD ===== */
+.card{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:20px;box-shadow:var(--shadow)}
+.card-title{font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
+
+/* ===== AGENDA ===== */
+.agenda-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd-l)}
+.agenda-item:last-child{border-bottom:none}
+.agenda-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.agenda-info{flex:1;min-width:0}
+.agenda-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agenda-sub{font-size:11.5px;color:var(--t3);margin-top:1px}
+.agenda-days{font-size:12px;font-weight:600;white-space:nowrap;padding:3px 8px;border-radius:5px}
+
+/* ===== BAR CHARTS ===== */
+.bar-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.bar-item{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:12.5px;font-weight:500;color:var(--t1);min-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:5px;background:var(--bd-l);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .7s var(--ease)}
+.bar-val{font-size:12px;color:var(--t2);min-width:60px;text-align:right;font-variant-numeric:tabular-nums}
+.bar-val strong{color:var(--danger);font-weight:600}
+
+/* ===== CENÁRIO RECOMENDADO ===== */
+.scenario{background:linear-gradient(135deg,#f0f7f0 0%,#e8f5ec 100%);border:1px solid #c5e3d0;border-radius:var(--r);padding:18px 20px;margin-bottom:14px}
+.scenario-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.scenario-icon{width:32px;height:32px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.scenario-icon svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.scenario-title{font-size:13px;font-weight:600;color:var(--primary)}
+.scenario-sub{font-size:11.5px;color:#3d7a4a;margin-top:1px}
+.scenario-items{display:flex;flex-direction:column;gap:6px}
+.scenario-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t1)}
+.scenario-item svg{width:14px;height:14px;stroke:var(--primary);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* ===== DONUT ===== */
+.donut-wrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap;justify-content:center}
+.donut-svg-wrap{position:relative;flex-shrink:0}
 .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.donut-center .big{font-size:30px;font-weight:600;letter-spacing:-.022em;line-height:1;color:var(--text)}
-.donut-center .small{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-top:6px;font-weight:600}
-.donut-legend{display:flex;flex-direction:column;gap:10px;min-width:180px;flex:1}
-.legend-item{display:flex;align-items:center;gap:10px;font-size:13px}
-.legend-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
-.legend-label{flex:1;color:var(--text-2)}
-.legend-value{font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
-.legend-pct{font-size:11px;color:var(--text-3);margin-left:6px;font-weight:400}
-.op-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-bottom:20px}
-.op-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);padding:22px;position:relative;overflow:hidden}
-.op-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--success)}
-.op-card.inj::before{background:var(--info)}
-.op-header{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:8px}
-.op-dot{width:8px;height:8px;border-radius:50%;background:var(--success)}
-.op-card.inj .op-dot{background:var(--info)}
-.op-value{font-size:38px;font-weight:600;letter-spacing:-.024em;color:var(--text);line-height:1;margin-bottom:12px}
-.op-meta{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--text-2)}
-.op-meta strong{color:var(--danger);font-weight:600}
-.card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);padding:22px;margin-bottom:14px}
-.toolbar{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);padding:12px;margin-bottom:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.input,.select{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 12px;font-size:13.5px;color:var(--text);outline:none;font-family:inherit;transition:all .15s var(--ease)}
-.input:focus,.select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,112,35,.1)}
-.input{flex:1;min-width:200px}
-.select{min-width:140px}
-.btn{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:var(--r-sm);font-size:13.5px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);font-family:inherit;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{background:var(--primary-hover)}
-.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
-.btn-ghost:hover{background:var(--border-light);color:var(--text)}
-.btn-success{background:var(--primary-light)}
-.btn-success:hover{background:#3d8f22}
-.btn-danger{background:var(--danger);color:#fff}
-.btn-danger:hover{background:var(--danger-hover)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.icon-btn{background:transparent;border:none;cursor:pointer;padding:6px;border-radius:6px;color:var(--text-3);transition:all .15s var(--ease);display:inline-flex;align-items:center;justify-content:center}
-.icon-btn:hover{background:var(--danger-tint);color:var(--danger)}
-.icon-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.table-wrap{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r);overflow:hidden;overflow-x:auto}
-.table{width:100%;border-collapse:collapse}
-.table th{text-align:left;padding:13px 16px;font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;border-bottom:1px solid var(--border-light);background:var(--bg)}
-.table td{padding:13px 16px;border-bottom:1px solid var(--border-light);font-size:13.5px;color:var(--text)}
-.table tr:last-child td{border-bottom:none}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap}
-.badge-dot{width:6px;height:6px;border-radius:50%}
+.donut-center .big{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.donut-center .sm{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-top:4px;font-weight:600}
+.legend{display:flex;flex-direction:column;gap:8px;flex:1;min-width:140px}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.legend-dot{width:8px;height:8px;border-radius:2.5px;flex-shrink:0}
+.legend-lbl{flex:1;color:var(--t2)}
+.legend-val{font-weight:600;color:var(--t1);font-variant-numeric:tabular-nums}
+.legend-pct{font-size:11px;color:var(--t3);margin-left:4px}
+
+/* ===== OP CARDS ===== */
+.op-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.op-card{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.op-accent{position:absolute;left:0;top:0;bottom:0;width:3px}
+.op-header{font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.op-header-dot{width:6px;height:6px;border-radius:50%}
+.op-value{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:8px}
+.op-meta{font-size:12.5px;color:var(--t2)}
+.op-critical{color:var(--danger);font-weight:600}
+
+/* ===== TABELA ===== */
+.table-wrap{border:1px solid var(--bd-l);border-radius:var(--r);overflow:hidden;overflow-x:auto;background:var(--surf)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:11px 14px;font-size:10.5px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;border-bottom:1px solid var(--bd-l);background:var(--bg);white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--bd-l);font-size:13px;color:var(--t1);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(0,112,35,.025)}
+
+/* ===== BADGES ===== */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:11.5px;font-weight:500;white-space:nowrap}
+.bdot{width:5px;height:5px;border-radius:50%}
 .b-ok{background:#e8f5ec;color:#1f5f33}
-.b-ok .badge-dot{background:var(--success)}
-.b-upcoming{background:#fef7d8;color:var(--warning-text)}
-.b-upcoming .badge-dot{background:var(--warning)}
-.b-expired{background:var(--danger-tint);color:var(--danger)}
-.b-expired .badge-dot{background:var(--danger)}
-.b-missing{background:#f5d4d4;color:#6b1c1c}
-.b-missing .badge-dot{background:#6b1c1c}
-.b-prod{background:#e8f5ec;color:#1f5f33}
-.b-inj{background:#deeef5;color:#0d4a66}
-.b-other{background:var(--border-light);color:var(--text-2)}
+.b-upcoming{background:#fef7d8;color:var(--warn-t)}
+.b-expired{background:var(--danger-t);color:var(--danger)}
+.b-missing{background:#f0d8d8;color:#6b1c1c}
+.b-partial{background:#fff0d8;color:#7a4400}
 .b-pend{background:#e8ecf5;color:#1e3a8a}
 .b-done{background:#e8f5ec;color:#1f5f33}
-.b-overdue{background:var(--danger-tint);color:var(--danger)}
-.b-ba{background:#deeef5;color:#0d4a66}
-.b-rn{background:#fef7d8;color:var(--warning-text)}
-.b-se{background:#e8f5ec;color:#1f5f33}
-.pdf-link{color:var(--primary);text-decoration:none;font-weight:500;font-size:13px;display:inline-flex;align-items:center;gap:5px}
-.pdf-link svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.empty{padding:40px 20px;text-align:center;color:var(--text-3);font-size:14px}
-.loading{text-align:center;padding:40px;color:var(--text-3);font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px}
-.error-msg{background:var(--danger-tint);color:var(--danger);padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #f5c6c6}
-.warn{background:#fef7d8;color:var(--warning-text);padding:10px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13px;border:1px solid #f0d878}
-.success-msg{background:#e8f5ec;color:#1f5f33;padding:12px 14px;border-radius:var(--r-sm);margin:12px 0;font-size:13.5px;border:1px solid #c5e3d0}
-.upload-box{background:var(--surface);padding:28px;border-radius:var(--r);border:1.5px dashed var(--border);text-align:center;margin-bottom:18px}
-.upload-box h3{font-size:16px;font-weight:600;margin-bottom:6px;color:var(--text)}
-.upload-box p{color:var(--text-2);font-size:13.5px;margin-bottom:14px}
-.pagination{display:flex;justify-content:space-between;align-items:center;padding:12px 4px;color:var(--text-2);font-size:13px}
-.chart-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px;margin-bottom:14px}
-.bar-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px}
-.bar-item{display:flex;align-items:center;gap:14px;font-size:13px}
-.bar-label{min-width:130px;font-weight:500;font-size:13px;color:var(--text)}
-.bar-track{flex:1;height:6px;background:var(--border-light);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width .6s var(--ease)}
-.bar-value{min-width:90px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums;font-size:13px}
-.bar-value strong{color:var(--danger);font-weight:600}
-.summary-bar{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r-sm);padding:11px 14px;margin-bottom:12px;font-size:13px;color:var(--text-2)}
-.summary-bar strong{color:var(--text);font-weight:600}
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--border-light);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spotlight-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
-.spotlight-overlay.show{display:flex}
-.spotlight{background:var(--surface);border-radius:14px;width:100%;max-width:640px;box-shadow:0 24px 64px rgba(0,0,0,.18);overflow:hidden}
-.spotlight-input-wrap{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border-light)}
-.spotlight-input-wrap svg{width:20px;height:20px;stroke:var(--text-3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.spotlight-input{flex:1;border:none;outline:none;font-size:17px;font-family:inherit;color:var(--text);background:transparent}
-.spotlight-close{font-size:11px;background:var(--border-light);padding:3px 8px;border-radius:5px;color:var(--text-2);font-weight:500;cursor:pointer;border:none;font-family:inherit}
-.spotlight-results{max-height:60vh;overflow-y:auto;padding:8px 0}
-.sp-section-title{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:8px 20px 6px}
-.sp-item{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;transition:background .12s var(--ease)}
+.b-overdue{background:var(--danger-t);color:var(--danger)}
+.b-other{background:var(--bd-l);color:var(--t2)}
+
+/* ===== TOOLBAR ===== */
+.toolbar{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r);padding:10px 12px;margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:var(--shadow)}
+.inp{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:all .15s var(--ease);flex:1;min-width:180px}
+.inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,112,35,.08);background:var(--surf)}
+.sel{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;min-width:130px;cursor:pointer;transition:border-color .15s var(--ease)}
+.sel:focus{border-color:var(--primary)}
+.btn{background:var(--primary);color:#fff;border:none;padding:7px 15px;border-radius:var(--r-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--primary-h)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--bd)}
+.btn-ghost:hover{background:var(--bd-l);color:var(--t1)}
+.btn-danger{background:var(--danger)}
+.btn-danger:hover{background:var(--danger-h)}
+.btn-accent{background:var(--primary-l)}
+.btn-accent:hover{background:#3d8f22}
+.icon-btn{background:transparent;border:none;cursor:pointer;padding:5px;border-radius:5px;color:var(--t3);transition:all .15s var(--ease);display:inline-flex;align-items:center}
+.icon-btn:hover{background:var(--danger-t);color:var(--danger)}
+.icon-btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== CONDICIONANTES ===== */
+.cond-card{background:var(--surf);border:1px solid var(--bd-l);border-left:3px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:8px;transition:box-shadow .15s var(--ease);box-shadow:var(--shadow)}
+.cond-card:hover{box-shadow:var(--shadow-lg)}
+.cond-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cond-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.cond-cat{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.cond-desc{font-size:13.5px;color:var(--t1);line-height:1.6;margin-bottom:10px}
+.cond-desc-short{display:block}
+.cond-desc-more{display:none}
+.cond-progress{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.progress-bar-wrap{flex:1;min-width:80px;height:4px;background:var(--bd-l);border-radius:2px;overflow:hidden}
+.progress-bar{height:100%;border-radius:2px;transition:width .5s var(--ease)}
+.progress-label{font-size:11.5px;color:var(--t2);white-space:nowrap}
+.asset-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.asset-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:5px;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);border:1px solid transparent}
+.chip-done{background:#e8f5ec;color:#1f5f33;border-color:#c5e3d0}
+.chip-pending{background:var(--bg);color:var(--t2);border-color:var(--bd)}
+.chip-pending:hover{background:var(--primary-t);color:var(--primary);border-color:var(--primary)}
+.chip-check{width:12px;height:12px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* ===== UPLOAD ===== */
+.upload-zone{border:1.5px dashed var(--bd);border-radius:var(--r);padding:28px 20px;text-align:center;margin-bottom:16px;cursor:pointer;transition:all .2s var(--ease);background:var(--bg)}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--primary);background:var(--primary-t)}
+.upload-zone h3{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--t1)}
+.upload-zone p{color:var(--t2);font-size:13px;margin-bottom:12px}
+#pdfFile{display:none}
+
+/* ===== SPOTLIGHT ===== */
+.overlay-bg{position:fixed;inset:0;background:rgba(0,0,0,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
+.overlay-bg.show{display:flex}
+.spotlight{background:var(--surf);border-radius:16px;width:100%;max-width:620px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--bd-l)}
+.sp-input-wrap{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bd-l)}
+.sp-input-wrap svg{width:18px;height:18px;stroke:var(--t3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sp-input{flex:1;border:none;outline:none;font-size:16px;font-family:inherit;color:var(--t1);background:transparent}
+.sp-close{font-size:10.5px;background:var(--bd-l);padding:2px 7px;border-radius:4px;color:var(--t2);cursor:pointer;border:none;font-family:inherit}
+.sp-results{max-height:55vh;overflow-y:auto;padding:6px 0}
+.sp-section{font-size:9.5px;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;font-weight:700;padding:8px 20px 5px}
+.sp-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;transition:background .1s}
 .sp-item:hover{background:var(--bg)}
-.sp-item-icon{width:28px;height:28px;border-radius:6px;background:var(--border-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-2);font-size:11px;font-weight:600}
-.sp-item-icon.a{background:var(--primary-tint);color:var(--primary)}
-.sp-item-icon.l{background:#deeef5;color:#0d4a66}
-.sp-item-icon.c{background:#fef7d8;color:var(--warning-text)}
-.sp-item-content{flex:1;min-width:0}
-.sp-item-title{font-size:14px;font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sp-item-sub{font-size:12px;color:var(--text-3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sp-empty{padding:32px 20px;text-align:center;color:var(--text-3);font-size:13.5px}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.show{display:flex}
-.modal{background:var(--surface);border-radius:14px;width:100%;max-width:520px;box-shadow:0 24px 64px rgba(0,0,0,.18);overflow:hidden}
-.modal-header{padding:22px 24px 12px}
-.modal-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.modal-icon.warn{background:#fef7d8;color:var(--warning-text)}
-.modal-icon.danger{background:var(--danger-tint);color:var(--danger)}
-.modal-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px}
-.modal-subtitle{font-size:14px;color:var(--text-2);line-height:1.5}
-.modal-body{padding:8px 24px 0}
-.modal-info{background:var(--bg);border:1px solid var(--border-light);border-radius:var(--r-sm);padding:14px 16px;font-size:13px;color:var(--text-2);margin:12px 0}
-.modal-info strong{color:var(--text);font-weight:600}
-.modal-info .row{display:flex;justify-content:space-between;padding:3px 0}
-.modal-actions{padding:20px 24px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;border-top:1px solid var(--border-light);margin-top:18px}
-.cond-card{background:#fff;border:1px solid #f0f0f0;border-radius:10px;padding:16px 18px;margin-bottom:10px;transition:box-shadow .15s}
-.cond-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.06)}
-@media(max-width:900px){
-.sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s var(--ease);box-shadow:0 0 40px rgba(0,0,0,.1);width:240px}
-.sidebar.open{left:0}
-main{padding:18px 16px 48px}
-.menu-toggle{display:flex !important}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;display:none}
-.overlay.show{display:block}
-h1{font-size:24px}
-.search-trigger .placeholder{display:none}
-.search-trigger{min-width:0;flex:1}
-}
-.menu-toggle{display:none;background:var(--surface);border:1px solid var(--border);padding:8px 12px;border-radius:8px;cursor:pointer;align-items:center;gap:8px;font-family:inherit;color:var(--text)}
-.menu-toggle svg{width:18px;height:18px;stroke:var(--text);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sp-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0}
+.sp-icon.a{background:var(--primary-t);color:var(--primary)}
+.sp-icon.l{background:#deeef5;color:#0d4a66}
+.sp-icon.c{background:#fef7d8;color:var(--warn-t)}
+.sp-item-t{font-size:13.5px;font-weight:500;color:var(--t1)}
+.sp-item-s{font-size:11.5px;color:var(--t3);margin-top:1px}
+.sp-empty{padding:28px 20px;text-align:center;color:var(--t3);font-size:13px}
+.sp-hints{padding:10px 20px;border-top:1px solid var(--bd-l)}
+.sp-hint{display:inline-block;background:var(--bg);border:1px solid var(--bd-l);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--t3);margin:2px;cursor:pointer;transition:all .1s}
+.sp-hint:hover{background:var(--primary-t);color:var(--primary);border-color:var(--primary)}
+
+/* ===== MODAL ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:var(--surf);border-radius:16px;width:100%;max-width:500px;box-shadow:var(--shadow-lg);overflow:hidden}
+.modal-head{padding:22px 22px 12px}
+.modal-icon-wrap{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.modal-icon-wrap svg{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.modal-ttl{font-size:17px;font-weight:600;margin-bottom:5px}
+.modal-sub{font-size:13.5px;color:var(--t2);line-height:1.5}
+.modal-body{padding:6px 22px 0}
+.modal-info{background:var(--bg);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:12px 14px;font-size:12.5px;color:var(--t2);margin:10px 0}
+.modal-row{display:flex;justify-content:space-between;padding:2.5px 0}
+.modal-row strong{color:var(--t1);font-weight:600}
+.modal-actions{padding:18px 22px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd-l);margin-top:16px;flex-wrap:wrap}
+
+/* ===== MISC ===== */
+.loading{text-align:center;padding:36px;color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--bd-l);border-top-color:var(--primary);border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{padding:36px;text-align:center;color:var(--t3);font-size:13px}
+.err-msg{background:var(--danger-t);color:var(--danger);padding:10px 13px;border-radius:var(--r-sm);font-size:13px;border:1px solid #f5c6c6;margin:8px 0}
+.ok-msg{background:#e8f5ec;color:#1f5f33;padding:10px 13px;border-radius:var(--r-sm);font-size:13px;border:1px solid #c5e3d0;margin:8px 0}
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:10px 2px;color:var(--t2);font-size:12.5px}
+.summary-bar{background:var(--surf);border:1px solid var(--bd-l);border-radius:var(--r-sm);padding:9px 13px;margin-bottom:10px;font-size:12.5px;color:var(--t2)}
+.summary-bar strong{color:var(--t1);font-weight:600}
+.pdf-link{color:var(--primary);text-decoration:none;font-weight:500;font-size:12.5px;display:inline-flex;align-items:center;gap:4px}
+.pdf-link svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+a{color:var(--primary);text-decoration:none}
 </style>
 </head>
 <body>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
-<div class="brand">
-<div class="brand-mark">PR</div>
-<div class="brand-text"><span class="brand-name">EnvLicense</span><span class="brand-sub">PetroRecôncavo</span></div>
-</div>
-<div class="nav-label">Geral</div>
-<nav>
-<button class="active" data-tab="dashboard">Visão executiva</button>
-<button data-tab="assets">Ativos & Compliance</button>
-</nav>
-<div class="nav-label">Documentos</div>
-<nav>
-<button data-tab="licenses">Licenças</button>
-<button data-tab="conditions">Condicionantes</button>
-</nav>
-<div class="sidebar-footer">EnvLicense · v4.7</div>
+  <div class="brand">
+    <div class="brand-mark">PR</div>
+    <div class="brand-text">
+      <div class="brand-name">EnvLicense</div>
+      <div class="brand-sub">PetroRecôncavo</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Geral</div>
+    <button class="nav-btn active" data-tab="dashboard">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span class="nav-label-text">Visão executiva</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Documentos</div>
+    <button class="nav-btn" data-tab="licenses">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+      <span class="nav-label-text">Licenças</span>
+    </button>
+    <button class="nav-btn" data-tab="assets">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
+      <span class="nav-label-text">Ativos</span>
+    </button>
+    <button class="nav-btn" data-tab="conditions">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <span class="nav-label-text">Condicionantes</span>
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Planejamento</div>
+    <button class="nav-btn" data-tab="planning">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+      <span class="nav-label-text">Planejamento regulatório</span>
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sidebar-version">v5</div>
+      <div class="sidebar-footer-text">EnvLicense · v5.3</div>
+    </div>
+  </div>
 </aside>
-<main>
-<div class="topbar">
-<button class="menu-toggle" onclick="toggleMenu()"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-<div></div>
-<button class="search-trigger" onclick="openSpotlight()">
-<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-<span class="placeholder">Buscar em todo o sistema</span>
-<span class="shortcut">⌘K</span>
-</button>
-</div>
-<div id="app"><div class="loading"><span class="spinner"></span> Carregando</div></div>
+
+<!-- MAIN -->
+<main id="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Visão executiva</div>
+    <button class="search-box" onclick="openSpotlight()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="s-placeholder">Buscar ativos, licenças, campos…</span>
+      <span class="s-shortcut">⌘K</span>
+    </button>
+  </div>
+  <div class="content">
+    <div id="app"><div class="loading"><span class="spinner"></span> Carregando</div></div>
+  </div>
 </main>
 
-<div class="spotlight-overlay" id="spotlight" onclick="if(event.target===this)closeSpotlight()">
-<div class="spotlight">
-<div class="spotlight-input-wrap">
-<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-<input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar ativos, licenças, condicionantes...">
-<button class="spotlight-close" onclick="closeSpotlight()">esc</button>
-</div>
-<div class="spotlight-results" id="spotlightResults"><div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div></div>
-</div>
+<!-- SPOTLIGHT -->
+<div class="overlay-bg" id="spotlight" onclick="if(event.target===this)closeSpotlight()">
+  <div class="spotlight">
+    <div class="sp-input-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="sp-input" id="spInput" placeholder="Buscar ou tentar: 'licenças vencendo', 'ativos sem licença'…">
+      <button class="sp-close" onclick="closeSpotlight()">esc</button>
+    </div>
+    <div class="sp-results" id="spResults">
+      <div class="sp-hints">
+        <div style="font-size:10.5px;color:var(--t4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Sugestões</div>
+        <span class="sp-hint" onclick="runHint('ativos sem licença')">ativos sem licença</span>
+        <span class="sp-hint" onclick="runHint('licenças vencendo')">licenças vencendo</span>
+        <span class="sp-hint" onclick="runHint('condicionantes pendentes')">condicionantes pendentes</span>
+        <span class="sp-hint" onclick="runHint('INEMA')">INEMA</span>
+        <span class="sp-hint" onclick="runHint('PRODUZINDO')">em produção</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-<div class="modal" id="modalContent"></div>
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
 </div>
 
 <script>
 const API="https://envlicense-backend.onrender.com";
-let filterCache=null;
-let assetState={page:0,filters:{},search:""};
-let searchTimer=null;
-let pendingFile=null;
+let filterCache=null, assetState={page:0,filters:{},search:""}, spTimer=null, pendingFile=null;
 
-async function safeFetch(url,options={}){
+const PAGES={
+  "dashboard":"Visão executiva",
+  "assets":"Ativos",
+  "licenses":"Licenças",
+  "conditions":"Condicionantes",
+  "planning":"Planejamento regulatório"
+};
+
+// ===== SAFE FETCH =====
+async function sf(url,opts={}){
   const ctrl=new AbortController();
-  const timer=setTimeout(()=>ctrl.abort(),options.timeout||15000);
+  const t=setTimeout(()=>ctrl.abort(),opts.timeout||15000);
   try{
-    const r=await fetch(url,{...options,signal:ctrl.signal});
-    clearTimeout(timer);
-    if(!r.ok){console.error("HTTP error:",url,r.status);return null;}
+    const r=await fetch(url,{...opts,signal:ctrl.signal});
+    clearTimeout(t);
+    if(!r.ok){console.error("HTTP",r.status,url);return null;}
     return await r.json();
-  }catch(e){clearTimeout(timer);console.error("Fetch:",url,e.message);return null;}
+  }catch(e){clearTimeout(t);console.error("fetch",e.message,url);return null;}
 }
 
+// Pré-aquece backend
 fetch(`${API}/health`).catch(()=>{});
 
-function toggleMenu(){document.getElementById("sidebar").classList.toggle("open");document.getElementById("overlay").classList.toggle("show");}
-function closeMenu(){document.getElementById("sidebar").classList.remove("open");document.getElementById("overlay").classList.remove("show");}
-document.querySelectorAll("nav button").forEach(b=>{b.addEventListener("click",()=>{show(b.dataset.tab,b);closeMenu();});});
+// ===== NAV =====
+document.querySelectorAll(".nav-btn").forEach(b=>{
+  b.addEventListener("click",()=>show(b.dataset.tab,b));
+});
 
-function openSpotlight(){document.getElementById("spotlight").classList.add("show");setTimeout(()=>document.getElementById("spotlightInput").focus(),50);}
-function closeSpotlight(){document.getElementById("spotlight").classList.remove("show");document.getElementById("spotlightInput").value="";document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';}
-function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalOverlay").classList.add("show");}
-function closeModal(){document.getElementById("modalOverlay").classList.remove("show");}
+async function show(tab,btn){
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  else{const s=document.querySelector(`.nav-btn[data-tab="${tab}"]`);if(s)s.classList.add("active");}
+  document.getElementById("topbar-title").textContent=PAGES[tab]||tab;
+  const app=document.getElementById("app");
+  app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
+  try{
+    if(tab==="dashboard") await renderDashboard();
+    else if(tab==="assets") await renderAssets();
+    else if(tab==="licenses") await renderLicenses();
+    else if(tab==="conditions") await renderConditions();
+    else if(tab==="planning") await renderPlanning();
+  }catch(e){app.innerHTML=`<div class="err-msg">Erro: ${e.message}</div>`;}
+}
 
+// ===== SPOTLIGHT =====
+function openSpotlight(){
+  document.getElementById("spotlight").classList.add("show");
+  setTimeout(()=>document.getElementById("spInput").focus(),50);
+}
+function closeSpotlight(){
+  document.getElementById("spotlight").classList.remove("show");
+  document.getElementById("spInput").value="";
+  resetSpotlight();
+}
+function resetSpotlight(){
+  document.getElementById("spResults").innerHTML=`<div class="sp-hints">
+    <div style="font-size:10.5px;color:var(--t4);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700">Sugestões</div>
+    <span class="sp-hint" onclick="runHint('ativos sem licença')">ativos sem licença</span>
+    <span class="sp-hint" onclick="runHint('licenças vencendo')">licenças vencendo</span>
+    <span class="sp-hint" onclick="runHint('condicionantes pendentes')">condicionantes pendentes</span>
+    <span class="sp-hint" onclick="runHint('INEMA')">INEMA</span>
+    <span class="sp-hint" onclick="runHint('PRODUZINDO')">em produção</span>
+  </div>`;
+}
+function runHint(q){document.getElementById("spInput").value=q;doSearch(q);}
+document.getElementById("spInput").addEventListener("input",e=>{
+  const q=e.target.value.trim();
+  clearTimeout(spTimer);
+  if(q.length<2){resetSpotlight();return;}
+  spTimer=setTimeout(()=>doSearch(q),250);
+});
 document.addEventListener("keydown",e=>{
   if((e.metaKey||e.ctrlKey)&&e.key==="k"){e.preventDefault();openSpotlight();}
   if(e.key==="Escape"){closeSpotlight();closeModal();}
 });
 
-document.getElementById("spotlightInput").addEventListener("input",e=>{
-  const q=e.target.value.trim();
-  clearTimeout(searchTimer);
-  if(q.length<2){document.getElementById("spotlightResults").innerHTML='<div class="sp-empty">Digite pelo menos 2 caracteres para buscar</div>';return;}
-  searchTimer=setTimeout(()=>doSearch(q),250);
-});
-
 async function doSearch(q){
-  const div=document.getElementById("spotlightResults");
+  const div=document.getElementById("spResults");
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  const r=await safeFetch(`${API}/search?q=${encodeURIComponent(q)}`);
+  // Interpretação semântica básica
+  let url=`${API}/search?q=${encodeURIComponent(q)}`;
+  const ql=q.toLowerCase();
+  let extraFilter="";
+  if(ql.includes("sem licença")||ql.includes("sem licenca")) extraFilter="missing";
+  else if(ql.includes("vencendo")||ql.includes("vencida")) extraFilter="expired";
+
+  const r=await sf(url);
   if(!r){div.innerHTML='<div class="sp-empty">Erro na busca</div>';return;}
-  if(r.total===0){div.innerHTML=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;return;}
-  let html='';
-  if(r.assets&&r.assets.length){html+='<div><div class="sp-section-title">Ativos</div>';html+=r.assets.map(a=>`<div class="sp-item" onclick="goToAsset('${(a.code||'').replace(/'/g,"")}')"><div class="sp-item-icon a">AT</div><div class="sp-item-content"><div class="sp-item-title">${a.code||'—'}</div><div class="sp-item-sub">${a.field||'—'} · ${a.state||'—'}</div></div></div>`).join('');html+='</div>';}
-  if(r.licenses&&r.licenses.length){html+='<div><div class="sp-section-title">Licenças</div>';html+=r.licenses.map(l=>`<div class="sp-item" ${l.pdf_url?`onclick="window.open('${l.pdf_url}','_blank')"`:''}>  <div class="sp-item-icon l">LI</div><div class="sp-item-content"><div class="sp-item-title">${l.number||'—'}</div><div class="sp-item-sub">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div></div>`).join('');html+='</div>';}
-  if(r.conditions&&r.conditions.length){html+='<div><div class="sp-section-title">Condicionantes</div>';html+=r.conditions.map(c=>`<div class="sp-item" onclick="show('conditions')"><div class="sp-item-icon c">CD</div><div class="sp-item-content"><div class="sp-item-title">${c.description||'—'}</div><div class="sp-item-sub">${c.category||'—'}</div></div></div>`).join('');html+='</div>';}
+
+  let html="";
+  // Atalhos semânticos
+  if(extraFilter){
+    html+=`<div class="sp-section">Ação rápida</div>
+    <div class="sp-item" onclick="closeSpotlight();assetState={page:0,filters:{aStatus:'${extraFilter}'},search:''};show('assets')">
+      <div class="sp-icon a">→</div>
+      <div><div class="sp-item-t">Ver ativos: ${extraFilter==="missing"?"sem licença":"licença vencida"}</div><div class="sp-item-s">Filtrar automaticamente na aba Ativos</div></div>
+    </div>`;
+  }
+  if(r.assets?.length){
+    html+=`<div class="sp-section">Ativos</div>`;
+    html+=r.assets.map(a=>`<div class="sp-item" onclick="closeSpotlight();assetState={page:0,filters:{},search:'${a.code}'};show('assets')">
+      <div class="sp-icon a">AT</div><div><div class="sp-item-t">${a.code||'—'}</div><div class="sp-item-s">${a.field||'—'} · ${a.state||'—'} · ${a.situation||'—'}</div></div>
+    </div>`).join('');
+  }
+  if(r.licenses?.length){
+    html+=`<div class="sp-section">Licenças</div>`;
+    html+=r.licenses.map(l=>`<div class="sp-item" onclick="closeSpotlight();show('licenses')">
+      <div class="sp-icon l">LI</div><div><div class="sp-item-t">${l.number||'—'}</div><div class="sp-item-s">${l.agency||'—'} · vence ${l.expiry_date||'—'}</div></div>
+    </div>`).join('');
+  }
+  if(r.conditions?.length){
+    html+=`<div class="sp-section">Condicionantes</div>`;
+    html+=r.conditions.map(c=>`<div class="sp-item" onclick="closeSpotlight();show('conditions')">
+      <div class="sp-icon c">CD</div><div><div class="sp-item-t">${(c.description||'').slice(0,60)}…</div><div class="sp-item-s">${c.category||'—'} · ${c.status||'—'}</div></div>
+    </div>`).join('');
+  }
+  if(!html) html=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
   div.innerHTML=html;
 }
 
-function goToAsset(code){closeSpotlight();assetState={page:0,filters:{},search:code};show("assets");}
+// ===== MODAL =====
+function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalBg").classList.add("show");}
+function closeModal(){document.getElementById("modalBg").classList.remove("show");}
 
-async function show(tab,btn){
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  if(btn)btn.classList.add("active");
-  else{const s=document.querySelector(`nav button[data-tab="${tab}"]`);if(s)s.classList.add("active");}
-  const app=document.getElementById("app");
-  app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
-  try{
-    if(tab==="dashboard")await renderDashboard();
-    else if(tab==="assets")await renderAssets();
-    else if(tab==="licenses")await renderLicenses();
-    else if(tab==="conditions")await renderConditions();
-  }catch(e){app.innerHTML=`<div class="error-msg">Erro: ${e.message}</div>`;}
+// ===== HELPERS VISUAIS =====
+function bCompliance(s){const m={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[c,t]=m[s]||["b-other",s];return`<span class="badge ${c}"><span class="bdot" style="background:currentColor;opacity:.5"></span>${t}</span>`;}
+function bSit(s){if(!s)return'<span class="badge b-other">—</span>';const m={"PRODUZINDO":"b-ok","INJETANDO":"b-pend"};return`<span class="badge ${m[s]||'b-other'}">${s.slice(0,16)}</span>`;}
+function bState(s){return`<span class="badge b-other">${s||'—'}</span>`;}
+
+function buildDonut(segs,size=160,thick=20,cBig,cSm){
+  const tot=segs.reduce((a,x)=>a+x.v,0);
+  const cx=size/2,cy=size/2,r=size/2-thick/2,C=2*Math.PI*r;
+  if(!tot)return`<div class="donut-svg-wrap"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bd-l)" stroke-width="${thick}"/></svg><div class="donut-center"><div class="big">0</div><div class="sm">${cSm||''}</div></div></div>`;
+  let off=0;
+  const circles=segs.map(seg=>{const f=seg.v/tot;const len=C*f;const d=`${len} ${C-len}`;const c=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.c}" stroke-width="${thick}" stroke-dasharray="${d}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"/>`;off+=len;return c;}).join('');
+  return`<div class="donut-svg-wrap"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--bd-l)" stroke-width="${thick}"/>${circles}</svg><div class="donut-center"><div class="big">${cBig}</div><div class="sm">${cSm||''}</div></div></div>`;
 }
+function buildLegend(segs,tot){return segs.map(s=>{const p=tot?Math.round(s.v/tot*100):0;return`<div class="legend-item"><span class="legend-dot" style="background:${s.c}"></span><span class="legend-lbl">${s.l}</span><span class="legend-val">${s.v}<span class="legend-pct">(${p}%)</span></span></div>`;}).join('');}
 
-function badgeCompliance(s){const m={ok:["b-ok","Licença ativa"],upcoming:["b-upcoming","Próxima ao vencimento"],expired:["b-expired","Licença vencida"],missing:["b-missing","Sem licença"]};const[c,t]=m[s]||["b-other",s];return `<span class="badge ${c}"><span class="badge-dot"></span>${t}</span>`;}
-function badgeSituation(s){if(!s)return'<span class="badge b-other">—</span>';if(s==="PRODUZINDO")return`<span class="badge b-prod"><span class="badge-dot" style="background:#4EA72E"></span>${s}</span>`;if(s==="INJETANDO")return`<span class="badge b-inj"><span class="badge-dot" style="background:#125E81"></span>${s}</span>`;return`<span class="badge b-other">${s.slice(0,18)}</span>`;}
-function badgeState(s){return`<span class="badge b-${(s||'').toLowerCase()}">${s||'—'}</span>`;}
-
-function buildDonut(segments,size=180,thickness=22,centerBig,centerSmall){
-  const total=segments.reduce((s,x)=>s+x.value,0);
-  if(total===0)return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-thickness/2}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/></svg><div class="donut-center"><div class="big">0</div><div class="small">${centerSmall||''}</div></div></div>`;
-  const cx=size/2,cy=size/2,r=size/2-thickness/2,C=2*Math.PI*r;
-  let offset=0;
-  const circles=segments.map(seg=>{const frac=seg.value/total;const len=C*frac;const d=`${len} ${C-len}`;const c=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${thickness}" stroke-dasharray="${d}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})"/>`;offset+=len;return c;}).join('');
-  return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f5f5f7" stroke-width="${thickness}"/>${circles}</svg><div class="donut-center"><div class="big">${centerBig}</div><div class="small">${centerSmall||''}</div></div></div>`;
-}
-
-function buildPie(segments,size=180){
-  const total=segments.reduce((s,x)=>s+x.value,0);
-  if(total===0)return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="#f5f5f7"/></svg></div>`;
-  if(segments.filter(s=>s.value>0).length===1){const seg=segments.find(s=>s.value>0);return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-2}" fill="${seg.color}"/></svg></div>`;}
-  const cx=size/2,cy=size/2,r=size/2-2;let ca=-Math.PI/2;
-  const paths=segments.map(seg=>{if(seg.value===0)return'';const f=seg.value/total;const a=f*2*Math.PI;const x1=cx+r*Math.cos(ca),y1=cy+r*Math.sin(ca);ca+=a;const x2=cx+r*Math.cos(ca),y2=cy+r*Math.sin(ca);const la=a>Math.PI?1:0;return`<path d="M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${la} 1 ${x2} ${y2} Z" fill="${seg.color}"/>`;}).join('');
-  return`<div class="donut-svg"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg></div>`;
-}
-
-function legendHtml(segments,total){
-  return segments.filter(s=>s.value>0||s.alwaysShow).map(s=>{const p=total>0?Math.round(s.value/total*100):0;return`<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span class="legend-label">${s.label}</span><span class="legend-value">${s.value}<span class="legend-pct">(${p}%)</span></span></div>`;}).join('');
-}
-
+// ===== DASHBOARD =====
 async function renderDashboard(){
   const app=document.getElementById("app");
-  const[dashR,compR,byFieldR,byCatR]=await Promise.all([
-    safeFetch(`${API}/dashboard`),
-    safeFetch(`${API}/compliance/summary`),
-    safeFetch(`${API}/compliance/by_field`),
-    safeFetch(`${API}/conditions/by_category`)
+  const [dash,comp,byField,byCat,thermo]=await Promise.all([
+    sf(`${API}/dashboard`),
+    sf(`${API}/compliance/summary`),
+    sf(`${API}/compliance/by_field`),
+    sf(`${API}/conditions/by_category`),
+    sf(`${API}/conditions/thermometer`)
   ]);
-  const dash=dashR||{};const comp=compR||{};
-  const byField=byFieldR||{problem_fields:[],conditions_by_field:[]};
-  const byCat=byCatR||{items:[],total:0};
-  const sc=comp.status_counts||{};
-  const totalC=(sc.ok||0)+(sc.upcoming||0)+(sc.expired||0)+(sc.missing||0);
+  const d=dash||{},c=comp||{},sc=c.status_counts||{};
+  const th=thermo||{pct:0,level:"gray",label:"Sem dados",pct_active:0};
+  const bf=byField||{problem_fields:[],conditions_by_field:[]};
+  const bc=byCat||{items:[],total:0};
+
+  // Termômetro
+  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
+  const thermoCol=thermoColors[th.level]||"var(--bd)";
+  const thermoBg={green:"#e8f5ec","yellow-green":"#f0f7e0",yellow:"#fef7d8",gray:"var(--bd-l)"};
+  const thermoBadgeBg=thermoBg[th.level]||"var(--bd-l)";
+  const thermoTextColor={green:"#1f5f33","yellow-green":"#3d5a00",yellow:"#7a5e00",gray:"var(--t2)"};
+
+  // Agenda regulatória — simula vencimentos próximos
+  const today=new Date();
+  function daysTo(dateStr){if(!dateStr)return null;return Math.round((new Date(dateStr)-today)/(1000*60*60*24));}
+
+  // Barras campos licenciados
+  const maxW=Math.max(1,...(bf.conditions_by_field||[]).map(x=>x.total_conditions||0));
+  const condBars=(bf.conditions_by_field||[]).slice(0,6).map(f=>{
+    const pct=Math.round((f.total_conditions||0)/maxW*100);
+    const atd=f.total_conditions-(f.expired_conditions||0);
+    return`<li class="bar-item"><span class="bar-label" title="${f.field}">${(f.field||'').slice(0,16)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:var(--primary-l)"></span></span><span class="bar-val">${atd}/<strong style="color:var(--t2)">${f.total_conditions}</strong></span></li>`;
+  }).join('')||'<div class="empty">Sem dados</div>';
+
+  const maxWP=Math.max(1,...(bf.problem_fields||[]).map(x=>x.total_wells||0));
+  const assetBars=(bf.problem_fields||[]).slice(0,6).map(f=>{
+    const lic=f.total_wells-(f.wells_critical||0);
+    const pct=Math.round(lic/f.total_wells*100);
+    return`<li class="bar-item"><span class="bar-label" title="${f.field}">${(f.field||'').slice(0,16)}</span><span class="bar-track"><span class="bar-fill" style="width:${pct}%;background:var(--primary)"></span></span><span class="bar-val">${lic}/${f.total_wells} <span style="font-size:11px;color:var(--t3)">(${pct}%)</span></span></li>`;
+  }).join('')||'<div class="empty">Sem campos críticos</div>';
+
+  // Donut compliance
   const compSegs=[
-    {label:"Licença ativa",value:sc.ok||0,color:"#4EA72E",alwaysShow:true},
-    {label:"Próxima ao vencimento",value:sc.upcoming||0,color:"#F9CE29",alwaysShow:true},
-    {label:"Licença vencida",value:sc.expired||0,color:"#9D2928",alwaysShow:true},
-    {label:"Sem licença",value:sc.missing||0,color:"#6b1c1c",alwaysShow:true}
+    {l:"Licença ativa",v:sc.ok||0,c:"#4EA72E"},
+    {l:"Próxima ao vencimento",v:sc.upcoming||0,c:"#F9CE29"},
+    {l:"Licença vencida",v:sc.expired||0,c:"#9D2928"},
+    {l:"Sem licença",v:sc.missing||0,c:"#6b1c1c"}
   ];
-  const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
-  const catSegs=(byCat.items||[]).map(c=>({label:c.label,value:c.count,color:catColors[c.category]||"#86868b"}));
-  const probMax=Math.max(1,...(byField.problem_fields||[]).map(x=>x.wells_critical||0));
-  const probBars=(byField.problem_fields||[]).slice(0,8).map(f=>`<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${f.wells_critical/probMax*100}%;background:#9D2928"></span></span><span class="bar-value"><strong>${f.wells_critical}</strong> / ${f.total_wells}</span></li>`).join('')||'<div class="empty">Nenhum problema detectado</div>';
-  const condMax=Math.max(1,...(byField.conditions_by_field||[]).map(x=>x.total_conditions||0));
-  const condBars=(byField.conditions_by_field||[]).slice(0,8).map(f=>`<li class="bar-item"><span class="bar-label">${(f.field||'').slice(0,20)}</span><span class="bar-track"><span class="bar-fill" style="width:${f.total_conditions/condMax*100}%;background:#F9CE29"></span></span><span class="bar-value">${f.total_conditions} <strong>(${f.expired_conditions} venc)</strong></span></li>`).join('')||'<div class="empty">Sem condicionantes</div>';
+  const totC=compSegs.reduce((a,x)=>a+x.v,0);
+
+  // Cenário recomendado
+  const nCritical=(sc.expired||0)+(sc.missing||0);
+  const nActive=(c.producing?.total||0)+(c.injecting?.total||0);
+  const nActiveCritical=(c.producing?.non_compliance||0)+(c.injecting?.non_compliance||0);
+  const scenarioItems=[];
+  if(nActiveCritical>0) scenarioItems.push(`<b>${nActiveCritical}</b> ativos operacionais sem cobertura regulatória — prioridade máxima`);
+  if(th.pct<100&&th.pct_active===100) scenarioItems.push(`Conformidade de poços ativos: 100% — focar nos demais ativos`);
+  if(th.pct===100) scenarioItems.push(`Conformidade total atingida — manter monitoramento`);
+  else if(nCritical>0) scenarioItems.push(`Regularizar ${nCritical} ativos para ampliar cobertura`);
+  scenarioItems.push(`Próximo passo: vincular licenças existentes aos ativos cadastrados`);
+
   app.innerHTML=`
-    <div class="page-header"><h1>Visão executiva</h1><p class="subtitle">Compliance regulatório e operação</p></div>
+    <div class="page-header">
+      <h1>Visão executiva</h1>
+      <p class="sub">Conformidade regulatória · ${d.total_assets||0} ativos monitorados</p>
+    </div>
+
+    <!-- KPIs -->
     <div class="kpis">
-      <div class="kpi"><div class="kpi-label">Ativos</div><div class="kpi-value">${dash.total_assets||0}</div><div class="kpi-sub">monitorados</div></div>
-      <div class="kpi"><div class="kpi-label">Licenças</div><div class="kpi-value">${dash.total_licenses||0}</div><div class="kpi-sub">vigentes</div></div>
-      <div class="kpi"><div class="kpi-label">Condicionantes</div><div class="kpi-value">${dash.total_conditions||0}</div><div class="kpi-sub">ativas</div></div>
+      <div class="kpi">
+        <div class="kpi-label">Ativos monitorados</div>
+        <div class="kpi-value">${d.total_assets||0}</div>
+        <div class="kpi-sub">${d.total_licenses||0} licenças ativas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Condicionantes</div>
+        <div class="kpi-value">${d.total_conditions||0}</div>
+        <div class="kpi-sub">${d.upcoming_30d||0} vencem em 30 dias</div>
+        ${d.overdue>0?`<span class="kpi-delta delta-down">▼ ${d.overdue} vencidas</span>`:''}
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Em produção</div>
+        <div class="kpi-value" style="color:var(--primary)">${c.producing?.total||0}</div>
+        <div class="kpi-sub">${c.producing?.non_compliance||0} sem cobertura</div>
+        ${(c.producing?.non_compliance||0)>0?`<span class="kpi-delta delta-down">${c.producing?.pct||0}% expostos</span>`:``}
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Em injeção</div>
+        <div class="kpi-value" style="color:var(--info)">${c.injecting?.total||0}</div>
+        <div class="kpi-sub">${c.injecting?.non_compliance||0} sem cobertura</div>
+        ${(c.injecting?.non_compliance||0)>0?`<span class="kpi-delta delta-down">${c.injecting?.pct||0}% expostos</span>`:``}
+      </div>
     </div>
-    <div class="donut-row">
-      <div class="donut-card"><div class="card-title">Status regulatório</div><div class="donut-wrap">${buildDonut(compSegs,180,22,totalC,"Total")}<div class="donut-legend">${legendHtml(compSegs,totalC)}</div></div></div>
-      <div class="donut-card"><div class="card-title">Condicionantes por categoria</div><div class="donut-wrap">${buildPie(catSegs,180)}<div class="donut-legend">${catSegs.length?legendHtml(catSegs,byCat.total||0):'<div class="empty">Sem condicionantes</div>'}</div></div></div>
+
+    <!-- TERMÔMETRO -->
+    <div class="thermometer">
+      <div class="thermo-top">
+        <div>
+          <div class="thermo-title">Indicador de conformidade de condicionantes</div>
+          <div class="thermo-pct" style="color:${thermoCol}">${th.pct}%</div>
+          <div class="thermo-label">${th.label}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:6px">Nível de conformidade</div>
+          <span class="thermo-badge" style="background:${thermoBadgeBg};color:${thermoCol}">
+            <span style="width:8px;height:8px;border-radius:50%;background:${thermoCol};display:inline-block"></span>
+            ${th.level==="green"?"Adequado":th.level==="yellow-green"?"Poços ativos OK":"Atenção necessária"}
+          </span>
+          <div style="font-size:11px;color:var(--t3);margin-top:8px">Poços ativos: <strong style="color:${thermoCol}">${th.pct_active||0}%</strong></div>
+        </div>
+      </div>
+      <div class="thermo-bar-wrap"><div class="thermo-bar" style="width:${th.pct}%;background:${thermoCol}"></div></div>
+      <div class="thermo-meta">
+        <span class="thermo-stat"><strong>${th.completed_pairs||0}</strong> / ${th.total_pairs||0} pares condicionante × ativo atendidos</span>
+        <span class="thermo-stat">Poços ativos: <strong>${th.active_completed||0}</strong> / ${th.active_total||0}</span>
+      </div>
+      <div class="thermo-tooltip" title="Verde: 100% de todas as condicionantes atendidas. Amarelo-esverdeado: 100% dos poços em produção/injeção atendidos. Amarelo: outros cenários.">?</div>
     </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Status regulatório</div>
+        <div class="donut-wrap">
+          ${buildDonut(compSegs,160,20,totC,"Total")}
+          <div class="legend">${buildLegend(compSegs,totC)}</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Ativos licenciados por campo</div>
+        <ul class="bar-list">${assetBars}</ul>
+      </div>
+    </div>
+
+    <!-- OP CARDS -->
     <div class="op-row">
-      <div class="op-card"><div class="op-header"><span class="op-dot"></span>Em produção</div><div class="op-value">${comp.producing?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.producing?.non_compliance||0} não-compliance · ${comp.producing?.pct||0}%</strong></span></div></div>
-      <div class="op-card inj"><div class="op-header"><span class="op-dot"></span>Em injeção</div><div class="op-value">${comp.injecting?.total||0}</div><div class="op-meta"><span>Ativos operacionais</span><span><strong>${comp.injecting?.non_compliance||0} não-compliance · ${comp.injecting?.pct||0}%</strong></span></div></div>
+      <div class="op-card">
+        <div class="op-accent" style="background:var(--primary-l)"></div>
+        <div class="op-header"><span class="op-header-dot" style="background:var(--primary-l)"></span>Em produção</div>
+        <div class="op-value">${c.producing?.total||0}</div>
+        <div class="op-meta">
+          <span>${c.producing?.non_compliance||0} sem cobertura regulatória</span>
+          ${(c.producing?.pct||0)>0?`<span class="op-critical">${c.producing?.pct||0}% em exposição</span>`:'<span style="color:var(--primary-l)">Sem exposição crítica</span>'}
+        </div>
+      </div>
+      <div class="op-card">
+        <div class="op-accent" style="background:var(--info)"></div>
+        <div class="op-header"><span class="op-header-dot" style="background:var(--info)"></span>Em injeção</div>
+        <div class="op-value">${c.injecting?.total||0}</div>
+        <div class="op-meta">
+          <span>${c.injecting?.non_compliance||0} sem cobertura regulatória</span>
+          ${(c.injecting?.pct||0)>0?`<span class="op-critical">${c.injecting?.pct||0}% em exposição</span>`:'<span style="color:var(--primary-l)">Sem exposição crítica</span>'}
+        </div>
+      </div>
     </div>
-    <div class="chart-row">
-      <div class="card"><div class="card-title">Campos em risco regulatório</div><ul class="bar-list">${probBars}</ul></div>
-      <div class="card"><div class="card-title">Condicionantes por campo</div><ul class="bar-list">${condBars}</ul></div>
+
+    <!-- CONDICIONANTES POR CAMPO + CENÁRIO -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Condicionantes por campo</div>
+        <ul class="bar-list">${condBars}</ul>
+      </div>
+      <div class="scenario">
+        <div class="scenario-header">
+          <div class="scenario-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div>
+            <div class="scenario-title">Cenário recomendado</div>
+            <div class="scenario-sub">Baseado no status atual dos ativos</div>
+          </div>
+        </div>
+        <div class="scenario-items">
+          ${scenarioItems.map(i=>`<div class="scenario-item"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>${i}</span></div>`).join('')}
+        </div>
+      </div>
     </div>`;
 }
 
+// ===== ASSETS =====
 async function renderAssets(){
-  if(!filterCache){filterCache=await safeFetch(`${API}/assets/filters`)||{states:[],agencies:[],fields:[],situations:[],operators:[]};}
+  if(!filterCache){filterCache=await sf(`${API}/assets/filters`)||{states:[],agencies:[],fields:[],situations:[]};}
   const app=document.getElementById("app");
-  const opt=(arr)=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
+  const opt=arr=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
-    <div class="page-header"><h1>Ativos & Compliance</h1><p class="subtitle">Status regulatório dos ativos</p></div>
+    <div class="page-header"><h1>Ativos</h1><p class="sub">Status regulatório dos ativos cadastrados</p></div>
     <div class="toolbar">
-      <input class="input" id="aSearch" placeholder="Buscar por código ou campo" value="${assetState.search}">
-      <select class="select" id="aState"><option value="">Estado: todos</option>${opt(filterCache.states)}</select>
-      <select class="select" id="aAgency"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
-      <select class="select" id="aField"><option value="">Campo: todos</option>${opt((filterCache.fields||[]).slice(0,80))}</select>
-      <select class="select" id="aOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations)}</select>
-      <select class="select" id="aStatus"><option value="">Status: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao vencimento</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option></select>
+      <input class="inp" id="aS" placeholder="Buscar código ou campo…" value="${assetState.search}">
+      <select class="sel" id="aAg"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
+      <select class="sel" id="aOp"><option value="">Situação op.: todas</option>${opt(filterCache.situations)}</select>
+      <select class="sel" id="aSt"><option value="">Status: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao vencimento</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option></select>
       <button class="btn" id="aApply">Filtrar</button>
-      <button class="btn btn-ghost" id="aClear">Limpar</button>
-      <button class="btn btn-success" id="aExport">Exportar CSV</button>
+      <button class="btn btn-accent" id="aExp">↓ CSV</button>
     </div>
-    <div id="aResults"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
-  ["aState","aAgency","aField","aOp","aStatus"].forEach(id=>{if(assetState.filters[id])document.getElementById(id).value=assetState.filters[id];});
-  document.getElementById("aApply").onclick=()=>{assetState.filters={aState:document.getElementById("aState").value,aAgency:document.getElementById("aAgency").value,aField:document.getElementById("aField").value,aOp:document.getElementById("aOp").value,aStatus:document.getElementById("aStatus").value};assetState.search=document.getElementById("aSearch").value;assetState.page=0;loadAssets();};
-  document.getElementById("aClear").onclick=()=>{assetState={page:0,filters:{},search:""};renderAssets();};
-  document.getElementById("aExport").onclick=exportAssets;
-  document.getElementById("aSearch").addEventListener("keypress",e=>{if(e.key==="Enter")document.getElementById("aApply").click();});
+    <div id="aRes"><div class="loading"><span class="spinner"></span> Buscando</div></div>`;
+  ["aAg","aOp","aSt"].forEach(id=>{if(assetState.filters[id])document.getElementById(id).value=assetState.filters[id];});
+  document.getElementById("aApply").onclick=()=>{
+    assetState.filters={aAg:document.getElementById("aAg").value,aOp:document.getElementById("aOp").value,aSt:document.getElementById("aSt").value};
+    assetState.search=document.getElementById("aS").value;assetState.page=0;loadAssets();
+  };
+  document.getElementById("aS").addEventListener("keypress",e=>{if(e.key==="Enter")document.getElementById("aApply").click();});
+  document.getElementById("aExp").onclick=exportAssets;
   loadAssets();
 }
 
-function buildAssetParams(){
+function buildAParams(){
   const p=new URLSearchParams();
-  if(assetState.filters.aState)p.set("state",assetState.filters.aState);
-  if(assetState.filters.aAgency)p.set("agency",assetState.filters.aAgency);
-  if(assetState.filters.aField)p.set("field",assetState.filters.aField);
-  if(assetState.filters.aOp)p.set("operational",assetState.filters.aOp);
-  if(assetState.filters.aStatus)p.set("compliance_status",assetState.filters.aStatus);
-  if(assetState.search)p.set("search",assetState.search);
+  if(assetState.filters.aAg) p.set("agency",assetState.filters.aAg);
+  if(assetState.filters.aOp) p.set("operational",assetState.filters.aOp);
+  if(assetState.filters.aSt) p.set("compliance_status",assetState.filters.aSt);
+  if(assetState.search) p.set("search",assetState.search);
   return p;
 }
 
 async function loadAssets(){
-  const p=buildAssetParams();p.set("limit","50");p.set("offset",String(assetState.page*50));
-  const div=document.getElementById("aResults");
+  const p=buildAParams();p.set("limit","50");p.set("offset",String(assetState.page*50));
+  const div=document.getElementById("aRes");
   div.innerHTML='<div class="loading"><span class="spinner"></span> Buscando</div>';
-  const r=await safeFetch(`${API}/assets/unified?${p}`,{timeout:30000});
-  if(!r||!r.items||r.items.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
-  const critical=r.items.filter(i=>i.compliance_status==='expired'||i.compliance_status==='missing').length;
-  const rows=r.items.map(a=>{const pdf=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank">Ver PDF</a>`:'<span style="color:#c7c7cc">—</span>';return`<tr><td><strong>${a.code||'—'}</strong></td><td>${a.field||'—'}</td><td>${badgeState(a.state)}</td><td>${a.agency||'—'}</td><td>${badgeSituation(a.situation)}</td><td>${badgeCompliance(a.compliance_status)}</td><td style="font-variant-numeric:tabular-nums">${a.expiry_date||'<span style="color:#c7c7cc">—</span>'}</td><td>${pdf}</td></tr>`;}).join('');
-  const totalPages=Math.ceil(r.total/50);const cur=assetState.page+1;
-  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${critical}</strong> críticos nesta página</div><div class="table-wrap"><table class="table"><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação Op.</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pagination"><span>Página ${cur} de ${totalPages}</span><div style="display:flex;gap:8px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?'disabled':''}>← Anterior</button><button class="btn btn-ghost" id="aNext" ${cur>=totalPages?'disabled':''}>Próxima →</button></div></div>`;
+  const r=await sf(`${API}/assets/unified?${p}`,{timeout:30000});
+  if(!r?.items?.length){div.innerHTML='<div class="table-wrap"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
+  const crit=r.items.filter(i=>i.compliance_status==="expired"||i.compliance_status==="missing").length;
+  const rows=r.items.map(a=>{
+    const pdf=a.pdf_url?`<a class="pdf-link" href="${a.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`:'—';
+    return`<tr><td><strong style="font-size:13px">${a.code||'—'}</strong></td><td style="color:var(--t2)">${a.field||'—'}</td><td>${bState(a.state)}</td><td style="color:var(--t2)">${a.agency||'—'}</td><td>${bSit(a.situation)}</td><td>${bCompliance(a.compliance_status)}</td><td style="font-size:12px;color:var(--t2);font-variant-numeric:tabular-nums">${a.expiry_date||'—'}</td><td>${pdf}</td></tr>`;
+  }).join('');
+  const tp=Math.ceil(r.total/50),cur=assetState.page+1;
+  div.innerHTML=`<div class="summary-bar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> ativos · <strong>${crit}</strong> críticos nesta página</div>
+    <div class="table-wrap"><table><thead><tr><th>Código</th><th>Campo</th><th>UF</th><th>Órgão</th><th>Situação</th><th>Status regulatório</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="pagination"><span>Página ${cur} de ${tp}</span><div style="display:flex;gap:6px"><button class="btn btn-ghost" id="aPrev" ${assetState.page===0?"disabled":""}>← Ant.</button><button class="btn btn-ghost" id="aNext" ${cur>=tp?"disabled":""}>Próx. →</button></div></div>`;
   document.getElementById("aPrev").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
-  document.getElementById("aNext").onclick=()=>{if(cur<totalPages){assetState.page++;loadAssets();}};
+  document.getElementById("aNext").onclick=()=>{if(cur<tp){assetState.page++;loadAssets();}};
 }
+function exportAssets(){window.open(`${API}/assets/export?${buildAParams()}`,'_blank');}
 
-function exportAssets(){const p=buildAssetParams();window.open(`${API}/assets/export?${p}`,'_blank');}
-
+// ===== LICENSES =====
 async function renderLicenses(){
   const app=document.getElementById("app");
   app.innerHTML=`
-    <div class="page-header"><h1>Licenças</h1><p class="subtitle">Documentos ambientais e suas condicionantes</p></div>
-    <div class="upload-box">
+    <div class="page-header"><h1>Licenças</h1><p class="sub">Documentos ambientais — upload, rastreabilidade e vinculação</p></div>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('pdfFile').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDrop(event)">
+      <div style="font-size:32px;margin-bottom:8px">📄</div>
       <h3>Subir nova licença em PDF</h3>
-      <p>A IA vai ler o documento e extrair as condicionantes automaticamente.</p>
-      <input type="file" id="pdfFile" accept=".pdf">
-      <br><br><button class="btn" id="upBtn">Enviar para análise</button>
+      <p>Clique ou arraste o PDF aqui — a IA extrai condicionantes e vincula ativos automaticamente</p>
+      <input type="file" id="pdfFile" accept=".pdf" onchange="uploadPdf('ask')">
+      <button class="btn" style="margin-top:8px" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
       <div id="upStatus"></div>
     </div>
     <div id="lList"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
-  document.getElementById("upBtn").onclick=()=>uploadPdf("ask");
-  await loadLicensesList();
+  await loadLicenses();
 }
+function handleDrop(e){e.preventDefault();document.getElementById("uploadZone").classList.remove("drag-over");const f=e.dataTransfer.files[0];if(f&&f.type==="application/pdf"){const dt=new DataTransfer();dt.items.add(f);document.getElementById("pdfFile").files=dt.files;uploadPdf("ask");}}
 
-async function loadLicensesList(){
-  const list=await safeFetch(`${API}/licenses`)||[];
+async function loadLicenses(){
+  const list=await sf(`${API}/licenses`)||[];
   const div=document.getElementById("lList");
-  if(!list||list.length===0){div.innerHTML='<div class="card"><div class="empty">Nenhuma licença cadastrada</div></div>';return;}
-  const trash='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
-  const rows=list.map(l=>{const pdf=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank">Ver</a>`:'<span style="color:#c7c7cc">—</span>';const lj=JSON.stringify(l).replace(/"/g,'&quot;');return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td>${l.agency||'—'}</td><td style="font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td>${l.asset_code||'<span style="color:#c7c7cc">não vinculado</span>'}</td><td>${l.n_conditions}</td><td>${pdf}</td><td><button class="icon-btn" data-lic="${lj}">${trash}</button></td></tr>`;}).join('');
-  div.innerHTML=`<div class="table-wrap"><table class="table"><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  document.querySelectorAll(".icon-btn[data-lic]").forEach(btn=>{btn.onclick=()=>{try{const l=JSON.parse(btn.getAttribute("data-lic").replace(/&quot;/g,'"'));confirmDeleteLicense(l);}catch(e){alert("Erro ao abrir confirmação");}};});
+  if(!list?.length){div.innerHTML='<div class="table-wrap"><div class="empty">Nenhuma licença cadastrada</div></div>';return;}
+  const trashSvg='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+  const rows=list.map(l=>{
+    const pdf=l.pdf_url?`<a class="pdf-link" href="${l.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Abrir</a>`:'—';
+    const lj=JSON.stringify(l).replace(/"/g,'&quot;');
+    return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pend">${l.type}</span></td><td style="color:var(--t2)">${l.agency||'—'}</td><td style="font-size:12px;font-variant-numeric:tabular-nums">${l.expiry_date||'—'}</td><td style="color:${l.asset_code?'var(--t1)':'var(--t3)'}"><small>${l.asset_code||'não vinculado'}</small></td><td>${l.n_conditions}</td><td>${pdf}</td><td><button class="icon-btn" data-lic="${lj}">${trashSvg}</button></td></tr>`;
+  }).join('');
+  div.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>PDF</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  document.querySelectorAll(".icon-btn[data-lic]").forEach(btn=>{btn.onclick=()=>{try{confirmDeleteLicense(JSON.parse(btn.getAttribute("data-lic").replace(/&quot;/g,'"')));}catch(e){alert("Erro");}}; });
 }
 
-function confirmDeleteLicense(lic){
-  const w='<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-  openModal(`<div class="modal-header"><div class="modal-icon danger">${w}</div><div class="modal-title">Excluir licença?</div><div class="modal-subtitle">Esta ação não pode ser desfeita.</div></div><div class="modal-body"><div class="modal-info"><div class="row"><span>Número</span><strong>${lic.number||'—'}</strong></div><div class="row"><span>Órgão</span><strong>${lic.agency||'—'}</strong></div><div class="row"><span>Ativo(s)</span><strong>${lic.asset_code||'não vinculado'}</strong></div><div class="row"><span>Condicionantes a excluir</span><strong style="color:#9D2928">${lic.n_conditions}</strong></div></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" onclick="deleteLicense(${lic.id})">Excluir definitivamente</button></div>`);
+function confirmDeleteLicense(l){
+  openModal(`<div class="modal-head"><div class="modal-icon-wrap" style="background:var(--danger-t);color:var(--danger)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="modal-ttl">Excluir licença?</div><div class="modal-sub">Esta ação não pode ser desfeita. As condicionantes vinculadas também serão removidas.</div></div><div class="modal-body"><div class="modal-info"><div class="modal-row"><span>Número</span><strong>${l.number}</strong></div><div class="modal-row"><span>Órgão</span><strong>${l.agency||'—'}</strong></div><div class="modal-row"><span>Ativo(s)</span><strong>${l.asset_code||'não vinculado'}</strong></div><div class="modal-row"><span>Condicionantes</span><strong style="color:var(--danger)">${l.n_conditions}</strong></div></div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" onclick="deleteLicense(${l.id})">Excluir</button></div>`);
 }
+async function deleteLicense(id){closeModal();const r=await sf(`${API}/licenses/${id}`,{method:"DELETE"});if(r?.deleted)await loadLicenses();else alert("Erro ao excluir");}
 
-async function deleteLicense(id){
-  closeModal();
-  const r=await safeFetch(`${API}/licenses/${id}`,{method:"DELETE"});
-  if(!r||r.error){alert("Erro ao excluir: "+(r?r.error:'sem resposta'));return;}
-  await loadLicensesList();
-}
-
-async function uploadPdf(onDuplicate,fileToUse){
-  const fileInput=document.getElementById("pdfFile");
-  const status=document.getElementById("upStatus");
-  const btn=document.getElementById("upBtn");
-  const file=fileToUse||(fileInput&&fileInput.files[0]);
-  if(!file){status.innerHTML='<div class="error-msg">Selecione um PDF.</div>';return;}
-  if(btn){btn.disabled=true;btn.textContent="Processando... (30-90s)";}
-  status.innerHTML='<div class="loading"><span class="spinner"></span> A IA está analisando o documento</div>';
+async function uploadPdf(onDup,fileToUse){
+  const fi=document.getElementById("pdfFile");
+  const stat=document.getElementById("upStatus");
+  const file=fileToUse||(fi?.files[0]);
+  if(!file){stat.innerHTML='<div class="err-msg">Selecione um PDF.</div>';return;}
   pendingFile=file;
+  stat.innerHTML='<div class="loading"><span class="spinner"></span> IA analisando… (30–90s)</div>';
   const fd=new FormData();fd.append("file",file);
   try{
-    const r=await fetch(`${API}/licenses/upload?on_duplicate=${onDuplicate}`,{method:"POST",body:fd}).then(r=>r.json());
-    if(r.error){status.innerHTML=`<div class="error-msg">Erro: ${r.error}</div>`;}
-    else if(r.duplicate){status.innerHTML='';showDuplicateModal(r.existing,r.new_data);}
-    else if(r.cancelled){status.innerHTML='<div class="error-msg">Upload cancelado.</div>';}
+    const r=await fetch(`${API}/licenses/upload?on_duplicate=${onDup}`,{method:"POST",body:fd}).then(r=>r.json());
+    if(r.error) stat.innerHTML=`<div class="err-msg">Erro: ${r.error}</div>`;
+    else if(r.duplicate){stat.innerHTML='';showDuplicateModal(r.existing,r.new_data);}
+    else if(r.cancelled) stat.innerHTML='<div class="err-msg">Upload cancelado.</div>';
     else{
-      const linkedMsg=r.assets_linked&&r.assets_linked.length?` Vinculada a: ${r.assets_linked.map(a=>a.code).join(', ')}.`:'';
-      status.innerHTML=`<div class="success-msg">Licença cadastrada. ${r.conditions_extracted} condicionantes extraídas.${linkedMsg}</div>`;
-      pendingFile=null;
-      setTimeout(()=>show("licenses"),2000);
+      const linked=r.assets_linked?.length?` Vinculada a: <strong>${r.assets_linked.map(a=>a.code).join(', ')}</strong>.`:'';
+      stat.innerHTML=`<div class="ok-msg">✓ ${r.conditions_extracted} condicionantes extraídas.${linked}</div>`;
+      pendingFile=null;setTimeout(()=>loadLicenses(),1800);
     }
-  }catch(e){status.innerHTML=`<div class="error-msg">Erro: ${e.message}</div>`;}
-  finally{if(btn){btn.disabled=false;btn.textContent="Enviar para análise";}}
+  }catch(e){stat.innerHTML=`<div class="err-msg">Erro: ${e.message}</div>`;}
 }
 
-function showDuplicateModal(existing,newData){
-  const i='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
-  const assetsFoundHtml=newData.assets_found&&newData.assets_found.length?`<div class="row"><span>Ativos encontrados</span><strong style="color:#007023">${newData.assets_found.map(a=>a.code).join(', ')}</strong></div>`:'';
-  openModal(`<div class="modal-header"><div class="modal-icon warn">${i}</div><div class="modal-title">Licença duplicada</div><div class="modal-subtitle">Já existe uma licença com este número e órgão.</div></div><div class="modal-body"><div class="modal-info"><div style="font-size:11px;text-transform:uppercase;color:#86868b;font-weight:600;margin-bottom:8px">Existente</div><div class="row"><span>Número</span><strong>${existing.number||'—'}</strong></div><div class="row"><span>Validade</span><strong>${existing.expiry_date||'—'}</strong></div><div class="row"><span>Ativo(s)</span><strong>${existing.asset_code||'não vinculado'}</strong></div><div class="row"><span>Condicionantes</span><strong>${existing.n_conditions}</strong></div></div><div class="modal-info"><div style="font-size:11px;text-transform:uppercase;color:#86868b;font-weight:600;margin-bottom:8px">Novo upload</div><div class="row"><span>Número</span><strong>${newData.number||'—'}</strong></div><div class="row"><span>Condicionantes extraídas</span><strong>${newData.n_conditions_extracted}</strong></div>${assetsFoundHtml}</div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="cancelDuplicate()">Cancelar</button><button class="btn btn-ghost" onclick="resolveDuplicate('keep_both')">Manter ambas</button><button class="btn btn-danger" onclick="resolveDuplicate('replace')">Substituir</button></div>`);
+function showDuplicateModal(ex,nw){
+  const af=nw.assets_found?.length?`<div class="modal-row"><span>Ativos detectados</span><strong style="color:var(--primary)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>`:'';
+  openModal(`<div class="modal-head"><div class="modal-icon-wrap" style="background:#fef7d8;color:var(--warn-t)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="modal-ttl">Licença duplicada</div><div class="modal-sub">Já existe uma licença com este número e órgão.</div></div><div class="modal-body"><div class="modal-info"><div style="font-size:10px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Existente</div><div class="modal-row"><span>Número</span><strong>${ex.number}</strong></div><div class="modal-row"><span>Validade</span><strong>${ex.expiry_date||'—'}</strong></div><div class="modal-row"><span>Ativo(s)</span><strong>${ex.asset_code||'não vinculado'}</strong></div><div class="modal-row"><span>Condicionantes</span><strong>${ex.n_conditions}</strong></div></div><div class="modal-info"><div style="font-size:10px;text-transform:uppercase;color:var(--t4);font-weight:700;margin-bottom:6px">Novo upload</div><div class="modal-row"><span>Condicionantes</span><strong>${nw.n_conditions_extracted}</strong></div>${af}</div></div><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal();pendingFile=null">Cancelar</button><button class="btn btn-ghost" onclick="closeModal();uploadPdf('keep_both',pendingFile)">Manter ambas</button><button class="btn btn-danger" onclick="closeModal();uploadPdf('replace',pendingFile)">Substituir</button></div>`);
 }
 
-function cancelDuplicate(){closeModal();pendingFile=null;document.getElementById("upStatus").innerHTML='<div class="error-msg">Upload cancelado.</div>';}
-async function resolveDuplicate(action){if(!pendingFile){closeModal();return;}closeModal();await uploadPdf(action,pendingFile);}
-
+// ===== CONDITIONS =====
 async function renderConditions(){
   const app=document.getElementById("app");
-  const list=await safeFetch(`${API}/conditions`)||[];
-  let html=`<div class="page-header"><h1>Condicionantes</h1><p class="subtitle">Obrigações técnicas extraídas das licenças ambientais</p></div>`;
-  if(!list||list.length===0){
-    html+='<div class="card"><div class="empty">Nenhuma condicionante cadastrada</div></div>';
-  } else {
-    const total=list.length;
-    const concluidas=list.filter(c=>c.status==='completed').length;
-    const vencidas=list.filter(c=>c.days_until_due!==null&&c.days_until_due<0&&c.status!=='completed').length;
-    const pct=total>0?Math.round(concluidas/total*100):0;
-    html+=`<div class="kpis" style="margin-bottom:16px">
-      <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-value">${total}</div></div>
-      <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:#4EA72E">${concluidas}</div><div class="kpi-sub">${pct}% atendidas</div></div>
-      <div class="kpi"><div class="kpi-label">Pendentes</div><div class="kpi-value">${total-concluidas}</div></div>
-      <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:#9D2928">${vencidas}</div></div>
-    </div>`;
-    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
+  app.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
+
+  const [fields,thermo]=await Promise.all([sf(`${API}/conditions/fields`),sf(`${API}/conditions/thermometer`)]);
+  const fieldList=fields||[];
+  const th=thermo||{pct:0,level:"gray",label:"Sem dados"};
+  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
+  const thermoCol=thermoColors[th.level]||"var(--bd)";
+
+  let selectedField="";
+
+  async function reload(){
+    const listDiv=document.getElementById("cond-list");
+    if(listDiv) listDiv.innerHTML='<div class="loading"><span class="spinner"></span> Carregando</div>';
+    const url=selectedField?`${API}/conditions?field=${encodeURIComponent(selectedField)}`:`${API}/conditions`;
+    const list=await sf(url)||[];
+    if(!list?.length){if(listDiv)listDiv.innerHTML='<div class="table-wrap"><div class="empty">Nenhuma condicionante encontrada</div></div>';return;}
+    const total=list.length,conc=list.filter(c=>c.status==="completed").length;
+    const venc=list.filter(c=>c.days_until_due!==null&&c.days_until_due<0&&c.status!=="completed").length;
+    const parc=list.filter(c=>c.status==="partial").length;
+    const pct=total?Math.round(conc/total*100):0;
     const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+    const catMap={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
+
     const cards=list.map(c=>{
-      let statusBadge='<span class="badge b-pend"><span class="badge-dot" style="background:#1e3a8a"></span>Pendente</span>';
-      let borderColor='#d2d2d7';
-      if(c.status==='completed'){statusBadge='<span class="badge b-done"><span class="badge-dot" style="background:#4EA72E"></span>Concluída</span>';borderColor='#4EA72E';}
-      else if(c.days_until_due!==null&&c.days_until_due<0){statusBadge='<span class="badge b-overdue"><span class="badge-dot" style="background:#9D2928"></span>Vencida</span>';borderColor='#9D2928';}
-      else if(c.days_until_due!==null&&c.days_until_due<=30){statusBadge=`<span class="badge b-upcoming"><span class="badge-dot" style="background:#F9CE29"></span>${c.days_until_due}d</span>`;borderColor='#F9CE29';}
-      const catLabel=catMap[c.category]||c.category;
-      const catColor=catColors[c.category]||'#86868b';
+      let borderColor="var(--bd)",statusBadge='<span class="badge b-pend">Pendente</span>';
+      if(c.status==="completed"){borderColor="var(--primary-l)";statusBadge='<span class="badge b-done">Concluída</span>';}
+      else if(c.status==="partial"){borderColor="var(--warn)";statusBadge=`<span class="badge b-partial">Parcial ${c.n_completed}/${c.n_assets}</span>`;}
+      else if(c.days_until_due!==null&&c.days_until_due<0){borderColor="var(--danger)";statusBadge='<span class="badge b-overdue">Vencida</span>';}
+      else if(c.days_until_due!==null&&c.days_until_due<=30){borderColor="var(--warn)";statusBadge=`<span class="badge b-upcoming">${c.days_until_due}d</span>`;}
+      const catC=catColors[c.category]||"#86868b";
+      const catL=catMap[c.category]||c.category;
       const desc=c.description||'';
-      const longa=desc.length>200;
+      const longa=desc.length>220;
       const descHtml=longa
-        ?`<p style="font-size:14px;color:#1d1d1f;line-height:1.6;margin:0 0 12px">${desc.slice(0,200)}<span id="more-${c.id}" style="display:none">${desc.slice(200)}</span>… <button onclick="expandDesc(${c.id})" id="btn-more-${c.id}" style="background:none;border:none;color:#007023;font-size:13px;cursor:pointer;font-family:inherit;padding:0;font-weight:500">ver mais</button></p>`
-        :`<p style="font-size:14px;color:#1d1d1f;line-height:1.6;margin:0 0 12px">${desc}</p>`;
-      const btnAtender=c.status==='completed'
-        ?`<span style="color:#4EA72E;font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Atendida</span>`
-        :`<button class="btn btn-success" style="padding:6px 14px;font-size:13px;white-space:nowrap" onclick="confirmarAtendimento(${c.id})">Atender condicionante</button>`;
-      return`<div class="cond-card" style="border-left:3px solid ${borderColor}">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px">
-          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
-            <span style="background:${catColor}18;color:${catColor};font-size:11px;font-weight:600;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.04em">${catLabel}</span>
+        ?`<div class="cond-desc"><span class="cond-desc-short" id="ds-${c.id}">${desc.slice(0,220)}… <button onclick="expandCond(${c.id})" style="background:none;border:none;color:var(--primary);font-size:12.5px;cursor:pointer;font-family:inherit;padding:0;font-weight:500">ver mais</button></span><span class="cond-desc-more" id="dm-${c.id}">${desc}</span></div>`
+        :`<div class="cond-desc">${desc}</div>`;
+
+      // Progress bar
+      const pctDone=c.n_assets>0?Math.round(c.n_completed/c.n_assets*100):(c.status==="completed"?100:0);
+      const progressHtml=c.n_assets>0?`
+        <div class="cond-progress" style="margin-bottom:8px">
+          <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pctDone}%;background:${pctDone===100?"var(--primary-l)":pctDone>0?"var(--warn)":"var(--bd)"}"></div></div>
+          <span class="progress-label">${c.n_completed}/${c.n_assets} ativos</span>
+        </div>`:
+        c.status==="completed"?`<div class="cond-progress" style="margin-bottom:8px"><div class="progress-bar-wrap"><div class="progress-bar" style="width:100%;background:var(--primary-l)"></div></div><span class="progress-label">Concluída</span></div>`:
+        ``;
+
+      // Asset chips
+      const chipsHtml=c.assets?.length>0?`<div class="asset-chips">
+        ${c.assets.map(a=>{
+          const done=c.completions?.some(x=>x.asset_id===a.id);
+          return done
+            ?`<span class="asset-chip chip-done"><svg class="chip-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${a.code}</span>`
+            :`<span class="asset-chip chip-pending" onclick="confirmarAtendimento(${c.id},${a.id},'${a.code}')" title="Marcar ${a.code} como atendido">${a.code}</span>`;
+        }).join('')}
+      </div>`:'';
+
+      return`<div class="cond-card" style="border-left-color:${borderColor}">
+        <div class="cond-top">
+          <div class="cond-meta">
+            <span class="cond-cat" style="background:${catC}18;color:${catC}">${catL}</span>
             ${statusBadge}
-            ${c.due_date?`<span style="font-size:12px;color:#6e6e73">Vence: ${c.due_date}</span>`:''}
-            <span style="font-size:12px;color:#6e6e73">Licença: <strong>${c.license_number||'—'}</strong></span>
+            ${c.due_date?`<span style="font-size:11.5px;color:var(--t3)">Vence ${c.due_date}</span>`:''}
+            <span style="font-size:11.5px;color:var(--t3)">Lic. <strong>${c.license_number||'—'}</strong></span>
           </div>
-          <div style="flex-shrink:0">${btnAtender}</div>
         </div>
         ${descHtml}
+        ${progressHtml}
+        ${chipsHtml}
       </div>`;
     }).join('');
-    html+=`<div>${cards}</div>`;
-  }
-  app.innerHTML=html;
-}
 
-function expandDesc(id){
-  const m=document.getElementById(`more-${id}`);
-  const b=document.getElementById(`btn-more-${id}`);
-  if(m&&b){m.style.display='inline';b.style.display='none';}
-}
-
-function confirmarAtendimento(id){
-  openModal(`
-    <div class="modal-header">
-      <div class="modal-icon" style="background:#e8f5ec">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#007023" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    if(listDiv) listDiv.innerHTML=`
+      <div class="kpis" style="margin-bottom:12px">
+        <div class="kpi"><div class="kpi-label">Total</div><div class="kpi-value">${total}</div></div>
+        <div class="kpi"><div class="kpi-label">Concluídas</div><div class="kpi-value" style="color:var(--primary)">${conc}</div><div class="kpi-sub">${pct}% atendidas</div></div>
+        <div class="kpi"><div class="kpi-label">Parciais</div><div class="kpi-value" style="color:var(--warn-t)">${parc}</div></div>
+        <div class="kpi"><div class="kpi-label">Vencidas</div><div class="kpi-value" style="color:var(--danger)">${venc}</div></div>
       </div>
-      <div class="modal-title">Atender condicionante?</div>
-      <div class="modal-subtitle">Confirme que esta condicionante foi cumprida. O status será alterado para <strong>Concluída</strong> e não poderá ser revertido.</div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn" style="background:#007023" onclick="atenderCondicionante(${id})">Confirmar atendimento</button>
-    </div>
-  `);
-}
-
-async function atenderCondicionante(id){
-  closeModal();
-  const r=await safeFetch(`${API}/conditions/${id}/complete`,{method:"PATCH"});
-  if(r&&r.status==='completed'){
-    await renderConditions();
-  } else {
-    alert("Erro ao salvar. Tente novamente.");
+      <div>${cards}</div>`;
   }
+
+  // Monta página
+  const fieldOpts=fieldList.map(f=>`<option value="${f}">${f}</option>`).join('');
+  app.innerHTML=`
+    <div class="page-header">
+      <h1>Condicionantes</h1>
+      <p class="sub">Obrigações técnicas extraídas das licenças ambientais</p>
+    </div>
+    <div class="thermometer" style="margin-bottom:14px">
+      <div class="thermo-top">
+        <div>
+          <div class="thermo-title">Indicador de conformidade de condicionantes</div>
+          <div class="thermo-pct" style="color:${thermoCol};font-size:26px">${th.pct}%</div>
+          <div class="thermo-label">${th.label}</div>
+        </div>
+        <div>
+          <span class="thermo-badge" style="background:${thermoCol}18;color:${thermoCol}">Poços ativos: ${th.pct_active||0}%</span>
+        </div>
+      </div>
+      <div class="thermo-bar-wrap"><div class="thermo-bar" style="width:${th.pct}%;background:${thermoCol}"></div></div>
+    </div>
+    <div class="toolbar">
+      <select class="sel" id="fieldFilter" style="min-width:180px">
+        <option value="">Campo: todos</option>${fieldOpts}
+      </select>
+      <button class="btn" onclick="applyFieldFilter()">Filtrar</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('fieldFilter').value='';selectedField='';reload()">Limpar</button>
+      <button class="btn btn-accent" onclick="exportConditions()">↓ CSV</button>
+    </div>
+    <div id="cond-list"><div class="loading"><span class="spinner"></span> Carregando</div></div>`;
+
+  window.applyFieldFilter=()=>{selectedField=document.getElementById("fieldFilter").value;reload();};
+  window.exportConditions=()=>{const url=selectedField?`${API}/conditions?field=${encodeURIComponent(selectedField)}`:`${API}/conditions`;alert("Exportação de condicionantes em breve.");};
+  await reload();
 }
 
+function expandCond(id){
+  document.getElementById(`ds-${id}`).style.display='none';
+  document.getElementById(`dm-${id}`).style.display='block';
+}
+
+function confirmarAtendimento(condId,assetId,assetCode){
+  openModal(`<div class="modal-head">
+    <div class="modal-icon-wrap" style="background:#e8f5ec;color:var(--primary)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="modal-ttl">Atender condicionante?</div>
+    <div class="modal-sub">Confirma que o ativo <strong>${assetCode}</strong> atendeu esta condicionante?<br><br>Esta ação registrará o cumprimento e não poderá ser revertida.</div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+    <button class="btn" style="background:var(--primary)" onclick="atenderCondicionante(${condId},${assetId})">Confirmar atendimento</button>
+  </div>`);
+}
+
+async function atenderCondicionante(condId,assetId){
+  closeModal();
+  const r=await sf(`${API}/conditions/${condId}/complete-asset/${assetId}`,{method:"POST"});
+  if(r&&!r.error){
+    // Re-renderiza condicionantes
+    await renderConditions();
+  }else{alert("Erro ao registrar: "+(r?.error||"sem resposta"));}
+}
+
+// ===== PLANNING =====
+async function renderPlanning(){
+  const app=document.getElementById("app");
+  const [dash,comp,thermo]=await Promise.all([sf(`${API}/dashboard`),sf(`${API}/compliance/summary`),sf(`${API}/conditions/thermometer`)]);
+  const d=dash||{},c=comp||{},th=thermo||{pct:0};
+  const sc=c.status_counts||{};
+  const thermoColors={green:"#007023","yellow-green":"#8FBF21",yellow:"#F9CE29",gray:"var(--bd)"};
+  const thermoCol=thermoColors[th.level]||"var(--bd)";
+
+  // Simulação de cenários (com dados reais + estimativas)
+  const totalAtivos=d.total_assets||0;
+  const semLicenca=sc.missing||0;
+  const vencidas=sc.expired||0;
+  const ativas=sc.ok||0;
+  const pctAtual=th.pct||0;
+
+  app.innerHTML=`
+    <div class="page-header">
+      <h1>Planejamento regulatório</h1>
+      <p class="sub">Análise de conformidade, cenários e projeções regulatórias</p>
+    </div>
+
+    <!-- STATUS ATUAL -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-title">Status atual de conformidade</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px">
+        <div style="text-align:center;padding:12px;background:var(--bg);border-radius:var(--r-sm)">
+          <div style="font-size:28px;font-weight:700;color:${thermoCol}">${pctAtual}%</div>
+          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Conformidade atual</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:#e8f5ec;border-radius:var(--r-sm)">
+          <div style="font-size:28px;font-weight:700;color:var(--primary)">${ativas}</div>
+          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Licenças ativas</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:var(--danger-t);border-radius:var(--r-sm)">
+          <div style="font-size:28px;font-weight:700;color:var(--danger)">${vencidas}</div>
+          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Licenças vencidas</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:#f0d8d8;border-radius:var(--r-sm)">
+          <div style="font-size:28px;font-weight:700;color:#6b1c1c">${semLicenca}</div>
+          <div style="font-size:11.5px;color:var(--t3);margin-top:4px">Sem licença</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIMULADOR DE CENÁRIOS -->
+    <div class="card-title" style="margin-bottom:10px">Simulador de cenários regulatórios</div>
+    <div class="grid-3" style="margin-bottom:14px">
+      <!-- EXCELÊNCIA -->
+      <div style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border:1px solid #c5e3d0;border-radius:var(--r);padding:18px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div style="width:10px;height:10px;background:#007023;border-radius:50%"></div>
+          <div style="font-size:12px;font-weight:700;color:#007023;text-transform:uppercase;letter-spacing:.04em">Cenário Excelência</div>
+        </div>
+        <div style="font-size:30px;font-weight:700;color:#007023;margin-bottom:4px">100%</div>
+        <div style="font-size:12px;color:#3d7a4a;margin-bottom:12px">Conformidade total</div>
+        <div style="font-size:12.5px;color:#1f5f33;line-height:1.7">
+          • Todas as ${totalAtivos} licenças vigentes<br>
+          • 100% das condicionantes atendidas<br>
+          • Regularização integral<br>
+          • Exposição regulatória: zero
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:#007023">
+          <strong>Indicação:</strong> Meta de longo prazo / auditoria externa
+        </div>
+      </div>
+
+      <!-- BALANCEADO -->
+      <div style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border:1px solid #d0e8a0;border-radius:var(--r);padding:18px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div style="width:10px;height:10px;background:#8FBF21;border-radius:50%"></div>
+          <div style="font-size:12px;font-weight:700;color:#5a7a00;text-transform:uppercase;letter-spacing:.04em">Cenário Balanceado</div>
+        </div>
+        <div style="font-size:30px;font-weight:700;color:#8FBF21;margin-bottom:4px">${th.pct_active||0}%</div>
+        <div style="font-size:12px;color:#5a7a00;margin-bottom:12px">Poços operacionais conformes</div>
+        <div style="font-size:12.5px;color:#3d5a00;line-height:1.7">
+          • 100% dos ativos em produção/injeção<br>
+          • Priorização por criticidade operacional<br>
+          • Foco em produtores e injetores<br>
+          • Redução significativa de exposição
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:#5a7a00">
+          <strong>Indicação:</strong> Meta de curto prazo recomendada
+        </div>
+      </div>
+
+      <!-- CONSERVADOR -->
+      <div style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border:1px solid #f0d878;border-radius:var(--r);padding:18px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <div style="width:10px;height:10px;background:#F9CE29;border-radius:50%"></div>
+          <div style="font-size:12px;font-weight:700;color:var(--warn-t);text-transform:uppercase;letter-spacing:.04em">Cenário Conservador</div>
+        </div>
+        <div style="font-size:30px;font-weight:700;color:#c4a000;margin-bottom:4px">${pctAtual}%</div>
+        <div style="font-size:12px;color:var(--warn-t);margin-bottom:12px">Situação atual</div>
+        <div style="font-size:12.5px;color:var(--warn-t);line-height:1.7">
+          • Atendimento mínimo regulatório<br>
+          • Foco em itens críticos e vencidos<br>
+          • Execução seletiva por criticidade<br>
+          • Backlog: ${semLicenca+vencidas} ativos expostos
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.6);border-radius:8px;font-size:11.5px;color:var(--warn-t)">
+          <strong>Atenção:</strong> Risco regulatório elevado
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENDA REGULATÓRIA -->
+    <div class="card">
+      <div class="card-title">Agenda regulatória — próximos 90 dias</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+        <div style="padding:12px;background:var(--danger-t);border-radius:var(--r-sm);border-left:3px solid var(--danger)">
+          <div style="font-size:10.5px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Próximos 30 dias</div>
+          <div style="font-size:22px;font-weight:700;color:var(--danger)">${d.upcoming_30d||0}</div>
+          <div style="font-size:11.5px;color:var(--t3)">condicionantes</div>
+        </div>
+        <div style="padding:12px;background:#fef7d8;border-radius:var(--r-sm);border-left:3px solid var(--warn)">
+          <div style="font-size:10.5px;font-weight:700;color:var(--warn-t);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">31–60 dias</div>
+          <div style="font-size:22px;font-weight:700;color:#c4a000">—</div>
+          <div style="font-size:11.5px;color:var(--t3)">a verificar</div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-radius:var(--r-sm);border-left:3px solid var(--bd)">
+          <div style="font-size:10.5px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">61–90 dias</div>
+          <div style="font-size:22px;font-weight:700;color:var(--t2)">—</div>
+          <div style="font-size:11.5px;color:var(--t3)">a verificar</div>
+        </div>
+      </div>
+      <div style="padding:14px;background:var(--bg);border-radius:var(--r-sm);font-size:13px;color:var(--t2);border:1px dashed var(--bd)">
+        📅 <strong>Em breve:</strong> Calendário executivo com vencimentos de licenças, renovações e condicionantes críticas por período.
+      </div>
+    </div>`;
+}
+
+// INICIALIZA
 show("dashboard");
 </script>
 </body>
