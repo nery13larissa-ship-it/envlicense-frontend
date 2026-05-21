@@ -1208,7 +1208,7 @@ async function loadAssets() {
   div.innerHTML = `
     <div class="sbar">
       Mostrando <strong>${pageItems.length}</strong> de <strong>${allItems.length}</strong> ·
-      <strong style="color:${crit > 0 ? 'var(--r)' : 'var(--t2)'}">${nonCompliant}</strong> não conformes nesta página
+      <strong style="color:${nonCompliant > 0 ? 'var(--r)' : 'var(--t2)'}">${nonCompliant}</strong> não conformes nesta página
     </div>
 
     <div class="tw">
