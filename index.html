@@ -883,6 +883,8 @@ function renderCondCard(item) {
 }
 
 function renderAssetList(item) {
+  const assets = Array.isArray(item.assets) ? item.assets : [];
+  return assets.map(a => {
   return item.assets.map(a => {
     const done = a.status === "completed";
     const isOp = OPERATIONAL.includes(a.situation);
