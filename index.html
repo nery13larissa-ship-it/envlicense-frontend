@@ -834,14 +834,18 @@ async function uploadWith(dup){if(!pendingFile)return;const fd=new FormData();fd
 function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Ação irreversível.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
 async function doDelLic(id){closeMod();await sf(`${API}/licenses/${id}`,{method:"DELETE"});await loadDocList();}
 
-// ===== PLANNING — SIMULAÇÃO FINANCEIRA REAL + BUDGET + PASSIVO RESIDUAL =====
+// ===== PLANNING — SIMULADOR DE DISSOLUÇÃO DO PASSIVO + BUDGET =====
+
+let passiveDissolutionYears = 5;
+const OPERATIONAL_TARGET = 0.60;
+const EXPOSURE_TARGET = 0.35;
 
 function asArray(v){return Array.isArray(v)?v:[];}
 function safeObj(v,fallback={}){return v&&typeof v==="object"&&!Array.isArray(v)&&!v.error?v:fallback;}
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0;}
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+function pct(v){return `${Math.round(num(v))}%`;}
 function riskColor(level){if(level==="green")return"var(--p)";if(level==="red")return"var(--r)";return"var(--wt)";}
-function riskLabelByPassive(passive){return num(passive)<=0?{level:"green",label:"Baixo"}:{level:"yellow",label:"Atenção"};}
 
 function getBudgetStore(){
   try{return JSON.parse(localStorage.getItem("envlicense_monthly_budget")||"{}");}
@@ -850,21 +854,22 @@ function getBudgetStore(){
 function setBudgetStore(obj){
   localStorage.setItem("envlicense_monthly_budget",JSON.stringify(obj||{}));
 }
-function monthKeyFromLabel(label){
-  return String(label||"").trim();
-}
 function budgetForMonth(label){
   const b=getBudgetStore();
-  return num(b[monthKeyFromLabel(label)]);
+  return num(b[String(label||"").trim()]);
 }
+function safeBudgetId(label){
+  return String(label||"").replace(/[^a-zA-Z0-9]/g,"_");
+}
+
 function openBudgetModal(months){
   const b=getBudgetStore();
   const rows=months.map(m=>{
-    const k=monthKeyFromLabel(m.label);
+    const k=String(m.label||"").trim();
     return`
       <div class="cref-row">
         <span class="cref-lbl">${m.label||"Mês"}</span>
-        <input class="cref-inp" type="number" id="budget-${k.replace(/[^a-zA-Z0-9]/g,'_')}" data-budget-key="${k}" value="${b[k]||0}" placeholder="R$">
+        <input class="cref-inp" type="number" data-budget-key="${k}" id="budget-${safeBudgetId(k)}" value="${b[k]||0}" placeholder="R$">
       </div>`;
   }).join("");
 
@@ -874,12 +879,10 @@ function openBudgetModal(months){
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </div>
       <div class="mttl">Budget mensal</div>
-      <div class="msub">Informe manualmente o budget mensal do ano para comparar com o realizado.</div>
+      <div class="msub">Informe manualmente o budget mensal para comparar com o realizado.</div>
     </div>
     <div class="mbody">
-      <div class="minfo">
-        ${rows||'<div class="empty">Sem meses disponíveis.</div>'}
-      </div>
+      <div class="minfo">${rows||'<div class="empty">Sem meses disponíveis.</div>'}</div>
     </div>
     <div class="mact">
       <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
@@ -898,158 +901,249 @@ function saveBudgetModal(){
   renderPlanning();
 }
 
-function splitAnnualValue(total,years){
-  total=num(total);years=Math.max(1,years||5);
-  const base=Math.floor(total/years);
-  let rest=Math.round(total-base*years);
-  return Array.from({length:years},()=>{const extra=rest>0?1:0;rest-=extra;return base+extra;});
+function setDissolutionYears(years){
+  passiveDissolutionYears = Number(years)||5;
+  renderPlanning();
 }
 
-function buildFinancialSimulationFallback(fs,thermo){
+function distributeTarget(total,years){
+  total=num(total);
+  years=Math.max(1,Number(years)||5);
+  const base=total/years;
+  return Array.from({length:5},(_,i)=>i<years?base:0);
+}
+
+function buildScenarioRows(totalMapped,totalRealized,yearsToDissolve){
+  totalMapped=num(totalMapped);
+  totalRealized=num(totalRealized);
+  yearsToDissolve=Math.max(1,Number(yearsToDissolve)||5);
+
   const currentYear=new Date().getFullYear();
   const years=Array.from({length:5},(_,i)=>currentYear+i+1);
 
-  const totalMapped=num(fs.total_provisionado);
-  const totalRealized=num(fs.total_realizado);
-
   const annualCapacity=totalRealized>0
     ?Math.max(1,Math.round(totalRealized/2))
-    :Math.max(1,Math.round(totalMapped/5));
+    :Math.max(1,Math.round(totalMapped/yearsToDissolve));
 
-  const dueByYear=splitAnnualValue(totalMapped,5);
+  const operationalTarget=totalMapped*OPERATIONAL_TARGET;
+  const excellenceTarget=totalMapped;
+  const exposureTarget=totalMapped*EXPOSURE_TARGET;
 
-  const operationalTotal=Math.round(totalMapped*0.60);
-  const excellenceTotal=totalMapped;
-  const exposureTotal=Math.round(totalMapped*0.35);
+  const currentPlan=Array.from({length:5},()=>annualCapacity);
+  const operationalPlan=distributeTarget(operationalTarget,yearsToDissolve);
+  const excellencePlan=distributeTarget(excellenceTarget,yearsToDissolve);
+  const exposurePlan=distributeTarget(exposureTarget,yearsToDissolve);
 
-  const operationalByYear=splitAnnualValue(operationalTotal,5);
-  const excellenceByYear=splitAnnualValue(excellenceTotal,5);
-  const exposureByYear=splitAnnualValue(exposureTotal,5);
-
-  let residualCurrent=0,residualOperational=0,residualExcellence=0,residualExposure=0;
+  let remainingCurrent = totalMapped;
+  let remainingOperational = totalMapped;
+  let remainingExcellence = totalMapped;
+  let remainingExposure = totalMapped;
 
   const rows=years.map((year,i)=>{
-    const due=dueByYear[i];
+    const currentInvestment=Math.min(remainingCurrent,currentPlan[i]||0);
+    const operationalInvestment=Math.min(remainingOperational,operationalPlan[i]||0);
+    const excellenceInvestment=Math.min(remainingExcellence,excellencePlan[i]||0);
+    const exposureInvestment=Math.min(remainingExposure,exposurePlan[i]||0);
 
-    const currentInvestment=Math.min(due+residualCurrent,annualCapacity);
-    residualCurrent=Math.max(0,residualCurrent+due-currentInvestment);
-
-    const operationalInvestment=operationalByYear[i];
-    residualOperational=Math.max(0,residualOperational+due-operationalInvestment);
-
-    const excellenceInvestment=excellenceByYear[i];
-    residualExcellence=Math.max(0,residualExcellence+due-excellenceInvestment);
-
-    const exposureInvestment=exposureByYear[i];
-    residualExposure=Math.max(0,residualExposure+due-exposureInvestment);
-
-    const complianceCurrent=totalMapped>0
-      ?clamp(Math.round(((totalMapped-residualCurrent)/totalMapped)*100),0,100)
-      :num(thermo.pct||100);
-
-    const risk=riskLabelByPassive(residualCurrent);
+    remainingCurrent = Math.max(0, remainingCurrent - currentInvestment);
+    remainingOperational = Math.max(0, remainingOperational - operationalInvestment);
+    remainingExcellence = Math.max(0, remainingExcellence - excellenceInvestment);
+    remainingExposure = Math.max(0, remainingExposure - exposureInvestment);
 
     return{
       year,
-      due_amount:due,
-      current:currentInvestment,
-      operational:operationalInvestment,
-      excellence:excellenceInvestment,
-      exposure:exposureInvestment,
-      current_residual:residualCurrent,
-      operational_residual:residualOperational,
-      excellence_residual:residualExcellence,
-      exposure_residual:residualExposure,
-      compliance_est:complianceCurrent,
-      risk_level:risk.level,
-      risk_label:risk.label
+      current:Math.round(currentInvestment),
+      operational:Math.round(operationalInvestment),
+      excellence:Math.round(excellenceInvestment),
+      exposure:Math.round(exposureInvestment),
+      current_residual:Math.round(remainingCurrent),
+      operational_residual:Math.round(remainingOperational),
+      excellence_residual:Math.round(remainingExcellence),
+      exposure_residual:Math.round(remainingExposure)
     };
   });
 
-  const last=rows[rows.length-1]||{};
+  function completionYear(key){
+    const r=rows.find(x=>num(x[`${key}_residual`])<=0);
+    return r?r.year:null;
+  }
+
+  function totalInvest(key){
+    return rows.reduce((s,r)=>s+num(r[key]),0);
+  }
+
+  function finalResidual(key){
+    return rows.length?num(rows[rows.length-1][`${key}_residual`]):0;
+  }
 
   return{
     annual_execution_capacity:annualCapacity,
-    annual_comparison:rows,
-    projection:rows.map(r=>({
-      year:r.year,
-      due_amount:r.due_amount,
-      planned_investment:r.current,
-      residual_passive:r.current_residual,
-      compliance_est:r.compliance_est,
-      risk_level:r.risk_level,
-      risk_label:r.risk_label
-    })),
-    summary:{
-      total_required:excellenceTotal,
-      operational_required:operationalTotal,
-      exposure_required:exposureTotal,
-      current_planned:rows.reduce((s,r)=>s+num(r.current),0),
-      final_passive_current:last.current_residual||0,
-      final_passive_operational:last.operational_residual||0,
-      final_passive_excellence:last.excellence_residual||0,
-      final_passive_exposure:last.exposure_residual||0,
-      final_compliance_current:last.compliance_est||100
-    },
+    rows,
     scenarios:{
-      current:{name:"Cenário Atual",investment:rows.reduce((s,r)=>s+num(r.current),0),final_passive:last.current_residual||0,target_compliance:last.compliance_est||100,risk_level:last.risk_level||"green"},
-      operational:{name:"Continuidade Operacional",investment:operationalTotal,final_passive:last.operational_residual||0,target_compliance:100,risk_level:"yellow"},
-      excellence:{name:"Excelência Operacional",investment:excellenceTotal,final_passive:last.excellence_residual||0,target_compliance:100,risk_level:"green"},
-      exposure:{name:"Exposição Regulatória",investment:exposureTotal,final_passive:last.exposure_residual||0,target_compliance:last.compliance_est||0,risk_level:"yellow"}
+      current:{
+        key:"current",
+        name:"Cenário atual",
+        objective:"Mantém o ritmo atual de execução",
+        treated_pct:totalMapped>0?clamp((totalMapped-finalResidual("current"))/totalMapped*100,0,100):100,
+        investment:totalInvest("current"),
+        annual_avg:totalInvest("current")/5,
+        final_passive:finalResidual("current"),
+        completion_year:completionYear("current")
+      },
+      operational:{
+        key:"operational",
+        name:"Continuidade operacional",
+        objective:"Trata a fração associada à proteção operacional",
+        treated_pct:OPERATIONAL_TARGET*100,
+        investment:totalInvest("operational"),
+        annual_avg:totalInvest("operational")/yearsToDissolve,
+        final_passive:finalResidual("operational"),
+        completion_year:completionYear("operational")
+      },
+      excellence:{
+        key:"excellence",
+        name:"Excelência operacional",
+        objective:"Elimina 100% do passivo mapeado",
+        treated_pct:100,
+        investment:totalInvest("excellence"),
+        annual_avg:totalInvest("excellence")/yearsToDissolve,
+        final_passive:finalResidual("excellence"),
+        completion_year:completionYear("excellence")
+      },
+      exposure:{
+        key:"exposure",
+        name:"Exposição regulatória",
+        objective:"Menor desembolso e maior passivo postergado",
+        treated_pct:EXPOSURE_TARGET*100,
+        investment:totalInvest("exposure"),
+        annual_avg:totalInvest("exposure")/yearsToDissolve,
+        final_passive:finalResidual("exposure"),
+        completion_year:completionYear("exposure")
+      }
     }
   };
 }
 
-function scenarioAnnualCards(annualRows){
-  const scenarios=[
-    {key:"current",name:"Cenário atual",desc:"Mantém o ritmo atual de execução",color:"var(--b)",invest:"current",res:"current_residual"},
-    {key:"operational",name:"Continuidade operacional",desc:"Prioriza ativos produzindo/injetando",color:"var(--wg)",invest:"operational",res:"operational_residual"},
-    {key:"excellence",name:"Excelência operacional",desc:"Elimina o passivo mapeado",color:"var(--p)",invest:"excellence",res:"excellence_residual"},
-    {key:"exposure",name:"Exposição regulatória",desc:"Menor desembolso e maior passivo residual",color:"var(--w)",invest:"exposure",res:"exposure_residual"}
-  ];
+function renderDissolutionControls(){
+  return`
+    <div class="toolbar" style="justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">
+          Prazo para dissolução do passivo
+        </div>
+        <div style="font-size:12px;color:var(--t2)">Escolha em quantos anos o passivo mapeado será tratado.</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${[1,2,3,4,5].map(y=>`
+          <button class="btn btn-sm ${passiveDissolutionYears===y?'':'btn-g'}" onclick="setDissolutionYears(${y})">${y} ano${y>1?'s':''}</button>
+        `).join("")}
+      </div>
+    </div>`;
+}
+
+function renderScenarioCard(sc,rows,totalMapped,color){
+  const key=sc.key;
+  const maxInvest=Math.max(1,...rows.map(r=>num(r[key])));
+  const finalPassive=num(sc.final_passive);
+  const completion=sc.completion_year?`Zera em ${sc.completion_year}`:"Não zera no período";
+  const treated=num(sc.treated_pct);
+  const residualPct=totalMapped>0?clamp(finalPassive/totalMapped*100,0,100):0;
 
   return`
-    <div class="g2" style="margin-bottom:0">
-      ${scenarios.map(sc=>{
-        const totalInvest=annualRows.reduce((s,r)=>s+num(r[sc.invest]),0);
-        const finalResidual=annualRows.length?num(annualRows[annualRows.length-1][sc.res]):0;
-        const maxInvest=Math.max(1,...annualRows.map(r=>num(r[sc.invest])));
-        return`
-          <div class="card" style="box-shadow:none;border-color:var(--bdl)">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px">
-              <div>
-                <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${sc.color}">${sc.name}</div>
-                <div style="font-size:12px;color:var(--t3);margin-top:2px">${sc.desc}</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Invest.</div>
-                <div style="font-size:16px;font-weight:700">${fmtBRL(totalInvest)}</div>
-              </div>
-            </div>
+    <div class="card" style="box-shadow:none;border-color:var(--bdl)">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px">
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:${color}">${sc.name}</div>
+          <div style="font-size:12px;color:var(--t3);margin-top:2px">${sc.objective}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:700">Investimento</div>
+          <div style="font-size:17px;font-weight:700">${fmtBRL(sc.investment)}</div>
+        </div>
+      </div>
 
-            <div style="display:flex;gap:6px;align-items:flex-end;height:68px;margin:10px 0 8px">
-              ${annualRows.map(r=>{
-                const h=Math.max(4,Math.round((num(r[sc.invest])/maxInvest)*58));
-                return`
-                  <div style="flex:1;text-align:center;min-width:0">
-                    <div title="${r.year}: ${fmtBRL(r[sc.invest])}" style="height:${h}px;background:${sc.color};border-radius:5px 5px 2px 2px;opacity:.9"></div>
-                    <div style="font-size:9px;color:var(--t4);margin-top:3px">${String(r.year).slice(2)}</div>
-                  </div>`;
-              }).join("")}
-            </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:8px">
+          <div style="font-size:9.5px;color:var(--t3);font-weight:700;text-transform:uppercase">Média anual</div>
+          <div style="font-size:13px;font-weight:700">${fmtBRL(sc.annual_avg)}</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:8px">
+          <div style="font-size:9.5px;color:var(--t3);font-weight:700;text-transform:uppercase">Conclusão</div>
+          <div style="font-size:13px;font-weight:700">${completion}</div>
+        </div>
+        <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:8px">
+          <div style="font-size:9.5px;color:var(--t3);font-weight:700;text-transform:uppercase">Residual</div>
+          <div style="font-size:13px;font-weight:700;color:${finalPassive>0?'var(--r)':'var(--p)'}">${fmtBRL(finalPassive)}</div>
+        </div>
+      </div>
 
-            <div style="display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--bdl);padding-top:9px">
-              <div>
-                <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Passivo final</div>
-                <div style="font-size:14px;font-weight:700;color:${finalResidual>0?'var(--r)':'var(--p)'}">${fmtBRL(finalResidual)}</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Fim</div>
-                <div style="font-size:14px;font-weight:700;color:var(--t1)">${annualRows.length?annualRows[annualRows.length-1].year:'—'}</div>
-              </div>
-            </div>
-          </div>`;
-      }).join("")}
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px">
+          <span>Passivo tratado</span><strong style="color:${color}">${pct(treated)}</strong>
+        </div>
+        <div style="height:8px;background:var(--bdl);border-radius:5px;overflow:hidden">
+          <div style="height:100%;width:${treated}%;background:${color};border-radius:5px"></div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:6px;height:72px;margin-top:12px">
+        ${rows.map(r=>{
+          const invest=num(r[key]);
+          const residual=num(r[`${key}_residual`]);
+          const h=invest>0?Math.max(5,Math.round((invest/maxInvest)*56)):3;
+          return`
+            <div style="flex:1;text-align:center;min-width:0">
+              <div title="${r.year}: ${fmtBRL(invest)} investido | ${fmtBRL(residual)} residual"
+                   style="height:${h}px;background:${invest>0?color:'var(--bdl)'};border-radius:5px 5px 2px 2px;opacity:${invest>0?'.9':'.55'}"></div>
+              <div style="font-size:9px;color:var(--t4);margin-top:3px">${String(r.year).slice(2)}</div>
+            </div>`;
+        }).join("")}
+      </div>
+
+      <div style="display:flex;justify-content:space-between;border-top:1px solid var(--bdl);padding-top:9px;margin-top:9px">
+        <span style="font-size:11px;color:var(--t3)">Passivo inicial: <strong style="color:var(--t1)">${fmtBRL(totalMapped)}</strong></span>
+        <span style="font-size:11px;color:var(--t3)">Postergado: <strong style="color:${finalPassive>0?'var(--r)':'var(--p)'}">${pct(residualPct)}</strong></span>
+      </div>
+    </div>`;
+}
+
+function renderScenarioMatrix(scenarios){
+  const list=[
+    {sc:scenarios.current,color:"var(--b)",read:"Mantém o ritmo atual e mostra se o backlog será zerado no prazo."},
+    {sc:scenarios.operational,color:"var(--wg)",read:"Foca na continuidade dos ativos operacionais e deixa passivo residual."},
+    {sc:scenarios.excellence,color:"var(--p)",read:"Zera integralmente o passivo mapeado no prazo escolhido."},
+    {sc:scenarios.exposure,color:"var(--w)",read:"Reduz desembolso, mas posterga maior parcela do passivo."}
+  ];
+  return`
+    <div class="tw" style="margin-top:12px">
+      <table>
+        <thead>
+          <tr>
+            <th>Cenário</th>
+            <th>% tratado</th>
+            <th>Investimento</th>
+            <th>Média anual</th>
+            <th>Conclusão</th>
+            <th>Residual</th>
+            <th>Leitura executiva</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${list.map(x=>{
+            const sc=x.sc||{};
+            return`
+              <tr>
+                <td><strong style="color:${x.color}">${sc.name||"—"}</strong></td>
+                <td>${pct(sc.treated_pct||0)}</td>
+                <td>${fmtBRL(sc.investment||0)}</td>
+                <td>${fmtBRL(sc.annual_avg||0)}</td>
+                <td>${sc.completion_year?sc.completion_year:"Não zera"}</td>
+                <td style="color:${num(sc.final_passive)>0?'var(--r)':'var(--p)'}">${fmtBRL(sc.final_passive||0)}</td>
+                <td style="color:var(--t2);font-size:12px">${x.read}</td>
+              </tr>`;
+          }).join("")}
+        </tbody>
+      </table>
     </div>`;
 }
 
@@ -1058,7 +1152,7 @@ async function renderPlanning(){
   app.innerHTML=`
     <div class="ph">
       <h1>Gestão financeira regulatória</h1>
-      <p class="sub">Simulação financeira anual, budget e passivo residual</p>
+      <p class="sub">Simulação de dissolução do passivo, budget e cenários estratégicos</p>
     </div>
     <div class="sbar"><strong>Carregando simulação financeira...</strong></div>
   `;
@@ -1067,32 +1161,19 @@ async function renderPlanning(){
     sf(`${API}/financial/summary`),
     sf(`${API}/financial/by_month`),
     sf(`${API}/financial/by_field`),
-    sf(`${API}/financial/by_category`),
-    sf(`${API}/financial/strategic-projection`),
-    sf(`${API}/conditions/conformity-indicator`)
+    sf(`${API}/financial/by_category`)
   ]);
 
-  const fs=safeObj(results[0],{total_realizado:0,total_provisionado:0,conditions:{realizado:0,provisionado:0},licenses:{realizado:0,provisionado:0}});
+  const fs=safeObj(results[0],{total_realizado:0,total_provisionado:0});
   const months=asArray(results[1]).slice(-12);
   const fields=asArray(results[2]);
   const cats=asArray(results[3]);
-  const thermo=safeObj(results[5],{pct:0,pct_active:0,level:"gray"});
-
-  const backendSimulation=safeObj(results[4],null);
-  const simulation=backendSimulation||buildFinancialSimulationFallback(fs,thermo);
-
-  const rows=asArray(simulation.projection);
-  const annualRows=asArray(simulation.annual_comparison);
-  const summary=safeObj(simulation.summary,{});
-  const scenarios=safeObj(simulation.scenarios,{});
-
-  const current=safeObj(scenarios.current,{});
-  const operational=safeObj(scenarios.operational,{});
-  const excellence=safeObj(scenarios.excellence,{});
-  const exposure=safeObj(scenarios.exposure,{});
 
   const totalRealized=num(fs.total_realizado);
   const totalMapped=num(fs.total_provisionado);
+  const sim=buildScenarioRows(totalMapped,totalRealized,passiveDissolutionYears);
+  const rows=sim.rows;
+  const scenarios=sim.scenarios;
 
   const maxMonth=Math.max(1,...months.map(m=>Math.max(num(m.realizado),budgetForMonth(m.label))));
   const monthBars=months.map(m=>{
@@ -1128,53 +1209,25 @@ async function renderPlanning(){
       <span class="bval">${fmtBRL(c.estimado)}</span>
     </li>`).join(""):`<div class="empty">Sem dados por categoria.</div>`;
 
-  const maxPassive=Math.max(1,...rows.map(r=>num(r.residual_passive)));
-  const finalYear=rows.length?rows[rows.length-1].year:"—";
-  const finalPassive=rows.length?num(rows[rows.length-1].residual_passive):0;
-
-  const projectionCards=rows.length?rows.map(r=>{
-    const passive=num(r.residual_passive);
-    const height=Math.max(4,Math.round((passive/maxPassive)*52));
-    const color=riskColor(r.risk_level);
-    return`
-      <div class="proj-card" style="min-width:142px;text-align:left;margin-right:4px">
-        <div class="proj-year">${r.year}</div>
-        <div style="display:flex;align-items:flex-end;gap:9px;margin:6px 0 10px">
-          <div style="width:18px;height:56px;background:var(--bdl);border-radius:5px;display:flex;align-items:flex-end;overflow:hidden">
-            <div style="width:100%;height:${height}px;background:${color};border-radius:5px"></div>
-          </div>
-          <div>
-            <div class="proj-val">${fmtBRL(r.residual_passive)}</div>
-            <div class="proj-conf" style="color:${color}">${r.risk_label||"Atenção"}</div>
-          </div>
-        </div>
-        <div style="font-size:10.5px;color:var(--t3);line-height:1.5">
-          Vence: ${fmtBRL(r.due_amount)}<br>
-          Exec.: ${fmtBRL(r.planned_investment)}<br>
-          Conf.: ${r.compliance_est||0}%
-        </div>
-      </div>`;
-  }).join(""):`<div class="empty">Sem passivo projetado.</div>`;
-
   app.innerHTML=`
     <div class="ph">
       <h1>Gestão financeira regulatória</h1>
-      <p class="sub">Simulação financeira anual, budget e passivo residual</p>
+      <p class="sub">Simulação de dissolução do passivo, budget e cenários estratégicos</p>
     </div>
 
     <div class="kpis">
       <div class="kpi"><div class="kl">Realizado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(totalRealized)}</div><div class="ks">Condicionantes + licenças</div></div>
-      <div class="kpi"><div class="kl">Passivo mapeado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(totalMapped)}</div><div class="ks">Antes chamado de provisionado</div></div>
-      <div class="kpi"><div class="kl">Excelência 5 anos</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(summary.total_required||excellence.investment||0)}</div><div class="ks">100% obrigações mapeadas</div></div>
-      <div class="kpi"><div class="kl">Continuidade operacional</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(summary.operational_required||operational.investment||0)}</div><div class="ks">Ativos produzindo/injetando</div></div>
-      <div class="kpi"><div class="kl">Passivo residual atual</div><div class="kv fmtbrl" style="font-size:17px;color:${riskColor(current.risk_level)}">${fmtBRL(summary.final_passive_current||current.final_passive||0)}</div><div class="ks">Ao final de 5 anos</div></div>
+      <div class="kpi"><div class="kl">Passivo mapeado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(totalMapped)}</div><div class="ks">Obrigações pendentes identificadas</div></div>
+      <div class="kpi"><div class="kl">Excelência</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(scenarios.excellence.investment)}</div><div class="ks">Zera em ${passiveDissolutionYears} ano${passiveDissolutionYears>1?'s':''}</div></div>
+      <div class="kpi"><div class="kl">Continuidade</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(scenarios.operational.investment)}</div><div class="ks">${pct(OPERATIONAL_TARGET*100)} do passivo tratado</div></div>
+      <div class="kpi"><div class="kl">Exposição</div><div class="kv fmtbrl" style="font-size:17px;color:var(--wt)">${fmtBRL(scenarios.exposure.final_passive)}</div><div class="ks">Passivo postergado</div></div>
     </div>
 
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
         <div>
           <div class="ct" style="margin-bottom:4px">Curva financeira mensal — realizado vs budget</div>
-          <div style="font-size:12px;color:var(--t3)">Budget é informado manualmente pelo usuário e salvo no navegador.</div>
+          <div style="font-size:12px;color:var(--t3)">Budget informado manualmente pelo usuário e salvo no navegador.</div>
         </div>
         <button class="btn btn-sm btn-g" onclick='openBudgetModal(${JSON.stringify(months).replace(/'/g,"&#39;")})'>+ Adicionar budget</button>
       </div>
@@ -1192,64 +1245,20 @@ async function renderPlanning(){
     </div>
 
     <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px">
-        <div>
-          <div class="ct" style="margin-bottom:4px">Trajetória do passivo regulatório</div>
-          <div style="font-size:12.5px;color:var(--t2)">
-            Cenário default: relação entre o que está pendente, o que vence no tempo e o ritmo atual de execução.
-          </div>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <div style="font-size:11px;color:var(--t3);background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:7px 10px">
-            Capacidade anual estimada: <strong style="color:var(--t1)">${fmtBRL(simulation.annual_execution_capacity||0)}</strong>
-          </div>
-          <div style="font-size:11px;color:var(--t3);background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:7px 10px">
-            No fim de <strong style="color:var(--t1)">${finalYear}</strong>, o passivo estimado seria
-            <strong style="color:${finalPassive>0?'var(--r)':'var(--p)'}">${fmtBRL(finalPassive)}</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="proj-row" style="gap:12px">${projectionCards}</div>
-
-      <div style="font-size:11px;color:var(--t3);margin-top:8px">
-        * Não considera multa, deterioração nem peso por ativo.
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:12px">
-      <div class="ct">Simulação financeira anual por cenário</div>
+      <div class="ct">Simulador de dissolução do passivo</div>
       <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">
-        Leitura simplificada: compara desembolso anual, investimento total e passivo residual final por estratégia.
+        Escolha o prazo para tratar o passivo mapeado e compare o impacto financeiro por estratégia.
       </div>
-      ${annualRows.length?scenarioAnnualCards(annualRows):`<div class="empty">Sem simulação anual disponível.</div>`}
-    </div>
-
-    <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px">Cenários estratégicos</div>
-
-    <div class="g3">
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border-color:#c5e3d0">
-        <div class="sc-head"><div class="sc-icon" style="background:#007023;color:#fff"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#007023;text-transform:uppercase">Excelência Operacional</div></div></div>
-        <div style="font-size:24px;font-weight:700;color:#007023;margin-bottom:8px">${excellence.target_compliance||100}%</div>
-        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% das obrigações mapeadas</div>
-        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Investimento total: ${fmtBRL(excellence.investment||summary.total_required||0)}</div>
-        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Passivo residual: ${fmtBRL(excellence.final_passive||summary.final_passive_excellence||0)}</div>
+      ${renderDissolutionControls()}
+      <div class="g2" style="margin-bottom:12px">
+        ${renderScenarioCard(scenarios.current,rows,totalMapped,"var(--b)")}
+        ${renderScenarioCard(scenarios.operational,rows,totalMapped,"var(--wg)")}
+        ${renderScenarioCard(scenarios.excellence,rows,totalMapped,"var(--p)")}
+        ${renderScenarioCard(scenarios.exposure,rows,totalMapped,"var(--w)")}
       </div>
-
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border-color:#d0e8a0">
-        <div class="sc-head"><div class="sc-icon" style="background:#8FBF21;color:#fff"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#5a7a00;text-transform:uppercase">Continuidade Operacional</div></div></div>
-        <div style="font-size:24px;font-weight:700;color:#8FBF21;margin-bottom:8px">${operational.target_compliance||100}%</div>
-        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Prioriza ativos produzindo/injetando</div>
-        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Investimento total: ${fmtBRL(operational.investment||summary.operational_required||0)}</div>
-        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Passivo residual: ${fmtBRL(operational.final_passive||summary.final_passive_operational||0)}</div>
-      </div>
-
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border-color:#f0d878">
-        <div class="sc-head"><div class="sc-icon" style="background:#F9CE29;color:#fff"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div><div style="font-size:11px;font-weight:700;color:var(--wt);text-transform:uppercase">Exposição Regulatória</div></div></div>
-        <div style="font-size:24px;font-weight:700;color:#c4a000;margin-bottom:8px">${exposure.target_compliance||current.target_compliance||summary.final_compliance_current||0}%</div>
-        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Menor desembolso no curto prazo</div>
-        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Investimento total: ${fmtBRL(exposure.investment||summary.exposure_required||0)}</div>
-        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Passivo residual: ${fmtBRL(exposure.final_passive||summary.final_passive_exposure||0)}</div>
+      ${renderScenarioMatrix(scenarios)}
+      <div style="font-size:11px;color:var(--t3);margin-top:10px">
+        * Simulação baseada no passivo atualmente mapeado. Não considera multa, deterioração, novos vencimentos ou peso por ativo.
       </div>
     </div>`;
 }
