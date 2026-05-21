@@ -393,68 +393,36 @@ const CAT_NAME = { monitoring:"Monitoramento", effluent:"Efluentes", reporting:"
 const OPERATIONAL = ["PRODUZINDO","INJETANDO"];
 
 // ── UTILS ──
-async function sf(url,opts={}){
-  const ctrl=new AbortController();
-  const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
-
-  try{
-    const r=await fetch(url,{...opts,signal:ctrl.signal});
-    clearTimeout(t);
-
-    const txt=await r.text();
-    let data=null;
-
-    try{
-      data=txt?JSON.parse(txt):null;
-    }catch(e){
-      console.error("Resposta não JSON:",url,txt);
-      return null;
-    }
-
-    if(!r.ok){
-      console.error("API error",r.status,url,data);
-      return null;
-    }
-
-    return data;
-  }catch(e){
-    clearTimeout(t);
-    console.error("fetch failed",url,e.message);
-    return null;
-  }
-}
-  const ctrl=new AbortController();
-  const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
-  try{
-    const r=await fetch(url,{...opts,signal:ctrl.signal});
-    clearTimeout(t);
-
-    const txt=await r.text();
-    let data=null;
-    try{data=txt?JSON.parse(txt):null;}catch(e){data=txt;}
-
-    if(!r.ok){
-      console.error("API error",r.status,url,data);
-      throw new Error(`API ${r.status}: ${url}`);
-    }
-
-    return data;
-  }catch(e){
-    clearTimeout(t);
-    console.error("fetch failed",url,e);
-    throw e;
-  }
-}
+async function sf(url, opts = {}) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), opts.timeout || 20000);
+  const t = setTimeout(() => ctrl.abort(), opts.timeout || 30000);
+
   try {
     const r = await fetch(url, { ...opts, signal: ctrl.signal });
     clearTimeout(t);
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { clearTimeout(t); return null; }
-}
 
+    const txt = await r.text();
+    let data = null;
+
+    try {
+      data = txt ? JSON.parse(txt) : null;
+    } catch {
+      console.error("Resposta não JSON:", url, txt);
+      return null;
+    }
+
+    if (!r.ok) {
+      console.error("API error", r.status, url, data);
+      return null;
+    }
+
+    return data;
+  } catch (e) {
+    clearTimeout(t);
+    console.error("fetch failed", url, e);
+    return null;
+  }
+}
 function fmtBRL(v) {
   if (v === null || v === undefined) return "—";
   if (v === 0) return "R$ 0";
