@@ -1004,7 +1004,8 @@ async function renderAssets() {
   document.getElementById("aEx").onclick = exportAssets;
   loadAssets();
 }
-
+function exportAssets() { window.open(`${API}/assets/export?${buildAP()}`, '_blank'); }
+  
 function buildAP() {
   const p = new URLSearchParams();
   if (assetState.filters.aAg) p.set("agency", assetState.filters.aAg);
