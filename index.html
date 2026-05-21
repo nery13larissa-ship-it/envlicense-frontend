@@ -395,34 +395,15 @@ const OPERATIONAL = ["PRODUZINDO","INJETANDO"];
 // ── UTILS ──
 async function sf(url, opts = {}) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), opts.timeout || 30000);
-
+  const t = setTimeout(() => ctrl.abort(), opts.timeout || 20000);
   try {
     const r = await fetch(url, { ...opts, signal: ctrl.signal });
     clearTimeout(t);
-
-    const txt = await r.text();
-    let data = null;
-
-    try {
-      data = txt ? JSON.parse(txt) : null;
-    } catch {
-      console.error("Resposta não JSON:", url, txt);
-      return null;
-    }
-
-    if (!r.ok) {
-      console.error("API error", r.status, url, data);
-      return null;
-    }
-
-    return data;
-  } catch (e) {
-    clearTimeout(t);
-    console.error("fetch failed", url, e);
-    return null;
-  }
+    if (!r.ok) return null;
+    return await r.json();
+  } catch(e) { clearTimeout(t); return null; }
 }
+
 function fmtBRL(v) {
   if (v === null || v === undefined) return "—";
   if (v === 0) return "R$ 0";
@@ -509,44 +490,26 @@ function bSit(s) {
 }
 
 // ── DONUT CHART ──
-  function buildDonut(data, size = 130) {
+function buildDonut(data, size = 130) {
+  // data = [{label, value, color}]
   const total = data.reduce((s, d) => s + d.value, 0);
-
-  if (total === 0) {
-    return {
-      svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-        <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 14}" fill="none" stroke="#e2e8f0" stroke-width="14"/>
-      </svg>`,
-      total: 0
-    };
-  }
-
-  const cx = size / 2;
-  const cy = size / 2;
-  const r = size / 2 - 14;
+  if (total === 0) return { svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-14}" fill="none" stroke="#e2e8f0" stroke-width="14"/></svg>`, total: 0 };
+  const cx = size / 2, cy = size / 2, r = size / 2 - 14;
   const circ = 2 * Math.PI * r;
-  let offset = circ / 4;
-  let paths = "";
-
+  let offset = -circ / 4; // start at top
+  let paths = '';
   for (const d of data) {
     const pct = d.value / total;
     const dash = pct * circ;
     const gap = circ - dash;
-
-    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14"
-      stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}"
-      stroke-dashoffset="${offset.toFixed(2)}"
-      stroke-linecap="butt"/>`;
-
-    offset -= dash;
+    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}" stroke-dashoffset="${-offset.toFixed(2)}" stroke-linecap="butt"/>`;
+    offset += dash;
   }
-
   return {
-    svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg>`,
+    svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(0deg)">${paths}</svg>`,
     total
   };
 }
-
 
 function renderDonutSection(title, data, centerLabel = "total") {
   const { svg, total } = buildDonut(data, 130);
@@ -628,7 +591,7 @@ async function renderDashboard() {
   const th = thermo || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
   const bf = byField || { all_fields:[], conditions_by_field:[] };
   const fs = finSum || { total_realizado:0, total_provisionado:0 };
-  const months = Array.isArray(byMonth) ? byMonth.slice(-6) : [];
+  const months = (byMonth || []).slice(-6);
 
   // KPI executivo: % ativos operacionais protegidos
   const prodTotal = c.producing?.total || 0;
@@ -883,8 +846,6 @@ function renderCondCard(item) {
 }
 
 function renderAssetList(item) {
-  const assets = Array.isArray(item.assets) ? item.assets : [];
-  return assets.map(a => {
   return item.assets.map(a => {
     const done = a.status === "completed";
     const isOp = OPERATIONAL.includes(a.situation);
@@ -1186,8 +1147,7 @@ async function renderPlanning() {
   ]);
 
   const fs = finSum || {};
-  const months = Array.isArray(byMonth) ? byMonth.slice(-12) : [];
-  window.__planningMonths = months;
+  const months = (byMonth || []).slice(-12);
   const fields = byField || [];
   const cats = byCat || [];
   const strat = strategic || {};
@@ -1334,7 +1294,7 @@ async function renderPlanning() {
     <div class="card" style="margin-bottom:14px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <div class="ct" style="margin-bottom:0">Curva financeira mensal — realizado vs budget</div>
-        <button class="btn btn-g btn-xs" onclick="openBudgetModal(window.__planningMonths || [])">+ Budget</button>
+        <button class="btn btn-g btn-xs" onclick="openBudgetModal(${JSON.stringify(months).replace(/'/g,"&#39;")})">+ Budget</button>
       </div>
       <div style="font-size:12px;color:var(--t3);margin-bottom:14px">Últimos 12 meses. Barra azul = budget planejado, verde/vermelha = realizado.</div>
       ${months.length ? `<div style="display:flex;align-items:flex-end;gap:4px;height:128px">${monthBars}</div>
