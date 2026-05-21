@@ -396,6 +396,35 @@ const OPERATIONAL = ["PRODUZINDO","INJETANDO"];
 async function sf(url,opts={}){
   const ctrl=new AbortController();
   const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
+
+  try{
+    const r=await fetch(url,{...opts,signal:ctrl.signal});
+    clearTimeout(t);
+
+    const txt=await r.text();
+    let data=null;
+
+    try{
+      data=txt?JSON.parse(txt):null;
+    }catch(e){
+      console.error("Resposta não JSON:",url,txt);
+      return null;
+    }
+
+    if(!r.ok){
+      console.error("API error",r.status,url,data);
+      return null;
+    }
+
+    return data;
+  }catch(e){
+    clearTimeout(t);
+    console.error("fetch failed",url,e.message);
+    return null;
+  }
+}
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
   try{
     const r=await fetch(url,{...opts,signal:ctrl.signal});
     clearTimeout(t);
