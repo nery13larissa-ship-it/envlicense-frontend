@@ -479,14 +479,15 @@ function closeMod() { document.getElementById("mov").classList.remove("on"); }
 
 // ── VISUAL HELPERS ──
 function bComp(s) {
-  const m = { ok:["b-ok","Licença ativa"], upcoming:["b-up","Próxima ao venc."], expired:["b-ex","Licença vencida"], missing:["b-mi","Sem licença"], critical:["b-cr","⚠ Crítico"] };
+  const m = {
+    ok:["b-ok","Licença ativa"],
+    upcoming:["b-up","Próxima ao venc."],
+    expired:["b-ex","Licença vencida"],
+    missing:["b-mi","Sem licença"],
+    critical:["b-mi","Sem licença"]
+  };
   const [c,t] = m[s] || ["b-ot", s];
   return `<span class="badge ${c}">${t}</span>`;
-}
-function bSit(s) {
-  if (!s) return '<span class="badge b-ot">—</span>';
-  const m = { "PRODUZINDO":"b-ok","INJETANDO":"b-pe","EM INTERVENÇÃO":"b-up" };
-  return `<span class="badge ${m[s] || 'b-ot'}">${s.slice(0,16)}</span>`;
 }
 
 // ── DONUT CHART ──
@@ -996,7 +997,6 @@ async function renderAssets() {
         <option value="upcoming">Próxima ao venc.</option>
         <option value="expired">Licença vencida</option>
         <option value="missing">Sem licença</option>
-        <option value="critical">Crítico</option>
       </select>
       <button class="btn" id="aAp">Filtrar</button>
       <button class="btn btn-g" id="aEx">
@@ -1184,7 +1184,7 @@ async function loadAssets() {
   const start = assetState.page * pageSize;
   const pageItems = allItems.slice(start, start + pageSize);
 
-  const crit = pageItems.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
+  const nonCompliant = pageItems.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
 
   const rows = pageItems.map(a => {
     const pdfBtn = a.pdf_url
@@ -1208,7 +1208,7 @@ async function loadAssets() {
   div.innerHTML = `
     <div class="sbar">
       Mostrando <strong>${pageItems.length}</strong> de <strong>${allItems.length}</strong> ·
-      <strong style="color:${crit > 0 ? 'var(--r)' : 'var(--t2)'}">${crit}</strong> críticos nesta página
+      <strong style="color:${crit > 0 ? 'var(--r)' : 'var(--t2)'}">${nonCompliant}</strong> não conformes nesta página
     </div>
 
     <div class="tw">
