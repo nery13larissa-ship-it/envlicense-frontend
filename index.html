@@ -834,18 +834,16 @@ async function uploadWith(dup){if(!pendingFile)return;const fd=new FormData();fd
 function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Ação irreversível.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
 async function doDelLic(id){closeMod();await sf(`${API}/licenses/${id}`,{method:"DELETE"});await loadDocList();}
 
-// ===== PLANNING — SIMULADOR DE DISSOLUÇÃO DO PASSIVO + BUDGET =====
+// ===== PLANNING — FINANCEIRO COM BUDGET + DISSOLUÇÃO DO PASSIVO =====
 
 let passiveDissolutionYears = 5;
 const OPERATIONAL_TARGET = 0.60;
-const EXPOSURE_TARGET = 0.35;
 
 function asArray(v){return Array.isArray(v)?v:[];}
 function safeObj(v,fallback={}){return v&&typeof v==="object"&&!Array.isArray(v)&&!v.error?v:fallback;}
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0;}
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 function pct(v){return `${Math.round(num(v))}%`;}
-function riskColor(level){if(level==="green")return"var(--p)";if(level==="red")return"var(--r)";return"var(--wt)";}
 
 function getBudgetStore(){
   try{return JSON.parse(localStorage.getItem("envlicense_monthly_budget")||"{}");}
@@ -902,15 +900,35 @@ function saveBudgetModal(){
 }
 
 function setDissolutionYears(years){
-  passiveDissolutionYears = Number(years)||5;
+  passiveDissolutionYears=Number(years)||5;
   renderPlanning();
 }
 
-function distributeTarget(total,years){
-  total=num(total);
-  years=Math.max(1,Number(years)||5);
-  const base=total/years;
-  return Array.from({length:5},(_,i)=>i<years?base:0);
+function normalizeFinanceData(fs,months){
+  const monthly=asArray(months).map(m=>{
+    const realized=num(m.realizado);
+    const budget=budgetForMonth(m.label);
+    const variance=budget-realized;
+    return{
+      label:m.label||"",
+      realized,
+      budget,
+      variance,
+      status:budget<=0?"no_budget":variance<0?"over_budget":variance===0?"on_budget":"under_budget"
+    };
+  });
+
+  const realizedTotal=monthly.reduce((s,m)=>s+m.realized,0);
+  const budgetTotal=monthly.reduce((s,m)=>s+m.budget,0);
+  const mappedLiability=num(fs.total_provisionado);
+
+  return{
+    realized_total:realizedTotal || num(fs.total_realizado),
+    mapped_liability_total:mappedLiability,
+    budget_total:budgetTotal,
+    budget_balance:budgetTotal-(realizedTotal || num(fs.total_realizado)),
+    monthlySeries:monthly
+  };
 }
 
 function buildScenarioRows(totalMapped,totalRealized,yearsToDissolve){
@@ -923,58 +941,61 @@ function buildScenarioRows(totalMapped,totalRealized,yearsToDissolve){
 
   const annualCapacity=totalRealized>0
     ?Math.max(1,Math.round(totalRealized/2))
-    :Math.max(1,Math.round(totalMapped/yearsToDissolve));
+    :0;
 
   const operationalTarget=totalMapped*OPERATIONAL_TARGET;
   const excellenceTarget=totalMapped;
-  const exposureTarget=totalMapped*EXPOSURE_TARGET;
 
-  const currentPlan=Array.from({length:5},()=>annualCapacity);
-  const operationalPlan=distributeTarget(operationalTarget,yearsToDissolve);
-  const excellencePlan=distributeTarget(excellenceTarget,yearsToDissolve);
-  const exposurePlan=distributeTarget(exposureTarget,yearsToDissolve);
+  const operationalAnnual=yearsToDissolve>0?operationalTarget/yearsToDissolve:0;
+  const excellenceAnnual=yearsToDissolve>0?excellenceTarget/yearsToDissolve:0;
 
-  let remainingCurrent = totalMapped;
-  let remainingOperational = totalMapped;
-  let remainingExcellence = totalMapped;
-  let remainingExposure = totalMapped;
+  let remainingCurrent=totalMapped;
+  let remainingOperational=totalMapped;
+  let remainingExcellence=totalMapped;
+
+  let remainingOperationalTarget=operationalTarget;
+  let remainingExcellenceTarget=excellenceTarget;
 
   const rows=years.map((year,i)=>{
-    const currentInvestment=Math.min(remainingCurrent,currentPlan[i]||0);
-    const operationalInvestment=Math.min(remainingOperational,operationalPlan[i]||0);
-    const excellenceInvestment=Math.min(remainingExcellence,excellencePlan[i]||0);
-    const exposureInvestment=Math.min(remainingExposure,exposurePlan[i]||0);
+    const currentInvestment=Math.min(remainingCurrent,annualCapacity);
 
-    remainingCurrent = Math.max(0, remainingCurrent - currentInvestment);
-    remainingOperational = Math.max(0, remainingOperational - operationalInvestment);
-    remainingExcellence = Math.max(0, remainingExcellence - excellenceInvestment);
-    remainingExposure = Math.max(0, remainingExposure - exposureInvestment);
+    const operationalInvestment=i<yearsToDissolve
+      ?Math.min(remainingOperationalTarget,operationalAnnual)
+      :0;
+
+    const excellenceInvestment=i<yearsToDissolve
+      ?Math.min(remainingExcellenceTarget,excellenceAnnual)
+      :0;
+
+    remainingCurrent=Math.max(0,remainingCurrent-currentInvestment);
+
+    remainingOperationalTarget=Math.max(0,remainingOperationalTarget-operationalInvestment);
+    remainingOperational=Math.max(0,totalMapped-(operationalTarget-remainingOperationalTarget));
+
+    remainingExcellenceTarget=Math.max(0,remainingExcellenceTarget-excellenceInvestment);
+    remainingExcellence=Math.max(0,remainingExcellence-excellenceInvestment);
 
     return{
       year,
       current:Math.round(currentInvestment),
       operational:Math.round(operationalInvestment),
       excellence:Math.round(excellenceInvestment),
-      exposure:Math.round(exposureInvestment),
-      current_residual:Math.round(remainingCurrent),
-      operational_residual:Math.round(remainingOperational),
-      excellence_residual:Math.round(remainingExcellence),
-      exposure_residual:Math.round(remainingExposure)
+      current_residual:Math.round(clamp(remainingCurrent,0,totalMapped)),
+      operational_residual:Math.round(clamp(remainingOperational,0,totalMapped)),
+      excellence_residual:Math.round(clamp(remainingExcellence,0,totalMapped))
     };
   });
 
+  function totalInvest(key){return rows.reduce((s,r)=>s+num(r[key]),0);}
+  function finalResidual(key){return rows.length?num(rows[rows.length-1][`${key}_residual`]):0;}
   function completionYear(key){
     const r=rows.find(x=>num(x[`${key}_residual`])<=0);
     return r?r.year:null;
   }
 
-  function totalInvest(key){
-    return rows.reduce((s,r)=>s+num(r[key]),0);
-  }
-
-  function finalResidual(key){
-    return rows.length?num(rows[rows.length-1][`${key}_residual`]):0;
-  }
+  const currentInvest=totalInvest("current");
+  const operationalInvest=totalInvest("operational");
+  const excellenceInvest=totalInvest("excellence");
 
   return{
     annual_execution_capacity:annualCapacity,
@@ -983,20 +1004,20 @@ function buildScenarioRows(totalMapped,totalRealized,yearsToDissolve){
       current:{
         key:"current",
         name:"Cenário atual",
-        objective:"Mantém o ritmo atual de execução",
+        objective:annualCapacity>0?"Mantém o ritmo histórico de execução":"Sem ritmo histórico suficiente",
         treated_pct:totalMapped>0?clamp((totalMapped-finalResidual("current"))/totalMapped*100,0,100):100,
-        investment:totalInvest("current"),
-        annual_avg:totalInvest("current")/5,
+        investment:currentInvest,
+        annual_avg:currentInvest/5,
         final_passive:finalResidual("current"),
         completion_year:completionYear("current")
       },
       operational:{
         key:"operational",
         name:"Continuidade operacional",
-        objective:"Trata a fração associada à proteção operacional",
+        objective:"Trata 60% do passivo associado à proteção operacional",
         treated_pct:OPERATIONAL_TARGET*100,
-        investment:totalInvest("operational"),
-        annual_avg:totalInvest("operational")/yearsToDissolve,
+        investment:operationalInvest,
+        annual_avg:operationalInvest/yearsToDissolve,
         final_passive:finalResidual("operational"),
         completion_year:completionYear("operational")
       },
@@ -1005,20 +1026,10 @@ function buildScenarioRows(totalMapped,totalRealized,yearsToDissolve){
         name:"Excelência operacional",
         objective:"Elimina 100% do passivo mapeado",
         treated_pct:100,
-        investment:totalInvest("excellence"),
-        annual_avg:totalInvest("excellence")/yearsToDissolve,
+        investment:excellenceInvest,
+        annual_avg:excellenceInvest/yearsToDissolve,
         final_passive:finalResidual("excellence"),
         completion_year:completionYear("excellence")
-      },
-      exposure:{
-        key:"exposure",
-        name:"Exposição regulatória",
-        objective:"Menor desembolso e maior passivo postergado",
-        treated_pct:EXPOSURE_TARGET*100,
-        investment:totalInvest("exposure"),
-        annual_avg:totalInvest("exposure")/yearsToDissolve,
-        final_passive:finalResidual("exposure"),
-        completion_year:completionYear("exposure")
       }
     }
   };
@@ -1035,7 +1046,9 @@ function renderDissolutionControls(){
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         ${[1,2,3,4,5].map(y=>`
-          <button class="btn btn-sm ${passiveDissolutionYears===y?'':'btn-g'}" onclick="setDissolutionYears(${y})">${y} ano${y>1?'s':''}</button>
+          <button class="btn btn-sm ${passiveDissolutionYears===y?'':'btn-g'}" onclick="setDissolutionYears(${y})">
+            ${y} ano${y>1?'s':''}
+          </button>
         `).join("")}
       </div>
     </div>`;
@@ -1094,7 +1107,7 @@ function renderScenarioCard(sc,rows,totalMapped,color){
           return`
             <div style="flex:1;text-align:center;min-width:0">
               <div title="${r.year}: ${fmtBRL(invest)} investido | ${fmtBRL(residual)} residual"
-                   style="height:${h}px;background:${invest>0?color:'var(--bdl)'};border-radius:5px 5px 2px 2px;opacity:${invest>0?'.9':'.55'}"></div>
+                   style="height:${h}px;background:${invest>0?color:'var(--bdl)'};border-radius:5px 5px 2px 2px;opacity:${invest>0?'.9':'.45'}"></div>
               <div style="font-size:9px;color:var(--t4);margin-top:3px">${String(r.year).slice(2)}</div>
             </div>`;
         }).join("")}
@@ -1107,43 +1120,30 @@ function renderScenarioCard(sc,rows,totalMapped,color){
     </div>`;
 }
 
-function renderScenarioMatrix(scenarios){
-  const list=[
-    {sc:scenarios.current,color:"var(--b)",read:"Mantém o ritmo atual e mostra se o backlog será zerado no prazo."},
-    {sc:scenarios.operational,color:"var(--wg)",read:"Foca na continuidade dos ativos operacionais e deixa passivo residual."},
-    {sc:scenarios.excellence,color:"var(--p)",read:"Zera integralmente o passivo mapeado no prazo escolhido."},
-    {sc:scenarios.exposure,color:"var(--w)",read:"Reduz desembolso, mas posterga maior parcela do passivo."}
-  ];
+function renderMonthlyBudgetChart(series){
+  const maxVal=Math.max(1,...series.map(m=>Math.max(m.realized,m.budget)));
   return`
-    <div class="tw" style="margin-top:12px">
-      <table>
-        <thead>
-          <tr>
-            <th>Cenário</th>
-            <th>% tratado</th>
-            <th>Investimento</th>
-            <th>Média anual</th>
-            <th>Conclusão</th>
-            <th>Residual</th>
-            <th>Leitura executiva</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${list.map(x=>{
-            const sc=x.sc||{};
-            return`
-              <tr>
-                <td><strong style="color:${x.color}">${sc.name||"—"}</strong></td>
-                <td>${pct(sc.treated_pct||0)}</td>
-                <td>${fmtBRL(sc.investment||0)}</td>
-                <td>${fmtBRL(sc.annual_avg||0)}</td>
-                <td>${sc.completion_year?sc.completion_year:"Não zera"}</td>
-                <td style="color:${num(sc.final_passive)>0?'var(--r)':'var(--p)'}">${fmtBRL(sc.final_passive||0)}</td>
-                <td style="color:var(--t2);font-size:12px">${x.read}</td>
-              </tr>`;
-          }).join("")}
-        </tbody>
-      </table>
+    <div style="display:flex;align-items:flex-end;gap:6px;height:160px;margin-top:14px">
+      ${series.map(m=>{
+        const rH=Math.round((m.realized/maxVal)*130);
+        const bH=Math.round((m.budget/maxVal)*130);
+        const over=m.realized>m.budget&&m.budget>0;
+        const variance=m.realized-m.budget;
+        return`
+          <div style="flex:1;min-width:0;text-align:center">
+            <div style="height:132px;display:flex;align-items:flex-end;justify-content:center;position:relative">
+              ${m.budget>0?`
+                <div title="Budget: ${fmtBRL(m.budget)}" style="position:absolute;bottom:0;width:70%;height:${bH}px;background:var(--b);opacity:.18;border-radius:5px"></div>
+                <div style="position:absolute;bottom:${bH}px;width:78%;border-top:1.5px dashed var(--b)"></div>
+              `:""}
+              ${m.realized>0?`
+                <div title="Realizado: ${fmtBRL(m.realized)}" style="width:38%;height:${rH}px;background:${over?'var(--r)':'var(--p)'};border-radius:5px 5px 2px 2px;z-index:2"></div>
+              `:"<div style='height:2px;width:38%;background:var(--bdl);border-radius:2px'></div>"}
+            </div>
+            <div style="font-size:9px;color:var(--t4);margin-top:4px;white-space:nowrap;overflow:hidden">${m.label}</div>
+            ${over?`<div style="font-size:9px;color:var(--r);font-weight:700">+${fmtBRL(variance)}</div>`:""}
+          </div>`;
+      }).join("")}
     </div>`;
 }
 
@@ -1152,45 +1152,39 @@ async function renderPlanning(){
   app.innerHTML=`
     <div class="ph">
       <h1>Gestão financeira regulatória</h1>
-      <p class="sub">Simulação de dissolução do passivo, budget e cenários estratégicos</p>
+      <p class="sub">Budget, passivo mapeado e simulação de dissolução</p>
     </div>
-    <div class="sbar"><strong>Carregando simulação financeira...</strong></div>
+    <div class="sbar"><strong>Carregando visão financeira...</strong></div>
   `;
 
-  const results=await Promise.all([
+  const [finSum,byMonth,byField,byCat]=await Promise.all([
     sf(`${API}/financial/summary`),
     sf(`${API}/financial/by_month`),
     sf(`${API}/financial/by_field`),
     sf(`${API}/financial/by_category`)
   ]);
 
-  const fs=safeObj(results[0],{total_realizado:0,total_provisionado:0});
-  const months=asArray(results[1]).slice(-12);
-  const fields=asArray(results[2]);
-  const cats=asArray(results[3]);
+  const fs=safeObj(finSum,{total_realizado:0,total_provisionado:0});
+  const months=asArray(byMonth).slice(-12);
+  const fields=asArray(byField);
+  const cats=asArray(byCat);
 
-  const totalRealized=num(fs.total_realizado);
-  const totalMapped=num(fs.total_provisionado);
-  const sim=buildScenarioRows(totalMapped,totalRealized,passiveDissolutionYears);
+  const finance=normalizeFinanceData(fs,months);
+  const sim=buildScenarioRows(finance.mapped_liability_total,finance.realized_total,passiveDissolutionYears);
   const rows=sim.rows;
   const scenarios=sim.scenarios;
 
-  const maxMonth=Math.max(1,...months.map(m=>Math.max(num(m.realizado),budgetForMonth(m.label))));
-  const monthBars=months.map(m=>{
-    const r=num(m.realizado);
-    const b=budgetForMonth(m.label);
-    const hR=Math.round((r/maxMonth)*130);
-    const hB=Math.round((b/maxMonth)*130);
-    return`
-      <div class="fin-bar-col">
-        <div class="fin-bar-area">
-          ${hB>0?`<div class="fin-bar-p" style="height:${hB}px;background:var(--b);opacity:.22;border-top:1.5px dashed var(--b)"></div>`:""}
-          ${hR>0?`<div class="fin-bar-r" style="height:${hR}px"></div>`:""}
-          ${hR===0&&hB===0?`<div style="height:2px;background:var(--bdl);border-radius:2px;width:100%"></div>`:""}
-        </div>
-        <div class="fin-xlabel">${m.label||""}</div>
-      </div>`;
-  }).join("");
+  const budgetLabel=finance.budget_total>0
+    ?fmtBRL(finance.budget_total)
+    :"Budget não informado";
+
+  const balanceColor=finance.budget_total<=0
+    ?"var(--t3)"
+    :finance.budget_balance>=0?"var(--p)":"var(--r)";
+
+  const balanceLabel=finance.budget_total<=0
+    ?"Informe o budget mensal"
+    :finance.budget_balance>=0?"Saldo disponível":"Acima do budget";
 
   const maxField=Math.max(1,...fields.map(f=>num(f.total)));
   const fieldBars=fields.length?fields.slice(0,8).map(f=>`
@@ -1212,29 +1206,45 @@ async function renderPlanning(){
   app.innerHTML=`
     <div class="ph">
       <h1>Gestão financeira regulatória</h1>
-      <p class="sub">Simulação de dissolução do passivo, budget e cenários estratégicos</p>
+      <p class="sub">Budget, passivo mapeado e simulação de dissolução</p>
     </div>
 
     <div class="kpis">
-      <div class="kpi"><div class="kl">Realizado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(totalRealized)}</div><div class="ks">Condicionantes + licenças</div></div>
-      <div class="kpi"><div class="kl">Passivo mapeado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(totalMapped)}</div><div class="ks">Obrigações pendentes identificadas</div></div>
-      <div class="kpi"><div class="kl">Excelência</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(scenarios.excellence.investment)}</div><div class="ks">Zera em ${passiveDissolutionYears} ano${passiveDissolutionYears>1?'s':''}</div></div>
-      <div class="kpi"><div class="kl">Continuidade</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(scenarios.operational.investment)}</div><div class="ks">${pct(OPERATIONAL_TARGET*100)} do passivo tratado</div></div>
-      <div class="kpi"><div class="kl">Exposição</div><div class="kv fmtbrl" style="font-size:17px;color:var(--wt)">${fmtBRL(scenarios.exposure.final_passive)}</div><div class="ks">Passivo postergado</div></div>
+      <div class="kpi">
+        <div class="kl">Realizado no período</div>
+        <div class="kv fmtbrl" style="font-size:17px">${fmtBRL(finance.realized_total)}</div>
+        <div class="ks">Executado no recorte selecionado</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Budget disponível</div>
+        <div class="kv fmtbrl" style="font-size:17px">${budgetLabel}</div>
+        <div class="ks">Planejado manualmente</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Saldo vs budget</div>
+        <div class="kv fmtbrl" style="font-size:17px;color:${balanceColor}">${finance.budget_total>0?fmtBRL(finance.budget_balance):"—"}</div>
+        <div class="ks">${balanceLabel}</div>
+      </div>
+      <div class="kpi">
+        <div class="kl">Passivo mapeado</div>
+        <div class="kv fmtbrl" style="font-size:17px">${fmtBRL(finance.mapped_liability_total)}</div>
+        <div class="ks">Base da simulação</div>
+      </div>
     </div>
 
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
         <div>
           <div class="ct" style="margin-bottom:4px">Curva financeira mensal — realizado vs budget</div>
-          <div style="font-size:12px;color:var(--t3)">Budget informado manualmente pelo usuário e salvo no navegador.</div>
+          <div style="font-size:12px;color:var(--t3)">A escala considera o maior valor entre realizado e budget. Quando realizado ultrapassa o budget, o excedente aparece em vermelho.</div>
         </div>
         <button class="btn btn-sm btn-g" onclick='openBudgetModal(${JSON.stringify(months).replace(/'/g,"&#39;")})'>+ Adicionar budget</button>
       </div>
-      ${months.length?`
-        <div class="fin-chart-wrap">${monthBars}</div>
-        <div class="fin-legend">
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado</div>
+      ${finance.monthlySeries.length?`
+        ${renderMonthlyBudgetChart(finance.monthlySeries)}
+        <div class="fin-legend" style="margin-top:8px">
+          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado dentro do budget</div>
+          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--r)"></div>Realizado acima do budget</div>
           <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--b);opacity:.25;border:1.5px dashed var(--b)"></div>Budget</div>
         </div>`:`<div class="empty">Sem curva mensal disponível.</div>`}
     </div>
@@ -1247,22 +1257,21 @@ async function renderPlanning(){
     <div class="card" style="margin-bottom:12px">
       <div class="ct">Simulador de dissolução do passivo</div>
       <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">
-        Escolha o prazo para tratar o passivo mapeado e compare o impacto financeiro por estratégia.
+        Escolha o prazo para tratar o passivo mapeado e compare o caminho do cenário atual até a excelência.
       </div>
       ${renderDissolutionControls()}
-      <div class="g2" style="margin-bottom:12px">
-        ${renderScenarioCard(scenarios.current,rows,totalMapped,"var(--b)")}
-        ${renderScenarioCard(scenarios.operational,rows,totalMapped,"var(--wg)")}
-        ${renderScenarioCard(scenarios.excellence,rows,totalMapped,"var(--p)")}
-        ${renderScenarioCard(scenarios.exposure,rows,totalMapped,"var(--w)")}
+      <div class="g3" style="margin-bottom:0">
+        ${renderScenarioCard(scenarios.current,rows,finance.mapped_liability_total,"var(--b)")}
+        ${renderScenarioCard(scenarios.operational,rows,finance.mapped_liability_total,"var(--wg)")}
+        ${renderScenarioCard(scenarios.excellence,rows,finance.mapped_liability_total,"var(--p)")}
       </div>
-      ${renderScenarioMatrix(scenarios)}
       <div style="font-size:11px;color:var(--t3);margin-top:10px">
         * Simulação baseada no passivo atualmente mapeado. Não considera multa, deterioração, novos vencimentos ou peso por ativo.
       </div>
     </div>`;
 }
 
+show("dashboard");
 show("dashboard");
 </script>
 </body>
