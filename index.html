@@ -683,17 +683,18 @@ async function renderDashboard() {
 async function renderConditions() {
   const app = document.getElementById("app");
   condState.expandedIds = new Set();
-  app.innerHTML = '<div class="loading"><span class="spin"></span></div>';
+
   const [fields, agencies] = await Promise.all([
     sf(`${API}/conditions/fields`),
     sf(`${API}/assets/filters`)
   ]);
-  const fopts = (fields || []).map(f => `<option value="${f}">${f}</option>`).join('');
-  const agopts = (agencies?.agencies || []).map(a => `<option value="${a}">${a}</option>`).join('');
+
+  const fopts = (fields || []).map(f => `<option value="${f}">${f}</option>`).join("");
+  const agopts = (agencies?.agencies || []).map(a => `<option value="${a}">${a}</option>`).join("");
 
   app.innerHTML = `
     <div class="ph"><h1>Condicionantes</h1><p class="sub">Painel operacional de conformidade</p></div>
-    <div id="cond-thermo"></div>
+
     <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
       <div class="fchips" style="margin-bottom:0">
         <span class="fchip on" data-f="all" onclick="setCondFilter('all')">Todas</span>
@@ -704,11 +705,13 @@ async function renderConditions() {
         <span class="fchip green" data-f="completed" onclick="setCondFilter('completed')">Concluídas</span>
         <span class="fchip blue" data-f="queue" onclick="setCondFilter('queue')">Poços ativos</span>
       </div>
+
       <button class="btn btn-g btn-sm" onclick="exportCondXLSX()">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Exportar XLSX
       </button>
     </div>
+
     <div class="toolbar" style="gap:8px">
       <select class="sel" id="condField" style="min-width:150px" onchange="applyCondFilters()">
         <option value="">Campo: todos</option>${fopts}
@@ -719,66 +722,55 @@ async function renderConditions() {
       <button class="btn btn-g btn-sm" onclick="collapseAll()">Recolher todos</button>
       <button class="btn btn-sm btn-a" onclick="expandAll()">Expandir todos</button>
     </div>
-    <div id="cond-donut-row" style="margin-bottom:14px"></div>
+
+    <div id="cond-exec-card" style="margin-bottom:14px"></div>
     <div id="cond-summary" style="margin-bottom:10px"></div>
-    <div id="cond-list"><div class="loading"><span class="spin"></span></div></div>`;
+    <div id="cond-list"><div class="loading"><span class="spin"></span></div></div>
+  `;
 
   await loadConditions();
 }
 
 async function loadConditions() {
-  const thermoDiv = document.getElementById("cond-thermo");
   const listDiv = document.getElementById("cond-list");
   const summDiv = document.getElementById("cond-summary");
-  const donutDiv = document.getElementById("cond-donut-row");
+
   if (listDiv) listDiv.innerHTML = '<div class="loading"><span class="spin"></span></div>';
 
   const field = condState.field;
   const agency = condState.agency;
   const isQueue = condState.filter === "queue";
   const sf_filter = isQueue ? null : condState.filter === "all" ? null : condState.filter;
+
   const params = new URLSearchParams();
   if (field) params.set("field", field);
   if (sf_filter) params.set("status_filter", sf_filter);
 
-  const [panelData, indicator] = await Promise.all([
-    isQueue ? sf(`${API}/conditions/queue${field ? '?field=' + encodeURIComponent(field) : ''}`) : sf(`${API}/conditions/panel?${params}`),
-    sf(`${API}/conditions/conformity-indicator?${field ? 'field=' + encodeURIComponent(field) : ''}`)
-  ]);
+  const panelData = isQueue
+    ? await sf(`${API}/conditions/queue${field ? "?field=" + encodeURIComponent(field) : ""}`)
+    : await sf(`${API}/conditions/panel?${params}`);
 
-  let items = (panelData?.items) || [];
-  // Filter by agency client-side
-  if (agency) items = items.filter(i => (i.license_agency || '').toUpperCase().includes(agency.toUpperCase()));
+  let items = panelData?.items || [];
 
-  const summ = (panelData?.summary) || {};
-  condState.allItems = items;
-  condState.indicator = indicator || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
-
-  if (thermoDiv) thermoDiv.innerHTML = renderThermo(condState.indicator, true);
-
-  // Donut data
-  const completed = items.filter(i => i.status === "completed").length;
-  const pending = items.filter(i => i.status === "pending").length;
-  const partial = items.filter(i => i.status === "partial").length;
-  const overdue = items.filter(i => i.days_until_due !== null && i.days_until_due < 0 && i.status !== "completed").length;
-  const critical = items.filter(i => i.is_critical && i.status !== "completed").length;
-
-  if (donutDiv) {
-    const donutData = [
-      { label:"Concluídas", value:completed, color:"#00722A" },
-      { label:"Pendentes", value:pending, color:"#94a3b8" },
-      { label:"Parciais", value:partial, color:"#f59e0b" },
-      { label:"Vencidas", value:overdue, color:"#c0392b" },
-      { label:"Críticas", value:critical, color:"#7c1515" },
-    ].filter(d => d.value > 0);
-    donutDiv.innerHTML = renderDonutSection("Distribuição de condicionantes", donutData, "total");
+  if (agency) {
+    items = items.filter(i => (i.license_agency || "").toUpperCase().includes(agency.toUpperCase()));
   }
+
+  condState.allItems = items;
+
+  renderConditionExecutiveCard(items);
+
+  const summ = panelData?.summary || {};
 
   if (summDiv) {
     if (isQueue) {
-      summDiv.innerHTML = `<div class="sbar">🔴 <strong>Poços ativos</strong> — condicionantes priorizadas por urgência · <strong>${items.length}</strong> item${items.length !== 1 ? 's' : ''}</div>`;
+      summDiv.innerHTML = `<div class="sbar">🔴 <strong>Poços ativos</strong> — condicionantes priorizadas por urgência · <strong>${items.length}</strong> item${items.length !== 1 ? "s" : ""}</div>`;
     } else {
-      summDiv.innerHTML = `<div class="sbar"><strong>${summ.total || 0}</strong> condicionantes · <strong style="color:var(--p)">${summ.completed || 0}</strong> concluídas · <strong style="color:var(--wt)">${summ.partial || 0}</strong> parciais · <strong style="color:var(--r)">${summ.overdue || 0}</strong> vencidas</div>`;
+      const completed = items.filter(i => i.status === "completed").length;
+      const partial = items.filter(i => i.status === "partial").length;
+      const overdue = items.filter(i => i.days_until_due !== null && i.days_until_due < 0 && i.status !== "completed").length;
+
+      summDiv.innerHTML = `<div class="sbar"><strong>${items.length}</strong> condicionantes · <strong style="color:var(--p)">${completed}</strong> concluídas · <strong style="color:var(--wt)">${partial}</strong> parciais · <strong style="color:var(--r)">${overdue}</strong> vencidas</div>`;
     }
   }
 
@@ -786,12 +778,141 @@ async function loadConditions() {
     if (listDiv) listDiv.innerHTML = '<div class="card"><div class="empty">Nenhuma condicionante encontrada para este filtro</div></div>';
     return;
   }
+
   renderCondList(items, listDiv);
+}
+
+function countCondCategories(items) {
+  const c = {
+    monitoring: 0,
+    reporting: 0,
+    infrastructure: 0,
+    other: 0,
+    effluent: 0
+  };
+
+  items.forEach(i => {
+    const cat = i.category || "other";
+    if (c[cat] !== undefined) c[cat]++;
+    else c.other++;
+  });
+
+  return c;
+}
+
+function getOperationalConditionCounts(items, situation) {
+  let total = 0;
+  let completed = 0;
+  let pending = 0;
+  let overdue = 0;
+  let critical = 0;
+
+  items.forEach(item => {
+    const assets = item.assets || [];
+    const linked = assets.filter(a => a.situation === situation);
+
+    linked.forEach(a => {
+      total++;
+
+      const assetDone = a.status === "completed";
+      const itemDone = item.status === "completed";
+      const isDone = assetDone || itemDone;
+
+      if (isDone) completed++;
+      else pending++;
+
+      if (!isDone && item.days_until_due !== null && item.days_until_due < 0) overdue++;
+      if (!isDone && item.is_critical) critical++;
+    });
+  });
+
+  const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  return { total, completed, pending, overdue, critical, pct };
+}
+
+function renderCondOperationalMiniCard(title, data, color) {
+  return `
+    <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:12px;padding:14px 16px;min-width:220px;flex:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="width:9px;height:9px;border-radius:50%;background:${color};display:inline-block"></span>
+        <strong style="font-size:13px">${title}</strong>
+      </div>
+      <div style="font-size:26px;font-weight:700;line-height:1">${data.total}</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px">condicionantes vinculadas</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.8">
+        <div>Concluídas: <strong style="color:var(--p)">${data.completed}</strong></div>
+        <div>Pendentes: <strong style="color:var(--w)">${data.pending}</strong></div>
+        <div>Vencidas: <strong style="color:var(--r)">${data.overdue}</strong></div>
+        <div>Críticas: <strong style="color:var(--r)">${data.critical}</strong></div>
+        <div>Atendimento: <strong style="color:${data.pct === 100 ? "var(--p)" : data.pct >= 70 ? "var(--w)" : "var(--r)"}">${data.pct}%</strong></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderConditionExecutiveCard(items) {
+  const div = document.getElementById("cond-exec-card");
+  if (!div) return;
+
+  const cat = countCondCategories(items);
+
+  const donutData = [
+    { label: "Monitoramento", value: cat.monitoring, color: "#1a6d89" },
+    { label: "Relatórios", value: cat.reporting, color: "#00722A" },
+    { label: "Infraestrutura", value: cat.infrastructure, color: "#FACC15" },
+    { label: "Outros", value: cat.other, color: "#8C8F94" },
+    { label: "Efluentes", value: cat.effluent, color: "#43A631" }
+  ];
+
+  const { svg, total } = buildDonut(donutData, 130);
+
+  const legend = donutData.map(d => `
+    <div class="donut-leg-item">
+      <div class="donut-leg-dot" style="background:${d.color}"></div>
+      <div class="donut-leg-text">
+        <div class="donut-leg-name">${d.label}</div>
+        <div class="donut-leg-val">${d.value} · ${total > 0 ? Math.round(d.value / total * 100) : 0}%</div>
+      </div>
+    </div>
+  `).join("");
+
+  const prod = getOperationalConditionCounts(items, "PRODUZINDO");
+  const inj = getOperationalConditionCounts(items, "INJETANDO");
+
+  div.innerHTML = `
+    <div class="card">
+      <div class="ct">Condicionantes por categoria</div>
+
+      <div style="display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:center">
+        <div class="donut-wrap">
+          <div class="donut-svg-wrap">
+            ${svg}
+            <div class="donut-center">
+              <div class="donut-center-val">${total}</div>
+              <div class="donut-center-lbl">total</div>
+            </div>
+          </div>
+          <div class="donut-legend">${legend}</div>
+        </div>
+
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">
+            Condicionantes vinculadas a poços ativos
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            ${renderCondOperationalMiniCard("Produtores", prod, "var(--p)")}
+            ${renderCondOperationalMiniCard("Injetores", inj, "var(--b)")}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderCondList(items, container) {
   if (!container) return;
-  container.innerHTML = items.map(item => renderCondCard(item)).join('');
+  container.innerHTML = items.map(item => renderCondCard(item)).join("");
 }
 
 function renderCondCard(item) {
@@ -799,30 +920,45 @@ function renderCondCard(item) {
   const cc = CAT_COLOR[item.category] || "#94a3b8";
   const cn = CAT_NAME[item.category] || item.category;
   let bCol = "var(--bd)", sBadge = '<span class="badge b-pe">Pendente</span>';
-  if (item.status === "completed") { bCol = "var(--pl)"; sBadge = '<span class="badge b-dn">Concluída</span>'; }
-  else if (item.status === "partial") { bCol = "var(--w)"; sBadge = `<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`; }
-  else if (item.is_critical && item.days_until_due !== null && item.days_until_due < 0) { bCol = "var(--r)"; sBadge = '<span class="badge b-cr">⚠ Crítica vencida</span>'; }
-  else if (item.days_until_due !== null && item.days_until_due < 0) { bCol = "var(--r)"; sBadge = '<span class="badge b-ex">Vencida</span>'; }
-  else if (item.days_until_due !== null && item.days_until_due <= 30) { bCol = "var(--w)"; sBadge = `<span class="badge b-up">${item.days_until_due}d</span>`; }
+
+  if (item.status === "completed") {
+    bCol = "var(--pl)";
+    sBadge = '<span class="badge b-dn">Concluída</span>';
+  } else if (item.status === "partial") {
+    bCol = "var(--w)";
+    sBadge = `<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`;
+  } else if (item.is_critical && item.days_until_due !== null && item.days_until_due < 0) {
+    bCol = "var(--r)";
+    sBadge = '<span class="badge b-cr">⚠ Crítica vencida</span>';
+  } else if (item.days_until_due !== null && item.days_until_due < 0) {
+    bCol = "var(--r)";
+    sBadge = '<span class="badge b-ex">Vencida</span>';
+  } else if (item.days_until_due !== null && item.days_until_due <= 30) {
+    bCol = "var(--w)";
+    sBadge = `<span class="badge b-up">${item.days_until_due}d</span>`;
+  }
 
   const pct = item.progress_pct || 0;
   const progCol = pct === 100 ? "var(--pl)" : pct > 0 ? "var(--w)" : "var(--bd)";
-  const desc = item.description || '';
-  const shortDesc = desc.length > 160 ? desc.slice(0, 160) + '…' : desc;
+  const desc = item.description || "";
+  const shortDesc = desc.length > 160 ? desc.slice(0, 160) + "…" : desc;
+
   const progHtml = item.n_assets > 0
     ? `<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:${pct}%;background:${progCol}"></div></div><span class="cplbl">${item.n_completed}/${item.n_assets} ativos · ${pct}%</span></div>`
-    : item.status === "completed" ? `<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>` : '';
+    : item.status === "completed"
+      ? `<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>`
+      : "";
 
   const bodyHtml = isExp ? `
     <div class="ccard-body">
       <div class="ccard-full-desc">${desc}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
         <div style="font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Ativos vinculados (${item.n_assets})</div>
-        ${item.status !== "completed" && item.n_assets > 1 ? `<button class="btn btn-sm btn-a" onclick="doCompleteAll(${item.id},event)">✓ Dar baixa em todos</button>` : ''}
+        ${item.status !== "completed" && item.n_assets > 1 ? `<button class="btn btn-sm btn-a" onclick="doCompleteAll(${item.id},event)">✓ Dar baixa em todos</button>` : ""}
       </div>
       <div class="ccard-asset-list">${renderAssetList(item)}</div>
-      ${item.status !== "completed" && item.n_assets === 0 ? `<button class="btn btn-sm" style="margin-top:10px" onclick="doSingleBaixa(${item.id})">Dar baixa</button>` : ''}
-    </div>` : '';
+      ${item.status !== "completed" && item.n_assets === 0 ? `<button class="btn btn-sm" style="margin-top:10px" onclick="doSingleBaixa(${item.id})">Dar baixa</button>` : ""}
+    </div>` : "";
 
   return `<div class="ccard" id="ccard-${item.id}" style="border-left-color:${bCol}">
     <div class="ccard-head" onclick="toggleCard(${item.id})">
@@ -830,124 +966,20 @@ function renderCondCard(item) {
         <div class="ccard-meta">
           <span class="ccat" style="background:${cc}18;color:${cc}">${cn}</span>
           ${sBadge}
-          ${item.is_critical ? '<span class="badge b-cr">Crítica</span>' : ''}
-          ${item.due_date ? `<span style="font-size:11px;color:var(--t3)">Vence ${item.due_date}</span>` : ''}
-          <span style="font-size:11px;color:var(--t3)">Lic. <strong>${item.license_number || '—'}</strong></span>
-          ${item.license_agency ? `<span style="font-size:11px;color:var(--t3)">${item.license_agency}</span>` : ''}
-          ${item.field ? `<span style="font-size:11px;color:var(--t3)">${item.field}</span>` : ''}
+          ${item.is_critical ? '<span class="badge b-cr">Crítica</span>' : ""}
+          ${item.due_date ? `<span style="font-size:11px;color:var(--t3)">Vence ${item.due_date}</span>` : ""}
+          <span style="font-size:11px;color:var(--t3)">Lic. <strong>${item.license_number || "—"}</strong></span>
+          ${item.license_agency ? `<span style="font-size:11px;color:var(--t3)">${item.license_agency}</span>` : ""}
+          ${item.field ? `<span style="font-size:11px;color:var(--t3)">${item.field}</span>` : ""}
         </div>
         <div class="ccard-title">${isExp ? desc : shortDesc}</div>
         ${progHtml}
       </div>
-      <div style="flex-shrink:0;padding-left:10px;color:var(--t3);font-size:11px">${isExp ? '▲' : '▼'}</div>
+      <div style="flex-shrink:0;padding-left:10px;color:var(--t3);font-size:11px">${isExp ? "▲" : "▼"}</div>
     </div>
     ${bodyHtml}
   </div>`;
 }
-
-function renderAssetList(item) {
-  return item.assets.map(a => {
-    const done = a.status === "completed";
-    const isOp = OPERATIONAL.includes(a.situation);
-    return `<div class="cas-item">
-      <div class="cas-code">${a.code}</div>
-      <div class="cas-field">${a.field || '—'} ${isOp ? `<span class="badge b-ok" style="font-size:10px">${(a.situation || '').slice(0, 10)}</span>` : ''}</div>
-      <div>${done
-        ? `<div class="cas-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Concluído${a.completed_at ? ` <span style="font-size:10px;color:var(--t3)">${a.completed_at.slice(0, 10)}</span>` : ''}</div>`
-        : `<button class="cas-btn" onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id},'${a.code.replace(/'/g, "")}','${(item.license_number || '').replace(/'/g, "")}')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dar baixa</button>`
-      }</div>
-    </div>`;
-  }).join('');
-}
-
-function toggleCard(id) {
-  if (condState.expandedIds.has(id)) condState.expandedIds.delete(id);
-  else condState.expandedIds.add(id);
-  const item = condState.allItems.find(i => i.id === id);
-  if (!item) return;
-  const el = document.getElementById(`ccard-${id}`);
-  if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); }
-}
-function collapseAll() { condState.expandedIds.clear(); renderCondList(condState.allItems, document.getElementById("cond-list")); }
-function expandAll() { condState.expandedIds = new Set(condState.allItems.map(i => i.id)); renderCondList(condState.allItems, document.getElementById("cond-list")); }
-function setCondFilter(f) { condState.filter = f; document.querySelectorAll(".fchip").forEach(c => { c.classList.toggle("on", c.dataset.f === f); }); loadConditions(); }
-function applyCondFilters() { condState.field = document.getElementById("condField").value; condState.agency = document.getElementById("condAgency")?.value || ""; loadConditions(); }
-
-function exportCondXLSX() {
-  const field = condState.field;
-  const filter = condState.filter === "all" ? "" : condState.filter;
-  const params = new URLSearchParams();
-  if (field) params.set("field", field);
-  if (filter) params.set("status_filter", filter);
-  window.open(`${API}/conditions/export?${params}`, '_blank');
-  showToast("Exportação iniciada…");
-}
-
-function openBaixaModal(condId, assetId, assetCode, licNum) {
-  openMod(`<div class="mhead">
-    <div class="mic" style="background:var(--pt);color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <div class="mttl">Dar baixa na condicionante</div>
-    <div class="msub">Ativo: <strong>${assetCode}</strong> · Licença: <strong>${licNum}</strong></div>
-  </div>
-  <div class="mbody">
-    <div class="minfo">
-      <div class="mrow"><span>Responsável</span><input id="bx-resp" style="border:1px solid var(--bdl);border-radius:6px;padding:4px 9px;font-size:12.5px;font-family:inherit;outline:none;width:170px" placeholder="Nome (opcional)"></div>
-      <div class="mrow" style="margin-top:7px;align-items:flex-start"><span style="padding-top:3px">Observação</span><textarea id="bx-obs" style="border:1px solid var(--bdl);border-radius:6px;padding:5px 9px;font-size:12.5px;font-family:inherit;outline:none;width:210px;resize:vertical;height:56px" placeholder="Opcional"></textarea></div>
-    </div>
-    <div style="font-size:12px;color:var(--t3)">✓ O card permanece aberto para os demais ativos após confirmar.</div>
-  </div>
-  <div class="mact">
-    <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
-    <button class="btn" onclick="doBaixaAtivo(${condId},${assetId},'${assetCode}')">Confirmar baixa</button>
-  </div>`);
-}
-
-async function doBaixaAtivo(condId, assetId, assetCode) {
-  const resp = document.getElementById("bx-resp")?.value || "";
-  const obs = document.getElementById("bx-obs")?.value || "";
-  closeMod();
-  const r = await sf(`${API}/conditions/${condId}/assets/${assetId}/complete`, {
-    method:"PATCH", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ completed_by:resp, observation:obs, evidence_url:"" })
-  });
-  if (r && r.ok) {
-    showToast(`✓ ${assetCode} concluído`);
-    const item = condState.allItems.find(i => i.id === condId);
-    if (item) {
-      const a = item.assets.find(x => x.id === assetId);
-      if (a) { a.status = "completed"; a.completed_at = new Date().toISOString(); }
-      item.n_completed = item.assets.filter(x => x.status === "completed").length;
-      item.progress_pct = item.n_assets > 0 ? Math.round(item.n_completed / item.n_assets * 100) : 100;
-      if (item.n_completed >= item.n_assets) item.status = "completed";
-      else if (item.n_completed > 0) item.status = "partial";
-      condState.expandedIds.add(condId);
-      const el = document.getElementById(`ccard-${condId}`);
-      if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); }
-    }
-    sf(`${API}/conditions/conformity-indicator`).then(ind => {
-      if (ind) { condState.indicator = ind; const td = document.getElementById("cond-thermo"); if (td) td.innerHTML = renderThermo(condState.indicator, true); }
-    });
-  } else { alert("Erro: " + (r?.error || "sem resposta")); }
-}
-
-async function doCompleteAll(condId, event) {
-  event.stopPropagation();
-  if (!confirm("Dar baixa em TODOS os ativos desta condicionante?")) return;
-  const r = await sf(`${API}/conditions/${condId}/complete-all`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ completed_by:"sistema", observation:"" }) });
-  if (r && r.ok) {
-    showToast(`✓ ${r.assets_completed} ativos concluídos`);
-    const item = condState.allItems.find(i => i.id === condId);
-    if (item) { item.assets.forEach(a => { a.status = "completed"; a.completed_at = new Date().toISOString(); }); item.n_completed = item.n_assets; item.progress_pct = 100; item.status = "completed"; condState.expandedIds.add(condId); const el = document.getElementById(`ccard-${condId}`); if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); } }
-  } else alert("Erro: " + (r?.error || "sem resposta"));
-}
-
-async function doSingleBaixa(condId) {
-  if (!confirm("Dar baixa nesta condicionante?")) return;
-  const r = await sf(`${API}/conditions/${condId}/complete-all`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ completed_by:"sistema", observation:"" }) });
-  if (r && r.ok) { showToast("✓ Condicionante concluída"); loadConditions(); }
-  else alert("Erro");
-}
-
 // ═══════════════════════════════════════════
 // ASSETS
 // ═══════════════════════════════════════════
