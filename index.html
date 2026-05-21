@@ -591,7 +591,7 @@ async function renderDashboard() {
   const th = thermo || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
   const bf = byField || { all_fields:[], conditions_by_field:[] };
   const fs = finSum || { total_realizado:0, total_provisionado:0 };
-  const months = (byMonth || []).slice(-6);
+  const months = Array.isArray(byMonth) ? byMonth.slice(-6) : [];
 
   // KPI executivo: % ativos operacionais protegidos
   const prodTotal = c.producing?.total || 0;
@@ -1147,7 +1147,7 @@ async function renderPlanning() {
   ]);
 
   const fs = finSum || {};
-  const months = (byMonth || []).slice(-12);
+  const months = Array.isArray(byMonth) ? byMonth.slice(-12) : [];
   window.__planningMonths = months;
   const fields = byField || [];
   const cats = byCat || [];
