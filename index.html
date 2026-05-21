@@ -676,7 +676,6 @@ async function renderDashboard() {
       <div class="card"><div class="ct">Condicionantes por campo</div><ul class="blist">${condBars}</ul></div>
     </div>`;
 }
-
 // ═══════════════════════════════════════════
 // CONDITIONS
 // ═══════════════════════════════════════════
@@ -844,7 +843,6 @@ function renderCondOperationalMiniCard(title, data, color) {
         <div>Concluídas: <strong style="color:var(--p)">${data.completed}</strong></div>
         <div>Pendentes: <strong style="color:var(--w)">${data.pending}</strong></div>
         <div>Vencidas: <strong style="color:var(--r)">${data.overdue}</strong></div>
-        <div>Críticas: <strong style="color:var(--r)">${data.critical}</strong></div>
         <div>Atendimento: <strong style="color:${data.pct === 100 ? "var(--p)" : data.pct >= 70 ? "var(--w)" : "var(--r)"}">${data.pct}%</strong></div>
       </div>
     </div>
@@ -927,9 +925,6 @@ function renderCondCard(item) {
   } else if (item.status === "partial") {
     bCol = "var(--w)";
     sBadge = `<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`;
-  } else if (item.is_critical && item.days_until_due !== null && item.days_until_due < 0) {
-    bCol = "var(--r)";
-    sBadge = '<span class="badge b-cr">⚠ Crítica vencida</span>';
   } else if (item.days_until_due !== null && item.days_until_due < 0) {
     bCol = "var(--r)";
     sBadge = '<span class="badge b-ex">Vencida</span>';
@@ -966,7 +961,6 @@ function renderCondCard(item) {
         <div class="ccard-meta">
           <span class="ccat" style="background:${cc}18;color:${cc}">${cn}</span>
           ${sBadge}
-          ${item.is_critical ? '<span class="badge b-cr">Crítica</span>' : ""}
           ${item.due_date ? `<span style="font-size:11px;color:var(--t3)">Vence ${item.due_date}</span>` : ""}
           <span style="font-size:11px;color:var(--t3)">Lic. <strong>${item.license_number || "—"}</strong></span>
           ${item.license_agency ? `<span style="font-size:11px;color:var(--t3)">${item.license_agency}</span>` : ""}
