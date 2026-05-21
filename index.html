@@ -509,26 +509,44 @@ function bSit(s) {
 }
 
 // ── DONUT CHART ──
-function buildDonut(data, size = 130) {
-  // data = [{label, value, color}]
+  function buildDonut(data, size = 130) {
   const total = data.reduce((s, d) => s + d.value, 0);
-  if (total === 0) return { svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-14}" fill="none" stroke="#e2e8f0" stroke-width="14"/></svg>`, total: 0 };
-  const cx = size / 2, cy = size / 2, r = size / 2 - 14;
+
+  if (total === 0) {
+    return {
+      svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+        <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 14}" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+      </svg>`,
+      total: 0
+    };
+  }
+
+  const cx = size / 2;
+  const cy = size / 2;
+  const r = size / 2 - 14;
   const circ = 2 * Math.PI * r;
-  let offset = -circ / 4; // start at top
-  let paths = '';
+  let offset = circ / 4;
+  let paths = "";
+
   for (const d of data) {
     const pct = d.value / total;
     const dash = pct * circ;
     const gap = circ - dash;
-    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}" stroke-dashoffset="${-offset.toFixed(2)}" stroke-linecap="butt"/>`;
-    offset += dash;
+
+    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14"
+      stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}"
+      stroke-dashoffset="${offset.toFixed(2)}"
+      stroke-linecap="butt"/>`;
+
+    offset -= dash;
   }
+
   return {
-    svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(0deg)">${paths}</svg>`,
+    svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${paths}</svg>`,
     total
   };
 }
+
 
 function renderDonutSection(title, data, centerLabel = "total") {
   const { svg, total } = buildDonut(data, 130);
