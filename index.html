@@ -953,32 +953,55 @@ async function doSingleBaixa(condId) {
 // ═══════════════════════════════════════════
 async function renderAssets() {
   if (!filterCache) filterCache = await sf(`${API}/assets/filters`) || { agencies:[], situations:[] };
+
   const app = document.getElementById("app");
   const opt = arr => (arr || []).map(v => `<option value="${v}">${v}</option>`).join('');
+
   app.innerHTML = `
     <div class="ph"><h1>Ativos</h1><p class="sub">Status regulatório dos ativos cadastrados</p></div>
-    <div id="asset-donut-row" style="margin-bottom:14px"></div>
+
     <div class="toolbar">
       <input class="inp" id="aS" placeholder="Código ou campo…" value="${assetState.search}">
       <select class="sel" id="aAg"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
       <select class="sel" id="aOp"><option value="">Situação: todas</option>${opt(filterCache.situations)}</select>
-      <select class="sel" id="aSt"><option value="">Status: todos</option><option value="ok">Licença ativa</option><option value="upcoming">Próxima ao venc.</option><option value="expired">Licença vencida</option><option value="missing">Sem licença</option><option value="critical">Crítico</option></select>
+      <select class="sel" id="aSt">
+        <option value="">Status: todos</option>
+        <option value="ok">Licença ativa</option>
+        <option value="upcoming">Próxima ao venc.</option>
+        <option value="expired">Licença vencida</option>
+        <option value="missing">Sem licença</option>
+        <option value="critical">Crítico</option>
+      </select>
       <button class="btn" id="aAp">Filtrar</button>
       <button class="btn btn-g" id="aEx">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         CSV
       </button>
     </div>
-    <div id="aRes"><div class="loading"><span class="spin"></span></div></div>`;
 
-  ["aAg","aOp","aSt"].forEach(id => { if (assetState.filters[id]) document.getElementById(id).value = assetState.filters[id]; });
+    <div id="asset-status-row" style="margin-bottom:14px"></div>
+    <div id="aRes"><div class="loading"><span class="spin"></span></div></div>
+  `;
+
+  ["aAg","aOp","aSt"].forEach(id => {
+    if (assetState.filters[id]) document.getElementById(id).value = assetState.filters[id];
+  });
+
   document.getElementById("aAp").onclick = () => {
-    assetState.filters = { aAg:document.getElementById("aAg").value, aOp:document.getElementById("aOp").value, aSt:document.getElementById("aSt").value };
+    assetState.filters = {
+      aAg: document.getElementById("aAg").value,
+      aOp: document.getElementById("aOp").value,
+      aSt: document.getElementById("aSt").value
+    };
     assetState.search = document.getElementById("aS").value;
     assetState.page = 0;
     loadAssets();
   };
-  document.getElementById("aS").addEventListener("keypress", e => { if (e.key === "Enter") document.getElementById("aAp").click(); });
+
+  document.getElementById("aS").addEventListener("keypress", e => {
+    if (e.key === "Enter") document.getElementById("aAp").click();
+  });
+
   document.getElementById("aEx").onclick = exportAssets;
   loadAssets();
 }
@@ -992,88 +1015,220 @@ function buildAP() {
   return p;
 }
 
-async function loadAssets() {
+async function fetchAssetsPage(limit, offset) {
   const p = buildAP();
-  p.set("limit", "50");
-  p.set("offset", String(assetState.page * 50));
-  const div = document.getElementById("aRes");
-  div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-  const r = await sf(`${API}/assets/unified?${p}`, { timeout:30000 });
-  if (!r?.items?.length) { div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>'; await updateAssetDonut(); return; }
-
-  await updateAssetDonut();
-
-  const crit = r.items.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
-  const rows = r.items.map(a => {
-    const pdfBtn = a.pdf_url
-      ? `<a class="pdf-btn" href="${a.pdf_url}" target="_blank" rel="noopener" title="Abrir licença PDF"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`
-      : `<span class="pdf-empty" title="Sem documento"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#cbd5e1;stroke-width:2;fill:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>`;
-    return `<tr><td><strong class="mono">${a.code || '—'}</strong></td><td style="color:var(--t2)">${a.field || '—'}</td><td style="color:var(--t2)">${a.agency || '—'}</td><td>${bSit(a.situation)}</td><td>${bComp(a.compliance_status)}</td><td style="font-size:12px;color:var(--t2);font-family:'DM Mono',monospace">${a.expiry_date || '—'}</td><td>${pdfBtn}</td></tr>`;
-  }).join('');
-
-  const tp = Math.ceil(r.total / 50), cur = assetState.page + 1;
-  div.innerHTML = `<div class="sbar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> · <strong style="color:${crit>0?'var(--r)':'var(--t2)'}">${crit}</strong> críticos</div>
-    <div class="tw"><table><thead><tr><th>Código</th><th>Campo</th><th>Órgão</th><th>Situação</th><th>Status</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="pag"><span>Página ${cur} de ${tp}</span><div style="display:flex;gap:7px"><button class="btn btn-g btn-sm" id="aPv" ${assetState.page === 0 ? "disabled" : ""}>← Anterior</button><button class="btn btn-g btn-sm" id="aNx" ${cur >= tp ? "disabled" : ""}>Próxima →</button></div></div>`;
-  document.getElementById("aPv").onclick = () => { if (assetState.page > 0) { assetState.page--; loadAssets(); } };
-  document.getElementById("aNx").onclick = () => { if (cur < tp) { assetState.page++; loadAssets(); } };
+  p.set("limit", String(limit));
+  p.set("offset", String(offset));
+  return await sf(`${API}/assets/unified?${p}`, { timeout:30000 });
 }
 
-async function updateAssetDonut() {
-  const donutDiv = document.getElementById("asset-donut-row");
-  if (!donutDiv) return;
-
-  const counts = {
-    ok: 0,
-    upcoming: 0,
-    expired: 0,
-    missing: 0
-  };
-
+async function fetchAllFilteredAssets() {
+  const all = [];
   let offset = 0;
   const limit = 200;
   let total = 0;
 
   while (true) {
-    const p = buildAP();
-    p.set("limit", String(limit));
-    p.set("offset", String(offset));
-
-    const r = await sf(`${API}/assets/unified?${p}`, { timeout: 30000 });
+    const r = await fetchAssetsPage(limit, offset);
     const items = r?.items || [];
 
     if (offset === 0) total = r?.total || 0;
     if (!items.length) break;
 
-    items.forEach(a => {
-      const st = a.compliance_status;
-
-      if (st === "ok") counts.ok++;
-      else if (st === "upcoming") counts.upcoming++;
-      else if (st === "expired") counts.expired++;
-      else if (st === "missing" || st === "critical") counts.missing++;
-    });
-
+    all.push(...items);
     offset += items.length;
 
     if (offset >= total) break;
   }
 
+  return all;
+}
+
+function getAssetCounts(items) {
+  const c = { ok:0, upcoming:0, expired:0, missing:0 };
+
+  items.forEach(a => {
+    const st = a.compliance_status;
+    if (st === "ok") c.ok++;
+    else if (st === "upcoming") c.upcoming++;
+    else if (st === "expired") c.expired++;
+    else if (st === "missing" || st === "critical") c.missing++;
+  });
+
+  return c;
+}
+
+function getOperationalCounts(items, situation) {
+  const group = items.filter(a => a.situation === situation);
+  const c = getAssetCounts(group);
+  const total = group.length;
+  const pct = total > 0 ? Math.round((c.ok / total) * 100) : 0;
+  return { total, ...c, pct };
+}
+
+function renderOperationalMiniCard(title, data, color) {
+  return `
+    <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:12px;padding:14px 16px;min-width:220px;flex:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="width:9px;height:9px;border-radius:50%;background:${color};display:inline-block"></span>
+        <strong style="font-size:13px">${title}</strong>
+      </div>
+      <div style="font-size:26px;font-weight:700;line-height:1">${data.total}</div>
+      <div style="font-size:11px;color:var(--t3);margin-bottom:8px">poços ativos</div>
+      <div style="font-size:12px;color:var(--t2);line-height:1.8">
+        <div>Licença ativa: <strong style="color:var(--p)">${data.ok}</strong></div>
+        <div>Sem licença/crítico: <strong style="color:var(--r)">${data.missing}</strong></div>
+        <div>Vencida ou vencendo: <strong style="color:var(--w)">${data.expired + data.upcoming}</strong></div>
+        <div>Conformidade: <strong style="color:${data.pct === 100 ? 'var(--p)' : data.pct >= 70 ? 'var(--w)' : 'var(--r)'}">${data.pct}%</strong></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAssetStatusCard(items) {
+  const div = document.getElementById("asset-status-row");
+  if (!div) return;
+
+  const counts = getAssetCounts(items);
+  const prod = getOperationalCounts(items, "PRODUZINDO");
+  const inj = getOperationalCounts(items, "INJETANDO");
+
   const donutData = [
-    { label: "Licença ativa", value: counts.ok, color: "#43A631" },
-    { label: "Próxima ao vencimento", value: counts.upcoming, color: "#FACC15" },
-    { label: "Licença vencida", value: counts.expired, color: "#B52B2B" },
-    { label: "Sem licença", value: counts.missing, color: "#7A1515" }
+    { label:"Licença ativa", value:counts.ok, color:"#43A631" },
+    { label:"Próxima ao vencimento", value:counts.upcoming, color:"#FACC15" },
+    { label:"Licença vencida", value:counts.expired, color:"#B52B2B" },
+    { label:"Sem licença", value:counts.missing, color:"#7A1515" }
   ];
 
-  donutDiv.innerHTML = renderDonutSection(
-    "Status regulatório",
-    donutData,
-    "total"
-  );
-}
-function exportAssets() { window.open(`${API}/assets/export?${buildAP()}`, '_blank'); }
+  const { svg, total } = buildDonut(donutData, 130);
 
+  const legend = donutData.map(d => `
+    <div class="donut-leg-item">
+      <div class="donut-leg-dot" style="background:${d.color}"></div>
+      <div class="donut-leg-text">
+        <div class="donut-leg-name">${d.label}</div>
+        <div class="donut-leg-val">${d.value} · ${total > 0 ? Math.round(d.value / total * 100) : 0}%</div>
+      </div>
+    </div>
+  `).join('');
+
+  div.innerHTML = `
+    <div class="card">
+      <div class="ct">Status regulatório</div>
+
+      <div style="display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:center">
+        <div class="donut-wrap">
+          <div class="donut-svg-wrap">
+            ${svg}
+            <div class="donut-center">
+              <div class="donut-center-val">${total}</div>
+              <div class="donut-center-lbl">total</div>
+            </div>
+          </div>
+          <div class="donut-legend">${legend}</div>
+        </div>
+
+        <div>
+          <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">
+            Status de licença dos poços ativos
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            ${renderOperationalMiniCard("Produtores", prod, "var(--p)")}
+            ${renderOperationalMiniCard("Injetores", inj, "var(--b)")}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function loadAssets() {
+  const div = document.getElementById("aRes");
+  div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
+
+  const allItems = await fetchAllFilteredAssets();
+  renderAssetStatusCard(allItems);
+
+  if (!allItems.length) {
+    div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>';
+    return;
+  }
+
+  const pageSize = 50;
+  const start = assetState.page * pageSize;
+  const pageItems = allItems.slice(start, start + pageSize);
+
+  const crit = pageItems.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
+
+  const rows = pageItems.map(a => {
+    const pdfBtn = a.pdf_url
+      ? `<a class="pdf-btn" href="${a.pdf_url}" target="_blank" rel="noopener" title="Abrir licença PDF"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`
+      : `<span class="pdf-empty" title="Sem documento"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#cbd5e1;stroke-width:2;fill:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>`;
+
+    return `<tr>
+      <td><strong class="mono">${a.code || '—'}</strong></td>
+      <td style="color:var(--t2)">${a.field || '—'}</td>
+      <td style="color:var(--t2)">${a.agency || '—'}</td>
+      <td>${bSit(a.situation)}</td>
+      <td>${bComp(a.compliance_status)}</td>
+      <td style="font-size:12px;color:var(--t2);font-family:'DM Mono',monospace">${a.expiry_date || '—'}</td>
+      <td>${pdfBtn}</td>
+    </tr>`;
+  }).join('');
+
+  const tp = Math.max(1, Math.ceil(allItems.length / pageSize));
+  const cur = assetState.page + 1;
+
+  div.innerHTML = `
+    <div class="sbar">
+      Mostrando <strong>${pageItems.length}</strong> de <strong>${allItems.length}</strong> ·
+      <strong style="color:${crit > 0 ? 'var(--r)' : 'var(--t2)'}">${crit}</strong> críticos nesta página
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Campo</th>
+            <th>Órgão</th>
+            <th>Situação</th>
+            <th>Status</th>
+            <th>Validade</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+
+    <div class="pag">
+      <span>Página ${cur} de ${tp}</span>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" id="aPv" ${assetState.page === 0 ? "disabled" : ""}>← Anterior</button>
+        <button class="btn btn-g btn-sm" id="aNx" ${cur >= tp ? "disabled" : ""}>Próxima →</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("aPv").onclick = () => {
+    if (assetState.page > 0) {
+      assetState.page--;
+      loadAssets();
+    }
+  };
+
+  document.getElementById("aNx").onclick = () => {
+    if (cur < tp) {
+      assetState.page++;
+      loadAssets();
+    }
+  };
+}
+
+function exportAssets() {
+  window.open(`${API}/assets/export?${buildAP()}`, "_blank");
+}
 // ═══════════════════════════════════════════
 // CENTRAL DOCUMENTAL
 // ═══════════════════════════════════════════
