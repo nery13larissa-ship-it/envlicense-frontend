@@ -834,10 +834,10 @@ async function uploadWith(dup){if(!pendingFile)return;const fd=new FormData();fd
 function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Ação irreversível.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
 async function doDelLic(id){closeMod();await sf(`${API}/licenses/${id}`,{method:"DELETE"});await loadDocList();}
 
-// ===== PLANNING — DISSOLUÇÃO DO PASSIVO COM CONTINUIDADE OPERACIONAL CORRETA =====
+// ===== PLANNING — FINANCEIRO REVISADO COM FILTRO DE PASSIVO + BUDGET + CONTINUIDADE REAL =====
 
 let passiveDissolutionYears = 5;
-const OPERATIONAL_FALLBACK_TARGET = 0.60;
+let selectedLiabilityType = "all"; // all | conditions | licenses
 
 function asArray(v){return Array.isArray(v)?v:[];}
 function safeObj(v,fallback={}){return v&&typeof v==="object"&&!Array.isArray(v)&&!v.error?v:fallback;}
@@ -904,7 +904,31 @@ function setDissolutionYears(years){
   renderPlanning();
 }
 
-function normalizeFinanceData(fs,months){
+function setLiabilityType(type){
+  selectedLiabilityType=type||"all";
+  renderPlanning();
+}
+
+function sumDueByYear(data,years){
+  if(!data)return 0;
+  const currentYear=new Date().getFullYear();
+
+  if(Array.isArray(data)){
+    return data
+      .filter(x=>num(x.year)<=currentYear+years && num(x.year)>currentYear)
+      .reduce((s,x)=>s+num(x.value||x.total||x.amount||x.cost),0);
+  }
+
+  if(typeof data==="object"){
+    return Object.entries(data)
+      .filter(([year])=>num(year)<=currentYear+years && num(year)>currentYear)
+      .reduce((s,[,v])=>s+num(v),0);
+  }
+
+  return 0;
+}
+
+function normalizeFinanceData(fs,months,type,years){
   const monthly=asArray(months).map(m=>{
     const realized=num(m.realizado);
     const budget=budgetForMonth(m.label);
@@ -921,31 +945,94 @@ function normalizeFinanceData(fs,months){
   const realizedFromMonths=monthly.reduce((s,m)=>s+m.realized,0);
   const budgetTotal=monthly.reduce((s,m)=>s+m.budget,0);
 
-  const totalMapped=num(
+  const totalGeneral=num(
     fs.total_liability ??
     fs.mapped_liability_total ??
     fs.total_provisionado
   );
 
-  const operationalMappedRaw=num(
+  const conditionLiability=num(
+    fs.condition_liability_total ??
+    fs.conditions_liability_total ??
+    fs.conditions?.provisionado
+  );
+
+  const licenseBase=num(
+    fs.license_liability_total ??
+    fs.licenses_liability_total ??
+    fs.licenses?.provisionado
+  );
+
+  const licenseRenewal=num(
+    fs.license_renewal_cost_total ??
+    fs.renewal_cost_total ??
+    sumDueByYear(fs.licenses_due_by_year,years)
+  );
+
+  const licenseLiability=licenseBase+licenseRenewal;
+
+  const operationalGeneral=num(
     fs.operational_liability_total ??
     fs.passivo_operacional ??
     fs.operational_total
   );
 
-  const hasOperationalSource=operationalMappedRaw>0;
-  const operationalMapped=hasOperationalSource
-    ?Math.min(operationalMappedRaw,totalMapped)
-    :Math.round(totalMapped*OPERATIONAL_FALLBACK_TARGET);
+  const operationalCondition=num(
+    fs.operational_condition_liability_total ??
+    fs.operational_conditions_liability_total
+  );
+
+  const operationalLicense=num(
+    fs.operational_license_liability_total ??
+    fs.operational_licenses_liability_total
+  );
+
+  let mappedLiability=0;
+  let operationalLiability=0;
+  let sourceNote="";
+  let hasOperationalSource=false;
+
+  if(type==="conditions"){
+    mappedLiability=conditionLiability;
+    operationalLiability=operationalCondition;
+    hasOperationalSource=operationalCondition>0;
+    if(conditionLiability<=0)sourceNote="Passivo de condicionantes não detalhado pelo backend.";
+  }else if(type==="licenses"){
+    mappedLiability=licenseLiability;
+    operationalLiability=operationalLicense;
+    hasOperationalSource=operationalLicense>0;
+    if(licenseLiability<=0)sourceNote="Passivo de licenças/renovações não detalhado pelo backend.";
+  }else{
+    const detailedTotal=conditionLiability+licenseLiability;
+    mappedLiability=detailedTotal>0?detailedTotal:totalGeneral;
+    operationalLiability=operationalGeneral;
+    hasOperationalSource=operationalGeneral>0;
+    if(detailedTotal<=0)sourceNote="Passivo total usando o consolidado do backend.";
+  }
+
+  operationalLiability=Math.min(operationalLiability,mappedLiability);
+
+  let realizedTotal=realizedFromMonths || num(fs.total_realizado);
+  if(type==="conditions"){
+    realizedTotal=num(fs.condition_realized_total ?? fs.conditions?.realizado ?? realizedTotal);
+  }
+  if(type==="licenses"){
+    realizedTotal=num(fs.license_realized_total ?? fs.licenses?.realizado ?? realizedTotal);
+  }
 
   return{
-    realized_total:realizedFromMonths || num(fs.total_realizado),
-    mapped_liability_total:totalMapped,
-    operational_liability_total:operationalMapped,
+    selected_liability_type:type,
+    realized_total:realizedTotal,
+    mapped_liability_total:mappedLiability,
+    operational_liability_total:operationalLiability,
     has_operational_source:hasOperationalSource,
     budget_total:budgetTotal,
-    budget_balance:budgetTotal-(realizedFromMonths || num(fs.total_realizado)),
-    monthlySeries:monthly
+    budget_balance:budgetTotal-realizedTotal,
+    monthlySeries:monthly,
+    source_note:sourceNote,
+    license_renewal_cost_total:licenseRenewal,
+    condition_liability_total:conditionLiability,
+    license_liability_total:licenseLiability
   };
 }
 
@@ -970,9 +1057,7 @@ function buildScenarioRows(totalMapped,operationalMapped,totalRealized,yearsToDi
 
   let remainingCurrent=totalMapped;
   let remainingExcellence=totalMapped;
-
   let remainingOperationalTarget=operationalTarget;
-  let operationalCompanyResidual=totalMapped;
 
   const rows=years.map((year,i)=>{
     const currentInvestment=Math.min(remainingCurrent,annualCapacity);
@@ -987,16 +1072,15 @@ function buildScenarioRows(totalMapped,operationalMapped,totalRealized,yearsToDi
 
     remainingCurrent=Math.max(0,remainingCurrent-currentInvestment);
     remainingExcellence=Math.max(0,remainingExcellence-excellenceInvestment);
-
     remainingOperationalTarget=Math.max(0,remainingOperationalTarget-operationalInvestment);
-    operationalCompanyResidual=Math.max(
+
+    const operationalCompanyResidual=Math.max(
       0,
       totalMapped-(operationalTarget-remainingOperationalTarget)
     );
 
     return{
       year,
-
       current:Math.round(currentInvestment),
       current_residual:Math.round(clamp(remainingCurrent,0,totalMapped)),
 
@@ -1031,36 +1115,47 @@ function buildScenarioRows(totalMapped,operationalMapped,totalRealized,yearsToDi
         annual_avg:totalInvest("current")/5,
         final_passive:finalResidual("current"),
         completion_year:completionYear("current"),
-        treated_pct:totalMapped>0?clamp((totalMapped-finalResidual("current"))/totalMapped*100,0,100):100,
-        residual_label:"Passivo residual companhia"
+        treated_pct:totalMapped>0?clamp((totalMapped-finalResidual("current"))/totalMapped*100,0,100):100
       },
       operational:{
         key:"operational",
         name:"Continuidade operacional",
         objective:"Trata 100% dos passivos vinculados a poços ativos",
         investment:totalInvest("operational"),
-        annual_avg:totalInvest("operational")/yearsToDissolve,
+        annual_avg:yearsToDissolve>0?totalInvest("operational")/yearsToDissolve:0,
         final_passive:finalResidual("operational"),
         company_final_passive:operationalCompanyFinal,
         company_treated_pct:totalMapped>0?clamp(operationalCompanyTreated/totalMapped*100,0,100):100,
         company_postponed_pct:totalMapped>0?clamp(operationalCompanyFinal/totalMapped*100,0,100):0,
         completion_year:completionYear("operational"),
-        treated_pct:operationalTarget>0?100:0,
-        residual_label:"Residual operacional"
+        treated_pct:operationalTarget>0?100:0
       },
       excellence:{
         key:"excellence",
         name:"Excelência operacional",
-        objective:"Elimina 100% do passivo mapeado da companhia",
+        objective:"Elimina 100% do passivo mapeado",
         investment:totalInvest("excellence"),
-        annual_avg:totalInvest("excellence")/yearsToDissolve,
+        annual_avg:yearsToDissolve>0?totalInvest("excellence")/yearsToDissolve:0,
         final_passive:finalResidual("excellence"),
         completion_year:completionYear("excellence"),
-        treated_pct:100,
-        residual_label:"Passivo residual companhia"
+        treated_pct:100
       }
     }
   };
+}
+
+function renderLiabilityTypeFilter(){
+  const items=[
+    ["all","Todos"],
+    ["conditions","Condicionantes"],
+    ["licenses","Licenças"]
+  ];
+  return`
+    <div class="fchips" style="margin-bottom:12px">
+      ${items.map(([key,label])=>`
+        <span class="fchip ${selectedLiabilityType===key?'on':''}" onclick="setLiabilityType('${key}')">${label}</span>
+      `).join("")}
+    </div>`;
 }
 
 function renderDissolutionControls(){
@@ -1087,18 +1182,11 @@ function renderScenarioCard(sc,rows,totalMapped,operationalMapped,color){
   const maxInvest=Math.max(1,...rows.map(r=>num(r[key])));
   const finalPassive=num(sc.final_passive);
   const completion=sc.completion_year?`Zera em ${sc.completion_year}`:"Não zera no período";
-
   const isOperational=key==="operational";
   const companyResidual=isOperational?num(sc.company_final_passive):finalPassive;
   const companyPostponedPct=totalMapped>0?clamp(companyResidual/totalMapped*100,0,100):0;
-
-  const progressLabel=isOperational
-    ?`Operacional tratado`
-    :`Passivo tratado`;
-
-  const progressPct=isOperational
-    ?100
-    :num(sc.treated_pct);
+  const progressLabel=isOperational?"Operacional tratado":"Passivo tratado";
+  const progressPct=isOperational?100:num(sc.treated_pct);
 
   return`
     <div class="card" style="box-shadow:none;border-color:var(--bdl)">
@@ -1138,8 +1226,7 @@ function renderScenarioCard(sc,rows,totalMapped,operationalMapped,color){
             <div style="font-size:9.5px;color:var(--t3);font-weight:700;text-transform:uppercase">Postergado companhia</div>
             <div style="font-size:13px;font-weight:700;color:${companyResidual>0?'var(--r)':'var(--p)'}">${fmtBRL(companyResidual)} · ${pct(sc.company_postponed_pct)}</div>
           </div>
-        </div>
-      `:""}
+        </div>`:""}
 
       <div style="margin-bottom:10px">
         <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:5px">
@@ -1150,7 +1237,7 @@ function renderScenarioCard(sc,rows,totalMapped,operationalMapped,color){
         </div>
       </div>
 
-      <div style="display:flex;align-items:flex-end;gap:6px;height:88px;margin-top:12px">
+      <div style="display:flex;align-items:flex-end;gap:6px;height:92px;margin-top:12px">
         ${rows.map(r=>{
           const invest=num(r[key]);
           const residual=isOperational?num(r.operational_residual):num(r[`${key}_residual`]);
@@ -1177,6 +1264,25 @@ function renderScenarioCard(sc,rows,totalMapped,operationalMapped,color){
           ${isOperational?"Postergado companhia:":"Postergado:"}
           <strong style="color:${companyResidual>0?'var(--r)':'var(--p)'}">${pct(companyPostponedPct)}</strong>
         </span>
+      </div>
+    </div>`;
+}
+
+function renderUnavailableOperationalCard(){
+  return`
+    <div class="card" style="box-shadow:none;border-color:var(--bdl);opacity:.86">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--wg)">
+        Continuidade Operacional
+      </div>
+      <div style="font-size:12px;color:var(--t3);margin-top:6px;line-height:1.5">
+        Indisponível para simulação porque o backend ainda não retornou o passivo real vinculado a poços ativos.
+      </div>
+      <div style="margin-top:16px;background:var(--bg);border:1px solid var(--bdl);border-radius:8px;padding:12px">
+        <div style="font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase">Campo necessário</div>
+        <div style="font-size:13px;font-weight:700;margin-top:3px">operational_liability_total</div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-top:12px">
+        Sem esse dado, o sistema não usa premissas estimadas para evitar números randômicos.
       </div>
     </div>`;
 }
@@ -1230,7 +1336,7 @@ async function renderPlanning(){
   const fields=asArray(byField);
   const cats=asArray(byCat);
 
-  const finance=normalizeFinanceData(fs,months);
+  const finance=normalizeFinanceData(fs,months,selectedLiabilityType,passiveDissolutionYears);
   const sim=buildScenarioRows(
     finance.mapped_liability_total,
     finance.operational_liability_total,
@@ -1324,19 +1430,23 @@ async function renderPlanning(){
     <div class="card" style="margin-bottom:12px">
       <div class="ct">Simulador de dissolução do passivo</div>
       <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">
-        Escolha o prazo para tratar o passivo mapeado e compare o caminho do cenário atual até a excelência.
+        Escolha o tipo de passivo e o prazo para comparar o caminho do cenário atual até a excelência.
       </div>
 
+      ${renderLiabilityTypeFilter()}
       ${renderDissolutionControls()}
 
-      ${finance.has_operational_source?"":
-        `<div class="sbar" style="background:#fffaf0;border-color:#f4dc96;color:#7a5e00">
-          <strong>Premissa temporária:</strong> passivo operacional estimado como 60% do passivo total, pois o backend ainda não retornou o passivo real dos poços ativos.
-        </div>`}
+      ${finance.source_note?`
+        <div class="sbar" style="background:#fffaf0;border-color:#f4dc96;color:#7a5e00">
+          <strong>Observação:</strong> ${finance.source_note}
+        </div>`:""}
 
       <div class="g3" style="margin-bottom:0">
         ${renderScenarioCard(scenarios.current,rows,finance.mapped_liability_total,finance.operational_liability_total,"var(--b)")}
-        ${renderScenarioCard(scenarios.operational,rows,finance.mapped_liability_total,finance.operational_liability_total,"var(--wg)")}
+        ${finance.has_operational_source
+          ? renderScenarioCard(scenarios.operational,rows,finance.mapped_liability_total,finance.operational_liability_total,"var(--wg)")
+          : renderUnavailableOperationalCard()
+        }
         ${renderScenarioCard(scenarios.excellence,rows,finance.mapped_liability_total,finance.operational_liability_total,"var(--p)")}
       </div>
 
@@ -1346,6 +1456,7 @@ async function renderPlanning(){
     </div>`;
 }
 
+show("dashboard");
 show("dashboard");
 </script>
 </body>
