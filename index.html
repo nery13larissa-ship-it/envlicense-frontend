@@ -12,18 +12,18 @@
   --b:#125E81;--bt:#deeef5;
   --t1:#1d1d1f;--t2:#6e6e73;--t3:#86868b;--t4:#aeaeb2;
   --bd:#d2d2d7;--bdl:#f0f0f5;--bg:#f5f5f7;--s:#fff;
-  --rad:12px;--rads:8px;--radxs:6px;
+  --rad:12px;--rads:8px;
   --ease:cubic-bezier(.4,0,.2,1);
   --sh:0 1px 3px rgba(0,0,0,.07),0 4px 14px rgba(0,0,0,.05);
   --shl:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.07);
   --sw:56px;--se:220px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;display:flex}
+html,body{height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;background:var(--bg);color:var(--t1);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;display:flex;overflow:hidden}
 
 /* SIDEBAR */
-.sb{width:var(--sw);background:var(--s);border-right:1px solid var(--bdl);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:100;overflow:hidden;transition:width .22s var(--ease)}
+.sb{width:var(--sw);background:var(--s);border-right:1px solid var(--bdl);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:100;overflow:hidden;transition:width .22s var(--ease);flex-shrink:0}
 .sb:hover{width:var(--se)}
 .sb-brand{display:flex;align-items:center;gap:10px;padding:16px 14px;border-bottom:1px solid var(--bdl);min-height:58px;overflow:hidden;white-space:nowrap}
 .sb-mark{width:28px;height:28px;min-width:28px;background:linear-gradient(135deg,var(--p),var(--pl));border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px}
@@ -47,9 +47,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue"
 .sb-ft{font-size:10px;color:var(--t4);opacity:0;transition:opacity .18s var(--ease)}
 .sb:hover .sb-ft{opacity:1}
 
-/* MAIN */
-main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;transition:margin-left .22s var(--ease);display:flex;flex-direction:column}
-.sb:hover~main{margin-left:var(--se)}
+/* MAIN — FIX SCROLL */
+.main-wrap{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;overflow-x:hidden;transition:margin-left .22s var(--ease);display:flex;flex-direction:column}
+.sb:hover~.main-wrap{margin-left:var(--se)}
 .topbar{background:var(--s);border-bottom:1px solid var(--bdl);padding:0 28px;height:54px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;flex-shrink:0}
 .tb-ttl{font-size:14.5px;font-weight:600;letter-spacing:-.02em;flex:1}
 .sp-btn{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--bdl);border-radius:9px;padding:6px 12px;cursor:pointer;color:var(--t3);font-size:12.5px;font-family:inherit;transition:all .13s var(--ease);width:300px}
@@ -57,13 +57,13 @@ main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;transition:margin
 .sp-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .sp-ph{flex:1;text-align:left}
 .sp-kc{font-size:11px;background:var(--s);border:1px solid var(--bd);padding:1px 5px;border-radius:4px;color:var(--t3)}
-.cnt{flex:1;padding:24px 28px 56px;min-height:0}
+.cnt{padding:24px 28px 80px;flex:1}
 
 /* BASE */
 .ph{margin-bottom:16px}
 .ph h1{font-size:24px;font-weight:600;letter-spacing:-.025em;margin-bottom:2px}
 .ph .sub{font-size:13px;color:var(--t2)}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:12px}
 .kpi{background:var(--s);padding:15px 17px;border-radius:var(--rad);border:1px solid var(--bdl);box-shadow:var(--sh)}
 .kl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:6px}
 .kv{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1}
@@ -77,7 +77,7 @@ main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;transition:margin
 .ct{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px}
 
 /* THERMO */
-.thermo{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:16px 20px;margin-bottom:12px;box-shadow:var(--sh);position:relative}
+.thermo{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:16px 20px;margin-bottom:12px;box-shadow:var(--sh);position:relative;overflow:visible}
 .th-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
 .th-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
 .th-pct{font-size:28px;font-weight:700;letter-spacing:-.03em;line-height:1}
@@ -99,22 +99,13 @@ main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;transition:margin
 .bfill{height:100%;border-radius:3px;transition:width .7s var(--ease)}
 .bval{font-size:11.5px;color:var(--t2);min-width:55px;text-align:right;font-variant-numeric:tabular-nums}
 
-/* SCENARIOS */
+/* SCENARIO */
 .sc-wrap{border-radius:var(--rad);padding:16px 18px;border:1px solid}
 .sc-head{display:flex;align-items:center;gap:9px;margin-bottom:10px}
 .sc-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sc-icon svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .sc-item{display:flex;align-items:flex-start;gap:7px;font-size:12px;line-height:1.5;margin-bottom:4px}
 .sc-item svg{width:12px;height:12px;flex-shrink:0;margin-top:2px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-
-/* OP CARDS */
-.op-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
-.op-card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:16px;position:relative;overflow:hidden;box-shadow:var(--sh)}
-.op-acc{position:absolute;left:0;top:0;bottom:0;width:3px}
-.op-hdr{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px}
-.op-dot{width:6px;height:6px;border-radius:50%}
-.op-val{font-size:32px;font-weight:700;letter-spacing:-.03em;line-height:1;margin-bottom:7px}
-.op-meta{font-size:12px;color:var(--t2)}
 
 /* TABLE */
 .tw{border:1px solid var(--bdl);border-radius:var(--rad);overflow:hidden;overflow-x:auto;background:var(--s)}
@@ -126,7 +117,6 @@ tr:hover td{background:rgba(0,112,35,.02)}
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500;white-space:nowrap}
-.bdot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .b-ok{background:#e8f5ec;color:#1f5f33}
 .b-up{background:#fef7d8;color:var(--wt)}
 .b-ex{background:var(--rt);color:var(--r)}
@@ -136,6 +126,11 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .b-pe{background:#e8ecf5;color:#1e3a8a}
 .b-dn{background:#e8f5ec;color:#1f5f33}
 .b-ot{background:var(--bdl);color:var(--t2)}
+
+/* PDF LINK */
+.pdf-btn{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:5px;background:var(--rt);color:var(--r);font-size:11.5px;font-weight:600;text-decoration:none;transition:all .13s var(--ease);border:1px solid #f5c6c6}
+.pdf-btn:hover{background:var(--r);color:#fff;border-color:var(--r)}
+.pdf-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
 /* TOOLBAR */
 .toolbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:9px 11px;margin-bottom:11px;display:flex;gap:7px;flex-wrap:wrap;align-items:center;box-shadow:var(--sh)}
@@ -156,8 +151,7 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .ib:hover{background:var(--rt);color:var(--r)}
 .ib svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
-/* ===== CONDITION PANEL ===== */
-/* Filter chips */
+/* FCHIPS */
 .fchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
 .fchip{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);border:1px solid var(--bdl);background:var(--s);color:var(--t2)}
 .fchip:hover{border-color:var(--bd);color:var(--t1)}
@@ -167,36 +161,27 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .fchip.green.on{background:var(--pl);border-color:var(--pl)}
 .fchip-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 
-/* Condition cards */
-.ccard{background:var(--s);border:1px solid var(--bdl);border-left:3px solid var(--bd);border-radius:var(--rad);margin-bottom:8px;transition:box-shadow .13s var(--ease);box-shadow:var(--sh);overflow:hidden}
+/* CONDITION CARDS */
+.ccard{background:var(--s);border:1px solid var(--bdl);border-left:3px solid var(--bd);border-radius:var(--rad);margin-bottom:8px;box-shadow:var(--sh);overflow:hidden;transition:box-shadow .13s var(--ease)}
 .ccard:hover{box-shadow:var(--shl)}
-.ccard-head{padding:12px 15px;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ccard-head{padding:12px 15px;cursor:pointer;display:flex;align-items:flex-start;gap:10px}
 .ccard-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
 .ccat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
-.ccard-title{font-size:13px;font-weight:500;color:var(--t1);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ccard-expanded .ccard-title{display:block;-webkit-line-clamp:unset}
+.ccard-title{font-size:13px;font-weight:500;color:var(--t1);line-height:1.5}
 .ccard-prog{display:flex;align-items:center;gap:9px;margin-top:8px}
 .cpbar{flex:1;height:4px;background:var(--bdl);border-radius:2px;overflow:hidden}
 .cpfill{height:100%;border-radius:2px;transition:width .5s var(--ease)}
 .cplbl{font-size:11px;color:var(--t2);white-space:nowrap}
-.ccard-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
-.ccard-expand-btn{font-size:11px;color:var(--p);background:none;border:none;cursor:pointer;font-family:inherit;padding:0;font-weight:500;white-space:nowrap}
-
-/* Expanded body */
 .ccard-body{border-top:1px solid var(--bdl);padding:14px 15px;background:var(--bg)}
-.ccard-full-desc{font-size:13px;color:var(--t1);line-height:1.65;margin-bottom:12px;white-space:pre-wrap}
+.ccard-full-desc{font-size:13px;color:var(--t1);line-height:1.65;margin-bottom:12px}
 .ccard-asset-list{display:flex;flex-direction:column;gap:6px}
-.cas-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads);transition:all .13s var(--ease)}
-.cas-item:hover{border-color:var(--bd)}
-.cas-code{font-size:13px;font-weight:600;color:var(--t1);min-width:100px}
+.cas-item{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads)}
+.cas-code{font-size:13px;font-weight:600;color:var(--t1);min-width:110px}
 .cas-field{font-size:12px;color:var(--t3);flex:1}
-.cas-sit{flex-shrink:0}
-.cas-status{flex-shrink:0;min-width:90px;text-align:right}
 .cas-done{display:flex;align-items:center;gap:4px;color:#1f5f33;font-size:12px;font-weight:500}
 .cas-done svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .cas-btn{background:var(--p);color:#fff;border:none;padding:4px 11px;border-radius:5px;font-size:11.5px;font-weight:500;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;transition:background .13s var(--ease);white-space:nowrap}
 .cas-btn:hover{background:var(--ph)}
-.cas-btn:disabled{opacity:.4;cursor:not-allowed}
 .cas-btn svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ccard-all-btn{display:flex;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdl)}
 
@@ -213,20 +198,23 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .cref-inp:focus{border-color:var(--p)}
 .cref-save{background:var(--p);color:#fff;border:none;padding:3px 9px;border-radius:5px;font-size:11.5px;cursor:pointer;font-family:inherit}
 
-/* FINANCIAL */
-.fin-chart{height:150px;display:flex;align-items:flex-end;gap:3px}
-.fin-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
-.fin-bar-stk{width:100%;display:flex;flex-direction:column;align-items:stretch;border-radius:3px 3px 0 0;overflow:hidden;min-height:2px}
-.fin-bar-seg{width:100%}
-.fin-xlabel{font-size:9px;color:var(--t4);text-align:center;white-space:nowrap}
-.fin-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+/* FINANCIAL CHART - FIXED */
+.fin-chart-wrap{height:160px;display:flex;align-items:flex-end;gap:2px;padding:0;margin-bottom:10px}
+.fin-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.fin-bar-area{width:100%;display:flex;flex-direction:column;justify-content:flex-end;height:140px}
+.fin-bar-r{width:100%;background:var(--p);border-radius:2px 2px 0 0;min-height:0;transition:height .6s var(--ease)}
+.fin-bar-p{width:100%;background:var(--p);opacity:.25;border-top:1.5px dashed var(--p);min-height:0;transition:height .6s var(--ease)}
+.fin-xlabel{font-size:9px;color:var(--t4);text-align:center;white-space:nowrap;overflow:hidden;width:100%}
+.fin-legend{display:flex;gap:14px;flex-wrap:wrap}
 .fin-leg-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2)}
 .fin-leg-dot{width:8px;height:8px;border-radius:2px}
+
+/* PROJECTION */
 .proj-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
 .proj-card{min-width:100px;background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:11px;text-align:center;flex-shrink:0}
 .proj-year{font-size:10px;color:var(--t3);font-weight:700;text-transform:uppercase;margin-bottom:5px}
 .proj-val{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:3px}
-.proj-conf{font-size:11px;color:var(--t2)}
+.proj-conf{font-size:11px}
 
 /* SPOTLIGHT */
 .spov{position:fixed;inset:0;background:rgba(0,0,0,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
@@ -260,7 +248,7 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .msub{font-size:13px;color:var(--t2);line-height:1.5}
 .mbody{padding:5px 20px 0}
 .minfo{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:11px 13px;font-size:12px;color:var(--t2);margin:9px 0}
-.mrow{display:flex;justify-content:space-between;padding:2px 0}
+.mrow{display:flex;justify-content:space-between;padding:2px 0;gap:8px}
 .mrow strong{color:var(--t1);font-weight:600}
 .mact{padding:16px 20px;display:flex;gap:7px;justify-content:flex-end;border-top:1px solid var(--bdl);margin-top:14px;flex-wrap:wrap}
 
@@ -278,10 +266,7 @@ tr:hover td{background:rgba(0,112,35,.02)}
 .pag{display:flex;justify-content:space-between;align-items:center;padding:9px 2px;color:var(--t2);font-size:12px}
 .sbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads);padding:8px 12px;margin-bottom:9px;font-size:12px;color:var(--t2)}
 .sbar strong{color:var(--t1);font-weight:600}
-.plink{color:var(--p);text-decoration:none;font-weight:500;font-size:12px;display:inline-flex;align-items:center;gap:4px}
-.plink svg{width:11px;height:11px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .fmtbrl{font-variant-numeric:tabular-nums}
-.divider{border:none;border-top:1px solid var(--bdl);margin:14px 0}
 </style>
 </head>
 <body>
@@ -310,7 +295,7 @@ tr:hover td{background:rgba(0,112,35,.02)}
   </div>
 </aside>
 
-<main id="main">
+<div class="main-wrap" id="main-wrap">
   <div class="topbar">
     <div class="tb-ttl" id="tb-ttl">Visão executiva</div>
     <button class="sp-btn" onclick="openSp()">
@@ -320,11 +305,13 @@ tr:hover td{background:rgba(0,112,35,.02)}
     </button>
   </div>
   <div class="cnt"><div id="app"><div class="loading"><span class="spin"></span> Carregando</div></div></div>
-</main>
+</div>
 
 <div class="spov" id="spov" onclick="if(event.target===this)closeSp()">
   <div class="spbox">
-    <div class="sp-iw"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="sp-i" id="sp-i" placeholder="Buscar ou tentar: 'ativos sem licença', 'vencendo'…"><button class="sp-esc" onclick="closeSp()">esc</button></div>
+    <div class="sp-iw"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="sp-i" id="sp-i" placeholder="Buscar ou tentar: 'ativos sem licença'…">
+    <button class="sp-esc" onclick="closeSp()">esc</button></div>
     <div class="sp-res" id="sp-r"></div>
   </div>
 </div>
@@ -336,12 +323,12 @@ tr:hover td{background:rgba(0,112,35,.02)}
 <script>
 const API="https://envlicense-backend.onrender.com";
 let filterCache=null,assetState={page:0,filters:{},search:""},spT=null,pendingFile=null;
-// Estado global de condicionantes
 let condState={filter:"all",field:"",expandedIds:new Set(),allItems:[],indicator:null};
 
 const TABS={"dashboard":"Visão executiva","docs":"Central documental","assets":"Ativos","conditions":"Condicionantes","planning":"Gestão financeira regulatória"};
 const CAT_COLOR={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
 const CAT_NAME={"monitoring":"Monitoramento","effluent":"Efluentes","reporting":"Relatórios","infrastructure":"Infraestrutura","other":"Outros"};
+const OPERATIONAL=["PRODUZINDO","INJETANDO"];
 
 // ===== UTILS =====
 async function sf(url,opts={}){
@@ -350,7 +337,11 @@ async function sf(url,opts={}){
   try{const r=await fetch(url,{...opts,signal:ctrl.signal});clearTimeout(t);if(!r.ok)return null;return await r.json();}
   catch(e){clearTimeout(t);console.error("fetch",e.message,url);return null;}
 }
-function fmtBRL(v){if(!v&&v!==0)return"—";if(v===0)return"R$ 0";return"R$ "+Number(v).toLocaleString("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:0});}
+function fmtBRL(v){
+  if(v===null||v===undefined)return"—";
+  if(v===0)return"R$ 0";
+  return"R$ "+Number(v).toLocaleString("pt-BR",{minimumFractionDigits:0,maximumFractionDigits:0});
+}
 function showToast(msg,dur=2800){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),dur);}
 fetch(`${API}/health`).catch(()=>{});
 
@@ -361,14 +352,16 @@ async function show(tab,btn){
   if(btn)btn.classList.add("on");
   else{const s=document.querySelector(`.nb[data-tab="${tab}"]`);if(s)s.classList.add("on");}
   document.getElementById("tb-ttl").textContent=TABS[tab]||tab;
+  // Scroll to top on tab change
+  document.getElementById("main-wrap").scrollTop=0;
   const app=document.getElementById("app");
   app.innerHTML='<div class="loading"><span class="spin"></span> Carregando</div>';
   try{
-    if(tab==="dashboard")await renderDashboard();
-    else if(tab==="docs")await renderDocs();
-    else if(tab==="assets")await renderAssets();
-    else if(tab==="conditions")await renderConditions();
-    else if(tab==="planning")await renderPlanning();
+    if(tab==="dashboard") await renderDashboard();
+    else if(tab==="docs") await renderDocs();
+    else if(tab==="assets") await renderAssets();
+    else if(tab==="conditions") await renderConditions();
+    else if(tab==="planning") await renderPlanning();
   }catch(e){console.error(e);app.innerHTML=`<div class="emsg">Erro: ${e.message}</div>`;}
 }
 
@@ -391,7 +384,7 @@ async function doSearch(q){
   if(extra)html+=`<div class="sp-sec">Ação rápida</div><div class="sp-it" onclick="closeSp();assetState={page:0,filters:{aSt:'${extra}'},search:''};show('assets')"><div class="sp-ico a">→</div><div><div class="sp-t">Ver ativos: ${extra==="missing"?"sem licença":"licença vencida"}</div><div class="sp-s">Filtrar automaticamente</div></div></div>`;
   if(r.assets?.length){html+=`<div class="sp-sec">Ativos</div>`;html+=r.assets.map(a=>`<div class="sp-it" onclick="closeSp();assetState={page:0,filters:{},search:'${a.code}'};show('assets')"><div class="sp-ico a">AT</div><div><div class="sp-t">${a.code||'—'}</div><div class="sp-s">${a.field||'—'} · ${a.state||'—'}</div></div></div>`).join('');}
   if(r.licenses?.length){html+=`<div class="sp-sec">Licenças</div>`;html+=r.licenses.map(l=>`<div class="sp-it" onclick="closeSp();show('docs')"><div class="sp-ico l">LI</div><div><div class="sp-t">${l.number||'—'}</div><div class="sp-s">${l.agency||'—'}</div></div></div>`).join('');}
-  if(r.conditions?.length){html+=`<div class="sp-sec">Condicionantes</div>`;html+=r.conditions.map(c=>`<div class="sp-it" onclick="closeSp();show('conditions')"><div class="sp-ico c">CD</div><div><div class="sp-t">${(c.description||'').slice(0,60)}…</div><div class="sp-s">${c.status||'—'}</div></div></div>`).join('');}
+  if(r.conditions?.length){html+=`<div class="sp-sec">Condicionantes</div>`;html+=r.conditions.map(c=>`<div class="sp-it" onclick="closeSp();show('conditions')"><div class="sp-ico c">CD</div><div><div class="sp-t">${(c.description||'').slice(0,60)}…</div></div></div>`).join('');}
   if(!html)html=`<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
   div.innerHTML=html;
 }
@@ -409,41 +402,31 @@ function renderThermo(th,compact=false){
   const bgs={green:"#e8f5ec","yellow-green":"#f0f7e0",yellow:"#fef7d8",red:"#fbeded",gray:"var(--bdl)"};
   const col=cols[th.level]||"#86868b";
   const bg=bgs[th.level]||"var(--bdl)";
-  const badgeTxt=th.level==="green"?"Adequado":th.level==="yellow-green"?"Operacionais OK":th.level==="red"?"Crítico":"Atenção";
-  if(compact) return `
-    <div class="thermo">
-      <div class="th-top">
-        <div><div class="th-title">Indicador de conformidade de condicionantes</div><div class="th-pct" style="color:${col};font-size:22px">${th.pct}%</div><div class="th-label">${th.label}</div></div>
-        <div><div class="th-badge" style="background:${bg};color:${col}"><span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${badgeTxt}<div class="th-tooltip">${th.tooltip||th.label}</div></div>
-        ${th.critical_overdue>0?`<div style="font-size:11px;color:var(--r);margin-top:5px;font-weight:600">⚠ ${th.critical_overdue} críticas vencidas</div>`:''}
-        ${th.overdue>0&&!th.critical_overdue?`<div style="font-size:11px;color:var(--r);margin-top:5px">${th.overdue} vencidas</div>`:''}
+  const badge=th.level==="green"?"Adequado":th.level==="yellow-green"?"Operacionais OK":th.level==="red"?"Crítico":"Atenção";
+  const pct=th.pct||0;
+  const meta=`<div class="th-meta"><span class="th-stat"><strong>${th.completed||0}</strong>/${th.total||0} concluídas</span><span class="th-stat">Poços ativos: <strong style="color:${col}">${th.pct_active||0}%</strong></span>${th.critical_overdue>0?`<span class="th-stat" style="color:var(--r)">⚠ ${th.critical_overdue} críticas vencidas</span>`:''}</div>`;
+  return `<div class="thermo">
+    <div class="th-top">
+      <div>
+        <div class="th-title">Indicador de conformidade de condicionantes</div>
+        <div class="th-pct" style="color:${col};font-size:${compact?'22px':'28px'}">${pct}%</div>
+        <div class="th-label">${th.label||'—'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="th-badge" style="background:${bg};color:${col}">
+          <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>
+          ${badge}
+          <div class="th-tooltip">${th.tooltip||th.label||'—'}</div>
         </div>
+        ${th.overdue>0?`<div style="font-size:11px;color:var(--r);margin-top:5px;font-weight:600">${th.overdue} vencidas</div>`:''}
       </div>
-      <div class="th-bar-bg"><div class="th-bar" style="width:${th.pct}%;background:${col}"></div></div>
-      <div class="th-meta">
-        <span class="th-stat"><strong>${th.completed||0}</strong>/${th.total||0} concluídas</span>
-        <span class="th-stat">Ativos op.: <strong style="color:${col}">${th.pct_active||0}%</strong></span>
-      </div>
-    </div>`;
-  return `
-    <div class="thermo">
-      <div class="th-top">
-        <div><div class="th-title">Indicador de conformidade de condicionantes</div><div class="th-pct" style="color:${col}">${th.pct}%</div><div class="th-label">${th.label}</div></div>
-        <div style="text-align:right">
-          <div class="th-badge" style="background:${bg};color:${col}"><span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block;flex-shrink:0"></span>${badgeTxt}<div class="th-tooltip">${th.tooltip||th.label}</div></div>
-          <div style="font-size:11px;color:var(--t3);margin-top:6px">Poços ativos: <strong style="color:${col}">${th.pct_active||0}%</strong></div>
-          ${th.critical_overdue>0?`<div style="font-size:11px;color:var(--r);margin-top:3px;font-weight:600">⚠ ${th.critical_overdue} críticas vencidas</div>`:''}
-        </div>
-      </div>
-      <div class="th-bar-bg"><div class="th-bar" style="width:${th.pct}%;background:${col}"></div></div>
-      <div class="th-meta">
-        <span class="th-stat"><strong>${th.completed||0}</strong>/${th.total||0} condicionantes concluídas</span>
-        <span class="th-stat">Ativos operacionais: <strong>${th.pct_active||0}%</strong></span>
-      </div>
-    </div>`;
+    </div>
+    <div class="th-bar-bg"><div class="th-bar" style="width:${pct}%;background:${col}"></div></div>
+    ${compact?'':meta}
+  </div>`;
 }
 
-// ===== DASHBOARD =====
+// ===== DASHBOARD — SEM CARDS DUPLICADOS =====
 async function renderDashboard(){
   const app=document.getElementById("app");
   const [dash,comp,byField,thermo,finSum]=await Promise.all([
@@ -451,7 +434,7 @@ async function renderDashboard(){
     sf(`${API}/conditions/conformity-indicator`),sf(`${API}/financial/summary`)
   ]);
   const d=dash||{},c=comp||{},sc=c.status_counts||{};
-  const th=thermo||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0,total:0,completed:0};
+  const th=thermo||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0,total:0,completed:0,overdue:0};
   const bf=byField||{all_fields:[],conditions_by_field:[]};
   const fs=finSum||{total_realizado:0,total_provisionado:0};
   const nCrit=(sc.critical||0)+(sc.expired||0)+(sc.missing||0);
@@ -461,28 +444,38 @@ async function renderDashboard(){
   if(nCrit>0)exec+=` ${nCrit} ativos sem cobertura regulatória.`;
   if(topField)exec+=` Campo <strong>${topField.field}</strong> com maior exposição.`;
   exec+=` Conformidade: <strong style="color:${th.level==='green'?'var(--p)':th.level==='red'?'var(--r)':'var(--wt)'}">${th.pct}%</strong>.`;
+
   const maxW=Math.max(1,...(bf.all_fields||[]).map(x=>x.total_wells||0));
-  const fieldBars=(bf.all_fields||[]).slice(0,6).map(f=>{const lic=f.wells_licensed||0;const pct=Math.round(lic/f.total_wells*100);const col=pct===100?"var(--p)":pct>=70?"var(--wg)":"var(--r)";return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(lic/maxW*100)}%;background:${col}"></span></span><span class="bval">${lic}/${f.total_wells} (${pct}%)</span></li>`;}).join('')||'<div class="empty">Sem dados</div>';
+  const fieldBars=(bf.all_fields||[]).slice(0,6).map(f=>{
+    const lic=f.wells_licensed||0;const pct=Math.round(lic/f.total_wells*100);
+    const col=pct===100?"var(--p)":pct>=70?"var(--wg)":"var(--r)";
+    return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(lic/maxW*100)}%;background:${col}"></span></span><span class="bval">${lic}/${f.total_wells} (${pct}%)</span></li>`;
+  }).join('')||'<div class="empty">Sem dados</div>';
+
   const maxC=Math.max(1,...(bf.conditions_by_field||[]).map(x=>x.total_conditions||0));
-  const condBars=(bf.conditions_by_field||[]).slice(0,6).map(f=>{const atd=f.total_conditions-(f.expired_conditions||0);return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(atd/maxC*100)}%;background:var(--pl)"></span></span><span class="bval">${atd}/${f.total_conditions}</span></li>`;}).join('')||'<div class="empty">Sem dados</div>';
+  const condBars=(bf.conditions_by_field||[]).slice(0,6).map(f=>{
+    const atd=f.total_conditions-(f.expired_conditions||0);
+    return`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,15)}</span><span class="btrack"><span class="bfill" style="width:${maxC?Math.round(atd/maxC*100):0}%;background:var(--pl)"></span></span><span class="bval">${atd}/${f.total_conditions}</span></li>`;
+  }).join('')||'<div class="empty">Sem dados</div>';
+
+  // KPIs incluem produção/injeção — NÃO há cards separados abaixo
   app.innerHTML=`
     <div class="ph"><h1>Visão executiva</h1><p class="sub">Conformidade regulatória · ${d.total_assets||0} ativos</p></div>
     <div style="background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:11px 15px;margin-bottom:12px;font-size:13px;color:var(--t2);line-height:1.6;box-shadow:var(--sh)">${exec}</div>
+
     <div class="kpis">
       <div class="kpi"><div class="kl">Ativos</div><div class="kv">${d.total_assets||0}</div><div class="ks">${d.total_licenses||0} licenças</div></div>
-      <div class="kpi"><div class="kl">Condicionantes</div><div class="kv">${d.total_conditions||0}</div><div class="ks">${d.upcoming_30d||0} vencem em 30d</div>${(d.overdue||0)>0?`<span class="kdelta dr">▼ ${d.overdue} vencidas</span>`:''}</div>
-      <div class="kpi"><div class="kl">Em produção</div><div class="kv" style="color:var(--p)">${c.producing?.total||0}</div><div class="ks">${c.producing?.non_compliance||0} sem cobertura</div></div>
-      <div class="kpi"><div class="kl">Em injeção</div><div class="kv" style="color:var(--b)">${c.injecting?.total||0}</div><div class="ks">${c.injecting?.non_compliance||0} sem cobertura</div></div>
-      <div class="kpi"><div class="kl">Provisionado</div><div class="kv fmtbrl" style="font-size:16px">${fmtBRL(fs.total_provisionado)}</div><div class="ks">Realizado: ${fmtBRL(fs.total_realizado)}</div></div>
+      <div class="kpi"><div class="kl">Condicionantes</div><div class="kv">${d.total_conditions||0}</div>${(d.overdue||0)>0?`<span class="kdelta dr">▼ ${d.overdue} vencidas</span>`:''}</div>
+      <div class="kpi"><div class="kl">Em produção</div><div class="kv" style="color:var(--p)">${c.producing?.total||0}</div><div class="ks" style="color:${(c.producing?.non_compliance||0)>0?'var(--r)':'var(--t3)'}">${c.producing?.non_compliance||0} sem cobertura</div></div>
+      <div class="kpi"><div class="kl">Em injeção</div><div class="kv" style="color:var(--b)">${c.injecting?.total||0}</div><div class="ks" style="color:${(c.injecting?.non_compliance||0)>0?'var(--r)':'var(--t3)'}">${c.injecting?.non_compliance||0} sem cobertura</div></div>
+      <div class="kpi"><div class="kl">Provisionado</div><div class="kv fmtbrl" style="font-size:16px">${fmtBRL(fs.total_provisionado)}</div><div class="ks">Real.: ${fmtBRL(fs.total_realizado)}</div></div>
     </div>
+
     ${renderThermo(th)}
+
     <div class="g2">
       <div class="card"><div class="ct">Ativos licenciados por campo</div><ul class="blist">${fieldBars}</ul></div>
       <div class="card"><div class="ct">Condicionantes por campo</div><ul class="blist">${condBars}</ul></div>
-    </div>
-    <div class="op-row">
-      <div class="op-card"><div class="op-acc" style="background:var(--pl)"></div><div class="op-hdr"><span class="op-dot" style="background:var(--pl)"></span>Em produção</div><div class="op-val">${c.producing?.total||0}</div><div class="op-meta">${c.producing?.non_compliance||0} sem cobertura ${(c.producing?.pct||0)>0?`<span style="color:var(--r);font-weight:600">· ${c.producing?.pct}% expostos</span>`:''}</div></div>
-      <div class="op-card"><div class="op-acc" style="background:var(--b)"></div><div class="op-hdr"><span class="op-dot" style="background:var(--b)"></span>Em injeção</div><div class="op-val">${c.injecting?.total||0}</div><div class="op-meta">${c.injecting?.non_compliance||0} sem cobertura ${(c.injecting?.pct||0)>0?`<span style="color:var(--r);font-weight:600">· ${c.injecting?.pct}% expostos</span>`:''}</div></div>
     </div>`;
 }
 
@@ -490,9 +483,8 @@ async function renderDashboard(){
 async function renderConditions(){
   const app=document.getElementById("app");
   condState.expandedIds=new Set();
-  app.innerHTML='<div class="loading"><span class="spin"></span> Carregando</div>';
-  const [fieldList]=await Promise.all([sf(`${API}/conditions/fields`)]);
-  const fields=fieldList||[];
+  app.innerHTML='<div class="loading"><span class="spin"></span></div>';
+  const fields=await sf(`${API}/conditions/fields`)||[];
   const fopts=fields.map(f=>`<option value="${f}">${f}</option>`).join('');
 
   app.innerHTML=`
@@ -505,16 +497,15 @@ async function renderConditions(){
       <span class="fchip" data-f="operational" onclick="setCondFilter('operational')">Ativos operacionais</span>
       <span class="fchip" data-f="pending" onclick="setCondFilter('pending')">Pendentes</span>
       <span class="fchip green" data-f="completed" onclick="setCondFilter('completed')">Concluídas</span>
-      <span class="fchip" data-f="queue" onclick="setCondFilter('queue')">🔴 Fila prioritária</span>
+      <span class="fchip" data-f="queue" onclick="setCondFilter('queue')">🔴 Fila — poços ativos</span>
     </div>
-    <div class="toolbar" style="margin-bottom:12px">
+    <div class="toolbar">
       <select class="sel" id="condField" style="min-width:170px" onchange="applyCondField()">
         <option value="">Campo: todos</option>${fopts}
       </select>
       <button class="btn btn-g btn-sm" onclick="collapseAll()">Recolher todos</button>
       <button class="btn btn-sm btn-a" onclick="expandAll()">Expandir todos</button>
     </div>
-    <div id="cond-thermo-compact"></div>
     <div id="cond-summary" style="margin-bottom:10px"></div>
     <div id="cond-list"><div class="loading"><span class="spin"></span></div></div>`;
 
@@ -522,33 +513,35 @@ async function renderConditions(){
 }
 
 async function loadConditions(){
-  const thermoDiv=document.getElementById("cond-thermo-compact");
+  const thermoDiv=document.getElementById("cond-thermo");
   const listDiv=document.getElementById("cond-list");
   const summDiv=document.getElementById("cond-summary");
-  if(listDiv)listDiv.innerHTML='<div class="loading"><span class="spin"></span> Carregando</div>';
+  if(listDiv)listDiv.innerHTML='<div class="loading"><span class="spin"></span></div>';
 
   const field=condState.field;
   const isQueue=condState.filter==="queue";
   const sf_filter=isQueue?null:condState.filter==="all"?null:condState.filter;
+  const params=new URLSearchParams();
+  if(field)params.set("field",field);
+  if(sf_filter)params.set("status_filter",sf_filter);
 
   const [panelData,indicator]=await Promise.all([
-    isQueue?sf(`${API}/conditions/queue${field?'?field='+encodeURIComponent(field):''}`):
-             sf(`${API}/conditions/panel?${new URLSearchParams(Object.assign({},field?{field}:{},sf_filter?{status_filter:sf_filter}:{}))}`) ,
+    isQueue
+      ? sf(`${API}/conditions/queue${field?'?field='+encodeURIComponent(field):''}`)
+      : sf(`${API}/conditions/panel?${params}`),
     sf(`${API}/conditions/conformity-indicator?${field?'field='+encodeURIComponent(field):''}`)
   ]);
 
   const items=(panelData?.items)||[];
   const summ=(panelData?.summary)||{};
   condState.allItems=items;
-  condState.indicator=indicator||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0,total:0,completed:0};
+  condState.indicator=indicator||{pct:0,level:"gray",label:"Sem dados",tooltip:"",pct_active:0,critical_overdue:0,total:0,completed:0,overdue:0};
 
-  // Termômetro compacto
   if(thermoDiv)thermoDiv.innerHTML=renderThermo(condState.indicator,true);
 
-  // Summary bar
   if(summDiv){
     if(isQueue){
-      summDiv.innerHTML=`<div class="sbar">🔴 <strong>Fila de atendimento</strong> — ${items.length} condicionante${items.length!==1?'s':''} ordenadas por urgência</div>`;
+      summDiv.innerHTML=`<div class="sbar">🔴 <strong>Fila — poços ativos</strong>: condicionantes de ativos em produção/injeção, ordenadas por urgência (vencidas → próximas do vencimento → pendentes) · ${items.length} item${items.length!==1?'s':''}</div>`;
     }else{
       summDiv.innerHTML=`<div class="sbar"><strong>${summ.total||0}</strong> condicionantes · <strong style="color:var(--p)">${summ.completed||0}</strong> concluídas · <strong style="color:var(--wt)">${summ.partial||0}</strong> parciais · <strong style="color:var(--r)">${summ.overdue||0}</strong> vencidas</div>`;
     }
@@ -567,114 +560,102 @@ function renderCondList(items,container){
 }
 
 function renderCondCard(item){
-  const isExpanded=condState.expandedIds.has(item.id);
+  const isExp=condState.expandedIds.has(item.id);
   const cc=CAT_COLOR[item.category]||"#86868b";
   const cn=CAT_NAME[item.category]||item.category;
-  let borderCol="var(--bd)",statusBadge='<span class="badge b-pe">Pendente</span>';
-  if(item.status==="completed"){borderCol="var(--pl)";statusBadge='<span class="badge b-dn">Concluída</span>';}
-  else if(item.status==="partial"){borderCol="var(--w)";statusBadge=`<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`;}
-  else if(item.is_critical&&item.days_until_due!==null&&item.days_until_due<0){borderCol="var(--r)";statusBadge='<span class="badge b-cr">⚠ Crítica vencida</span>';}
-  else if(item.days_until_due!==null&&item.days_until_due<0){borderCol="var(--r)";statusBadge='<span class="badge b-ex">Vencida</span>';}
-  else if(item.days_until_due!==null&&item.days_until_due<=30){borderCol="var(--w)";statusBadge=`<span class="badge b-up">${item.days_until_due}d</span>`;}
+  let bCol="var(--bd)",sBadge='<span class="badge b-pe">Pendente</span>';
+  if(item.status==="completed"){bCol="var(--pl)";sBadge='<span class="badge b-dn">Concluída</span>';}
+  else if(item.status==="partial"){bCol="var(--w)";sBadge=`<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`;}
+  else if(item.is_critical&&item.days_until_due!==null&&item.days_until_due<0){bCol="var(--r)";sBadge='<span class="badge b-cr">⚠ Crítica vencida</span>';}
+  else if(item.days_until_due!==null&&item.days_until_due<0){bCol="var(--r)";sBadge='<span class="badge b-ex">Vencida</span>';}
+  else if(item.days_until_due!==null&&item.days_until_due<=30){bCol="var(--w)";sBadge=`<span class="badge b-up">${item.days_until_due}d</span>`;}
 
   const pct=item.progress_pct||0;
   const progCol=pct===100?"var(--pl)":pct>0?"var(--w)":"var(--bd)";
   const desc=item.description||'';
   const shortDesc=desc.length>160?desc.slice(0,160)+'…':desc;
+  const progHtml=item.n_assets>0
+    ?`<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:${pct}%;background:${progCol}"></div></div><span class="cplbl">${item.n_completed}/${item.n_assets} ativos · ${pct}%</span></div>`
+    :item.status==="completed"?`<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>`:''
 
-  const bodyHtml=isExpanded?`
+  const bodyHtml=isExp?`
     <div class="ccard-body">
       <div class="ccard-full-desc">${desc}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
         <div style="font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.04em">Ativos vinculados (${item.n_assets})</div>
-        ${item.status!=="completed"&&item.n_assets>1?`<button class="btn btn-sm btn-a" onclick="doCompleteAll(${item.id},event)"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg>Dar baixa em todos</button>`:''}
+        ${item.status!=="completed"&&item.n_assets>1?`<button class="btn btn-sm btn-a" onclick="doCompleteAll(${item.id},event)">✓ Dar baixa em todos</button>`:''}
       </div>
-      <div class="ccard-asset-list">${renderAssetChips(item)}</div>
-    </div>`:
-    ``;
+      <div class="ccard-asset-list">${renderAssetList(item)}</div>
+      ${item.status!=="completed"&&item.n_assets===0?`<button class="btn btn-sm" style="margin-top:10px" onclick="doSingleBaixa(${item.id})">Dar baixa</button>`:''}
+    </div>`:''
 
-  return`<div class="ccard ${isExpanded?'ccard-expanded':''}" id="ccard-${item.id}" style="border-left-color:${borderCol}">
+  return`<div class="ccard" id="ccard-${item.id}" style="border-left-color:${bCol}">
     <div class="ccard-head" onclick="toggleCard(${item.id})">
       <div style="flex:1;min-width:0">
         <div class="ccard-meta">
           <span class="ccat" style="background:${cc}18;color:${cc}">${cn}</span>
-          ${statusBadge}
+          ${sBadge}
           ${item.is_critical?'<span class="badge b-cr">Crítica</span>':''}
           ${item.due_date?`<span style="font-size:11px;color:var(--t3)">Vence ${item.due_date}</span>`:''}
           <span style="font-size:11px;color:var(--t3)">Lic. <strong>${item.license_number||'—'}</strong></span>
           ${item.field?`<span style="font-size:11px;color:var(--t3)">${item.field}</span>`:''}
         </div>
-        <div class="ccard-title">${isExpanded?desc:shortDesc}</div>
-        ${item.n_assets>0?`<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:${pct}%;background:${progCol}"></div></div><span class="cplbl">${item.n_completed}/${item.n_assets} ativos · ${pct}%</span></div>`:(item.status==="completed"?`<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>`:'')}
+        <div class="ccard-title">${isExp?desc:shortDesc}</div>
+        ${progHtml}
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-        <span style="font-size:12px;color:var(--t3)">${isExpanded?'▲':'▼'}</span>
-        ${item.status!=="completed"&&item.n_assets===0?`<button class="btn btn-sm" onclick="event.stopPropagation();doSingleBaixa(${item.id})">Dar baixa</button>`:''}
-      </div>
+      <div style="flex-shrink:0;padding-left:8px;color:var(--t3);font-size:12px">${isExp?'▲':'▼'}</div>
     </div>
     ${bodyHtml}
   </div>`;
 }
 
-function renderAssetChips(item){
+function renderAssetList(item){
   return item.assets.map(a=>{
     const done=a.status==="completed";
-    const isSituOp=a.is_operational;
+    const isOp=OPERATIONAL.includes(a.situation);
     return`<div class="cas-item">
       <div class="cas-code">${a.code}</div>
-      <div class="cas-field">${a.field||'—'} ${isSituOp?`<span class="badge b-ok" style="font-size:10px">${a.situation.slice(0,10)}</span>`:''}</div>
-      <div class="cas-status">
-        ${done?`<div class="cas-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Concluído${a.completed_at?` <span style="font-size:10px;color:var(--t3)">${a.completed_at.slice(0,10)}</span>`:''}</div>`
-        :`<button class="cas-btn" onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id},'${a.code.replace(/'/g,"")}','${(item.license_number||'').replace(/'/g,"")}')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dar baixa</button>`}
+      <div class="cas-field">${a.field||'—'} ${isOp?`<span class="badge b-ok" style="font-size:10px">${(a.situation||'').slice(0,10)}</span>`:''}</div>
+      <div>
+        ${done
+          ?`<div class="cas-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Concluído${a.completed_at?` <span style="font-size:10px;color:var(--t3)">${a.completed_at.slice(0,10)}</span>`:''}</div>`
+          :`<button class="cas-btn" onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id},'${a.code.replace(/'/g,"")}','${(item.license_number||'').replace(/'/g,"")}')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dar baixa</button>`
+        }
       </div>
     </div>`;
   }).join('');
 }
 
 function toggleCard(id){
-  if(condState.expandedIds.has(id)){condState.expandedIds.delete(id);}
-  else{condState.expandedIds.add(id);}
-  // Re-renderiza só este card
+  if(condState.expandedIds.has(id))condState.expandedIds.delete(id);
+  else condState.expandedIds.add(id);
   const item=condState.allItems.find(i=>i.id===id);
   if(!item)return;
   const el=document.getElementById(`ccard-${id}`);
   if(el){const tmp=document.createElement('div');tmp.innerHTML=renderCondCard(item);el.replaceWith(tmp.firstChild);}
 }
-
 function collapseAll(){condState.expandedIds.clear();renderCondList(condState.allItems,document.getElementById("cond-list"));}
 function expandAll(){condState.expandedIds=new Set(condState.allItems.map(i=>i.id));renderCondList(condState.allItems,document.getElementById("cond-list"));}
+function setCondFilter(f){condState.filter=f;document.querySelectorAll(".fchip").forEach(c=>{c.classList.toggle("on",c.dataset.f===f);});loadConditions();}
+function applyCondField(){condState.field=document.getElementById("condField").value;loadConditions();}
 
-function setCondFilter(f){
-  condState.filter=f;
-  document.querySelectorAll(".fchip").forEach(c=>{c.classList.toggle("on",c.dataset.f===f);});
-  loadConditions();
-}
-
-function applyCondField(){
-  condState.field=document.getElementById("condField").value;
-  loadConditions();
-}
-
-// Modal de baixa com contexto mantido
 function openBaixaModal(condId,assetId,assetCode,licNum){
-  openMod(`
-    <div class="mhead">
-      <div class="mic" style="background:#e8f5ec;color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="mttl">Dar baixa na condicionante</div>
-      <div class="msub">Ativo: <strong>${assetCode}</strong> · Licença: <strong>${licNum}</strong></div>
+  openMod(`<div class="mhead">
+    <div class="mic" style="background:#e8f5ec;color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="mttl">Dar baixa na condicionante</div>
+    <div class="msub">Ativo: <strong>${assetCode}</strong> · Licença: <strong>${licNum}</strong></div>
+  </div>
+  <div class="mbody">
+    <div class="minfo">
+      <div class="mrow"><span>Responsável</span><input id="bx-resp" style="border:1px solid var(--bdl);border-radius:5px;padding:3px 8px;font-size:12px;font-family:inherit;outline:none;width:160px" placeholder="Nome (opcional)"></div>
+      <div class="mrow" style="margin-top:6px;align-items:flex-start"><span style="padding-top:3px">Observação</span><textarea id="bx-obs" style="border:1px solid var(--bdl);border-radius:5px;padding:4px 8px;font-size:12px;font-family:inherit;outline:none;width:200px;resize:vertical;height:52px" placeholder="Opcional"></textarea></div>
     </div>
-    <div class="mbody">
-      <div class="minfo">
-        <div class="mrow"><span>Responsável</span><input id="bx-resp" style="border:1px solid var(--bdl);border-radius:5px;padding:3px 8px;font-size:12px;font-family:inherit;outline:none;width:160px" placeholder="Nome (opcional)"></div>
-        <div class="mrow" style="margin-top:6px"><span>Observação</span><textarea id="bx-obs" style="border:1px solid var(--bdl);border-radius:5px;padding:4px 8px;font-size:12px;font-family:inherit;outline:none;width:200px;resize:vertical;height:52px" placeholder="Observação (opcional)"></textarea></div>
-      </div>
-      <div style="font-size:12px;color:var(--t3)">✓ Após confirmar, o card permanece aberto para você dar baixa nos demais ativos.</div>
-    </div>
-    <div class="mact">
-      <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
-      <button class="btn" style="background:var(--p)" onclick="doBaixaAtivo(${condId},${assetId},'${assetCode}')">Confirmar baixa</button>
-    </div>
-  `);
+    <div style="font-size:12px;color:var(--t3)">✓ Após confirmar, o card permanece aberto para os demais ativos.</div>
+  </div>
+  <div class="mact">
+    <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
+    <button class="btn" style="background:var(--p)" onclick="doBaixaAtivo(${condId},${assetId},'${assetCode}')">Confirmar baixa</button>
+  </div>`);
 }
 
 async function doBaixaAtivo(condId,assetId,assetCode){
@@ -686,8 +667,7 @@ async function doBaixaAtivo(condId,assetId,assetCode){
     body:JSON.stringify({completed_by:resp,observation:obs,evidence_url:""})
   });
   if(r&&r.ok){
-    showToast(`✓ ${assetCode} marcado como concluído`);
-    // Atualiza o item localmente sem recarregar tudo
+    showToast(`✓ ${assetCode} concluído`);
     const item=condState.allItems.find(i=>i.id===condId);
     if(item){
       const a=item.assets.find(x=>x.id===assetId);
@@ -696,29 +676,23 @@ async function doBaixaAtivo(condId,assetId,assetCode){
       item.progress_pct=item.n_assets>0?Math.round(item.n_completed/item.n_assets*100):100;
       if(item.n_completed>=item.n_assets)item.status="completed";
       else if(item.n_completed>0)item.status="partial";
-      // Garante que o card fica expandido
       condState.expandedIds.add(condId);
       const el=document.getElementById(`ccard-${condId}`);
       if(el){const tmp=document.createElement('div');tmp.innerHTML=renderCondCard(item);el.replaceWith(tmp.firstChild);}
     }
     // Atualiza indicador em background
     sf(`${API}/conditions/conformity-indicator`).then(ind=>{
-      if(ind)condState.indicator=ind;
-      const td=document.getElementById("cond-thermo-compact");
-      if(td)td.innerHTML=renderThermo(condState.indicator,true);
+      if(ind){condState.indicator=ind;const td=document.getElementById("cond-thermo");if(td)td.innerHTML=renderThermo(condState.indicator,true);}
     });
-  }else{alert("Erro ao registrar: "+(r?.error||"sem resposta"));}
+  }else{alert("Erro: "+(r?.error||"sem resposta"));}
 }
 
 async function doCompleteAll(condId,event){
   event.stopPropagation();
   if(!confirm("Dar baixa em TODOS os ativos desta condicionante?"))return;
-  const r=await sf(`${API}/conditions/${condId}/complete-all`,{
-    method:"PATCH",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({completed_by:"sistema",observation:""})
-  });
+  const r=await sf(`${API}/conditions/${condId}/complete-all`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({completed_by:"sistema",observation:""})});
   if(r&&r.ok){
-    showToast(`✓ ${r.assets_completed} ativos marcados como concluídos`);
+    showToast(`✓ ${r.assets_completed} ativos concluídos`);
     const item=condState.allItems.find(i=>i.id===condId);
     if(item){
       item.assets.forEach(a=>{a.status="completed";a.completed_at=new Date().toISOString();});
@@ -732,17 +706,14 @@ async function doCompleteAll(condId,event){
 
 async function doSingleBaixa(condId){
   if(!confirm("Dar baixa nesta condicionante?"))return;
-  const r=await sf(`${API}/conditions/${condId}/complete-all`,{
-    method:"PATCH",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({completed_by:"sistema",observation:""})
-  });
+  const r=await sf(`${API}/conditions/${condId}/complete-all`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({completed_by:"sistema",observation:""})});
   if(r&&r.ok){showToast("✓ Condicionante concluída");loadConditions();}
   else alert("Erro");
 }
 
 // ===== ASSETS =====
 async function renderAssets(){
-  if(!filterCache){filterCache=await sf(`${API}/assets/filters`)||{agencies:[],situations:[]};}
+  if(!filterCache)filterCache=await sf(`${API}/assets/filters`)||{agencies:[],situations:[]};
   const app=document.getElementById("app");
   const opt=arr=>(arr||[]).map(v=>`<option value="${v}">${v}</option>`).join('');
   app.innerHTML=`
@@ -769,7 +740,10 @@ async function loadAssets(){
   const r=await sf(`${API}/assets/unified?${p}`,{timeout:30000});
   if(!r?.items?.length){div.innerHTML='<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>';return;}
   const crit=r.items.filter(i=>["expired","missing","critical"].includes(i.compliance_status)).length;
-  const rows=r.items.map(a=>{const pdf=a.pdf_url?`<a class="plink" href="${a.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></a>`:'—';return`<tr><td><strong style="font-size:12.5px">${a.code||'—'}</strong></td><td style="color:var(--t2)">${a.field||'—'}</td><td>${a.agency||'—'}</td><td>${bSit(a.situation)}</td><td>${bComp(a.compliance_status)}</td><td style="font-size:11.5px;color:var(--t2)">${a.expiry_date||'—'}</td><td>${pdf}</td></tr>`;}).join('');
+  const rows=r.items.map(a=>{
+    const pdf=a.pdf_url?`<a class="pdf-btn" href="${a.pdf_url}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="12" y2="18"/><line x1="15" y1="15" x2="12" y2="18"/></svg>PDF</a>`:'<span style="color:var(--t4);font-size:12px">—</span>';
+    return`<tr><td><strong style="font-size:12.5px">${a.code||'—'}</strong></td><td style="color:var(--t2)">${a.field||'—'}</td><td style="color:var(--t2)">${a.agency||'—'}</td><td>${bSit(a.situation)}</td><td>${bComp(a.compliance_status)}</td><td style="font-size:11.5px;color:var(--t2)">${a.expiry_date||'—'}</td><td>${pdf}</td></tr>`;
+  }).join('');
   const tp=Math.ceil(r.total/50),cur=assetState.page+1;
   div.innerHTML=`<div class="sbar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> · <strong>${crit}</strong> críticos</div><div class="tw"><table><thead><tr><th>Código</th><th>Campo</th><th>Órgão</th><th>Situação</th><th>Status</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div><div class="pag"><span>Pág ${cur}/${tp}</span><div style="display:flex;gap:6px"><button class="btn btn-g" id="aPv" ${assetState.page===0?"disabled":""}>← Ant.</button><button class="btn btn-g" id="aNx" ${cur>=tp?"disabled":""}>Próx. →</button></div></div>`;
   document.getElementById("aPv").onclick=()=>{if(assetState.page>0){assetState.page--;loadAssets();}};
@@ -785,19 +759,19 @@ async function renderDocs(){
     <div class="ph"><h1>Central documental</h1><p class="sub">Upload de licenças e boletos — IA extrai dados e vincula ativos automaticamente</p></div>
     <div class="g2" style="margin-bottom:14px">
       <div class="upzone" onclick="document.getElementById('pdfFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'license')">
-        <div style="font-size:28px;margin-bottom:6px">📄</div>
+        <div style="font-size:26px;margin-bottom:6px">📄</div>
         <strong>Upload de Licença</strong>
-        <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF da licença ambiental — extração automática de condicionantes</p>
+        <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF da licença ambiental</p>
         <input type="file" id="pdfFile" accept=".pdf" onchange="uploadDoc('license')">
-        <button class="btn" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
+        <button class="btn btn-sm" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
         <div id="upStatus"></div>
       </div>
       <div class="upzone" onclick="document.getElementById('billetFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'billet')">
-        <div style="font-size:28px;margin-bottom:6px">🧾</div>
+        <div style="font-size:26px;margin-bottom:6px">🧾</div>
         <strong>Upload de Boleto</strong>
-        <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF do boleto de taxa — extrai valor real e atualiza custo</p>
+        <p style="font-size:12.5px;color:var(--t2);margin:4px 0 10px">PDF do boleto de taxa</p>
         <input type="file" id="billetFile" accept=".pdf" onchange="uploadDoc('billet')">
-        <button class="btn btn-yg" onclick="event.stopPropagation();document.getElementById('billetFile').click()">Selecionar Boleto</button>
+        <button class="btn btn-sm btn-yg" onclick="event.stopPropagation();document.getElementById('billetFile').click()">Selecionar Boleto</button>
         <div id="billetStatus"></div>
       </div>
     </div>
@@ -806,11 +780,11 @@ async function renderDocs(){
       <div class="g2">
         <div class="card">
           <div class="ct">Por tipo de licença</div>
-          ${(costRef.licenses||[]).map(r=>`<div class="cref-row"><span class="cref-lbl">${r.type}</span><span style="font-size:11px;color:var(--t3);margin-right:4px">Aquisição</span><input class="cref-inp" type="number" id="lic-${r.type}" value="${r.acquisition||0}"><button class="cref-save" onclick="saveLicCost('${r.type}')">✓</button></div>`).join('')}
+          ${(costRef.licenses||[]).map(r=>`<div class="cref-row"><span class="cref-lbl">${r.type}</span><input class="cref-inp" type="number" id="lic-${r.type}" value="${r.acquisition||0}" placeholder="R$"><button class="cref-save" onclick="saveLicCost('${r.type}')">✓</button></div>`).join('')}
         </div>
         <div class="card">
           <div class="ct">Por categoria de condicionante</div>
-          ${(costRef.conditions||[]).map(r=>`<div class="cref-row"><span class="cref-lbl">${r.label}</span><input class="cref-inp" type="number" id="cond-${r.category}" value="${r.avg_cost||0}"><button class="cref-save" onclick="saveCondCost('${r.category}')">✓</button></div>`).join('')}
+          ${(costRef.conditions||[]).map(r=>`<div class="cref-row"><span class="cref-lbl">${r.label}</span><input class="cref-inp" type="number" id="cond-${r.category}" value="${r.avg_cost||0}" placeholder="R$"><button class="cref-save" onclick="saveCondCost('${r.category}')">✓</button></div>`).join('')}
         </div>
       </div>
     </div>
@@ -824,8 +798,8 @@ async function loadDocList(){
   if(!list?.length){div.innerHTML='<div class="tw"><div class="empty">Nenhum documento cadastrado</div></div>';return;}
   const trash='<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
   const rows=list.map(l=>{
-    const pdf=l.pdf_url?`<a class="plink" href="${l.pdf_url}" target="_blank"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`:'—';
-    const bol=l.billet_url?`<a class="plink" href="${l.billet_url}" target="_blank" style="color:var(--wg)">Boleto</a>`:'—';
+    const pdf=l.pdf_url?`<a class="pdf-btn" href="${l.pdf_url}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="12" y2="18"/><line x1="15" y1="15" x2="12" y2="18"/></svg>PDF</a>`:'—';
+    const bol=l.billet_url?`<a class="pdf-btn" href="${l.billet_url}" target="_blank" rel="noopener" style="background:var(--wgt);color:#5a7a00;border-color:#d0e8a0"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Boleto</a>`:'—';
     const cost=l.billet_cost?`<span style="color:var(--p);font-weight:600">${fmtBRL(l.billet_cost)}</span>`:l.acquisition_cost?fmtBRL(l.acquisition_cost):'—';
     const lj=JSON.stringify(l).replace(/"/g,'&quot;');
     return`<tr><td><strong>${l.number}</strong></td><td><span class="badge b-pe">${l.type}</span></td><td style="color:var(--t2)">${l.agency||'—'}</td><td style="font-size:11.5px">${l.expiry_date||'—'}</td><td style="color:${l.asset_code?'var(--t1)':'var(--t3)'}"><small>${l.asset_code||'não vinculado'}</small></td><td>${l.n_conditions}</td><td>${cost}</td><td>${pdf}</td><td>${bol}</td><td><button class="ib" data-lic="${lj}">${trash}</button></td></tr>`;
@@ -834,9 +808,9 @@ async function loadDocList(){
   document.querySelectorAll(".ib[data-lic]").forEach(b=>{b.onclick=()=>{try{confirmDel(JSON.parse(b.getAttribute("data-lic").replace(/&quot;/g,'"')));}catch(e){alert("Erro");}};});
 }
 
-async function saveLicCost(type){const acq=parseFloat(document.getElementById(`lic-${type}`)?.value)||0;const r=await fetch(`${API}/cost-reference/license/${type}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({acquisition:acq,renewal:acq*0.5,notes:""})}).then(r=>r.json());if(r.ok)showToast(`Referência ${type} salva`);}
-async function saveCondCost(cat){const avg=parseFloat(document.getElementById(`cond-${cat}`)?.value)||0;const r=await fetch(`${API}/cost-reference/condition/${cat}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({avg_cost:avg,notes:""})}).then(r=>r.json());if(r.ok)showToast(`Referência ${cat} salva`);}
-function handleDrop(e,type){e.preventDefault();document.getElementById(type==="license"?"upzone":"bzone")?.classList.remove("dov");const f=e.dataTransfer.files[0];if(f&&f.type==="application/pdf"){const dt=new DataTransfer();dt.items.add(f);document.getElementById(type==="license"?"pdfFile":"billetFile").files=dt.files;uploadDoc(type);}}
+async function saveLicCost(type){const acq=parseFloat(document.getElementById(`lic-${type}`)?.value)||0;const r=await fetch(`${API}/cost-reference/license/${type}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({acquisition:acq,renewal:acq*0.5,notes:""})}).then(r=>r.json()).catch(()=>({}));if(r.ok)showToast(`✓ ${type} salvo`);}
+async function saveCondCost(cat){const avg=parseFloat(document.getElementById(`cond-${cat}`)?.value)||0;const r=await fetch(`${API}/cost-reference/condition/${cat}`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({avg_cost:avg,notes:""})}).then(r=>r.json()).catch(()=>({}));if(r.ok)showToast(`✓ ${cat} salvo`);}
+function handleDrop(e,type){e.preventDefault();const z=document.querySelector('.upzone.dov');if(z)z.classList.remove('dov');const f=e.dataTransfer.files[0];if(f&&f.type==="application/pdf"){const dt=new DataTransfer();dt.items.add(f);document.getElementById(type==="license"?"pdfFile":"billetFile").files=dt.files;uploadDoc(type);}}
 
 async function uploadDoc(docType){
   const fi=document.getElementById(docType==="license"?"pdfFile":"billetFile");
@@ -848,22 +822,19 @@ async function uploadDoc(docType){
   try{
     const r=await fetch(`${API}/licenses/upload?on_duplicate=ask&doc_type=${docType}`,{method:"POST",body:fd}).then(r=>r.json());
     if(r.error)stat.innerHTML=`<div class="emsg">Erro: ${r.error}</div>`;
-    else if(r.type==="billet"){stat.innerHTML=`<div class="omsg">✓ Boleto ${r.linked?"vinculado à licença "+r.license_number:"salvo (não vinculado)"}. Valor: <strong>${fmtBRL(r.valor)}</strong></div>`;setTimeout(()=>loadDocList(),1500);}
+    else if(r.type==="billet"){stat.innerHTML=`<div class="omsg">✓ Boleto ${r.linked?"vinculado":"salvo"}. Valor: <strong>${fmtBRL(r.valor)}</strong></div>`;setTimeout(()=>loadDocList(),1500);}
     else if(r.duplicate){stat.innerHTML='';showDupModal(r.existing,r.new_data);}
     else if(r.cancelled)stat.innerHTML='<div class="emsg">Cancelado.</div>';
     else{const lnk=r.assets_linked?.length?` Vinculada a: <strong>${r.assets_linked.map(a=>a.code).join(', ')}</strong>.`:'';stat.innerHTML=`<div class="omsg">✓ ${r.conditions_extracted} condicionantes extraídas.${lnk}</div>`;pendingFile=null;setTimeout(()=>loadDocList(),1600);}
   }catch(e){stat.innerHTML=`<div class="emsg">Erro: ${e.message}</div>`;}
 }
 
-function showDupModal(ex,nw){
-  openMod(`<div class="mhead"><div class="mic" style="background:#fef7d8;color:var(--wt)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mttl">Licença duplicada</div><div class="msub">Já existe uma licença com este número.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Existente</span><strong>${ex.number} · ${ex.n_conditions} cond.</strong></div><div class="mrow"><span>Novo upload</span><strong>${nw.n_conditions_extracted} cond.</strong></div>${nw.assets_found?.length?`<div class="mrow"><span>Ativos detectados</span><strong style="color:var(--p)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>`:''}</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod();pendingFile=null">Cancelar</button><button class="btn btn-g" onclick="closeMod();uploadPdfWith('keep_both')">Manter ambas</button><button class="btn btn-r" onclick="closeMod();uploadPdfWith('replace')">Substituir</button></div>`);
-}
-async function uploadPdfWith(dup){if(!pendingFile)return;const fd=new FormData();fd.append("file",pendingFile);const stat=document.getElementById("upStatus");stat.innerHTML='<div class="loading" style="padding:8px 0"><span class="spin"></span></div>';try{const r=await fetch(`${API}/licenses/upload?on_duplicate=${dup}&doc_type=license`,{method:"POST",body:fd}).then(r=>r.json());if(r.error)stat.innerHTML=`<div class="emsg">${r.error}</div>`;else{stat.innerHTML=`<div class="omsg">✓ ${r.conditions_extracted||0} condicionantes.</div>`;pendingFile=null;setTimeout(()=>loadDocList(),1500);}}catch(e){stat.innerHTML=`<div class="emsg">${e.message}</div>`;}}
-
-function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Ação irreversível. Condicionantes vinculadas também serão removidas.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Ativo(s)</span><strong>${l.asset_code||'não vinculado'}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
+function showDupModal(ex,nw){openMod(`<div class="mhead"><div class="mic" style="background:#fef7d8;color:var(--wt)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mttl">Licença duplicada</div><div class="msub">Já existe uma licença com este número.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Existente</span><strong>${ex.number} · ${ex.n_conditions} cond.</strong></div><div class="mrow"><span>Novo</span><strong>${nw.n_conditions_extracted} cond.</strong></div>${nw.assets_found?.length?`<div class="mrow"><span>Ativos</span><strong style="color:var(--p)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>`:''}</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod();pendingFile=null">Cancelar</button><button class="btn btn-g" onclick="closeMod();uploadWith('keep_both')">Manter ambas</button><button class="btn btn-r" onclick="closeMod();uploadWith('replace')">Substituir</button></div>`);}
+async function uploadWith(dup){if(!pendingFile)return;const fd=new FormData();fd.append("file",pendingFile);const stat=document.getElementById("upStatus");stat.innerHTML='<div class="loading" style="padding:8px 0"><span class="spin"></span></div>';try{const r=await fetch(`${API}/licenses/upload?on_duplicate=${dup}&doc_type=license`,{method:"POST",body:fd}).then(r=>r.json());if(r.error)stat.innerHTML=`<div class="emsg">${r.error}</div>`;else{stat.innerHTML=`<div class="omsg">✓ ${r.conditions_extracted||0} condicionantes.</div>`;pendingFile=null;setTimeout(()=>loadDocList(),1500);}}catch(e){stat.innerHTML=`<div class="emsg">${e.message}</div>`;}}
+function confirmDel(l){openMod(`<div class="mhead"><div class="mic" style="background:var(--rt);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Ação irreversível.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div><div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);}
 async function doDelLic(id){closeMod();await sf(`${API}/licenses/${id}`,{method:"DELETE"});await loadDocList();}
 
-// ===== PLANNING =====
+// ===== PLANNING — GRÁFICO CORRIGIDO =====
 async function renderPlanning(){
   const app=document.getElementById("app");
   app.innerHTML='<div class="loading"><span class="spin"></span></div>';
@@ -876,35 +847,85 @@ async function renderPlanning(){
   const months=(byMonth||[]).slice(-12);
   const fields=byField||[];const cats=byCat||[];const projs=proj||[];
   const th=thermo||{pct:0,pct_active:0,level:"gray"};
-  const maxM=Math.max(1,...months.map(m=>m.realizado+m.provisionado));
-  const monthBars=months.map(m=>{const hR=Math.round((m.realizado/maxM)*140);const hP=Math.round((m.provisionado/maxM)*140);return`<div class="fin-bar-wrap"><div class="fin-bar-stk" style="height:${hR+hP}px;justify-content:flex-end">${m.realizado>0?`<div class="fin-bar-seg" style="height:${hR}px;background:var(--p)"></div>`:''} ${m.provisionado>0?`<div class="fin-bar-seg" style="height:${hP}px;background:var(--p);opacity:.2"></div>`:''}</div><div class="fin-xlabel">${m.label}</div></div>`;}).join('');
-  const maxF=Math.max(1,...fields.map(f=>f.total));
-  const fBars=fields.slice(0,8).map(f=>`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,14)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(f.realizado/maxF*100)}%;background:var(--p)"></span></span><span class="bval">${fmtBRL(f.total)}</span></li>`).join('')||'<div class="empty">Sem dados</div>';
-  const catC={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
-  const maxCat=Math.max(1,...cats.map(c=>c.estimado));
-  const cBars=cats.map(c=>`<li class="bitem"><span class="blbl">${c.label}</span><span class="btrack"><span class="bfill" style="width:${Math.round(c.estimado/maxCat*100)}%;background:${catC[c.category]||'#86868b'}"></span></span><span class="bval">${fmtBRL(c.estimado)}</span></li>`).join('')||'<div class="empty">Sem dados</div>';
-  const pCards=projs.map(p=>`<div class="proj-card"><div class="proj-year">${p.year}</div><div class="proj-val">${fmtBRL(p.total)}</div><div class="proj-conf" style="color:${p.conformidade_est>=80?"var(--p)":p.conformidade_est>=60?"var(--wg)":"var(--r)"}">${p.conformidade_est}% conf.</div></div>`).join('');
+
+  // GRÁFICO CORRIGIDO: usa percentual relativo ao máximo, sem altura negativa
+  const maxM=Math.max(1,...months.map(m=>(m.realizado||0)+(m.provisionado||0)));
+  const CHART_H=130; // px usáveis
+  const monthBars=months.map(m=>{
+    const r=m.realizado||0,p=m.provisionado||0;
+    const hR=maxM>0?Math.round((r/maxM)*CHART_H):0;
+    const hP=maxM>0?Math.round((p/maxM)*CHART_H):0;
+    return`<div class="fin-bar-col">
+      <div class="fin-bar-area">
+        ${hP>0?`<div class="fin-bar-p" style="height:${hP}px"></div>`:''}
+        ${hR>0?`<div class="fin-bar-r" style="height:${hR}px"></div>`:''}
+        ${hR===0&&hP===0?`<div style="height:2px;background:var(--bdl);border-radius:2px;width:100%"></div>`:''}
+      </div>
+      <div class="fin-xlabel">${m.label||''}</div>
+    </div>`;
+  }).join('');
+
+  const maxF=Math.max(1,...fields.map(f=>f.total||0));
+  const fBars=fields.length?fields.slice(0,8).map(f=>`<li class="bitem"><span class="blbl" title="${f.field}">${(f.field||'').slice(0,14)}</span><span class="btrack"><span class="bfill" style="width:${maxF?Math.round((f.total||0)/maxF*100):0}%;background:var(--p)"></span></span><span class="bval">${fmtBRL(f.total)}</span></li>`).join(''):'<div class="empty">Sem dados. Adicione valores de referência na Central documental.</div>';
+
+  const catColors={"monitoring":"#125E81","effluent":"#4EA72E","reporting":"#007023","infrastructure":"#F9CE29","other":"#86868b"};
+  const maxCat=Math.max(1,...cats.map(c=>c.estimado||0));
+  const cBars=cats.length?cats.map(c=>`<li class="bitem"><span class="blbl">${c.label}</span><span class="btrack"><span class="bfill" style="width:${maxCat?Math.round((c.estimado||0)/maxCat*100):0}%;background:${catColors[c.category]||'#86868b'}"></span></span><span class="bval">${fmtBRL(c.estimado)}</span></li>`).join(''):'<div class="empty">Sem dados de categoria.</div>';
+
+  const pCards=projs.length?projs.map(p=>`<div class="proj-card"><div class="proj-year">${p.year}</div><div class="proj-val">${fmtBRL(p.total)}</div><div class="proj-conf" style="color:${p.conformidade_est>=80?"var(--p)":p.conformidade_est>=60?"var(--wg)":"var(--r)"}">${p.conformidade_est}% conf.</div></div>`).join(''):`<div class="empty">Adicione custos de referência para gerar projeções.</div>`;
+
   const prov=fs.total_provisionado||0;
+  const real=fs.total_realizado||0;
+
   app.innerHTML=`
     <div class="ph"><h1>Gestão financeira regulatória</h1><p class="sub">Projeções, cenários e análise de conformidade</p></div>
     <div class="kpis">
-      <div class="kpi"><div class="kl">Realizado</div><div class="kv fmtbrl" style="font-size:18px">${fmtBRL(fs.total_realizado)}</div></div>
-      <div class="kpi"><div class="kl">Provisionado</div><div class="kv fmtbrl" style="font-size:18px">${fmtBRL(prov)}</div></div>
-      <div class="kpi"><div class="kl">Condicionantes</div><div class="kv fmtbrl" style="font-size:16px">${fmtBRL(fs.conditions?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.conditions?.provisionado)}</div></div>
-      <div class="kpi"><div class="kl">Licenças</div><div class="kv fmtbrl" style="font-size:16px">${fmtBRL(fs.licenses?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.licenses?.provisionado)}</div></div>
-      <div class="kpi"><div class="kl">Conformidade</div><div class="kv" style="color:${th.pct===100?"var(--p)":th.pct>=70?"var(--wg)":"var(--r)"}">${th.pct}%</div><div class="ks">Operacionais: ${th.pct_active||0}%</div></div>
+      <div class="kpi"><div class="kl">Realizado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(real)}</div><div class="ks">Cond. + Licenças</div></div>
+      <div class="kpi"><div class="kl">Provisionado</div><div class="kv fmtbrl" style="font-size:17px">${fmtBRL(prov)}</div><div class="ks">A executar</div></div>
+      <div class="kpi"><div class="kl">Cond. realizado</div><div class="kv fmtbrl" style="font-size:15px">${fmtBRL(fs.conditions?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.conditions?.provisionado)}</div></div>
+      <div class="kpi"><div class="kl">Licenças realizado</div><div class="kv fmtbrl" style="font-size:15px">${fmtBRL(fs.licenses?.realizado)}</div><div class="ks">Prov: ${fmtBRL(fs.licenses?.provisionado)}</div></div>
+      <div class="kpi"><div class="kl">Conformidade</div><div class="kv" style="color:${th.pct===100?"var(--p)":th.pct>=70?"var(--wg)":"var(--r)"}">${th.pct}%</div><div class="ks">Poços ativos: ${th.pct_active||0}%</div></div>
     </div>
-    <div class="card" style="margin-bottom:12px"><div class="ct">Curva financeira mensal — realizado vs provisionado</div><div class="fin-chart">${monthBars}</div><div class="fin-legend"><div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado</div><div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p);opacity:.25"></div>Provisionado</div></div></div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="ct">Curva financeira mensal — realizado vs provisionado</div>
+      ${months.length?`<div class="fin-chart-wrap">${monthBars}</div><div class="fin-legend"><div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado</div><div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p);opacity:.25;border:1.5px dashed var(--p)"></div>Provisionado</div></div>`:`<div class="empty">Adicione valores de referência para visualizar a curva financeira.</div>`}
+    </div>
+
     <div class="g2">
       <div class="card"><div class="ct">Custo por campo</div><ul class="blist">${fBars}</ul></div>
       <div class="card"><div class="ct">Custo por categoria</div><ul class="blist">${cBars}</ul></div>
     </div>
-    <div class="card" style="margin-bottom:12px"><div class="ct">Projeção quinquenal</div><div class="proj-row">${pCards||'<div class="empty">Sem histórico suficiente para projeção</div>'}</div><div style="font-size:11px;color:var(--t3);margin-top:8px">* Estimativa com crescimento moderado de 5% a.a. baseada no histórico atual.</div></div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="ct">Projeção quinquenal</div>
+      <div class="proj-row">${pCards}</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:8px">* Estimativa com crescimento de 5% a.a. com base no histórico atual.</div>
+    </div>
+
     <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px">Simulador de cenários</div>
     <div class="g3">
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border-color:#c5e3d0"><div class="sc-head"><div class="sc-icon" style="background:#007023;color:#fff"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#007023;text-transform:uppercase">Excelência</div></div></div><div style="font-size:24px;font-weight:700;color:#007023;margin-bottom:8px">100%</div><div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% licenças e condicionantes</div><div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custo incremental: ${fmtBRL(prov)}</div><div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#007023"><strong>Meta:</strong> Longo prazo</div></div>
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border-color:#d0e8a0"><div class="sc-head"><div class="sc-icon" style="background:#8FBF21;color:#fff"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#5a7a00;text-transform:uppercase">Balanceado</div></div></div><div style="font-size:24px;font-weight:700;color:#8FBF21;margin-bottom:8px">${th.pct_active||0}%</div><div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% dos ativos operacionais</div><div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custo incremental: ${fmtBRL(prov*0.6)}</div><div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#5a7a00"><strong>Meta:</strong> Curto prazo recomendado</div></div>
-      <div class="sc-wrap" style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border-color:#f0d878"><div class="sc-head"><div class="sc-icon" style="background:#F9CE29;color:#fff"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div><div style="font-size:11px;font-weight:700;color:var(--wt);text-transform:uppercase">Conservador</div></div></div><div style="font-size:24px;font-weight:700;color:#c4a000;margin-bottom:8px">${th.pct}%</div><div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Situação atual</div><div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Economia: ${fmtBRL(prov*0.4)}</div><div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:var(--wt)"><strong>Atenção:</strong> Risco regulatório</div></div>
+      <div class="sc-wrap" style="background:linear-gradient(135deg,#e8f5ec,#d0edd8);border-color:#c5e3d0">
+        <div class="sc-head"><div class="sc-icon" style="background:#007023;color:#fff"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#007023;text-transform:uppercase">Excelência</div></div></div>
+        <div style="font-size:24px;font-weight:700;color:#007023;margin-bottom:8px">100%</div>
+        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% licenças e condicionantes</div>
+        <div class="sc-item" style="color:#1f5f33"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custo incremental: ${fmtBRL(prov)}</div>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#007023"><strong>Meta:</strong> Longo prazo</div>
+      </div>
+      <div class="sc-wrap" style="background:linear-gradient(135deg,#f0f7e0,#e4f0c8);border-color:#d0e8a0">
+        <div class="sc-head"><div class="sc-icon" style="background:#8FBF21;color:#fff"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div><div style="font-size:11px;font-weight:700;color:#5a7a00;text-transform:uppercase">Balanceado</div></div></div>
+        <div style="font-size:24px;font-weight:700;color:#8FBF21;margin-bottom:8px">${th.pct_active||0}%</div>
+        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>100% poços em produção/injeção</div>
+        <div class="sc-item" style="color:#3d5a00"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custo incremental: ${fmtBRL(prov*0.6)}</div>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:#5a7a00"><strong>Meta:</strong> Curto prazo recomendado</div>
+      </div>
+      <div class="sc-wrap" style="background:linear-gradient(135deg,#fef7d8,#fef0b0);border-color:#f0d878">
+        <div class="sc-head"><div class="sc-icon" style="background:#F9CE29;color:#fff"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div><div><div style="font-size:11px;font-weight:700;color:var(--wt);text-transform:uppercase">Conservador</div></div></div>
+        <div style="font-size:24px;font-weight:700;color:#c4a000;margin-bottom:8px">${th.pct}%</div>
+        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Situação atual</div>
+        <div class="sc-item" style="color:var(--wt)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Economia vs excelência: ${fmtBRL(prov*0.4)}</div>
+        <div style="margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.6);border-radius:7px;font-size:11px;color:var(--wt)"><strong>Atenção:</strong> Risco regulatório elevado</div>
+      </div>
     </div>`;
 }
 
@@ -912,4 +933,3 @@ show("dashboard");
 </script>
 </body>
 </html>
-q
