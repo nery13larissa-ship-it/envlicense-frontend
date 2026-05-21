@@ -1023,13 +1023,6 @@ async function updateAssetDonut() {
   const donutDiv = document.getElementById("asset-donut-row");
   if (!donutDiv) return;
 
-  const p = buildAP();
-  p.set("limit", "5000");
-  p.set("offset", "0");
-
-  const r = await sf(`${API}/assets/unified?${p}`, { timeout: 30000 });
-  const items = r?.items || [];
-
   const counts = {
     ok: 0,
     upcoming: 0,
@@ -1037,10 +1030,34 @@ async function updateAssetDonut() {
     missing: 0
   };
 
-  items.forEach(a => {
-    const st = a.compliance_status;
-    if (counts[st] !== undefined) counts[st]++;
-  });
+  let offset = 0;
+  const limit = 200;
+  let total = 0;
+
+  while (true) {
+    const p = buildAP();
+    p.set("limit", String(limit));
+    p.set("offset", String(offset));
+
+    const r = await sf(`${API}/assets/unified?${p}`, { timeout: 30000 });
+    const items = r?.items || [];
+
+    if (offset === 0) total = r?.total || 0;
+    if (!items.length) break;
+
+    items.forEach(a => {
+      const st = a.compliance_status;
+
+      if (st === "ok") counts.ok++;
+      else if (st === "upcoming") counts.upcoming++;
+      else if (st === "expired") counts.expired++;
+      else if (st === "missing" || st === "critical") counts.missing++;
+    });
+
+    offset += items.length;
+
+    if (offset >= total) break;
+  }
 
   const donutData = [
     { label: "Licença ativa", value: counts.ok, color: "#43A631" },
