@@ -1023,14 +1023,30 @@ async function updateAssetDonut() {
   const donutDiv = document.getElementById("asset-donut-row");
   if (!donutDiv) return;
 
-  const comp = await sf(`${API}/compliance/summary`);
-  const sc = comp?.status_counts || {};
+  const p = buildAP();
+  p.set("limit", "5000");
+  p.set("offset", "0");
+
+  const r = await sf(`${API}/assets/unified?${p}`, { timeout: 30000 });
+  const items = r?.items || [];
+
+  const counts = {
+    ok: 0,
+    upcoming: 0,
+    expired: 0,
+    missing: 0
+  };
+
+  items.forEach(a => {
+    const st = a.compliance_status;
+    if (counts[st] !== undefined) counts[st]++;
+  });
 
   const donutData = [
-    { label: "Licença ativa", value: sc.ok || 0, color: "#43A631" },
-    { label: "Próxima ao vencimento", value: sc.upcoming || 0, color: "#FACC15" },
-    { label: "Licença vencida", value: sc.expired || 0, color: "#B52B2B" },
-    { label: "Sem licença", value: sc.missing || 0, color: "#7A1515" }
+    { label: "Licença ativa", value: counts.ok, color: "#43A631" },
+    { label: "Próxima ao vencimento", value: counts.upcoming, color: "#FACC15" },
+    { label: "Licença vencida", value: counts.expired, color: "#B52B2B" },
+    { label: "Sem licença", value: counts.missing, color: "#7A1515" }
   ];
 
   donutDiv.innerHTML = renderDonutSection(
