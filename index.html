@@ -484,7 +484,7 @@ function bComp(s) {
     upcoming:["b-up","Próxima ao venc."],
     expired:["b-ex","Licença vencida"],
     missing:["b-mi","Sem licença"],
-  
+    critical:["b-mi","Sem licença"]
   };
   const [c,t] = m[s] || ["b-ot", s];
   return `<span class="badge ${c}">${t}</span>`;
@@ -549,6 +549,7 @@ function renderThermo(th, compact = false) {
   const meta = `<div class="th-meta">
     <span class="th-stat"><strong>${th.completed || 0}</strong>/${th.total || 0} concluídas</span>
     <span class="th-stat">Poços ativos: <strong style="color:${col}">${th.pct_active || 0}%</strong></span>
+    ${th.critical_overdue > 0 ? `<span class="th-stat" style="color:var(--r)">⚠ ${th.critical_overdue} críticas vencidas</span>` : ''}
     ${th.overdue > 0 ? `<span class="th-stat" style="color:var(--r)">${th.overdue} vencidas</span>` : ''}
   </div>`;
   return `<div class="thermo">
@@ -588,7 +589,7 @@ async function renderDashboard() {
   const d = dash || {};
   const c = comp || {};
   const sc = c.status_counts || {};
-  const th = thermo || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, total:0, completed:0, overdue:0 };
+  const th = thermo || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
   const bf = byField || { all_fields:[], conditions_by_field:[] };
   const fs = finSum || { total_realizado:0, total_provisionado:0 };
   const months = (byMonth || []).slice(-6);
@@ -604,8 +605,10 @@ async function renderDashboard() {
   const opColor = opPct === 100 ? "var(--p)" : opPct >= 70 ? "var(--w)" : "var(--r)";
   const opAccent = opPct === 100 ? "accent-green" : opPct >= 70 ? "accent-amber" : "accent-red";
 
-  const nCrit = (sc.expired || 0) + (sc.missing || 0);
-    let exec = `<strong>${d.total_assets || 0}</strong> ativos monitorados.`;
+  const nCrit = (sc.critical || 0) + (sc.expired || 0) + (sc.missing || 0);
+  const topField = (bf.all_fields || []).find(f => f.wells_critical > 0);
+  let exec = `<strong>${d.total_assets || 0}</strong> ativos monitorados.`;
+  if (th.critical_overdue > 0) exec += ` <span style="color:var(--r);font-weight:600">${th.critical_overdue} condicionantes críticas vencidas.</span>`;
   if (nCrit > 0) exec += ` ${nCrit} ativos sem cobertura regulatória.`;
   if (topField) exec += ` Campo <strong>${topField.field}</strong> com maior exposição.`;
   exec += ` Conformidade: <strong style="color:${th.level==='green'?'var(--p)':th.level==='red'?'var(--r)':'var(--wt)'}">${th.pct}%</strong>.`;
@@ -802,7 +805,7 @@ function getOperationalConditionCounts(items, situation) {
   let completed = 0;
   let pending = 0;
   let overdue = 0;
- 
+  let critical = 0;
 
   items.forEach(item => {
     const assets = item.assets || [];
@@ -818,12 +821,14 @@ function getOperationalConditionCounts(items, situation) {
       if (isDone) completed++;
       else pending++;
 
+      if (!isDone && item.days_until_due !== null && item.days_until_due < 0) overdue++;
+      if (!isDone && item.is_critical) critical++;
     });
   });
 
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-  return { total, completed, pending, overdue, pct };
+  return { total, completed, pending, overdue, critical, pct };
 }
 
 function renderCondOperationalMiniCard(title, data, color) {
@@ -1073,7 +1078,7 @@ function getAssetCounts(items) {
     if (st === "ok") c.ok++;
     else if (st === "upcoming") c.upcoming++;
     else if (st === "expired") c.expired++;
-    else if (st === "missing") c.missing++;
+    else if (st === "missing" || st === "critical") c.missing++;
   });
 
   return c;
@@ -1179,7 +1184,7 @@ async function loadAssets() {
   const start = assetState.page * pageSize;
   const pageItems = allItems.slice(start, start + pageSize);
 
-  const nonCompliant = pageItems.filter(i => ["expired","missing"].includes(i.compliance_status)).length;
+  const nonCompliant = pageItems.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
 
   const rows = pageItems.map(a => {
     const pdfBtn = a.pdf_url
