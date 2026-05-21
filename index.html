@@ -999,9 +999,9 @@ async function loadAssets() {
   const div = document.getElementById("aRes");
   div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
   const r = await sf(`${API}/assets/unified?${p}`, { timeout:30000 });
-  if (!r?.items?.length) { div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>'; updateAssetDonut([]); return; }
+  if (!r?.items?.length) { div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>'; await updateAssetDonut(); return; }
 
-  updateAssetDonut(r.items);
+  await updateAssetDonut();
 
   const crit = r.items.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
   const rows = r.items.map(a => {
@@ -1019,21 +1019,26 @@ async function loadAssets() {
   document.getElementById("aNx").onclick = () => { if (cur < tp) { assetState.page++; loadAssets(); } };
 }
 
-function updateAssetDonut(items) {
+async function updateAssetDonut() {
   const donutDiv = document.getElementById("asset-donut-row");
   if (!donutDiv) return;
-  const counts = { ok:0, upcoming:0, expired:0, missing:0, critical:0 };
-  items.forEach(i => { if (counts[i.compliance_status] !== undefined) counts[i.compliance_status]++; });
-  const donutData = [
-    { label:"Licença ativa", value:counts.ok, color:"#00722A" },
-    { label:"Próxima ao venc.", value:counts.upcoming, color:"#f59e0b" },
-    { label:"Licença vencida", value:counts.expired, color:"#dc2626" },
-    { label:"Sem licença", value:counts.missing, color:"#991b1b" },
-    { label:"Crítico", value:counts.critical, color:"#7f1d1d" },
-  ].filter(d => d.value > 0);
-  donutDiv.innerHTML = renderDonutSection("Status regulatório dos ativos (página atual)", donutData, "ativos");
-}
 
+  const comp = await sf(`${API}/compliance/summary`);
+  const sc = comp?.status_counts || {};
+
+  const donutData = [
+    { label: "Licença ativa", value: sc.ok || 0, color: "#43A631" },
+    { label: "Próxima ao vencimento", value: sc.upcoming || 0, color: "#FACC15" },
+    { label: "Licença vencida", value: sc.expired || 0, color: "#B52B2B" },
+    { label: "Sem licença", value: sc.missing || 0, color: "#7A1515" }
+  ];
+
+  donutDiv.innerHTML = renderDonutSection(
+    "Status regulatório",
+    donutData,
+    "total"
+  );
+}
 function exportAssets() { window.open(`${API}/assets/export?${buildAP()}`, '_blank'); }
 
 // ═══════════════════════════════════════════
