@@ -393,7 +393,29 @@ const CAT_NAME = { monitoring:"Monitoramento", effluent:"Efluentes", reporting:"
 const OPERATIONAL = ["PRODUZINDO","INJETANDO"];
 
 // ── UTILS ──
-async function sf(url, opts = {}) {
+async function sf(url,opts={}){
+  const ctrl=new AbortController();
+  const t=setTimeout(()=>ctrl.abort(),opts.timeout||18000);
+  try{
+    const r=await fetch(url,{...opts,signal:ctrl.signal});
+    clearTimeout(t);
+
+    const txt=await r.text();
+    let data=null;
+    try{data=txt?JSON.parse(txt):null;}catch(e){data=txt;}
+
+    if(!r.ok){
+      console.error("API error",r.status,url,data);
+      throw new Error(`API ${r.status}: ${url}`);
+    }
+
+    return data;
+  }catch(e){
+    clearTimeout(t);
+    console.error("fetch failed",url,e);
+    throw e;
+  }
+}
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), opts.timeout || 20000);
   try {
