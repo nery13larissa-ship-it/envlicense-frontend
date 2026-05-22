@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ENVLICENSE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnvLicense | PetroRecôncavo</title>
 
 <style>
 :root{
-  --green:#0B3D2E;
-  --green2:#116B4B;
-  --light:#F6F8F7;
-  --card:#FFFFFF;
-  --text:#17211D;
-  --muted:#66736D;
-  --line:#E2E8E5;
-  --yellow:#C69A2B;
-  --red:#A6403A;
+  --bg:#f7f9fc;
+  --surface:#ffffff;
+  --surface2:#f3f6fa;
+  --line:#e7edf5;
+  --text:#111827;
+  --muted:#8b9bb4;
+  --muted2:#607089;
+  --green:#078336;
+  --green2:#16a34a;
+  --greenSoft:#e7f6ec;
+  --blue:#2563eb;
+  --blueSoft:#eaf1ff;
+  --yellow:#f4c20d;
+  --yellowSoft:#fff8db;
+  --red:#c7352b;
+  --redSoft:#fdebea;
+  --dark:#0f172a;
+  --shadow:0 10px 28px rgba(15,23,42,.06);
+  --radius:20px;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:var(--light);
+  background:var(--bg);
   color:var(--text);
+  font-family:Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
 }
 
 .hidden{
@@ -37,8 +54,8 @@ body{
   min-height:100vh;
   display:grid;
   place-items:center;
+  background:linear-gradient(135deg,#06351f,#0b4a2a);
   padding:24px;
-  background:linear-gradient(135deg,#062418,#0B3D2E);
 }
 
 .login-card{
@@ -47,93 +64,210 @@ body{
   background:white;
   border-radius:28px;
   padding:34px;
-  box-shadow:0 30px 80px rgba(0,0,0,.25);
+  box-shadow:0 30px 90px rgba(0,0,0,.28);
 }
 
 .login-card h1{
-  margin:0 0 8px;
+  margin:0 0 6px;
   color:var(--green);
-  letter-spacing:-1px;
   font-size:38px;
+  letter-spacing:-1px;
 }
 
 .login-card p{
-  color:var(--muted);
+  color:var(--muted2);
+  margin-bottom:24px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-weight:700;
+  margin-bottom:8px;
 }
 
 input,select{
   width:100%;
-  padding:14px;
+  height:46px;
   border:1px solid var(--line);
   border-radius:14px;
-  margin-top:8px;
-  margin-bottom:16px;
+  padding:0 14px;
+  background:white;
+  outline:none;
+  color:var(--text);
 }
 
-button{
-  border:0;
+input:focus,select:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 4px rgba(7,131,54,.08);
+}
+
+.btn{
+  height:44px;
+  padding:0 18px;
   border-radius:14px;
-  padding:13px 16px;
-  font-weight:700;
-  cursor:pointer;
+  font-weight:800;
+  background:white;
+  color:var(--dark);
+  border:1px solid var(--line);
+  box-shadow:0 3px 10px rgba(15,23,42,.04);
 }
 
-.primary{
+.btn.primary{
   background:var(--green);
   color:white;
+  border-color:var(--green);
 }
 
-.secondary{
-  background:white;
-  color:var(--green);
-  border:1px solid var(--line);
+.btn.green{
+  background:var(--green2);
+  color:white;
+  border-color:var(--green2);
+}
+
+.btn.dark{
+  background:#111827;
+  color:white;
+  border-color:#111827;
 }
 
 .app{
-  min-height:100vh;
   display:grid;
-  grid-template-columns:260px 1fr;
+  grid-template-columns:290px 1fr;
+  min-height:100vh;
 }
 
 .sidebar{
   background:white;
   border-right:1px solid var(--line);
-  padding:22px;
+  position:sticky;
+  top:0;
+  height:100vh;
 }
 
-.logo{
+.brand{
+  height:92px;
+  display:flex;
+  gap:14px;
+  align-items:center;
+  padding:22px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.brand-mark{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  background:var(--green);
+  color:white;
   font-weight:900;
-  color:var(--green);
-  font-size:22px;
-  margin-bottom:28px;
+  box-shadow:0 8px 20px rgba(7,131,54,.25);
 }
 
-.nav button{
-  width:100%;
-  text-align:left;
-  margin-bottom:8px;
-  background:transparent;
+.brand-name{
+  font-weight:900;
+  letter-spacing:-.3px;
+}
+
+.brand-sub{
   color:var(--muted);
+  font-size:13px;
+  margin-top:2px;
 }
 
-.nav button.active{
-  background:#E8F4EE;
+.nav-group{
+  padding:18px 0 6px;
+}
+
+.nav-title{
+  padding:0 22px 10px;
+  color:#c0cada;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.14em;
+}
+
+.nav-item{
+  width:100%;
+  height:50px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:0 22px;
+  background:white;
+  color:#8fa0b8;
+  font-weight:700;
+  text-align:left;
+  position:relative;
+}
+
+.nav-item svg{
+  width:20px;
+  height:20px;
+}
+
+.nav-item.active{
+  background:#e9f7ed;
   color:var(--green);
+}
+
+.nav-item.active:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:10px;
+  bottom:10px;
+  width:5px;
+  border-radius:0 8px 8px 0;
+  background:var(--green);
 }
 
 .main{
-  padding:26px;
+  min-width:0;
 }
 
-.top{
+.topbar{
+  height:70px;
+  background:white;
+  border-bottom:1px solid var(--line);
   display:flex;
-  gap:12px;
-  margin-bottom:22px;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 38px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.page-title-small{
+  font-size:16px;
+  font-weight:900;
 }
 
 .search{
-  flex:1;
-  margin:0;
+  width:350px;
+  position:relative;
+}
+
+.search input{
+  padding-left:42px;
+  box-shadow:var(--shadow);
+}
+
+.search span{
+  position:absolute;
+  left:15px;
+  top:13px;
+  color:var(--muted);
+}
+
+.content{
+  padding:38px;
 }
 
 .page{
@@ -144,170 +278,445 @@ button{
   display:block;
 }
 
-h2{
-  margin:0 0 6px;
-  font-size:30px;
-  color:var(--green);
+h1{
+  font-size:34px;
+  line-height:1.05;
+  margin:0;
+  letter-spacing:-1.2px;
 }
 
 .subtitle{
-  color:var(--muted);
+  color:#8b9bb4;
+  margin:12px 0 28px;
+  font-size:17px;
+}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:16px;
   margin-bottom:22px;
 }
 
-.grid{
-  display:grid;
-  gap:16px;
-}
-
-.kpis{
-  grid-template-columns:repeat(4,1fr);
-}
-
-.card{
-  background:var(--card);
+.kpi{
+  min-height:164px;
+  background:white;
   border:1px solid var(--line);
-  border-radius:22px;
-  padding:20px;
-  box-shadow:0 8px 24px rgba(0,0,0,.04);
+  border-radius:var(--radius);
+  padding:26px;
+  box-shadow:var(--shadow);
 }
 
 .kpi-label{
-  color:var(--muted);
-  font-size:13px;
-  font-weight:700;
+  color:#9aabc2;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-weight:900;
 }
 
 .kpi-value{
-  font-size:28px;
+  font-size:34px;
+  font-weight:950;
+  margin-top:12px;
+  color:#0f172a;
+  letter-spacing:-1px;
+}
+
+.kpi-value.green{color:var(--green)}
+.kpi-value.red{color:var(--red)}
+.kpi-note{
+  color:#8b9bb4;
+  margin-top:8px;
+  line-height:1.4;
+}
+
+.card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:var(--shadow);
+  margin-bottom:22px;
+}
+
+.card-title{
+  color:#9aabc2;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
   font-weight:900;
-  margin-top:10px;
-  color:var(--green);
+  margin-bottom:18px;
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.three{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.chip{
+  height:40px;
+  padding:0 18px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:white;
+  color:#40516a;
+  font-weight:800;
+}
+
+.chip.active{
+  background:#111827;
+  color:white;
+}
+
+.donut-wrap{
+  display:grid;
+  grid-template-columns:170px 1fr;
+  align-items:center;
+  gap:28px;
+}
+
+.donut{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:conic-gradient(var(--green) 0 25%, var(--yellow) 25% 58%, #9aa0a6 58% 89%, #48a23f 89% 100%);
+  display:grid;
+  place-items:center;
+}
+
+.donut-inner{
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  background:white;
+  display:grid;
+  place-items:center;
+  text-align:center;
+}
+
+.donut-number{
+  font-size:28px;
+  font-weight:950;
+}
+
+.legend{
+  display:grid;
+  gap:18px;
+}
+
+.legend-row{
+  display:grid;
+  grid-template-columns:12px 1fr;
+  gap:12px;
+  align-items:start;
+  color:#485873;
+}
+
+.dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  margin-top:5px;
+}
+
+.dot.green{background:var(--green)}
+.dot.blue{background:var(--blue)}
+.dot.yellow{background:var(--yellow)}
+.dot.gray{background:#9aa0a6}
+.dot.red{background:var(--red)}
+
+.status-card{
+  background:#f9fbfe;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:22px;
+}
+
+.status-card h3{
+  margin:0 0 8px;
+  font-size:19px;
+}
+
+.status-big{
+  font-size:34px;
+  font-weight:950;
+  margin:6px 0;
+}
+
+.status-line{
+  color:#607089;
+  line-height:1.55;
+}
+
+.progress-line{
+  height:8px;
+  background:#edf2f7;
+  border-radius:999px;
+  overflow:hidden;
+  margin:16px 0;
+}
+
+.progress-line span{
+  display:block;
+  height:100%;
+  background:var(--green);
+  border-radius:999px;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+}
+
+.table th{
+  text-align:left;
+  padding:16px 18px;
+  color:#9aabc2;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  background:#fbfcfe;
+}
+
+.table td{
+  padding:18px;
+  border-top:1px solid var(--line);
+  color:#334155;
+  vertical-align:top;
 }
 
 .badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:28px;
+  padding:0 12px;
+  border-radius:8px;
   font-size:12px;
-  font-weight:700;
-}
-
-.ok{
-  background:#E8F4EE;
-  color:var(--green);
-}
-
-.warn{
-  background:#FFF4D8;
-  color:#8A640B;
-}
-
-.risk{
-  background:#F8EAEA;
-  color:var(--red);
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  background:white;
-}
-
-th,td{
-  padding:13px;
-  border-bottom:1px solid var(--line);
-  text-align:left;
-  font-size:14px;
-}
-
-th{
-  color:var(--muted);
-  font-size:12px;
+  font-weight:900;
   text-transform:uppercase;
 }
 
-.actions{
+.badge.green{
+  background:#dff8e8;
+  color:var(--green);
+}
+
+.badge.blue{
+  background:#eaf1ff;
+  color:var(--blue);
+}
+
+.badge.yellow{
+  background:#fff6d5;
+  color:#a66d00;
+}
+
+.badge.red{
+  background:#fdebea;
+  color:var(--red);
+}
+
+.condition-card{
+  border:1px solid var(--line);
+  border-left:5px solid var(--green2);
+  background:white;
+  border-radius:18px;
+  padding:18px 22px;
+  margin-bottom:14px;
+}
+
+.condition-head{
   display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+}
+
+.condition-text{
+  color:#1e293b;
+  line-height:1.55;
+  margin-top:12px;
+}
+
+.chart{
+  height:250px;
+  background:#f9fbfe;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:24px;
+  display:flex;
+  align-items:end;
+  gap:34px;
+}
+
+.bar-group{
+  flex:1;
+  display:flex;
+  align-items:end;
+  justify-content:center;
   gap:8px;
-  flex-wrap:wrap;
+  height:190px;
+  position:relative;
+}
+
+.bar{
+  width:34px;
+  min-height:4px;
+  border-radius:8px 8px 0 0;
+}
+
+.bar.budget{
+  border:2px dashed var(--blue);
+  background:transparent;
+}
+
+.bar.real{
+  background:var(--green);
+}
+
+.bar.red{
+  background:var(--red);
+}
+
+.bar-label{
+  position:absolute;
+  bottom:-28px;
+  font-size:12px;
+  color:#c0cada;
+}
+
+.upload-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.upload-box{
+  height:250px;
+  border:2px dashed #dbe5f0;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  background:#fbfdff;
+}
+
+.upload-box h3{
+  margin:12px 0 6px;
+}
+
+.upload-box p{
+  color:#607089;
+  margin:0 0 16px;
+}
+
+.file-input{
+  display:none;
 }
 
 .jey{
   position:fixed;
-  right:24px;
-  bottom:24px;
-  width:62px;
-  height:62px;
-  border-radius:22px;
+  right:28px;
+  bottom:28px;
+  width:64px;
+  height:64px;
+  border-radius:24px;
   background:var(--green);
   color:white;
   font-size:24px;
-  box-shadow:0 18px 40px rgba(11,61,46,.35);
+  box-shadow:0 18px 50px rgba(7,131,54,.28);
+  z-index:50;
 }
 
 .jey-panel{
   position:fixed;
-  right:24px;
-  bottom:96px;
-  width:380px;
+  right:28px;
+  bottom:105px;
+  width:390px;
   max-width:calc(100vw - 40px);
   background:white;
   border:1px solid var(--line);
   border-radius:24px;
-  padding:18px;
-  box-shadow:0 24px 70px rgba(0,0,0,.2);
+  padding:20px;
+  box-shadow:0 25px 80px rgba(15,23,42,.2);
   display:none;
+  z-index:60;
 }
 
 .jey-panel.open{
   display:block;
 }
 
-.statusbar{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:12px;
+.jey-answer{
+  background:#f6f8fb;
+  border-radius:16px;
+  padding:14px;
+  color:#334155;
+  line-height:1.5;
+  margin:12px 0;
 }
 
-@media(max-width:900px){
-
+@media(max-width:1000px){
   .app{
-    grid-template-columns:1fr;
+    grid-template-columns:74px 1fr;
+  }
+
+  .brand div:not(.brand-mark),
+  .nav-title,
+  .nav-item span{
+    display:none;
   }
 
   .sidebar{
-    display:none;
+    width:74px;
   }
 
-  .kpis{
+  .brand{
+    padding:18px;
+    justify-content:center;
+  }
+
+  .nav-item{
+    justify-content:center;
+    padding:0;
+  }
+
+  .content{
+    padding:24px;
+  }
+
+  .kpi-grid{
     grid-template-columns:1fr;
   }
 
-  .main{
-    padding:18px;
+  .two,.three,.upload-grid{
+    grid-template-columns:1fr;
   }
 
-  .top{
-    flex-direction:column;
+  .topbar{
+    padding:0 18px;
   }
 
-  table,thead,tbody,tr,td,th{
-    display:block;
+  .search{
+    width:260px;
   }
-
-  thead{
-    display:none;
-  }
-
-  tr{
-    border:1px solid var(--line);
-    border-radius:18px;
-    margin-bottom:12px;
-    padding:8px;
-    background:white;
-  }
-
 }
 </style>
 </head>
@@ -315,853 +724,625 @@ th{
 <body>
 
 <section id="login" class="login">
-
   <div class="login-card">
+    <h1>EnvLicense</h1>
+    <p>Gestão executiva de licenças, condicionantes, ativos e passivo regulatório.</p>
 
-    <h1>ENVLICENSE</h1>
-
-    <p>
-      Cockpit executivo regulatório, ambiental e financeiro.
-    </p>
-
-    <label>Matrícula</label>
-    <input id="matricula" value="1234"/>
-
-    <label>Senha</label>
-    <input id="senha" type="password" value="123"/>
-
-    <button class="primary" style="width:100%" onclick="login()">
-      Entrar
-    </button>
-
-    <p id="loginError" style="color:#A6403A"></p>
-
-    <div class="statusbar">
-      Sistema MVP com login local habilitado.
+    <div class="field">
+      <label>Matrícula</label>
+      <input id="matricula" value="1234">
     </div>
 
-  </div>
+    <div class="field">
+      <label>Senha</label>
+      <input id="senha" type="password" value="123">
+    </div>
 
+    <button class="btn primary" style="width:100%" onclick="login()">Entrar</button>
+    <p id="loginError" style="color:var(--red);font-weight:700"></p>
+  </div>
 </section>
 
 <section id="app" class="app hidden">
 
   <aside class="sidebar">
-
-    <div class="logo">
-      ENVLICENSE
+    <div class="brand">
+      <div class="brand-mark">PR</div>
+      <div>
+        <div class="brand-name">EnvLicense</div>
+        <div class="brand-sub">PetroRecôncavo</div>
+      </div>
     </div>
 
-    <div class="nav">
-
-      <button class="active" onclick="openPage('executiva',this)">
-        Visão Executiva
-      </button>
-
-      <button onclick="openPage('licencas',this)">
-        Licenças
-      </button>
-
-      <button onclick="openPage('condicionantes',this)">
-        Condicionantes
-      </button>
-
-      <button onclick="openPage('documentos',this)">
-        Central Documental
-      </button>
-
-      <button onclick="openPage('planejamento',this)">
-        Planejamento
-      </button>
-
-      <button onclick="openPage('custos',this)">
-        Custos
-      </button>
-
+    <div class="nav-group">
+      <div class="nav-title">VISÃO GERAL</div>
+      <button class="nav-item active" onclick="openPage('executiva',this)">▦ <span>Visão executiva</span></button>
     </div>
 
+    <div class="nav-group">
+      <div class="nav-title">DOCUMENTOS</div>
+      <button class="nav-item" onclick="openPage('documentos',this)">□ <span>Central documental</span></button>
+      <button class="nav-item" onclick="openPage('ativos',this)">☼ <span>Ativos</span></button>
+      <button class="nav-item" onclick="openPage('condicionantes',this)">☑ <span>Condicionantes</span></button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-title">FINANCEIRO</div>
+      <button class="nav-item" onclick="openPage('financeiro',this)">▥ <span>Gestão financeira</span></button>
+    </div>
   </aside>
 
   <main class="main">
-
-    <div class="top">
-
-      <input
-        id="searchInput"
-        class="search"
-        placeholder="Busque por licenças, condicionantes, Miranga..."
-      />
-
-      <button class="secondary" onclick="search()">
-        Buscar
-      </button>
-
-      <button class="secondary" onclick="startVoice()">
-        🎙
-      </button>
-
-    </div>
-
-    <section id="executiva" class="page active">
-
-      <h2>Visão Executiva</h2>
-
-      <div class="subtitle">
-        Cockpit de conformidade e passivo regulatório.
+    <header class="topbar">
+      <div class="page-title-small" id="topTitle">Visão executiva</div>
+      <div class="search">
+        <span>⌕</span>
+        <input id="globalSearch" placeholder="Buscar ativos, licenças, campos..." onkeydown="if(event.key==='Enter') smartSearch()">
       </div>
+    </header>
 
-      <div id="kpis" class="grid kpis"></div>
+    <div class="content">
 
-      <div class="card" style="margin-top:16px">
-
-        <h3>Resumo Executivo</h3>
-
-        <div id="executiveSummary"></div>
-
-      </div>
-
-    </section>
-
-    <section id="licencas" class="page">
-
-      <h2>Licenças</h2>
-
-      <div class="subtitle">
-        Vencimentos, status e alertas regulatórios.
-      </div>
-
-      <div class="card">
-
-        <table>
-
-          <thead>
-            <tr>
-              <th>Número</th>
-              <th>Tipo</th>
-              <th>Órgão</th>
-              <th>Campo</th>
-              <th>Vencimento</th>
-              <th>Status</th>
-              <th>Alerta</th>
-            </tr>
-          </thead>
-
-          <tbody id="licensesTable"></tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-    <section id="condicionantes" class="page">
-
-      <h2>Condicionantes</h2>
-
-      <div class="subtitle">
-        Gestão operacional simples e intuitiva.
-      </div>
-
-      <div class="card">
-
-        <div class="actions" style="margin-bottom:14px">
-
-          <button class="primary" onclick="completeSelected()">
-            Baixar selecionadas
-          </button>
-
+      <section id="executiva" class="page active">
+        <div class="kpi-grid">
+          <div class="kpi">
+            <div class="kpi-label">Ativos</div>
+            <div class="kpi-value">1876</div>
+            <div class="kpi-note">Base cadastrada</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Condicionantes</div>
+            <div class="kpi-value">9</div>
+            <div class="kpi-note">Conformidade monitorada</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Em produção</div>
+            <div class="kpi-value green">648</div>
+            <div class="kpi-note"><span style="color:var(--red)">647 sem cobertura</span></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Em injeção</div>
+            <div class="kpi-value" style="color:var(--blue)">165</div>
+            <div class="kpi-note"><span style="color:var(--red)">163 sem cobertura</span></div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">Operação protegida</div>
+            <div class="kpi-value red">0%</div>
+            <div class="kpi-note">3/813 ativos operacionais cobertos</div>
+          </div>
         </div>
 
-        <table>
+        <div class="card">
+          <div class="card-title">Indicador de conformidade de condicionantes</div>
+          <div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start">
+            <div>
+              <div class="kpi-value red" id="condCompliance">22%</div>
+              <div class="kpi-note">Cálculo simples: concluídas / total</div>
+            </div>
+            <span class="badge yellow">Em atenção</span>
+          </div>
+          <div class="progress-line"><span id="condProgress" style="width:22%"></span></div>
+          <div class="kpi-note"><b id="doneCount">2</b>/9 concluídas · poços ativos: 22%</div>
+        </div>
 
-          <thead>
-            <tr>
-              <th></th>
-              <th>Tipo</th>
-              <th>Campo</th>
-              <th>Descrição</th>
-              <th>Prazo</th>
-              <th>Status</th>
-              <th>Custo</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
+        <div class="two">
+          <div class="card">
+            <div class="card-title">Ativos licenciados por campo</div>
+            <div id="fieldLicense"></div>
+          </div>
 
-          <tbody id="conditionsTable"></tbody>
+          <div class="card">
+            <div class="card-title">Condicionantes por campo</div>
+            <div id="fieldConditions"></div>
+          </div>
+        </div>
+      </section>
 
-        </table>
+      <section id="documentos" class="page">
+        <h1>Central documental</h1>
+        <div class="subtitle">Upload de licenças e boletos com extração assistida</div>
 
-      </div>
+        <div class="upload-grid">
+          <label class="upload-box">
+            <input class="file-input" type="file" onchange="uploadDoc(this,'licença')">
+            <div>
+              <div style="font-size:36px">📄</div>
+              <h3>Upload de Licença</h3>
+              <p>PDF da licença ambiental</p>
+              <button class="btn primary" type="button">Selecionar PDF</button>
+            </div>
+          </label>
 
-    </section>
+          <label class="upload-box">
+            <input class="file-input" type="file" onchange="uploadDoc(this,'boleto')">
+            <div>
+              <div style="font-size:36px">🧾</div>
+              <h3>Upload de Boleto</h3>
+              <p>PDF do boleto de taxa</p>
+              <button class="btn green" type="button">Selecionar Boleto</button>
+            </div>
+          </label>
+        </div>
 
-    <section id="documentos" class="page">
+        <div class="card" style="margin-top:28px">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Tipo</th>
+                <th>Órgão</th>
+                <th>Validade</th>
+                <th>Ativo(s)</th>
+                <th>Cond.</th>
+                <th>Custo</th>
+                <th>PDF</th>
+              </tr>
+            </thead>
+            <tbody id="docsTable"></tbody>
+          </table>
+        </div>
+      </section>
 
-      <h2>Central Documental</h2>
+      <section id="ativos" class="page">
+        <h1>Ativos</h1>
+        <div class="subtitle">Status regulatório dos ativos cadastrados</div>
 
-      <div class="subtitle">
-        Upload de documentos e licenças.
-      </div>
+        <div class="filters">
+          <input style="max-width:240px" placeholder="Código ou campo...">
+          <select style="max-width:220px"><option>Órgão: todos</option><option>INEMA</option></select>
+          <select style="max-width:420px"><option>Situação: todas</option><option>Produzindo</option><option>Injetando</option></select>
+          <select style="max-width:220px"><option>Status: todos</option><option>Licença ativa</option><option>Sem licença</option></select>
+          <button class="btn primary">Filtrar</button>
+          <button class="btn">CSV</button>
+        </div>
 
-      <div class="card">
+        <div class="card">
+          <div class="two">
+            <div>
+              <div class="card-title">Status regulatório</div>
+              <div class="donut-wrap">
+                <div class="donut" style="background:conic-gradient(#9b1117 0 100%)">
+                  <div class="donut-inner">
+                    <div>
+                      <div class="donut-number">1876</div>
+                      <div class="kpi-label">Total</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="legend">
+                  <div class="legend-row"><span class="dot green"></span><div>Licença ativa<br><span class="muted">3 · 0%</span></div></div>
+                  <div class="legend-row"><span class="dot yellow"></span><div>Próxima ao vencimento<br><span class="muted">0 · 0%</span></div></div>
+                  <div class="legend-row"><span class="dot red"></span><div>Licença vencida<br><span class="muted">0 · 0%</span></div></div>
+                  <div class="legend-row"><span class="dot red" style="background:#8b1115"></span><div>Sem licença<br><span class="muted">1873 · 100%</span></div></div>
+                </div>
+              </div>
+            </div>
 
-        <input type="file" id="fileInput"/>
+            <div>
+              <div class="card-title">Status de licença dos poços ativos</div>
+              <div class="two">
+                <div class="status-card">
+                  <h3><span class="dot green"></span> Produtores</h3>
+                  <div class="status-big">648</div>
+                  <div class="status-line">Licença ativa: <b style="color:var(--green)">1</b></div>
+                  <div class="status-line">Sem licença: <b style="color:var(--red)">647</b></div>
+                  <div class="status-line">Conformidade: <b style="color:var(--red)">0%</b></div>
+                </div>
 
-        <button class="primary" onclick="upload()">
-          Processar Documento
-        </button>
+                <div class="status-card">
+                  <h3><span class="dot blue"></span> Injetores</h3>
+                  <div class="status-big">165</div>
+                  <div class="status-line">Licença ativa: <b style="color:var(--green)">2</b></div>
+                  <div class="status-line">Sem licença: <b style="color:var(--red)">163</b></div>
+                  <div class="status-line">Conformidade: <b style="color:var(--red)">1%</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <pre id="uploadResult"></pre>
+      <section id="condicionantes" class="page">
+        <div class="filters">
+          <button class="chip active">Todas</button>
+          <button class="chip">Vencidas</button>
+          <button class="chip">Próximos 30d</button>
+          <button class="chip">Ativos operacionais</button>
+          <button class="chip">Pendentes</button>
+          <button class="chip">Concluídas</button>
+          <button class="btn" onclick="exportCSV()">Exportar XLSX</button>
+        </div>
 
-      </div>
+        <div class="card">
+          <div class="two">
+            <div>
+              <div class="card-title">Condicionantes por categoria</div>
+              <div class="donut-wrap">
+                <div class="donut">
+                  <div class="donut-inner">
+                    <div>
+                      <div class="donut-number">9</div>
+                      <div class="kpi-label">Total</div>
+                    </div>
+                  </div>
+                </div>
 
-    </section>
+                <div class="legend">
+                  <div class="legend-row"><span class="dot blue" style="background:#137c98"></span><div>Monitoramento<br><span class="muted">2 · 22%</span></div></div>
+                  <div class="legend-row"><span class="dot green"></span><div>Relatórios<br><span class="muted">0 · 0%</span></div></div>
+                  <div class="legend-row"><span class="dot yellow"></span><div>Infraestrutura<br><span class="muted">3 · 33%</span></div></div>
+                  <div class="legend-row"><span class="dot gray"></span><div>Outros<br><span class="muted">3 · 33%</span></div></div>
+                  <div class="legend-row"><span class="dot green" style="background:#48a23f"></span><div>Efluentes<br><span class="muted">1 · 11%</span></div></div>
+                </div>
+              </div>
+            </div>
 
-    <section id="planejamento" class="page">
+            <div>
+              <div class="card-title">Condicionantes vinculadas a poços ativos</div>
+              <div class="two">
+                <div class="status-card">
+                  <h3><span class="dot green"></span> Produtores</h3>
+                  <div class="status-big">9</div>
+                  <div class="status-line">Concluídas: <b style="color:var(--green)">2</b></div>
+                  <div class="status-line">Pendentes: <b style="color:#f59e0b">7</b></div>
+                  <div class="status-line">Vencidas: <b style="color:var(--red)">0</b></div>
+                  <div class="status-line">Atendimento: <b style="color:var(--red)">22%</b></div>
+                </div>
 
-      <h2>Planejamento Regulatório</h2>
+                <div class="status-card">
+                  <h3><span class="dot blue"></span> Injetores</h3>
+                  <div class="status-big">18</div>
+                  <div class="status-line">Concluídas: <b style="color:var(--green)">4</b></div>
+                  <div class="status-line">Pendentes: <b style="color:#f59e0b">14</b></div>
+                  <div class="status-line">Vencidas: <b style="color:var(--red)">0</b></div>
+                  <div class="status-line">Atendimento: <b style="color:var(--red)">22%</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="subtitle">
-        Simulador de provisão e passivo regulatório.
-      </div>
+        <div id="conditionList"></div>
+      </section>
 
-      <div class="card">
+      <section id="financeiro" class="page">
+        <h1>Gestão financeira regulatória</h1>
+        <div class="subtitle">Passivo mapeado, projeção de dissolução e cenários de investimento</div>
 
-        <label>Passivo Total</label>
-        <input id="passivo" type="number" value="100000"/>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-label">Realizado</div><div class="kpi-value">R$ 18</div><div class="kpi-note">Executado no período</div></div>
+          <div class="kpi"><div class="kpi-label">Saldo vs budget</div><div class="kpi-value green">R$ 102</div><div class="kpi-note">Dentro do budget</div></div>
+          <div class="kpi"><div class="kpi-label">Passivo mapeado</div><div class="kpi-value">R$ 147</div><div class="kpi-note">Base da simulação</div></div>
+          <div class="kpi"><div class="kpi-label">Passivo operacional</div><div class="kpi-value red">R$ 147</div><div class="kpi-note">Vinculado a poços ativos</div></div>
+          <div class="kpi"><div class="kpi-label">Cap. anual histórica</div><div class="kpi-value">R$ 4</div><div class="kpi-note">Média dos últimos 24 meses</div></div>
+        </div>
 
-        <label>Horizonte em anos</label>
-        <input id="anos" type="number" value="5"/>
+        <div class="card">
+          <div class="card-title">Curva financeira mensal</div>
+          <div class="chart" id="budgetChart"></div>
+        </div>
 
-        <button class="primary" onclick="simulate()">
-          Simular
-        </button>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+            <div>
+              <div class="card-title">Simulador de dissolução do passivo</div>
+              <div class="kpi-note">Selecione o horizonte para comparar cenários de investimento.</div>
+            </div>
+            <div class="filters" style="margin:0">
+              <button class="chip" onclick="setYears(1)">1 ano</button>
+              <button class="chip" onclick="setYears(2)">2 anos</button>
+              <button class="chip" onclick="setYears(3)">3 anos</button>
+              <button class="chip" onclick="setYears(4)">4 anos</button>
+              <button class="chip active" onclick="setYears(5)">5 anos</button>
+            </div>
+          </div>
 
-        <div id="simulationResult" style="margin-top:18px"></div>
+          <div class="three" style="margin-top:24px" id="scenarioCards"></div>
+        </div>
+      </section>
 
-      </div>
-
-    </section>
-
-    <section id="custos" class="page">
-
-      <h2>Custos Regulatórios</h2>
-
-      <div class="subtitle">
-        Gestão financeira regulatória.
-      </div>
-
-      <div class="card">
-
-        <p>
-          Área preparada para integração futura com Supabase.
-        </p>
-
-      </div>
-
-    </section>
-
+    </div>
   </main>
-
 </section>
 
-<button class="jey hidden" id="jeyBtn" onclick="toggleJey()">
-  ✦
-</button>
+<button class="jey hidden" id="jeyBtn" onclick="toggleJey()">✦</button>
 
-<div id="jeyPanel" class="jey-panel">
-
-  <h3>Jey</h3>
-
-  <p id="jeyAnswer">
-    Olá, sou a Jey. Como posso ajudar?
-  </p>
-
-  <input id="jeyInput" placeholder="Pergunte algo..."/>
-
-  <button
-    class="primary"
-    onclick="askJey()"
-    style="width:100%;margin-top:10px"
-  >
-    Perguntar
-  </button>
-
+<div class="jey-panel" id="jeyPanel">
+  <h3 style="margin:0">Jey</h3>
+  <div class="jey-answer" id="jeyAnswer">Olá, sou a Jey. Posso buscar licenças, condicionantes, ativos e cenários financeiros.</div>
+  <input id="jeyInput" placeholder="Pergunte algo ou diga Oi Jey..." onkeydown="if(event.key==='Enter') askJey()">
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button class="btn primary" style="flex:1" onclick="askJey()">Perguntar</button>
+    <button class="btn" onclick="startVoice()">🎙</button>
+  </div>
 </div>
 
 <script>
+let years = 5;
 
-const executive = {
-  conformidade_geral:33.3,
-  operacao_protegida:0,
-  licencas_vencidas:1,
-  licencas_vencendo:1,
-  condicionantes_totais:3,
-  condicionantes_atendidas:1,
-  condicionantes_pendentes:2,
-  passivo_regulatorio_total:85000,
-  cenario:"Exposição Regulatória"
-};
-
-let licenses = [
+const docs = [
   {
-    numero:"LIC-001",
-    tipo:"LO",
-    orgao_ambiental:"INEMA",
-    campo:"Miranga",
-    data_vencimento:"2026-08-01",
-    status:"Ativa",
-    alerta:"-"
-  },
-  {
-    numero:"LIC-002",
-    tipo:"LO",
-    orgao_ambiental:"INEMA",
-    campo:"Miranga",
-    data_vencimento:"2025-01-01",
-    status:"Vencida",
-    alerta:"Licença vencida. Requer ação."
+    numero:"29.470",
+    tipo:"LP",
+    orgao:"INEMA",
+    validade:"2028-09-20",
+    ativos:"1-ALV-2-BA, 1-BB-3-BA, 1-BR-1-RN",
+    cond:9,
+    custo:"R$ 10"
   }
 ];
 
 let conditions = [
-  {
-    id:1,
-    tipo:"Monitoramento",
-    campo:"Miranga",
-    descricao:"Monitoramento ambiental semestral.",
-    prazo:"2026-07-01",
-    status:"Pendente",
-    custo:50000
-  },
-  {
-    id:2,
-    tipo:"Relatório",
-    campo:"Miranga",
-    descricao:"Relatório anual.",
-    prazo:"2026-04-01",
-    status:"Atendida",
-    custo:15000
-  },
-  {
-    id:3,
-    tipo:"Resíduos",
-    campo:"Miranga",
-    descricao:"Gestão de resíduos.",
-    prazo:"2026-09-15",
-    status:"Pendente",
-    custo:35000
-  }
+  {id:1,tipo:"INFRAESTRUTURA",status:"Concluída",lic:"29.470",orgao:"INEMA",campo:"BIRIBA",texto:"Apresentar, quando do requerimento da LI, o Projeto Básico da implantação do empreendimento, com cronograma físico, contemplando traçado atualizado e localização."},
+  {id:2,tipo:"MONITORAMENTO",status:"Pendente",lic:"29.470",orgao:"INEMA",campo:"BREJINHO RN",texto:"Apresentar relatório de monitoramento ambiental conforme frequência definida no processo de licenciamento."},
+  {id:3,tipo:"EFLUENTES",status:"Pendente",lic:"29.470",orgao:"INEMA",campo:"TIÊ",texto:"Manter evidências de controle de efluentes e comprovações de destinação adequada."}
 ];
 
-function money(v){
-  return Number(v).toLocaleString(
-    "pt-BR",
-    {
-      style:"currency",
-      currency:"BRL"
-    }
-  );
-}
-
 function login(){
+  const m = document.getElementById("matricula").value.trim();
+  const s = document.getElementById("senha").value.trim();
 
-  const matricula =
-    document.getElementById("matricula").value;
-
-  const senha =
-    document.getElementById("senha").value;
-
-  if(
-    matricula === "1234"
-    &&
-    senha === "123"
-  ){
-
-    document
-      .getElementById("login")
-      .classList
-      .add("hidden");
-
-    document
-      .getElementById("app")
-      .classList
-      .remove("hidden");
-
-    document
-      .getElementById("jeyBtn")
-      .classList
-      .remove("hidden");
-
-    loadAll();
-
+  if(m === "1234" && s === "123"){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("jeyBtn").classList.remove("hidden");
+    boot();
     return;
-
   }
 
-  document
-    .getElementById("loginError")
-    .innerText =
-    "Login inválido.";
-
+  document.getElementById("loginError").innerText = "Login inválido.";
 }
 
 function openPage(id,btn){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 
-  document
-    .querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
 
-  document
-    .getElementById(id)
-    .classList
-    .add("active");
-
-  document
-    .querySelectorAll(".nav button")
-    .forEach(b=>b.classList.remove("active"));
-
-  if(btn){
-    btn.classList.add("active");
-  }
-
+  const titles = {
+    executiva:"Visão executiva",
+    documentos:"Central documental",
+    ativos:"Ativos",
+    condicionantes:"Condicionantes",
+    financeiro:"Gestão financeira regulatória"
+  };
+  document.getElementById("topTitle").innerText = titles[id] || "EnvLicense";
 }
 
-function loadAll(){
-
-  loadExecutive();
-  loadLicenses();
-  loadConditions();
-
+function boot(){
+  renderDocs();
+  renderConditions();
+  renderFieldBars();
+  renderBudgetChart();
+  renderScenarios();
 }
 
-function loadExecutive(){
+function renderDocs(){
+  document.getElementById("docsTable").innerHTML = docs.map(d=>`
+    <tr>
+      <td><b>${d.numero}</b></td>
+      <td><span class="badge blue">${d.tipo}</span></td>
+      <td>${d.orgao}</td>
+      <td>${d.validade}</td>
+      <td>${d.ativos}</td>
+      <td>${d.cond}</td>
+      <td>${d.custo}</td>
+      <td><span class="badge">PDF</span></td>
+    </tr>
+  `).join("");
+}
 
-  document
-    .getElementById("kpis")
-    .innerHTML = `
-      <div class="card">
-        <div class="kpi-label">Conformidade Geral</div>
-        <div class="kpi-value">
-          ${executive.conformidade_geral}%
+function renderConditions(){
+  document.getElementById("conditionList").innerHTML = `
+    <div class="card" style="padding:16px 20px">
+      <b>9</b> condicionantes · <b style="color:var(--green)">2</b> concluídas · <b style="color:#f59e0b">7</b> pendentes · <b style="color:var(--red)">0</b> vencidas
+    </div>
+    ${conditions.map(c=>`
+      <div class="condition-card">
+        <div class="condition-head">
+          <div>
+            <span class="badge ${c.tipo === "INFRAESTRUTURA" ? "yellow" : c.tipo === "EFLUENTES" ? "green" : "blue"}">${c.tipo}</span>
+            <span class="badge ${c.status === "Concluída" ? "green" : "yellow"}">${c.status}</span>
+            <span style="color:#8b9bb4;font-weight:700">Lic. ${c.lic} · ${c.orgao} · ${c.campo}</span>
+          </div>
+          <button class="btn" onclick="toggleCondition(${c.id})">Baixar</button>
         </div>
+        <div class="condition-text">${c.texto}</div>
       </div>
+    `).join("")}
+  `;
+}
 
-      <div class="card">
-        <div class="kpi-label">Operação Protegida</div>
-        <div class="kpi-value">
-          ${executive.operacao_protegida}%
-        </div>
+function toggleCondition(id){
+  conditions = conditions.map(c => c.id === id ? {...c,status:"Concluída"} : c);
+  renderConditions();
+  updateCompliance();
+}
+
+function updateCompliance(){
+  const done = conditions.filter(c=>c.status==="Concluída").length + 1;
+  const pct = Math.round((done / 9) * 100);
+  document.getElementById("condCompliance").innerText = pct + "%";
+  document.getElementById("condProgress").style.width = pct + "%";
+  document.getElementById("doneCount").innerText = done;
+}
+
+function renderFieldBars(){
+  const lic = [
+    ["MIRANGA","0/550","0%"],
+    ["CASSARONGONGO","0/239","0%"],
+    ["LORENA","0/90","0%"],
+    ["BREJINHO RN","1/79","1%"],
+    ["LIVRAMENTO","0/68","0%"],
+    ["MATA DE SÃO JOÃO","0/65","0%"],
+    ["REMANSO","0/56","0%"]
+  ];
+
+  const cond = [
+    ["TIÊ","9/9"],
+    ["BREJINHO RN","9/9"],
+    ["BIRIBA","9/9"]
+  ];
+
+  document.getElementById("fieldLicense").innerHTML = lic.map(x=>`
+    <div style="display:grid;grid-template-columns:140px 1fr 90px;gap:12px;align-items:center;margin:16px 0">
+      <div>${x[0]}</div>
+      <div class="progress-line" style="margin:0"><span style="width:${x[2]}"></span></div>
+      <div>${x[1]} · ${x[2]}</div>
+    </div>
+  `).join("");
+
+  document.getElementById("fieldConditions").innerHTML = cond.map(x=>`
+    <div style="display:grid;grid-template-columns:140px 1fr 60px;gap:12px;align-items:center;margin:16px 0">
+      <div>${x[0]}</div>
+      <div class="progress-line" style="margin:0"><span style="width:100%"></span></div>
+      <div>${x[1]}</div>
+    </div>
+  `).join("");
+}
+
+function renderBudgetChart(){
+  const months = ["Nov/25","Dec/25","Jan/26","Feb/26","Mar/26","May/26","Jun/26","Jul/26","Aug/26","Sep/26","Oct/26","Nov/26"];
+  document.getElementById("budgetChart").innerHTML = months.map((m,i)=>`
+    <div class="bar-group">
+      <div class="bar budget" style="height:160px"></div>
+      <div class="bar ${i===5 ? "real" : "real"}" style="height:${i===5 ? 128 : 4}px"></div>
+      <div class="bar-label">${m}</div>
+    </div>
+  `).join("");
+}
+
+function setYears(v){
+  years = v;
+  document.querySelectorAll("#financeiro .chip").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+  renderScenarios();
+}
+
+function renderScenarios(){
+  const passivo = 147;
+  const atual = 20;
+  const annual = Math.round(passivo / years);
+
+  document.getElementById("scenarioCards").innerHTML = `
+    <div class="status-card">
+      <div class="card-title" style="color:var(--blue)">Cenário atual</div>
+      <h3>Trajetória atual</h3>
+      <p class="status-line">Mantém o ritmo histórico de execução.</p>
+      <div class="status-card" style="background:white;margin-top:14px">
+        <div class="card-title">Investimento total (${years}a)</div>
+        <div class="status-big">R$ ${atual}</div>
       </div>
-
-      <div class="card">
-        <div class="kpi-label">Licenças Vencidas</div>
-        <div class="kpi-value">
-          ${executive.licencas_vencidas}
-        </div>
+      <div class="status-card" style="background:white;margin-top:10px">
+        <div class="card-title">Passivo residual final</div>
+        <div class="status-big" style="color:var(--red)">R$ ${passivo-atual}</div>
       </div>
+    </div>
 
-      <div class="card">
-        <div class="kpi-label">Passivo Regulatório</div>
-        <div class="kpi-value">
-          ${money(executive.passivo_regulatorio_total)}
-        </div>
+    <div class="status-card">
+      <div class="card-title" style="color:#65a30d">Continuidade operacional</div>
+      <h3>Operação protegida</h3>
+      <p class="status-line">Prioriza 100% das obrigações de poços em produção e injeção.</p>
+      <div class="status-card" style="background:white;margin-top:14px">
+        <div class="card-title">Investimento anual</div>
+        <div class="status-big">R$ ${annual}</div>
       </div>
-    `;
+      <div class="status-card" style="background:white;margin-top:10px">
+        <div class="card-title">Passivo operacional residual</div>
+        <div class="status-big" style="color:var(--green)">R$ 0</div>
+      </div>
+    </div>
 
-  document
-    .getElementById("executiveSummary")
-    .innerHTML = `
-      <p>
-        <b>Cenário Atual:</b>
-        ${executive.cenario}
-      </p>
-
-      <p>
-        <b>Condicionantes Pendentes:</b>
-        ${executive.condicionantes_pendentes}
-      </p>
-
-      <p>
-        <b>Licenças vencendo:</b>
-        ${executive.licencas_vencendo}
-      </p>
-    `;
-
+    <div class="status-card">
+      <div class="card-title" style="color:var(--green)">Excelência operacional</div>
+      <h3>Passivo zerado</h3>
+      <p class="status-line">Elimina 100% do passivo mapeado no horizonte selecionado.</p>
+      <div class="status-card" style="background:white;margin-top:14px">
+        <div class="card-title">Investimento anual</div>
+        <div class="status-big">R$ ${annual}</div>
+      </div>
+      <div class="status-card" style="background:white;margin-top:10px">
+        <div class="card-title">Passivo residual final</div>
+        <div class="status-big" style="color:var(--green)">R$ 0</div>
+      </div>
+    </div>
+  `;
 }
 
-function loadLicenses(){
-
-  document
-    .getElementById("licensesTable")
-    .innerHTML =
-    licenses.map(l=>`
-
-      <tr>
-
-        <td>${l.numero}</td>
-
-        <td>${l.tipo}</td>
-
-        <td>${l.orgao_ambiental}</td>
-
-        <td>${l.campo}</td>
-
-        <td>${l.data_vencimento}</td>
-
-        <td>
-          <span class="
-            badge
-            ${l.status === "Vencida" ? "risk" : "ok"}
-          ">
-            ${l.status}
-          </span>
-        </td>
-
-        <td>${l.alerta}</td>
-
-      </tr>
-
-    `).join("");
-
+function uploadDoc(input,tipo){
+  const file = input.files[0];
+  if(!file) return;
+  alert(`Arquivo de ${tipo} recebido: ${file.name}. Leitura MVP registrada para revisão humana.`);
 }
 
-function loadConditions(){
-
-  document
-    .getElementById("conditionsTable")
-    .innerHTML =
-    conditions.map(c=>`
-
-      <tr>
-
-        <td>
-          <input
-            type="checkbox"
-            class="cond-check"
-            value="${c.id}"
-          />
-        </td>
-
-        <td>${c.tipo}</td>
-
-        <td>${c.campo}</td>
-
-        <td>${c.descricao}</td>
-
-        <td>${c.prazo}</td>
-
-        <td>
-          <span class="
-            badge
-            ${c.status === "Atendida" ? "ok" : "warn"}
-          ">
-            ${c.status}
-          </span>
-        </td>
-
-        <td>${money(c.custo)}</td>
-
-        <td>
-
-          ${
-            c.status !== "Atendida"
-            ?
-            `
-            <button
-              class="secondary"
-              onclick="completeOne(${c.id})"
-            >
-              Baixar
-            </button>
-            `
-            :
-            "-"
-          }
-
-        </td>
-
-      </tr>
-
-    `).join("");
-
+function exportCSV(){
+  alert("Exportação simulada no MVP. Próximo passo: integrar geração real XLSX.");
 }
 
-function completeOne(id){
-
-  conditions =
-    conditions.map(c=>{
-
-      if(c.id === id){
-        c.status = "Atendida";
-      }
-
-      return c;
-
-    });
-
-  refreshIndicators();
-
-}
-
-function completeSelected(){
-
-  const ids =
-    [...document.querySelectorAll(".cond-check:checked")]
-    .map(x=>Number(x.value));
-
-  conditions =
-    conditions.map(c=>{
-
-      if(ids.includes(c.id)){
-        c.status = "Atendida";
-      }
-
-      return c;
-
-    });
-
-  refreshIndicators();
-
-}
-
-function refreshIndicators(){
-
-  executive.condicionantes_atendidas =
-    conditions.filter(c=>c.status==="Atendida").length;
-
-  executive.condicionantes_pendentes =
-    conditions.filter(c=>c.status!=="Atendida").length;
-
-  executive.conformidade_geral =
-    (
-      executive.condicionantes_atendidas
-      /
-      conditions.length
-    ) * 100;
-
-  executive.passivo_regulatorio_total =
-    conditions
-      .filter(c=>c.status!=="Atendida")
-      .reduce((s,c)=>s+c.custo,0);
-
-  loadExecutive();
-  loadConditions();
-
-}
-
-function upload(){
-
-  const file =
-    document.getElementById("fileInput").files[0];
-
-  if(!file){
-
-    alert("Selecione um arquivo.");
-    return;
-
-  }
-
-  document
-    .getElementById("uploadResult")
-    .innerText =
-    `
-Arquivo processado:
-
-${file.name}
-
-Órgão ambiental:
-INEMA
-
-Tipo:
-LO
-
-Status:
-Leitura MVP concluída.
-`;
-
-}
-
-function simulate(){
-
-  const passivo =
-    Number(
-      document.getElementById("passivo").value
-    );
-
-  const anos =
-    Number(
-      document.getElementById("anos").value
-    );
-
-  const anual = passivo / anos;
-
-  document
-    .getElementById("simulationResult")
-    .innerHTML = `
-      <h3>Resultado</h3>
-
-      <p>
-        <b>Investimento anual:</b>
-        ${money(anual)}
-      </p>
-
-      <p>
-        <b>Investimento total:</b>
-        ${money(passivo)}
-      </p>
-
-      <p>
-        <b>Horizonte:</b>
-        ${anos} anos
-      </p>
-    `;
-
-}
-
-function search(){
-
-  const q =
-    document.getElementById("searchInput")
-    .value
-    .toLowerCase();
-
-  if(q.includes("miranga")){
-
-    alert(
-      "Campo Miranga encontrado."
-    );
-
-    return;
-
-  }
-
-  if(q.includes("licen")){
-
-    openPage(
-      "licencas",
-      document.querySelectorAll(".nav button")[1]
-    );
-
-    return;
-
-  }
-
+function smartSearch(){
+  const q = document.getElementById("globalSearch").value.toLowerCase();
   if(q.includes("condicion")){
-
-    openPage(
-      "condicionantes",
-      document.querySelectorAll(".nav button")[2]
-    );
-
+    openPage("condicionantes",document.querySelectorAll(".nav-item")[3]);
     return;
-
   }
-
-  alert("Nenhum resultado encontrado.");
-
+  if(q.includes("ativo") || q.includes("poço")){
+    openPage("ativos",document.querySelectorAll(".nav-item")[2]);
+    return;
+  }
+  if(q.includes("financeiro") || q.includes("passivo")){
+    openPage("financeiro",document.querySelectorAll(".nav-item")[4]);
+    return;
+  }
+  alert("Busca realizada. Use termos como condicionantes, ativos, passivo ou financeiro.");
 }
 
 function toggleJey(){
-
-  document
-    .getElementById("jeyPanel")
-    .classList
-    .toggle("open");
-
+  document.getElementById("jeyPanel").classList.toggle("open");
 }
 
 function askJey(){
+  const q = document.getElementById("jeyInput").value.toLowerCase();
+  let answer = "O cenário atual mostra baixa cobertura regulatória dos ativos operacionais e passivo mapeado de R$ 147.";
 
-  const question =
-    document.getElementById("jeyInput")
-    .value
-    .toLowerCase();
-
-  let response =
-    "O cenário atual é Exposição Regulatória.";
-
-  if(question.includes("miranga")){
-
-    response =
-      "Miranga apresenta condicionantes pendentes e requer ação.";
-
+  if(q.includes("miranga")){
+    answer = "Miranga concentra ativos relevantes e deve ser analisado pelo vínculo entre licença, condicionantes e operação protegida.";
   }
 
-  if(question.includes("licen")){
-
-    response =
-      "Existe uma licença vencida e uma vencendo em até 180 dias.";
-
+  if(q.includes("condicion")){
+    answer = "Há 9 condicionantes mapeadas, com 2 concluídas e 7 pendentes. O indicador é simples: concluídas sobre total.";
   }
 
-  if(question.includes("condicion")){
-
-    response =
-      "Existem condicionantes pendentes que impactam o passivo regulatório.";
-
+  if(q.includes("passivo") || q.includes("financeiro")){
+    answer = `Para zerar R$ 147 em ${years} anos, o investimento anual estimado é de R$ ${Math.round(147/years)}.`;
   }
 
-  document
-    .getElementById("jeyAnswer")
-    .innerText =
-    response;
+  document.getElementById("jeyAnswer").innerText = answer;
 
   if("speechSynthesis" in window){
-
-    const u =
-      new SpeechSynthesisUtterance(response);
-
+    const u = new SpeechSynthesisUtterance(answer);
     u.lang = "pt-BR";
-
+    speechSynthesis.cancel();
     speechSynthesis.speak(u);
-
   }
-
 }
 
 function startVoice(){
-
-  const SR =
-    window.SpeechRecognition
-    ||
-    window.webkitSpeechRecognition;
-
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR){
-
-    alert(
-      "Reconhecimento de voz não disponível."
-    );
-
+    alert("Reconhecimento de voz não disponível neste navegador.");
     return;
-
   }
 
   const r = new SR();
-
   r.lang = "pt-BR";
-
   r.onresult = e=>{
-
-    const text =
-      e.results[0][0].transcript;
-
-    document
-      .getElementById("searchInput")
-      .value = text;
-
-    document
-      .getElementById("jeyInput")
-      .value = text;
-
+    const text = e.results[0][0].transcript;
+    document.getElementById("jeyInput").value = text;
     askJey();
-
   };
-
   r.start();
-
 }
-
 </script>
 
 </body>
