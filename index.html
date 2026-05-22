@@ -2,1348 +2,2296 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EnvLicense | PetroRecôncavo</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EnvLicense — PetroRecôncavo</title>
 
 <style>
 :root{
-  --bg:#f7f9fc;
-  --surface:#ffffff;
-  --surface2:#f3f6fa;
-  --line:#e7edf5;
-  --text:#111827;
-  --muted:#8b9bb4;
-  --muted2:#607089;
-  --green:#078336;
-  --green2:#16a34a;
-  --greenSoft:#e7f6ec;
-  --blue:#2563eb;
-  --blueSoft:#eaf1ff;
-  --yellow:#f4c20d;
-  --yellowSoft:#fff8db;
-  --red:#c7352b;
-  --redSoft:#fdebea;
-  --dark:#0f172a;
-  --shadow:0 10px 28px rgba(15,23,42,.06);
-  --radius:20px;
+  --p:#007023;
+  --ph:#005a1c;
+  --pl:#4EA72E;
+  --pt:#e8f5ec;
+
+  --wg:#8FBF21;
+
+  --w:#F9CE29;
+  --wt:#7a5e00;
+
+  --r:#9D2928;
+  --rh:#7a1f1e;
+  --rt:#fbeded;
+
+  --b:#125E81;
+  --bt:#deeef5;
+
+  --t1:#1d1d1f;
+  --t2:#6e6e73;
+  --t3:#86868b;
+  --t4:#aeaeb2;
+
+  --bd:#d2d2d7;
+  --bdl:#f0f0f5;
+
+  --bg:#f5f5f7;
+  --s:#fff;
+
+  --rad:12px;
+  --rads:8px;
+
+  --ease:cubic-bezier(.4,0,.2,1);
+
+  --sh:0 1px 3px rgba(0,0,0,.07),0 4px 14px rgba(0,0,0,.05);
+  --shl:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.07);
+
+  --sw:56px;
+  --se:220px;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent
+}
+
+html,body{
+  height:100%
+}
 
 body{
-  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
   background:var(--bg);
-  color:var(--text);
-  font-family:Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  color:var(--t1);
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden
 }
 
-button,input,select{
-  font:inherit;
-}
+/* SIDEBAR */
 
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-.login{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,#06351f,#0b4a2a);
-  padding:24px;
-}
-
-.login-card{
-  width:100%;
-  max-width:430px;
-  background:white;
-  border-radius:28px;
-  padding:34px;
-  box-shadow:0 30px 90px rgba(0,0,0,.28);
-}
-
-.login-card h1{
-  margin:0 0 6px;
-  color:var(--green);
-  font-size:38px;
-  letter-spacing:-1px;
-}
-
-.login-card p{
-  color:var(--muted2);
-  margin-bottom:24px;
-}
-
-.field{
-  margin-bottom:16px;
-}
-
-.field label{
-  display:block;
-  font-weight:700;
-  margin-bottom:8px;
-}
-
-input,select{
-  width:100%;
-  height:46px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:0 14px;
-  background:white;
-  outline:none;
-  color:var(--text);
-}
-
-input:focus,select:focus{
-  border-color:var(--green);
-  box-shadow:0 0 0 4px rgba(7,131,54,.08);
-}
-
-.btn{
-  height:44px;
-  padding:0 18px;
-  border-radius:14px;
-  font-weight:800;
-  background:white;
-  color:var(--dark);
-  border:1px solid var(--line);
-  box-shadow:0 3px 10px rgba(15,23,42,.04);
-}
-
-.btn.primary{
-  background:var(--green);
-  color:white;
-  border-color:var(--green);
-}
-
-.btn.green{
-  background:var(--green2);
-  color:white;
-  border-color:var(--green2);
-}
-
-.btn.dark{
-  background:#111827;
-  color:white;
-  border-color:#111827;
-}
-
-.app{
-  display:grid;
-  grid-template-columns:290px 1fr;
-  min-height:100vh;
-}
-
-.sidebar{
-  background:white;
-  border-right:1px solid var(--line);
-  position:sticky;
-  top:0;
+.sb{
+  width:var(--sw);
+  background:var(--s);
+  border-right:1px solid var(--bdl);
+  display:flex;
+  flex-direction:column;
   height:100vh;
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:100;
+  overflow:hidden;
+  transition:width .22s var(--ease);
+  flex-shrink:0
 }
 
-.brand{
-  height:92px;
-  display:flex;
-  gap:14px;
-  align-items:center;
-  padding:22px 20px;
-  border-bottom:1px solid var(--line);
+.sb:hover{
+  width:var(--se)
 }
 
-.brand-mark{
-  width:38px;
-  height:38px;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:var(--green);
-  color:white;
-  font-weight:900;
-  box-shadow:0 8px 20px rgba(7,131,54,.25);
-}
-
-.brand-name{
-  font-weight:900;
-  letter-spacing:-.3px;
-}
-
-.brand-sub{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:2px;
-}
-
-.nav-group{
-  padding:18px 0 6px;
-}
-
-.nav-title{
-  padding:0 22px 10px;
-  color:#c0cada;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.14em;
-}
-
-.nav-item{
-  width:100%;
-  height:50px;
+.sb-brand{
   display:flex;
   align-items:center;
-  gap:14px;
-  padding:0 22px;
-  background:white;
-  color:#8fa0b8;
+  gap:10px;
+  padding:16px 14px;
+  border-bottom:1px solid var(--bdl);
+  min-height:58px;
+  overflow:hidden;
+  white-space:nowrap
+}
+
+.sb-mark{
+  width:28px;
+  height:28px;
+  min-width:28px;
+  background:linear-gradient(135deg,var(--p),var(--pl));
+  border-radius:7px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
   font-weight:700;
-  text-align:left;
-  position:relative;
+  font-size:12px
 }
 
-.nav-item svg{
+.sb-txt{
+  opacity:0;
+  transform:translateX(-8px);
+  transition:all .18s var(--ease)
+}
+
+.sb:hover .sb-txt{
+  opacity:1;
+  transform:none
+}
+
+.sb-name{
+  font-weight:600;
+  font-size:13.5px;
+  letter-spacing:-.02em
+}
+
+.sb-sub{
+  font-size:10px;
+  color:var(--t3)
+}
+
+.sb-sec{
+  padding:6px 0
+}
+
+.sb-lbl{
+  font-size:9px;
+  color:var(--t4);
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:700;
+  padding:7px 16px 3px;
+  opacity:0;
+  transition:opacity .18s var(--ease)
+}
+
+.sb:hover .sb-lbl{
+  opacity:1
+}
+
+.nb{
+  width:100%;
+  background:transparent;
+  border:none;
+  padding:7px 14px;
+  cursor:pointer;
+  font-family:inherit;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--t2);
+  transition:all .13s var(--ease);
+  min-height:38px;
+  overflow:hidden;
+  white-space:nowrap
+}
+
+.nb:hover{
+  background:var(--bdl);
+  color:var(--t1)
+}
+
+.nb.on{
+  background:var(--pt);
+  color:var(--p)
+}
+
+.nb-ic{
   width:20px;
   height:20px;
+  min-width:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center
 }
 
-.nav-item.active{
-  background:#e9f7ed;
-  color:var(--green);
+.nb-ic svg{
+  width:15px;
+  height:15px;
+  stroke:currentColor;
+  stroke-width:1.8;
+  fill:none;
+  stroke-linecap:round;
+  stroke-linejoin:round
 }
 
-.nav-item.active:before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:10px;
-  bottom:10px;
-  width:5px;
-  border-radius:0 8px 8px 0;
-  background:var(--green);
+.nb-lbl{
+  font-size:13px;
+  opacity:0;
+  transform:translateX(-5px);
+  transition:all .18s var(--ease)
 }
 
-.main{
-  min-width:0;
+.sb:hover .nb-lbl{
+  opacity:1;
+  transform:none
+}
+
+.sb-foot{
+  margin-top:auto;
+  padding:10px 14px;
+  border-top:1px solid var(--bdl);
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.sb-ver{
+  width:28px;
+  height:28px;
+  min-width:28px;
+  background:var(--bdl);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  font-weight:700;
+  color:var(--t3)
+}
+
+/* MAIN */
+
+.main-wrap{
+  margin-left:var(--sw);
+  flex:1;
+  height:100vh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  transition:margin-left .22s var(--ease);
+  display:flex;
+  flex-direction:column
+}
+
+.sb:hover~.main-wrap{
+  margin-left:var(--se)
 }
 
 .topbar{
-  height:70px;
-  background:white;
-  border-bottom:1px solid var(--line);
+  background:var(--s);
+  border-bottom:1px solid var(--bdl);
+  padding:0 28px;
+  height:54px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 38px;
+  gap:14px;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:50
 }
 
-.page-title-small{
-  font-size:16px;
-  font-weight:900;
+.tb-ttl{
+  font-size:14.5px;
+  font-weight:600;
+  letter-spacing:-.02em;
+  flex:1
 }
 
-.search{
-  width:350px;
-  position:relative;
+.cnt{
+  padding:24px 28px 80px;
+  flex:1
 }
 
-.search input{
-  padding-left:42px;
-  box-shadow:var(--shadow);
-}
-
-.search span{
-  position:absolute;
-  left:15px;
-  top:13px;
-  color:var(--muted);
-}
-
-.content{
-  padding:38px;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-h1{
-  font-size:34px;
-  line-height:1.05;
-  margin:0;
-  letter-spacing:-1.2px;
-}
-
-.subtitle{
-  color:#8b9bb4;
-  margin:12px 0 28px;
-  font-size:17px;
-}
-
-.kpi-grid{
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:16px;
-  margin-bottom:22px;
-}
-
-.kpi{
-  min-height:164px;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:26px;
-  box-shadow:var(--shadow);
-}
-
-.kpi-label{
-  color:#9aabc2;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  font-weight:900;
-}
-
-.kpi-value{
-  font-size:34px;
-  font-weight:950;
-  margin-top:12px;
-  color:#0f172a;
-  letter-spacing:-1px;
-}
-
-.kpi-value.green{color:var(--green)}
-.kpi-value.red{color:var(--red)}
-.kpi-note{
-  color:#8b9bb4;
-  margin-top:8px;
-  line-height:1.4;
-}
-
-.card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  padding:28px;
-  box-shadow:var(--shadow);
-  margin-bottom:22px;
-}
-
-.card-title{
-  color:#9aabc2;
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  font-weight:900;
-  margin-bottom:18px;
-}
-
-.two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.three{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.filters{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:18px;
-}
-
-.chip{
-  height:40px;
-  padding:0 18px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:white;
-  color:#40516a;
-  font-weight:800;
-}
-
-.chip.active{
-  background:#111827;
-  color:white;
-}
-
-.donut-wrap{
-  display:grid;
-  grid-template-columns:170px 1fr;
-  align-items:center;
-  gap:28px;
-}
-
-.donut{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:conic-gradient(var(--green) 0 25%, var(--yellow) 25% 58%, #9aa0a6 58% 89%, #48a23f 89% 100%);
-  display:grid;
-  place-items:center;
-}
-
-.donut-inner{
-  width:92px;
-  height:92px;
-  border-radius:50%;
-  background:white;
-  display:grid;
-  place-items:center;
+.loading{
   text-align:center;
+  padding:40px;
+  color:var(--t3)
 }
 
-.donut-number{
-  font-size:28px;
-  font-weight:950;
-}
-
-.legend{
-  display:grid;
-  gap:18px;
-}
-
-.legend-row{
-  display:grid;
-  grid-template-columns:12px 1fr;
-  gap:12px;
-  align-items:start;
-  color:#485873;
-}
-
-.dot{
-  width:12px;
-  height:12px;
+.spin{
+  display:inline-block;
+  width:15px;
+  height:15px;
+  border:2px solid var(--bdl);
+  border-top-color:var(--p);
   border-radius:50%;
-  margin-top:5px;
+  animation:spin .65s linear infinite
 }
 
-.dot.green{background:var(--green)}
-.dot.blue{background:var(--blue)}
-.dot.yellow{background:var(--yellow)}
-.dot.gray{background:#9aa0a6}
-.dot.red{background:var(--red)}
-
-.status-card{
-  background:#f9fbfe;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:22px;
-}
-
-.status-card h3{
-  margin:0 0 8px;
-  font-size:19px;
-}
-
-.status-big{
-  font-size:34px;
-  font-weight:950;
-  margin:6px 0;
-}
-
-.status-line{
-  color:#607089;
-  line-height:1.55;
-}
-
-.progress-line{
-  height:8px;
-  background:#edf2f7;
-  border-radius:999px;
-  overflow:hidden;
-  margin:16px 0;
-}
-
-.progress-line span{
-  display:block;
-  height:100%;
-  background:var(--green);
-  border-radius:999px;
-}
-
-.table{
-  width:100%;
-  border-collapse:collapse;
-  overflow:hidden;
-}
-
-.table th{
-  text-align:left;
-  padding:16px 18px;
-  color:#9aabc2;
-  font-size:12px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  background:#fbfcfe;
-}
-
-.table td{
-  padding:18px;
-  border-top:1px solid var(--line);
-  color:#334155;
-  vertical-align:top;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  height:28px;
-  padding:0 12px;
-  border-radius:8px;
-  font-size:12px;
-  font-weight:900;
-  text-transform:uppercase;
-}
-
-.badge.green{
-  background:#dff8e8;
-  color:var(--green);
-}
-
-.badge.blue{
-  background:#eaf1ff;
-  color:var(--blue);
-}
-
-.badge.yellow{
-  background:#fff6d5;
-  color:#a66d00;
-}
-
-.badge.red{
-  background:#fdebea;
-  color:var(--red);
-}
-
-.condition-card{
-  border:1px solid var(--line);
-  border-left:5px solid var(--green2);
-  background:white;
-  border-radius:18px;
-  padding:18px 22px;
-  margin-bottom:14px;
-}
-
-.condition-head{
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  align-items:flex-start;
-}
-
-.condition-text{
-  color:#1e293b;
-  line-height:1.55;
-  margin-top:12px;
-}
-
-.chart{
-  height:250px;
-  background:#f9fbfe;
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:24px;
-  display:flex;
-  align-items:end;
-  gap:34px;
-}
-
-.bar-group{
-  flex:1;
-  display:flex;
-  align-items:end;
-  justify-content:center;
-  gap:8px;
-  height:190px;
-  position:relative;
-}
-
-.bar{
-  width:34px;
-  min-height:4px;
-  border-radius:8px 8px 0 0;
-}
-
-.bar.budget{
-  border:2px dashed var(--blue);
-  background:transparent;
-}
-
-.bar.real{
-  background:var(--green);
-}
-
-.bar.red{
-  background:var(--red);
-}
-
-.bar-label{
-  position:absolute;
-  bottom:-28px;
-  font-size:12px;
-  color:#c0cada;
-}
-
-.upload-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px;
-}
-
-.upload-box{
-  height:250px;
-  border:2px dashed #dbe5f0;
-  border-radius:22px;
-  display:grid;
-  place-items:center;
-  text-align:center;
-  background:#fbfdff;
-}
-
-.upload-box h3{
-  margin:12px 0 6px;
-}
-
-.upload-box p{
-  color:#607089;
-  margin:0 0 16px;
-}
-
-.file-input{
-  display:none;
-}
-
-.jey{
-  position:fixed;
-  right:28px;
-  bottom:28px;
-  width:64px;
-  height:64px;
-  border-radius:24px;
-  background:var(--green);
-  color:white;
-  font-size:24px;
-  box-shadow:0 18px 50px rgba(7,131,54,.28);
-  z-index:50;
-}
-
-.jey-panel{
-  position:fixed;
-  right:28px;
-  bottom:105px;
-  width:390px;
-  max-width:calc(100vw - 40px);
-  background:white;
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:20px;
-  box-shadow:0 25px 80px rgba(15,23,42,.2);
-  display:none;
-  z-index:60;
-}
-
-.jey-panel.open{
-  display:block;
-}
-
-.jey-answer{
-  background:#f6f8fb;
-  border-radius:16px;
-  padding:14px;
-  color:#334155;
-  line-height:1.5;
-  margin:12px 0;
-}
-
-@media(max-width:1000px){
-  .app{
-    grid-template-columns:74px 1fr;
-  }
-
-  .brand div:not(.brand-mark),
-  .nav-title,
-  .nav-item span{
-    display:none;
-  }
-
-  .sidebar{
-    width:74px;
-  }
-
-  .brand{
-    padding:18px;
-    justify-content:center;
-  }
-
-  .nav-item{
-    justify-content:center;
-    padding:0;
-  }
-
-  .content{
-    padding:24px;
-  }
-
-  .kpi-grid{
-    grid-template-columns:1fr;
-  }
-
-  .two,.three,.upload-grid{
-    grid-template-columns:1fr;
-  }
-
-  .topbar{
-    padding:0 18px;
-  }
-
-  .search{
-    width:260px;
-  }
+@keyframes spin{
+  to{transform:rotate(360deg)}
 }
 </style>
 </head>
 
 <body>
 
-<section id="login" class="login">
-  <div class="login-card">
-    <h1>EnvLicense</h1>
-    <p>Gestão executiva de licenças, condicionantes, ativos e passivo regulatório.</p>
+<aside class="sb">
 
-    <div class="field">
-      <label>Matrícula</label>
-      <input id="matricula" value="1234">
+  <div class="sb-brand">
+    <div class="sb-mark">PR</div>
+
+    <div class="sb-txt">
+      <div class="sb-name">EnvLicense</div>
+      <div class="sb-sub">PetroRecôncavo</div>
     </div>
-
-    <div class="field">
-      <label>Senha</label>
-      <input id="senha" type="password" value="123">
-    </div>
-
-    <button class="btn primary" style="width:100%" onclick="login()">Entrar</button>
-    <p id="loginError" style="color:var(--red);font-weight:700"></p>
   </div>
-</section>
 
-<section id="app" class="app hidden">
+  <div class="sb-sec">
+    <div class="sb-lbl">Geral</div>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-mark">PR</div>
-      <div>
-        <div class="brand-name">EnvLicense</div>
-        <div class="brand-sub">PetroRecôncavo</div>
+    <button class="nb on" data-tab="dashboard">
+      <span class="nb-ic">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+      </span>
+
+      <span class="nb-lbl">Visão executiva</span>
+    </button>
+  </div>
+
+  <div class="sb-sec">
+    <div class="sb-lbl">Documentos</div>
+
+    <button class="nb" data-tab="docs">
+      <span class="nb-ic">
+        <svg viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </span>
+
+      <span class="nb-lbl">Central documental</span>
+    </button>
+
+    <button class="nb" data-tab="assets">
+      <span class="nb-ic">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12"/>
+        </svg>
+      </span>
+
+      <span class="nb-lbl">Ativos</span>
+    </button>
+
+    <button class="nb" data-tab="conditions">
+      <span class="nb-ic">
+        <svg viewBox="0 0 24 24">
+          <polyline points="9 11 12 14 22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/>
+        </svg>
+      </span>
+
+      <span class="nb-lbl">Condicionantes</span>
+    </button>
+  </div>
+
+  <div class="sb-sec">
+    <div class="sb-lbl">Planejamento</div>
+
+    <button class="nb" data-tab="planning">
+      <span class="nb-ic">
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      </span>
+
+      <span class="nb-lbl">Gestão financeira</span>
+    </button>
+  </div>
+
+  <div class="sb-foot">
+    <div class="sb-ver">v6</div>
+  </div>
+
+</aside>
+
+<div class="main-wrap">
+
+  <div class="topbar">
+    <div class="tb-ttl" id="tb-ttl">Visão executiva</div>
+  </div>
+
+  <div class="cnt">
+    <div id="app">
+      <div class="loading">
+        <span class="spin"></span>
+        Carregando
       </div>
     </div>
-
-    <div class="nav-group">
-      <div class="nav-title">VISÃO GERAL</div>
-      <button class="nav-item active" onclick="openPage('executiva',this)">▦ <span>Visão executiva</span></button>
-    </div>
-
-    <div class="nav-group">
-      <div class="nav-title">DOCUMENTOS</div>
-      <button class="nav-item" onclick="openPage('documentos',this)">□ <span>Central documental</span></button>
-      <button class="nav-item" onclick="openPage('ativos',this)">☼ <span>Ativos</span></button>
-      <button class="nav-item" onclick="openPage('condicionantes',this)">☑ <span>Condicionantes</span></button>
-    </div>
-
-    <div class="nav-group">
-      <div class="nav-title">FINANCEIRO</div>
-      <button class="nav-item" onclick="openPage('financeiro',this)">▥ <span>Gestão financeira</span></button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div class="page-title-small" id="topTitle">Visão executiva</div>
-      <div class="search">
-        <span>⌕</span>
-        <input id="globalSearch" placeholder="Buscar ativos, licenças, campos..." onkeydown="if(event.key==='Enter') smartSearch()">
-      </div>
-    </header>
-
-    <div class="content">
-
-      <section id="executiva" class="page active">
-        <div class="kpi-grid">
-          <div class="kpi">
-            <div class="kpi-label">Ativos</div>
-            <div class="kpi-value">1876</div>
-            <div class="kpi-note">Base cadastrada</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Condicionantes</div>
-            <div class="kpi-value">9</div>
-            <div class="kpi-note">Conformidade monitorada</div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Em produção</div>
-            <div class="kpi-value green">648</div>
-            <div class="kpi-note"><span style="color:var(--red)">647 sem cobertura</span></div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Em injeção</div>
-            <div class="kpi-value" style="color:var(--blue)">165</div>
-            <div class="kpi-note"><span style="color:var(--red)">163 sem cobertura</span></div>
-          </div>
-          <div class="kpi">
-            <div class="kpi-label">Operação protegida</div>
-            <div class="kpi-value red">0%</div>
-            <div class="kpi-note">3/813 ativos operacionais cobertos</div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Indicador de conformidade de condicionantes</div>
-          <div style="display:flex;justify-content:space-between;gap:20px;align-items:flex-start">
-            <div>
-              <div class="kpi-value red" id="condCompliance">22%</div>
-              <div class="kpi-note">Cálculo simples: concluídas / total</div>
-            </div>
-            <span class="badge yellow">Em atenção</span>
-          </div>
-          <div class="progress-line"><span id="condProgress" style="width:22%"></span></div>
-          <div class="kpi-note"><b id="doneCount">2</b>/9 concluídas · poços ativos: 22%</div>
-        </div>
-
-        <div class="two">
-          <div class="card">
-            <div class="card-title">Ativos licenciados por campo</div>
-            <div id="fieldLicense"></div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">Condicionantes por campo</div>
-            <div id="fieldConditions"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="documentos" class="page">
-        <h1>Central documental</h1>
-        <div class="subtitle">Upload de licenças e boletos com extração assistida</div>
-
-        <div class="upload-grid">
-          <label class="upload-box">
-            <input class="file-input" type="file" onchange="uploadDoc(this,'licença')">
-            <div>
-              <div style="font-size:36px">📄</div>
-              <h3>Upload de Licença</h3>
-              <p>PDF da licença ambiental</p>
-              <button class="btn primary" type="button">Selecionar PDF</button>
-            </div>
-          </label>
-
-          <label class="upload-box">
-            <input class="file-input" type="file" onchange="uploadDoc(this,'boleto')">
-            <div>
-              <div style="font-size:36px">🧾</div>
-              <h3>Upload de Boleto</h3>
-              <p>PDF do boleto de taxa</p>
-              <button class="btn green" type="button">Selecionar Boleto</button>
-            </div>
-          </label>
-        </div>
-
-        <div class="card" style="margin-top:28px">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Número</th>
-                <th>Tipo</th>
-                <th>Órgão</th>
-                <th>Validade</th>
-                <th>Ativo(s)</th>
-                <th>Cond.</th>
-                <th>Custo</th>
-                <th>PDF</th>
-              </tr>
-            </thead>
-            <tbody id="docsTable"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="ativos" class="page">
-        <h1>Ativos</h1>
-        <div class="subtitle">Status regulatório dos ativos cadastrados</div>
-
-        <div class="filters">
-          <input style="max-width:240px" placeholder="Código ou campo...">
-          <select style="max-width:220px"><option>Órgão: todos</option><option>INEMA</option></select>
-          <select style="max-width:420px"><option>Situação: todas</option><option>Produzindo</option><option>Injetando</option></select>
-          <select style="max-width:220px"><option>Status: todos</option><option>Licença ativa</option><option>Sem licença</option></select>
-          <button class="btn primary">Filtrar</button>
-          <button class="btn">CSV</button>
-        </div>
-
-        <div class="card">
-          <div class="two">
-            <div>
-              <div class="card-title">Status regulatório</div>
-              <div class="donut-wrap">
-                <div class="donut" style="background:conic-gradient(#9b1117 0 100%)">
-                  <div class="donut-inner">
-                    <div>
-                      <div class="donut-number">1876</div>
-                      <div class="kpi-label">Total</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="legend">
-                  <div class="legend-row"><span class="dot green"></span><div>Licença ativa<br><span class="muted">3 · 0%</span></div></div>
-                  <div class="legend-row"><span class="dot yellow"></span><div>Próxima ao vencimento<br><span class="muted">0 · 0%</span></div></div>
-                  <div class="legend-row"><span class="dot red"></span><div>Licença vencida<br><span class="muted">0 · 0%</span></div></div>
-                  <div class="legend-row"><span class="dot red" style="background:#8b1115"></span><div>Sem licença<br><span class="muted">1873 · 100%</span></div></div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div class="card-title">Status de licença dos poços ativos</div>
-              <div class="two">
-                <div class="status-card">
-                  <h3><span class="dot green"></span> Produtores</h3>
-                  <div class="status-big">648</div>
-                  <div class="status-line">Licença ativa: <b style="color:var(--green)">1</b></div>
-                  <div class="status-line">Sem licença: <b style="color:var(--red)">647</b></div>
-                  <div class="status-line">Conformidade: <b style="color:var(--red)">0%</b></div>
-                </div>
-
-                <div class="status-card">
-                  <h3><span class="dot blue"></span> Injetores</h3>
-                  <div class="status-big">165</div>
-                  <div class="status-line">Licença ativa: <b style="color:var(--green)">2</b></div>
-                  <div class="status-line">Sem licença: <b style="color:var(--red)">163</b></div>
-                  <div class="status-line">Conformidade: <b style="color:var(--red)">1%</b></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="condicionantes" class="page">
-        <div class="filters">
-          <button class="chip active">Todas</button>
-          <button class="chip">Vencidas</button>
-          <button class="chip">Próximos 30d</button>
-          <button class="chip">Ativos operacionais</button>
-          <button class="chip">Pendentes</button>
-          <button class="chip">Concluídas</button>
-          <button class="btn" onclick="exportCSV()">Exportar XLSX</button>
-        </div>
-
-        <div class="card">
-          <div class="two">
-            <div>
-              <div class="card-title">Condicionantes por categoria</div>
-              <div class="donut-wrap">
-                <div class="donut">
-                  <div class="donut-inner">
-                    <div>
-                      <div class="donut-number">9</div>
-                      <div class="kpi-label">Total</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="legend">
-                  <div class="legend-row"><span class="dot blue" style="background:#137c98"></span><div>Monitoramento<br><span class="muted">2 · 22%</span></div></div>
-                  <div class="legend-row"><span class="dot green"></span><div>Relatórios<br><span class="muted">0 · 0%</span></div></div>
-                  <div class="legend-row"><span class="dot yellow"></span><div>Infraestrutura<br><span class="muted">3 · 33%</span></div></div>
-                  <div class="legend-row"><span class="dot gray"></span><div>Outros<br><span class="muted">3 · 33%</span></div></div>
-                  <div class="legend-row"><span class="dot green" style="background:#48a23f"></span><div>Efluentes<br><span class="muted">1 · 11%</span></div></div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div class="card-title">Condicionantes vinculadas a poços ativos</div>
-              <div class="two">
-                <div class="status-card">
-                  <h3><span class="dot green"></span> Produtores</h3>
-                  <div class="status-big">9</div>
-                  <div class="status-line">Concluídas: <b style="color:var(--green)">2</b></div>
-                  <div class="status-line">Pendentes: <b style="color:#f59e0b">7</b></div>
-                  <div class="status-line">Vencidas: <b style="color:var(--red)">0</b></div>
-                  <div class="status-line">Atendimento: <b style="color:var(--red)">22%</b></div>
-                </div>
-
-                <div class="status-card">
-                  <h3><span class="dot blue"></span> Injetores</h3>
-                  <div class="status-big">18</div>
-                  <div class="status-line">Concluídas: <b style="color:var(--green)">4</b></div>
-                  <div class="status-line">Pendentes: <b style="color:#f59e0b">14</b></div>
-                  <div class="status-line">Vencidas: <b style="color:var(--red)">0</b></div>
-                  <div class="status-line">Atendimento: <b style="color:var(--red)">22%</b></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="conditionList"></div>
-      </section>
-
-      <section id="financeiro" class="page">
-        <h1>Gestão financeira regulatória</h1>
-        <div class="subtitle">Passivo mapeado, projeção de dissolução e cenários de investimento</div>
-
-        <div class="kpi-grid">
-          <div class="kpi"><div class="kpi-label">Realizado</div><div class="kpi-value">R$ 18</div><div class="kpi-note">Executado no período</div></div>
-          <div class="kpi"><div class="kpi-label">Saldo vs budget</div><div class="kpi-value green">R$ 102</div><div class="kpi-note">Dentro do budget</div></div>
-          <div class="kpi"><div class="kpi-label">Passivo mapeado</div><div class="kpi-value">R$ 147</div><div class="kpi-note">Base da simulação</div></div>
-          <div class="kpi"><div class="kpi-label">Passivo operacional</div><div class="kpi-value red">R$ 147</div><div class="kpi-note">Vinculado a poços ativos</div></div>
-          <div class="kpi"><div class="kpi-label">Cap. anual histórica</div><div class="kpi-value">R$ 4</div><div class="kpi-note">Média dos últimos 24 meses</div></div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Curva financeira mensal</div>
-          <div class="chart" id="budgetChart"></div>
-        </div>
-
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
-            <div>
-              <div class="card-title">Simulador de dissolução do passivo</div>
-              <div class="kpi-note">Selecione o horizonte para comparar cenários de investimento.</div>
-            </div>
-            <div class="filters" style="margin:0">
-              <button class="chip" onclick="setYears(1)">1 ano</button>
-              <button class="chip" onclick="setYears(2)">2 anos</button>
-              <button class="chip" onclick="setYears(3)">3 anos</button>
-              <button class="chip" onclick="setYears(4)">4 anos</button>
-              <button class="chip active" onclick="setYears(5)">5 anos</button>
-            </div>
-          </div>
-
-          <div class="three" style="margin-top:24px" id="scenarioCards"></div>
-        </div>
-      </section>
-
-    </div>
-  </main>
-</section>
-
-<button class="jey hidden" id="jeyBtn" onclick="toggleJey()">✦</button>
-
-<div class="jey-panel" id="jeyPanel">
-  <h3 style="margin:0">Jey</h3>
-  <div class="jey-answer" id="jeyAnswer">Olá, sou a Jey. Posso buscar licenças, condicionantes, ativos e cenários financeiros.</div>
-  <input id="jeyInput" placeholder="Pergunte algo ou diga Oi Jey..." onkeydown="if(event.key==='Enter') askJey()">
-  <div style="display:flex;gap:8px;margin-top:10px">
-    <button class="btn primary" style="flex:1" onclick="askJey()">Perguntar</button>
-    <button class="btn" onclick="startVoice()">🎙</button>
   </div>
+
 </div>
 
 <script>
-let years = 5;
+const API = "https://envlicense-backend.onrender.com";
 
-const docs = [
-  {
-    numero:"29.470",
-    tipo:"LP",
-    orgao:"INEMA",
-    validade:"2028-09-20",
-    ativos:"1-ALV-2-BA, 1-BB-3-BA, 1-BR-1-RN",
-    cond:9,
-    custo:"R$ 10"
+let passiveDissolutionYears = 5;
+
+const TABS = {
+  dashboard:"Visão executiva",
+  docs:"Central documental",
+  assets:"Ativos",
+  conditions:"Condicionantes",
+  planning:"Gestão financeira"
+};
+
+async function sf(url,opts={}){
+  const ctrl = new AbortController();
+
+  const t = setTimeout(
+    ()=>ctrl.abort(),
+    opts.timeout || 18000
+  );
+
+  try{
+    const r = await fetch(url,{
+      ...opts,
+      signal:ctrl.signal
+    });
+
+    clearTimeout(t);
+
+    const txt = await r.text();
+
+    let data = null;
+
+    try{
+      data = txt ? JSON.parse(txt) : null;
+    }catch(e){
+      console.error("Resposta não JSON",url,txt);
+      return null;
+    }
+
+    if(!r.ok){
+      console.error("API error",r.status,url,data);
+      return null;
+    }
+
+    return data;
+
+  }catch(e){
+    clearTimeout(t);
+    console.error("fetch failed",url,e.message);
+    return null;
   }
-];
+}function fmtBRL(v){
+  return "R$ " + Number(v || 0).toLocaleString(
+    "pt-BR",
+    {
+      minimumFractionDigits:0,
+      maximumFractionDigits:0
+    }
+  );
+}
 
-let conditions = [
-  {id:1,tipo:"INFRAESTRUTURA",status:"Concluída",lic:"29.470",orgao:"INEMA",campo:"BIRIBA",texto:"Apresentar, quando do requerimento da LI, o Projeto Básico da implantação do empreendimento, com cronograma físico, contemplando traçado atualizado e localização."},
-  {id:2,tipo:"MONITORAMENTO",status:"Pendente",lic:"29.470",orgao:"INEMA",campo:"BREJINHO RN",texto:"Apresentar relatório de monitoramento ambiental conforme frequência definida no processo de licenciamento."},
-  {id:3,tipo:"EFLUENTES",status:"Pendente",lic:"29.470",orgao:"INEMA",campo:"TIÊ",texto:"Manter evidências de controle de efluentes e comprovações de destinação adequada."}
-];
+function setTab(tab){
+  document.querySelectorAll(".nb")
+    .forEach(b=>b.classList.remove("on"));
 
-function login(){
-  const m = document.getElementById("matricula").value.trim();
-  const s = document.getElementById("senha").value.trim();
+  const btn = document.querySelector(`[data-tab="${tab}"]`);
 
-  if(m === "1234" && s === "123"){
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    document.getElementById("jeyBtn").classList.remove("hidden");
-    boot();
+  if(btn) btn.classList.add("on");
+
+  document.getElementById("tb-ttl").textContent =
+    TABS[tab] || tab;
+
+  if(tab==="dashboard") renderDashboard();
+  if(tab==="assets") renderAssets();
+  if(tab==="conditions") renderConditions();
+  if(tab==="docs") renderDocs();
+  if(tab==="planning") renderPlanning();
+}
+
+document.querySelectorAll(".nb")
+  .forEach(btn=>{
+    btn.onclick = ()=>setTab(btn.dataset.tab);
+  });
+
+/* DASHBOARD */
+
+async function renderDashboard(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="loading">
+      <span class="spin"></span>
+      Carregando visão executiva
+    </div>
+  `;
+
+  const data = await sf(`${API}/executive/overview`);
+
+  if(!data){
+    app.innerHTML = `
+      <div style="color:var(--r)">
+        Erro ao carregar dashboard
+      </div>
+    `;
     return;
   }
 
-  document.getElementById("loginError").innerText = "Login inválido.";
-}
+  app.innerHTML = `
+    <div style="margin-bottom:18px">
+      <div style="font-size:26px;font-weight:700">
+        Visão executiva
+      </div>
 
-function openPage(id,btn){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
-
-  const titles = {
-    executiva:"Visão executiva",
-    documentos:"Central documental",
-    ativos:"Ativos",
-    condicionantes:"Condicionantes",
-    financeiro:"Gestão financeira regulatória"
-  };
-  document.getElementById("topTitle").innerText = titles[id] || "EnvLicense";
-}
-
-function boot(){
-  renderDocs();
-  renderConditions();
-  renderFieldBars();
-  renderBudgetChart();
-  renderScenarios();
-}
-
-function renderDocs(){
-  document.getElementById("docsTable").innerHTML = docs.map(d=>`
-    <tr>
-      <td><b>${d.numero}</b></td>
-      <td><span class="badge blue">${d.tipo}</span></td>
-      <td>${d.orgao}</td>
-      <td>${d.validade}</td>
-      <td>${d.ativos}</td>
-      <td>${d.cond}</td>
-      <td>${d.custo}</td>
-      <td><span class="badge">PDF</span></td>
-    </tr>
-  `).join("");
-}
-
-function renderConditions(){
-  document.getElementById("conditionList").innerHTML = `
-    <div class="card" style="padding:16px 20px">
-      <b>9</b> condicionantes · <b style="color:var(--green)">2</b> concluídas · <b style="color:#f59e0b">7</b> pendentes · <b style="color:var(--red)">0</b> vencidas
+      <div style="color:var(--t2)">
+        Monitoramento regulatório consolidado
+      </div>
     </div>
-    ${conditions.map(c=>`
-      <div class="condition-card">
-        <div class="condition-head">
-          <div>
-            <span class="badge ${c.tipo === "INFRAESTRUTURA" ? "yellow" : c.tipo === "EFLUENTES" ? "green" : "blue"}">${c.tipo}</span>
-            <span class="badge ${c.status === "Concluída" ? "green" : "yellow"}">${c.status}</span>
-            <span style="color:#8b9bb4;font-weight:700">Lic. ${c.lic} · ${c.orgao} · ${c.campo}</span>
-          </div>
-          <button class="btn" onclick="toggleCondition(${c.id})">Baixar</button>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:12px;
+      margin-bottom:18px
+    ">
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Conformidade Geral
         </div>
-        <div class="condition-text">${c.texto}</div>
+
+        <div style="
+          font-size:38px;
+          font-weight:700;
+          color:var(--p)
+        ">
+          ${data.conformidade_geral || 0}%
+        </div>
       </div>
-    `).join("")}
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Poços Operacionais
+        </div>
+
+        <div style="
+          font-size:38px;
+          font-weight:700;
+          color:var(--wg)
+        ">
+          ${data.operacionais_ok || 0}%
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Passivo Mapeado
+        </div>
+
+        <div style="
+          font-size:28px;
+          font-weight:700
+        ">
+          ${fmtBRL(data.passivo_total)}
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Ativos Sem Licença
+        </div>
+
+        <div style="
+          font-size:38px;
+          font-weight:700;
+          color:var(--r)
+        ">
+          ${data.sem_licenca || 0}
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:var(--sh)
+    ">
+
+      <div style="
+        font-size:13px;
+        font-weight:600;
+        margin-bottom:10px
+      ">
+        Resumo executivo
+      </div>
+
+      <div style="
+        color:var(--t2);
+        line-height:1.7
+      ">
+        ${data.resumo || "Sem resumo"}
+      </div>
+
+    </div>
   `;
 }
 
-function toggleCondition(id){
-  conditions = conditions.map(c => c.id === id ? {...c,status:"Concluída"} : c);
+/* CONDICIONANTES */
+
+let condExpanded = new Set();
+
+async function renderConditions(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="loading">
+      <span class="spin"></span>
+      Carregando condicionantes
+    </div>
+  `;
+
+  const data = await sf(`${API}/conditions/panel`);
+
+  if(!data){
+    app.innerHTML = `
+      <div style="color:var(--r)">
+        Erro ao carregar condicionantes
+      </div>
+    `;
+    return;
+  }
+
+  const items = data.items || [];
+
+  app.innerHTML = `
+
+    <div style="margin-bottom:18px">
+      <div style="font-size:26px;font-weight:700">
+        Condicionantes
+      </div>
+
+      <div style="color:var(--t2)">
+        Gestão operacional de atendimento
+      </div>
+    </div>
+
+    <div id="cond-list"></div>
+  `;
+
+  renderCondCards(items);
+}
+
+function renderCondCards(items){
+
+  const div = document.getElementById("cond-list");
+
+  div.innerHTML = items.map(item=>{
+
+    const expanded = condExpanded.has(item.id);
+
+    return `
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        margin-bottom:10px;
+        overflow:hidden;
+        box-shadow:var(--sh)
+      ">
+
+        <div
+          onclick="toggleCond(${item.id})"
+          style="
+            padding:16px;
+            cursor:pointer
+          "
+        >
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:10px
+          ">
+
+            <div>
+
+              <div style="
+                font-size:12px;
+                color:var(--t3);
+                margin-bottom:6px
+              ">
+                ${item.field || "—"}
+              </div>
+
+              <div style="
+                font-size:14px;
+                font-weight:600;
+                line-height:1.6
+              ">
+                ${item.description || ""}
+              </div>
+
+            </div>
+
+            <div style="
+              color:var(--t3);
+              font-size:12px
+            ">
+              ${expanded ? "▲" : "▼"}
+            </div>
+
+          </div>
+
+        </div>
+
+        ${
+          expanded
+          ? `
+            <div style="
+              border-top:1px solid var(--bdl);
+              padding:16px;
+              background:var(--bg)
+            ">
+
+              ${(item.assets || []).map(a=>`
+
+                <div style="
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  gap:10px;
+                  padding:10px 0;
+                  border-bottom:1px solid var(--bdl)
+                ">
+
+                  <div>
+                    <div style="font-weight:600">
+                      ${a.code || "—"}
+                    </div>
+
+                    <div style="
+                      font-size:12px;
+                      color:var(--t3)
+                    ">
+                      ${a.field || "—"}
+                    </div>
+                  </div>
+
+                  ${
+                    a.status==="completed"
+                    ? `
+                      <div style="
+                        color:var(--p);
+                        font-size:12px;
+                        font-weight:600
+                      ">
+                        Concluído
+                      </div>
+                    `
+                    : `
+                      <button
+                        onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id})"
+                        style="
+                          border:none;
+                          background:var(--p);
+                          color:#fff;
+                          padding:7px 14px;
+                          border-radius:8px;
+                          cursor:pointer;
+                          font-weight:600
+                        "
+                      >
+                        Dar baixa
+                      </button>
+                    `
+                  }
+
+                </div>
+
+              `).join("")}
+
+            </div>
+          `
+          : ""
+        }
+
+      </div>
+    `;
+
+  }).join("");
+}
+
+function toggleCond(id){
+
+  if(condExpanded.has(id))
+    condExpanded.delete(id);
+  else
+    condExpanded.add(id);
+
   renderConditions();
-  updateCompliance();
 }
 
-function updateCompliance(){
-  const done = conditions.filter(c=>c.status==="Concluída").length + 1;
-  const pct = Math.round((done / 9) * 100);
-  document.getElementById("condCompliance").innerText = pct + "%";
-  document.getElementById("condProgress").style.width = pct + "%";
-  document.getElementById("doneCount").innerText = done;
+function openBaixaModal(condId,assetId){
+
+  const ok = confirm(
+    "Confirmar baixa desta condicionante?"
+  );
+
+  if(!ok) return;
+
+  doBaixa(condId,assetId);
 }
 
-function renderFieldBars(){
-  const lic = [
-    ["MIRANGA","0/550","0%"],
-    ["CASSARONGONGO","0/239","0%"],
-    ["LORENA","0/90","0%"],
-    ["BREJINHO RN","1/79","1%"],
-    ["LIVRAMENTO","0/68","0%"],
-    ["MATA DE SÃO JOÃO","0/65","0%"],
-    ["REMANSO","0/56","0%"]
-  ];
+async function doBaixa(condId,assetId){
 
-  const cond = [
-    ["TIÊ","9/9"],
-    ["BREJINHO RN","9/9"],
-    ["BIRIBA","9/9"]
-  ];
+  const r = await sf(
+    `${API}/conditions/${condId}/assets/${assetId}/complete`,
+    {
+      method:"PATCH",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        completed_by:"Sistema"
+      })
+    }
+  );
 
-  document.getElementById("fieldLicense").innerHTML = lic.map(x=>`
-    <div style="display:grid;grid-template-columns:140px 1fr 90px;gap:12px;align-items:center;margin:16px 0">
-      <div>${x[0]}</div>
-      <div class="progress-line" style="margin:0"><span style="width:${x[2]}"></span></div>
-      <div>${x[1]} · ${x[2]}</div>
+  if(r && r.ok){
+    alert("Baixa realizada");
+    renderConditions();
+  }else{
+    alert("Erro ao dar baixa");
+  }
+}
+/* ATIVOS */
+
+let assetPage = 0;
+let assetSearch = "";
+let assetStatus = "";
+
+async function renderAssets(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="loading">
+      <span class="spin"></span>
+      Carregando ativos
     </div>
-  `).join("");
+  `;
 
-  document.getElementById("fieldConditions").innerHTML = cond.map(x=>`
-    <div style="display:grid;grid-template-columns:140px 1fr 60px;gap:12px;align-items:center;margin:16px 0">
-      <div>${x[0]}</div>
-      <div class="progress-line" style="margin:0"><span style="width:100%"></span></div>
-      <div>${x[1]}</div>
-    </div>
-  `).join("");
-}
+  const [summary, data] = await Promise.all([
+    sf(`${API}/assets/summary`),
+    sf(`${API}/assets/unified?limit=50&offset=${assetPage*50}&search=${encodeURIComponent(assetSearch)}&compliance_status=${encodeURIComponent(assetStatus)}`)
+  ]);
 
-function renderBudgetChart(){
-  const months = ["Nov/25","Dec/25","Jan/26","Feb/26","Mar/26","May/26","Jun/26","Jul/26","Aug/26","Sep/26","Oct/26","Nov/26"];
-  document.getElementById("budgetChart").innerHTML = months.map((m,i)=>`
-    <div class="bar-group">
-      <div class="bar budget" style="height:160px"></div>
-      <div class="bar ${i===5 ? "real" : "real"}" style="height:${i===5 ? 128 : 4}px"></div>
-      <div class="bar-label">${m}</div>
-    </div>
-  `).join("");
-}
-
-function setYears(v){
-  years = v;
-  document.querySelectorAll("#financeiro .chip").forEach(b=>b.classList.remove("active"));
-  event.target.classList.add("active");
-  renderScenarios();
-}
-
-function renderScenarios(){
-  const passivo = 147;
-  const atual = 20;
-  const annual = Math.round(passivo / years);
-
-  document.getElementById("scenarioCards").innerHTML = `
-    <div class="status-card">
-      <div class="card-title" style="color:var(--blue)">Cenário atual</div>
-      <h3>Trajetória atual</h3>
-      <p class="status-line">Mantém o ritmo histórico de execução.</p>
-      <div class="status-card" style="background:white;margin-top:14px">
-        <div class="card-title">Investimento total (${years}a)</div>
-        <div class="status-big">R$ ${atual}</div>
+  if(!data){
+    app.innerHTML = `
+      <div style="color:var(--r)">
+        Erro ao carregar ativos
       </div>
-      <div class="status-card" style="background:white;margin-top:10px">
-        <div class="card-title">Passivo residual final</div>
-        <div class="status-big" style="color:var(--red)">R$ ${passivo-atual}</div>
+    `;
+    return;
+  }
+
+  const items = data.items || [];
+
+  app.innerHTML = `
+
+    <div style="margin-bottom:18px">
+      <div style="font-size:26px;font-weight:700">
+        Ativos
+      </div>
+
+      <div style="color:var(--t2)">
+        Status regulatório dos ativos cadastrados
       </div>
     </div>
 
-    <div class="status-card">
-      <div class="card-title" style="color:#65a30d">Continuidade operacional</div>
-      <h3>Operação protegida</h3>
-      <p class="status-line">Prioriza 100% das obrigações de poços em produção e injeção.</p>
-      <div class="status-card" style="background:white;margin-top:14px">
-        <div class="card-title">Investimento anual</div>
-        <div class="status-big">R$ ${annual}</div>
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:12px;
+      margin-bottom:16px
+    ">
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Total de ativos
+        </div>
+
+        <div style="font-size:30px;font-weight:700">
+          ${summary?.total || data.total || 0}
+        </div>
       </div>
-      <div class="status-card" style="background:white;margin-top:10px">
-        <div class="card-title">Passivo operacional residual</div>
-        <div class="status-big" style="color:var(--green)">R$ 0</div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Produzindo
+        </div>
+
+        <div style="
+          font-size:30px;
+          font-weight:700;
+          color:var(--p)
+        ">
+          ${summary?.producing || 0}
+        </div>
       </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Injetando
+        </div>
+
+        <div style="
+          font-size:30px;
+          font-weight:700;
+          color:var(--b)
+        ">
+          ${summary?.injecting || 0}
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Sem licença
+        </div>
+
+        <div style="
+          font-size:30px;
+          font-weight:700;
+          color:var(--r)
+        ">
+          ${summary?.missing || 0}
+        </div>
+      </div>
+
     </div>
 
-    <div class="status-card">
-      <div class="card-title" style="color:var(--green)">Excelência operacional</div>
-      <h3>Passivo zerado</h3>
-      <p class="status-line">Elimina 100% do passivo mapeado no horizonte selecionado.</p>
-      <div class="status-card" style="background:white;margin-top:14px">
-        <div class="card-title">Investimento anual</div>
-        <div class="status-big">R$ ${annual}</div>
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:14px;
+      box-shadow:var(--sh);
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap
+    ">
+
+      <input
+        id="assetSearch"
+        placeholder="Buscar ativo ou campo..."
+        value="${assetSearch}"
+        style="
+          flex:1;
+          min-width:180px;
+          border:1px solid var(--bdl);
+          border-radius:8px;
+          padding:8px 10px;
+          font-family:inherit
+        "
+      >
+
+      <select
+        id="assetStatus"
+        style="
+          border:1px solid var(--bdl);
+          border-radius:8px;
+          padding:8px 10px;
+          font-family:inherit
+        "
+      >
+        <option value="">Todos os status</option>
+        <option value="ok" ${assetStatus==="ok"?"selected":""}>Licença ativa</option>
+        <option value="missing" ${assetStatus==="missing"?"selected":""}>Sem licença</option>
+        <option value="expired" ${assetStatus==="expired"?"selected":""}>Licença vencida</option>
+        <option value="upcoming" ${assetStatus==="upcoming"?"selected":""}>Próxima ao vencimento</option>
+      </select>
+
+      <button
+        onclick="applyAssetFilter()"
+        style="
+          border:none;
+          background:var(--p);
+          color:#fff;
+          padding:8px 16px;
+          border-radius:8px;
+          cursor:pointer;
+          font-weight:600
+        "
+      >
+        Filtrar
+      </button>
+
+    </div>
+
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      overflow:auto;
+      box-shadow:var(--sh)
+    ">
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        min-width:760px
+      ">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="text-align:left;padding:12px">Código</th>
+            <th style="text-align:left;padding:12px">Campo</th>
+            <th style="text-align:left;padding:12px">Situação</th>
+            <th style="text-align:left;padding:12px">Status</th>
+            <th style="text-align:left;padding:12px">Validade</th>
+            <th style="text-align:left;padding:12px">PDF</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${items.map(a=>`
+            <tr style="border-top:1px solid var(--bdl)">
+              <td style="padding:12px;font-weight:600">
+                ${a.code || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${a.field || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${a.situation || "—"}
+              </td>
+
+              <td style="padding:12px">
+                ${assetBadge(a.compliance_status)}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${a.expiry_date || "—"}
+              </td>
+
+              <td style="padding:12px">
+                ${
+                  a.pdf_url
+                  ? `
+                    <a
+                      href="${a.pdf_url}"
+                      target="_blank"
+                      style="
+                        color:var(--r);
+                        text-decoration:none;
+                        font-weight:600
+                      "
+                    >
+                      PDF
+                    </a>
+                  `
+                  : "—"
+                }
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:12px;
+      color:var(--t2);
+      font-size:13px
+    ">
+
+      <div>
+        Página ${assetPage+1}
       </div>
-      <div class="status-card" style="background:white;margin-top:10px">
-        <div class="card-title">Passivo residual final</div>
-        <div class="status-big" style="color:var(--green)">R$ 0</div>
+
+      <div style="display:flex;gap:8px">
+
+        <button
+          onclick="prevAssetPage()"
+          ${assetPage===0?"disabled":""}
+          style="
+            border:1px solid var(--bd);
+            background:#fff;
+            border-radius:8px;
+            padding:7px 12px
+          "
+        >
+          Anterior
+        </button>
+
+        <button
+          onclick="nextAssetPage(${data.total || 0})"
+          style="
+            border:1px solid var(--bd);
+            background:#fff;
+            border-radius:8px;
+            padding:7px 12px
+          "
+        >
+          Próxima
+        </button>
+
       </div>
     </div>
   `;
 }
 
-function uploadDoc(input,tipo){
-  const file = input.files[0];
-  if(!file) return;
-  alert(`Arquivo de ${tipo} recebido: ${file.name}. Leitura MVP registrada para revisão humana.`);
-}
+function assetBadge(status){
 
-function exportCSV(){
-  alert("Exportação simulada no MVP. Próximo passo: integrar geração real XLSX.");
-}
-
-function smartSearch(){
-  const q = document.getElementById("globalSearch").value.toLowerCase();
-  if(q.includes("condicion")){
-    openPage("condicionantes",document.querySelectorAll(".nav-item")[3]);
-    return;
-  }
-  if(q.includes("ativo") || q.includes("poço")){
-    openPage("ativos",document.querySelectorAll(".nav-item")[2]);
-    return;
-  }
-  if(q.includes("financeiro") || q.includes("passivo")){
-    openPage("financeiro",document.querySelectorAll(".nav-item")[4]);
-    return;
-  }
-  alert("Busca realizada. Use termos como condicionantes, ativos, passivo ou financeiro.");
-}
-
-function toggleJey(){
-  document.getElementById("jeyPanel").classList.toggle("open");
-}
-
-function askJey(){
-  const q = document.getElementById("jeyInput").value.toLowerCase();
-  let answer = "O cenário atual mostra baixa cobertura regulatória dos ativos operacionais e passivo mapeado de R$ 147.";
-
-  if(q.includes("miranga")){
-    answer = "Miranga concentra ativos relevantes e deve ser analisado pelo vínculo entre licença, condicionantes e operação protegida.";
-  }
-
-  if(q.includes("condicion")){
-    answer = "Há 9 condicionantes mapeadas, com 2 concluídas e 7 pendentes. O indicador é simples: concluídas sobre total.";
-  }
-
-  if(q.includes("passivo") || q.includes("financeiro")){
-    answer = `Para zerar R$ 147 em ${years} anos, o investimento anual estimado é de R$ ${Math.round(147/years)}.`;
-  }
-
-  document.getElementById("jeyAnswer").innerText = answer;
-
-  if("speechSynthesis" in window){
-    const u = new SpeechSynthesisUtterance(answer);
-    u.lang = "pt-BR";
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-  }
-}
-
-function startVoice(){
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){
-    alert("Reconhecimento de voz não disponível neste navegador.");
-    return;
-  }
-
-  const r = new SR();
-  r.lang = "pt-BR";
-  r.onresult = e=>{
-    const text = e.results[0][0].transcript;
-    document.getElementById("jeyInput").value = text;
-    askJey();
+  const map = {
+    ok:["Licença ativa","var(--p)","#e8f5ec"],
+    missing:["Sem licença","var(--r)","#fbeded"],
+    expired:["Licença vencida","var(--r)","#fbeded"],
+    upcoming:["Próxima ao vencimento","var(--wt)","#fff7d6"]
   };
-  r.start();
-}
-</script>
 
+  const [txt,col,bg] = map[status] || ["—","var(--t2)","var(--bdl)"];
+
+  return `
+    <span style="
+      display:inline-flex;
+      padding:3px 9px;
+      border-radius:6px;
+      background:${bg};
+      color:${col};
+      font-size:12px;
+      font-weight:600
+    ">
+      ${txt}
+    </span>
+  `;
+}
+
+function applyAssetFilter(){
+
+  assetSearch = document.getElementById("assetSearch").value || "";
+  assetStatus = document.getElementById("assetStatus").value || "";
+  assetPage = 0;
+
+  renderAssets();
+}
+
+function prevAssetPage(){
+
+  if(assetPage>0){
+    assetPage--;
+    renderAssets();
+  }
+}
+
+function nextAssetPage(total){
+
+  const maxPage = Math.ceil((total || 0)/50)-1;
+
+  if(assetPage < maxPage){
+    assetPage++;
+    renderAssets();
+  }
+}
+
+/* CENTRAL DOCUMENTAL */
+
+async function renderDocs(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div style="margin-bottom:18px">
+      <div style="font-size:26px;font-weight:700">
+        Central documental
+      </div>
+
+      <div style="color:var(--t2)">
+        Upload de licenças e boletos
+      </div>
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+      margin-bottom:18px
+    ">
+
+      <div style="
+        background:var(--s);
+        border:1px dashed var(--bd);
+        border-radius:14px;
+        padding:24px;
+        text-align:center;
+        box-shadow:var(--sh)
+      ">
+
+        <div style="font-size:34px;margin-bottom:8px">
+          📄
+        </div>
+
+        <div style="font-weight:700;margin-bottom:6px">
+          Upload de Licença
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:var(--t2);
+          margin-bottom:14px
+        ">
+          PDF da licença ambiental
+        </div>
+
+        <input
+          type="file"
+          id="pdfFile"
+          accept=".pdf"
+          style="display:none"
+          onchange="uploadDoc('license')"
+        >
+
+        <button
+          onclick="document.getElementById('pdfFile').click()"
+          style="
+            border:none;
+            background:var(--p);
+            color:#fff;
+            padding:9px 16px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600
+          "
+        >
+          Selecionar PDF
+        </button>
+
+        <div id="upStatus" style="margin-top:12px"></div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px dashed var(--bd);
+        border-radius:14px;
+        padding:24px;
+        text-align:center;
+        box-shadow:var(--sh)
+      ">
+
+        <div style="font-size:34px;margin-bottom:8px">
+          🧾
+        </div>
+
+        <div style="font-weight:700;margin-bottom:6px">
+          Upload de Boleto
+        </div>
+
+        <div style="
+          font-size:13px;
+          color:var(--t2);
+          margin-bottom:14px
+        ">
+          PDF do boleto de taxa
+        </div>
+
+        <input
+          type="file"
+          id="billetFile"
+          accept=".pdf"
+          style="display:none"
+          onchange="uploadDoc('billet')"
+        >
+
+        <button
+          onclick="document.getElementById('billetFile').click()"
+          style="
+            border:none;
+            background:var(--wg);
+            color:#fff;
+            padding:9px 16px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600
+          "
+        >
+          Selecionar boleto
+        </button>
+
+        <div id="billetStatus" style="margin-top:12px"></div>
+      </div>
+
+    </div>
+
+    <div id="docList">
+      <div class="loading">
+        <span class="spin"></span>
+        Carregando documentos
+      </div>
+    </div>
+  `;
+
+  loadDocs();
+}
+
+async function uploadDoc(type){
+
+  const input = document.getElementById(
+    type==="license" ? "pdfFile" : "billetFile"
+  );
+
+  const status = document.getElementById(
+    type==="license" ? "upStatus" : "billetStatus"
+  );
+
+  const file = input.files[0];
+
+  if(!file) return;
+
+  status.innerHTML = `
+    <div style="color:var(--t2)">
+      Enviando e processando...
+    </div>
+  `;
+
+  const fd = new FormData();
+  fd.append("file",file);
+
+  const r = await fetch(
+    `${API}/licenses/upload?doc_type=${type}`,
+    {
+      method:"POST",
+      body:fd
+    }
+  ).then(r=>r.json()).catch(()=>null);
+
+  if(r && !r.error){
+    status.innerHTML = `
+      <div style="color:var(--p);font-weight:600">
+        Upload concluído
+      </div>
+    `;
+
+    loadDocs();
+  }else{
+    status.innerHTML = `
+      <div style="color:var(--r)">
+        Erro no upload
+      </div>
+    `;
+  }
+}
+
+async function loadDocs(){
+
+  const div = document.getElementById("docList");
+
+  const docs = await sf(`${API}/licenses`);
+
+  if(!docs){
+    div.innerHTML = `
+      <div style="color:var(--r)">
+        Erro ao carregar documentos
+      </div>
+    `;
+    return;
+  }
+
+  div.innerHTML = `
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      overflow:auto;
+      box-shadow:var(--sh)
+    ">
+      <table style="
+        width:100%;
+        border-collapse:collapse;
+        min-width:800px
+      ">
+        <thead>
+          <tr style="background:var(--bg)">
+            <th style="text-align:left;padding:12px">Número</th>
+            <th style="text-align:left;padding:12px">Tipo</th>
+            <th style="text-align:left;padding:12px">Órgão</th>
+            <th style="text-align:left;padding:12px">Validade</th>
+            <th style="text-align:left;padding:12px">Ativo</th>
+            <th style="text-align:left;padding:12px">Cond.</th>
+            <th style="text-align:left;padding:12px">PDF</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${(docs || []).map(l=>`
+            <tr style="border-top:1px solid var(--bdl)">
+              <td style="padding:12px;font-weight:600">
+                ${l.number || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${l.type || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${l.agency || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${l.expiry_date || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${l.asset_code || "—"}
+              </td>
+
+              <td style="padding:12px;color:var(--t2)">
+                ${l.n_conditions || 0}
+              </td>
+
+              <td style="padding:12px">
+                ${
+                  l.pdf_url
+                  ? `
+                    <a
+                      href="${l.pdf_url}"
+                      target="_blank"
+                      style="
+                        color:var(--r);
+                        font-weight:600;
+                        text-decoration:none
+                      "
+                    >
+                      PDF
+                    </a>
+                  `
+                  : "—"
+                }
+              </td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+/* GESTÃO FINANCEIRA */
+
+function getBudgetStore(){
+
+  try{
+    return JSON.parse(
+      localStorage.getItem("envlicense_budget_v6") || "{}"
+    );
+  }catch(e){
+    return {};
+  }
+}
+
+function setBudgetStore(obj){
+
+  localStorage.setItem(
+    "envlicense_budget_v6",
+    JSON.stringify(obj || {})
+  );
+}
+
+function budgetForMonth(label){
+
+  return Number(
+    getBudgetStore()[String(label || "").trim()] || 0
+  );
+}
+
+async function renderPlanning(){
+
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="loading">
+      <span class="spin"></span>
+      Carregando gestão financeira
+    </div>
+  `;
+
+  const data = await sf(
+    `${API}/financial/overview?years=${passiveDissolutionYears}`,
+    {timeout:30000}
+  );
+
+  if(!data || data.error){
+
+    app.innerHTML = `
+      <div style="color:var(--r)">
+        Erro ao carregar financeiro:
+        ${data?.error || "sem resposta"}
+      </div>
+    `;
+
+    return;
+  }
+
+  const summary = data.summary || {};
+  const months = Array.isArray(data.monthly) ? data.monthly : [];
+  const fields = Array.isArray(data.by_field) ? data.by_field : [];
+  const cats = Array.isArray(data.by_category) ? data.by_category : [];
+
+  const simulation = data.simulation || {};
+  const scenarios = simulation.scenarios || {};
+  const rows = simulation.annual_comparison || [];
+
+  window.__planningMonths = months;
+
+  const budgetTotal = months.reduce(
+    (s,m)=>s + budgetForMonth(m.label),
+    0
+  );
+
+  const realizado = Number(summary.total_realizado || 0);
+  const passivo = Number(summary.total_provisionado || 0);
+  const operacional = Number(summary.operational_liability_total || 0);
+
+  const saldoBudget = budgetTotal - realizado;
+
+  const maxMonth = Math.max(
+    1,
+    ...months.map(m=>
+      Math.max(
+        Number(m.realizado || 0),
+        budgetForMonth(m.label)
+      )
+    )
+  );
+
+  const monthBars = months.map(m=>{
+
+    const real = Number(m.realizado || 0);
+    const budget = budgetForMonth(m.label);
+
+    const rh = Math.max(
+      2,
+      Math.round(real / maxMonth * 120)
+    );
+
+    const bh = budget > 0
+      ? Math.max(2,Math.round(budget / maxMonth * 120))
+      : 0;
+
+    const over = real > budget && budget > 0;
+
+    return `
+      <div style="
+        flex:1;
+        min-width:0;
+        text-align:center
+      ">
+
+        <div style="
+          height:124px;
+          display:flex;
+          align-items:flex-end;
+          justify-content:center;
+          gap:2px
+        ">
+
+          ${
+            budget > 0
+            ? `
+              <div
+                title="Budget: ${fmtBRL(budget)}"
+                style="
+                  width:40%;
+                  height:${bh}px;
+                  background:var(--bt);
+                  border:1.5px dashed var(--b);
+                  border-radius:4px 4px 0 0
+                "
+              ></div>
+            `
+            : ""
+          }
+
+          <div
+            title="Realizado: ${fmtBRL(real)}"
+            style="
+              width:40%;
+              height:${rh}px;
+              background:${over ? "var(--r)" : "var(--p)"};
+              border-radius:4px 4px 0 0
+            "
+          ></div>
+        </div>
+
+        <div style="
+          font-size:9px;
+          color:var(--t4);
+          margin-top:5px
+        ">
+          ${m.label}
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  const maxField = Math.max(
+    1,
+    ...fields.map(f=>Number(f.total || 0))
+  );
+
+  const fieldBars = fields.slice(0,8).map(f=>`
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px
+    ">
+      <div style="
+        width:120px;
+        color:var(--t2);
+        font-size:12px
+      ">
+        ${f.field || "—"}
+      </div>
+
+      <div style="
+        flex:1;
+        height:6px;
+        background:var(--bdl);
+        border-radius:4px;
+        overflow:hidden
+      ">
+        <div style="
+          height:100%;
+          width:${Math.round(Number(f.total || 0)/maxField*100)}%;
+          background:var(--p)
+        "></div>
+      </div>
+
+      <div style="
+        width:70px;
+        text-align:right;
+        font-size:12px;
+        color:var(--t2)
+      ">
+        ${fmtBRL(f.total)}
+      </div>
+    </div>
+  `).join("");
+
+  const maxCat = Math.max(
+    1,
+    ...cats.map(c=>Number(c.estimado || 0))
+  );
+
+  const catBars = cats.map(c=>`
+    <div style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px
+    ">
+      <div style="
+        width:120px;
+        color:var(--t2);
+        font-size:12px
+      ">
+        ${c.label || c.category || "—"}
+      </div>
+
+      <div style="
+        flex:1;
+        height:6px;
+        background:var(--bdl);
+        border-radius:4px;
+        overflow:hidden
+      ">
+        <div style="
+          height:100%;
+          width:${Math.round(Number(c.estimado || 0)/maxCat*100)}%;
+          background:var(--wg)
+        "></div>
+      </div>
+
+      <div style="
+        width:70px;
+        text-align:right;
+        font-size:12px;
+        color:var(--t2)
+      ">
+        ${fmtBRL(c.estimado)}
+      </div>
+    </div>
+  `).join("");
+
+  const buttons = [1,2,3,4,5].map(y=>`
+    <button
+      onclick="passiveDissolutionYears=${y};renderPlanning()"
+      style="
+        border:${passiveDissolutionYears===y ? "none" : "1px solid var(--bd)"};
+        background:${passiveDissolutionYears===y ? "var(--p)" : "#fff"};
+        color:${passiveDissolutionYears===y ? "#fff" : "var(--t2)"};
+        padding:7px 13px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:600
+      "
+    >
+      ${y} ano${y>1?"s":""}
+    </button>
+  `).join("");
+
+  app.innerHTML = `
+    <div style="margin-bottom:18px">
+      <div style="font-size:26px;font-weight:700">
+        Gestão financeira regulatória
+      </div>
+
+      <div style="color:var(--t2)">
+        Passivo mapeado, budget e simulação de dissolução
+      </div>
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:12px;
+      margin-bottom:16px
+    ">
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Realizado
+        </div>
+
+        <div style="font-size:26px;font-weight:700">
+          ${fmtBRL(realizado)}
+        </div>
+
+        <div style="font-size:12px;color:var(--t3)">
+          Executado no período
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Saldo vs budget
+        </div>
+
+        <div style="
+          font-size:26px;
+          font-weight:700;
+          color:${budgetTotal>0 ? saldoBudget>=0 ? "var(--p)" : "var(--r)" : "var(--t3)"}
+        ">
+          ${budgetTotal>0 ? fmtBRL(saldoBudget) : "—"}
+        </div>
+
+        <div style="font-size:12px;color:var(--t3)">
+          ${budgetTotal>0 ? saldoBudget>=0 ? "Dentro do budget" : "Acima do budget" : "Informe o budget"}
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Passivo mapeado
+        </div>
+
+        <div style="font-size:26px;font-weight:700">
+          ${fmtBRL(passivo)}
+        </div>
+
+        <div style="font-size:12px;color:var(--t3)">
+          Base da simulação
+        </div>
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:16px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-size:11px;color:var(--t3)">
+          Passivo operacional
+        </div>
+
+        <div style="
+          font-size:26px;
+          font-weight:700;
+          color:${operacional>0 ? "var(--r)" : "var(--p)"}
+        ">
+          ${fmtBRL(operacional)}
+        </div>
+
+        <div style="font-size:12px;color:var(--t3)">
+          Poços produzindo/injetando
+        </div>
+      </div>
+
+    </div>
+
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:16px;
+      box-shadow:var(--sh)
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:10px
+      ">
+        <div style="font-weight:700">
+          Curva financeira mensal
+        </div>
+
+        <button
+          onclick="openBudgetModal(window.__planningMonths || [])"
+          style="
+            border:1px solid var(--bd);
+            background:#fff;
+            color:var(--t2);
+            padding:6px 12px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600
+          "
+        >
+          + Budget
+        </button>
+      </div>
+
+      <div style="
+        display:flex;
+        align-items:flex-end;
+        gap:4px;
+        height:132px
+      ">
+        ${monthBars}
+      </div>
+    </div>
+
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:14px;
+      margin-bottom:16px
+    ">
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-weight:700;margin-bottom:14px">
+          Custo por campo
+        </div>
+
+        ${fieldBars || "Sem dados"}
+      </div>
+
+      <div style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-radius:14px;
+        padding:18px;
+        box-shadow:var(--sh)
+      ">
+        <div style="font-weight:700;margin-bottom:14px">
+          Custo por categoria
+        </div>
+
+        ${catBars || "Sem dados"}
+      </div>
+
+    </div>
+
+    <div style="
+      background:var(--s);
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:var(--sh)
+    ">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        flex-wrap:wrap;
+        gap:12px;
+        margin-bottom:18px
+      ">
+        <div>
+          <div style="font-weight:700">
+            Simulador de dissolução do passivo
+          </div>
+
+          <div style="
+            color:var(--t2);
+            font-size:13px
+          ">
+            Compare cenário atual, continuidade operacional e excelência
+          </div>
+        </div>
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${buttons}
+        </div>
+      </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:14px
+      ">
+
+        ${renderScenarioCard("Cenário atual",scenarios.current,"var(--b)",rows,"current")}
+
+        ${renderScenarioCard("Continuidade operacional",scenarios.operational,"var(--wg)",rows,"operational")}
+
+        ${renderScenarioCard("Excelência operacional",scenarios.excellence,"var(--p)",rows,"excellence")}
+
+      </div>
+
+      <div style="
+        font-size:11px;
+        color:var(--t3);
+        margin-top:14px
+      ">
+        * Não considera multas, deterioração, novos vencimentos ou peso por ativo.
+      </div>
+
+    </div>
+  `;
+}
+
+function renderScenarioCard(title,sc,color,rows,key){
+
+  sc = sc || {};
+
+  const max = Math.max(
+    1,
+    ...rows.map(r=>Number(r[key] || 0))
+  );
+
+  const bars = rows.map(r=>{
+
+    const invest = Number(r[key] || 0);
+    const residual = Number(r[`${key}_residual`] || 0);
+
+    const h = invest > 0
+      ? Math.max(5,Math.round(invest/max*62))
+      : 3;
+
+    return `
+      <div style="flex:1;text-align:center">
+        <div
+          title="${r.year}: ${fmtBRL(invest)}"
+          style="
+            width:70%;
+            margin:0 auto;
+            height:${h}px;
+            background:${invest>0 ? color : "var(--bdl)"};
+            border-radius:5px 5px 0 0
+          "
+        ></div>
+
+        <div style="
+          font-size:9px;
+          color:var(--t3);
+          margin-top:4px
+        ">
+          ${invest>0 ? fmtBRL(invest) : residual<=0 ? "Zerado" : "—"}
+        </div>
+
+        <div style="
+          font-size:9px;
+          color:var(--t4)
+        ">
+          ${String(r.year).slice(2)}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div style="
+      border:1px solid var(--bdl);
+      border-radius:14px;
+      padding:16px;
+      background:var(--bg)
+    ">
+
+      <div style="
+        color:${color};
+        font-size:11px;
+        font-weight:700;
+        text-transform:uppercase;
+        margin-bottom:8px
+      ">
+        ${title}
+      </div>
+
+      <div style="
+        display:grid;
+        gap:8px;
+        margin-bottom:12px
+      ">
+
+        <div style="
+          background:#fff;
+          border:1px solid var(--bdl);
+          border-radius:10px;
+          padding:10px
+        ">
+          <div style="font-size:10px;color:var(--t3)">
+            Investimento total
+          </div>
+
+          <div style="font-weight:700">
+            ${fmtBRL(sc.investment)}
+          </div>
+        </div>
+
+        <div style="
+          background:#fff;
+          border:1px solid var(--bdl);
+          border-radius:10px;
+          padding:10px
+        ">
+          <div style="font-size:10px;color:var(--t3)">
+            Passivo residual
+          </div>
+
+          <div style="
+            font-weight:700;
+            color:${Number(sc.final_passive || 0)>0 ? "var(--r)" : "var(--p)"}
+          ">
+            ${fmtBRL(sc.final_passive)}
+          </div>
+        </div>
+
+        <div style="
+          background:#fff;
+          border:1px solid var(--bdl);
+          border-radius:10px;
+          padding:10px
+        ">
+          <div style="font-size:10px;color:var(--t3)">
+            Conclusão
+          </div>
+
+          <div style="font-weight:700">
+            ${sc.completion_year || "Não zera"}
+          </div>
+        </div>
+
+      </div>
+
+      <div style="
+        display:flex;
+        align-items:flex-end;
+        gap:4px;
+        height:86px
+      ">
+        ${bars}
+      </div>
+    </div>
+  `;
+}
+
+function openBudgetModal(months){
+
+  const b = getBudgetStore();
+
+  const rows = (months || []).map(m=>{
+
+    const key = String(m.label || "").trim();
+
+    return `
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        padding:8px 0;
+        border-bottom:1px solid var(--bdl)
+      ">
+        <span>${m.label}</span>
+
+        <input
+          data-budget-key="${key}"
+          value="${b[key] || 0}"
+          type="number"
+          style="
+            border:1px solid var(--bdl);
+            border-radius:8px;
+            padding:6px 8px;
+            width:120px;
+            text-align:right
+          "
+        >
+      </div>
+    `;
+  }).join("");
+
+  const html = `
+    <div style="padding:22px">
+
+      <div style="
+        font-size:18px;
+        font-weight:700;
+        margin-bottom:6px
+      ">
+        Budget mensal
+      </div>
+
+      <div style="
+        color:var(--t2);
+        font-size:13px;
+        margin-bottom:16px
+      ">
+        Informe o budget planejado por mês.
+      </div>
+
+      <div>${rows}</div>
+
+      <div style="
+        display:flex;
+        justify-content:flex-end;
+        gap:8px;
+        margin-top:18px
+      ">
+        <button onclick="closeMod()">Cancelar</button>
+        <button onclick="saveBudgetModal()">Salvar</button>
+      </div>
+    </div>
+  `;
+
+  openMod(html);
+}
+
+function saveBudgetModal(){
+
+  const obj = getBudgetStore();
+
+  document.querySelectorAll("[data-budget-key]")
+    .forEach(inp=>{
+      obj[inp.dataset.budgetKey] = Number(inp.value) || 0;
+    });
+
+  setBudgetStore(obj);
+
+  closeMod();
+  renderPlanning();
+}
+
+function openMod(html){
+
+  let modal = document.getElementById("modal");
+
+  if(!modal){
+
+    modal = document.createElement("div");
+    modal.id = "modal";
+
+    modal.style.position = "fixed";
+    modal.style.inset = "0";
+    modal.style.background = "rgba(0,0,0,.35)";
+    modal.style.display = "flex";
+    modal.style.alignItems = "center";
+    modal.style.justifyContent = "center";
+    modal.style.zIndex = "999";
+
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div style="
+      background:#fff;
+      border-radius:14px;
+      max-width:480px;
+      width:92%;
+      box-shadow:var(--shl)
+    ">
+      ${html}
+    </div>
+  `;
+
+  modal.onclick = e=>{
+    if(e.target===modal) closeMod();
+  };
+}
+
+function closeMod(){
+
+  const modal = document.getElementById("modal");
+
+  if(modal) modal.remove();
+}
+
+setTab("dashboard");
+</script>
 </body>
-</html>
+</html>  
