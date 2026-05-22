@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EnvLicense — PetroRecôncavo</title>
+<title>EnvLicense | PetroRecôncavo</title>
 
 <style>
 :root{
@@ -35,41 +35,43 @@
   --bg:#f5f5f7;
   --s:#fff;
 
-  --rad:12px;
-  --rads:8px;
+  --rad:14px;
+  --rads:9px;
 
   --ease:cubic-bezier(.4,0,.2,1);
 
   --sh:0 1px 3px rgba(0,0,0,.07),0 4px 14px rgba(0,0,0,.05);
   --shl:0 8px 32px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.07);
 
-  --sw:56px;
-  --se:220px;
+  --sw:60px;
+  --se:228px;
 }
 
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  -webkit-tap-highlight-color:transparent
+  -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-  height:100%
+  height:100%;
 }
 
 body{
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
   background:var(--bg);
   color:var(--t1);
   font-size:14px;
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
   display:flex;
-  overflow:hidden
+  overflow:hidden;
 }
 
-/* SIDEBAR */
+/* ============================================================
+   SIDEBAR
+============================================================ */
 
 .sb{
   width:var(--sw);
@@ -84,104 +86,104 @@ body{
   z-index:100;
   overflow:hidden;
   transition:width .22s var(--ease);
-  flex-shrink:0
 }
 
 .sb:hover{
-  width:var(--se)
+  width:var(--se);
 }
 
 .sb-brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:11px;
   padding:16px 14px;
   border-bottom:1px solid var(--bdl);
-  min-height:58px;
+  min-height:60px;
+  white-space:nowrap;
   overflow:hidden;
-  white-space:nowrap
 }
 
 .sb-mark{
-  width:28px;
-  height:28px;
-  min-width:28px;
+  width:30px;
+  height:30px;
+  min-width:30px;
   background:linear-gradient(135deg,var(--p),var(--pl));
-  border-radius:7px;
+  border-radius:8px;
   display:flex;
   align-items:center;
   justify-content:center;
   color:#fff;
-  font-weight:700;
-  font-size:12px
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.02em;
 }
 
 .sb-txt{
   opacity:0;
   transform:translateX(-8px);
-  transition:all .18s var(--ease)
+  transition:all .18s var(--ease);
 }
 
 .sb:hover .sb-txt{
   opacity:1;
-  transform:none
+  transform:none;
 }
 
 .sb-name{
-  font-weight:600;
-  font-size:13.5px;
-  letter-spacing:-.02em
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:-.03em;
 }
 
 .sb-sub{
-  font-size:10px;
-  color:var(--t3)
+  font-size:10.5px;
+  color:var(--t3);
 }
 
 .sb-sec{
-  padding:6px 0
+  padding:8px 0;
 }
 
 .sb-lbl{
   font-size:9px;
   color:var(--t4);
   text-transform:uppercase;
-  letter-spacing:.08em;
-  font-weight:700;
-  padding:7px 16px 3px;
+  letter-spacing:.09em;
+  font-weight:800;
+  padding:7px 16px 4px;
   opacity:0;
-  transition:opacity .18s var(--ease)
+  transition:opacity .18s var(--ease);
 }
 
 .sb:hover .sb-lbl{
-  opacity:1
+  opacity:1;
 }
 
 .nb{
   width:100%;
   background:transparent;
   border:none;
-  padding:7px 14px;
+  padding:8px 15px;
   cursor:pointer;
   font-family:inherit;
   display:flex;
   align-items:center;
-  gap:11px;
+  gap:12px;
   color:var(--t2);
   transition:all .13s var(--ease);
-  min-height:38px;
+  min-height:40px;
   overflow:hidden;
-  white-space:nowrap
+  white-space:nowrap;
 }
 
 .nb:hover{
   background:var(--bdl);
-  color:var(--t1)
+  color:var(--t1);
 }
 
 .nb.on{
   background:var(--pt);
-  color:var(--p)
+  color:var(--p);
 }
 
 .nb-ic{
@@ -190,55 +192,70 @@ body{
   min-width:20px;
   display:flex;
   align-items:center;
-  justify-content:center
+  justify-content:center;
 }
 
 .nb-ic svg{
-  width:15px;
-  height:15px;
+  width:16px;
+  height:16px;
   stroke:currentColor;
-  stroke-width:1.8;
+  stroke-width:1.9;
   fill:none;
   stroke-linecap:round;
-  stroke-linejoin:round
+  stroke-linejoin:round;
 }
 
 .nb-lbl{
   font-size:13px;
+  font-weight:600;
   opacity:0;
   transform:translateX(-5px);
-  transition:all .18s var(--ease)
+  transition:all .18s var(--ease);
 }
 
 .sb:hover .nb-lbl{
   opacity:1;
-  transform:none
+  transform:none;
 }
 
 .sb-foot{
   margin-top:auto;
-  padding:10px 14px;
+  padding:12px 15px;
   border-top:1px solid var(--bdl);
   display:flex;
   align-items:center;
-  gap:8px
+  gap:8px;
 }
 
 .sb-ver{
-  width:28px;
-  height:28px;
-  min-width:28px;
+  width:30px;
+  height:30px;
+  min-width:30px;
   background:var(--bdl);
-  border-radius:6px;
+  border-radius:7px;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:9px;
-  font-weight:700;
-  color:var(--t3)
+  font-weight:800;
+  color:var(--t3);
 }
 
-/* MAIN */
+.sb-ft{
+  font-size:10.5px;
+  color:var(--t4);
+  opacity:0;
+  transition:opacity .18s var(--ease);
+  white-space:nowrap;
+}
+
+.sb:hover .sb-ft{
+  opacity:1;
+}
+
+/* ============================================================
+   MAIN
+============================================================ */
 
 .main-wrap{
   margin-left:var(--sw);
@@ -248,63 +265,359 @@ body{
   overflow-x:hidden;
   transition:margin-left .22s var(--ease);
   display:flex;
-  flex-direction:column
+  flex-direction:column;
 }
 
 .sb:hover~.main-wrap{
-  margin-left:var(--se)
+  margin-left:var(--se);
 }
 
 .topbar{
-  background:var(--s);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bdl);
   padding:0 28px;
-  height:54px;
+  height:56px;
   display:flex;
   align-items:center;
   gap:14px;
   position:sticky;
   top:0;
-  z-index:50
+  z-index:50;
+  flex-shrink:0;
 }
 
 .tb-ttl{
-  font-size:14.5px;
-  font-weight:600;
-  letter-spacing:-.02em;
-  flex:1
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:-.025em;
+  flex:1;
+}
+
+.search-btn{
+  border:1px solid var(--bdl);
+  background:var(--bg);
+  color:var(--t2);
+  border-radius:10px;
+  padding:7px 12px;
+  font-size:12.5px;
+  display:flex;
+  gap:7px;
+  align-items:center;
+  cursor:pointer;
+  min-width:250px;
+}
+
+.search-btn svg{
+  width:14px;
+  height:14px;
+  stroke:currentColor;
+  stroke-width:2;
+  fill:none;
 }
 
 .cnt{
-  padding:24px 28px 80px;
-  flex:1
+  padding:26px 30px 88px;
+  flex:1;
 }
 
+/* ============================================================
+   COMPONENTES
+============================================================ */
+
+.ph{
+  margin-bottom:18px;
+}
+
+.ph h1{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.04em;
+  margin-bottom:3px;
+}
+
+.ph p{
+  color:var(--t2);
+  font-size:13px;
+}
+
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.kpi{
+  background:var(--s);
+  border:1px solid var(--bdl);
+  border-radius:var(--rad);
+  padding:17px 18px;
+  box-shadow:var(--sh);
+  position:relative;
+  overflow:hidden;
+}
+
+.kpi:before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto 0;
+  height:3px;
+  background:var(--bdl);
+}
+
+.kpi.green:before{background:linear-gradient(90deg,var(--p),var(--pl));}
+.kpi.red:before{background:var(--r);}
+.kpi.amber:before{background:var(--w);}
+.kpi.blue:before{background:var(--b);}
+
+.kl{
+  font-size:10px;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.kv{
+  font-size:28px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:-.04em;
+}
+
+.ks{
+  font-size:11.5px;
+  color:var(--t3);
+  margin-top:6px;
+}
+
+.card{
+  background:var(--s);
+  border:1px solid var(--bdl);
+  border-radius:var(--rad);
+  padding:18px;
+  box-shadow:var(--sh);
+  margin-bottom:14px;
+}
+
+.ct{
+  font-size:10px;
+  color:var(--t3);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:14px;
+}
+
+.g2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+.g3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+
+@media(max-width:1100px){
+  .g2,.g3{
+    grid-template-columns:1fr;
+  }
+}
+
+.btn{
+  border:none;
+  background:var(--p);
+  color:#fff;
+  padding:7px 14px;
+  border-radius:9px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:all .12s var(--ease);
+}
+
+.btn:hover{
+  background:var(--ph);
+}
+
+.btn-g{
+  background:#fff;
+  color:var(--t2);
+  border:1px solid var(--bd);
+}
+
+.btn-g:hover{
+  background:var(--bdl);
+  color:var(--t1);
+}
+
+.btn-r{
+  background:var(--r);
+}
+
+.btn-r:hover{
+  background:var(--rh);
+}
+
+.btn-sm{
+  padding:5px 11px;
+  font-size:12px;
+}
+
+.btn-xs{
+  padding:3px 9px;
+  font-size:11px;
+}
+
+.inp,.sel{
+  border:1px solid var(--bdl);
+  background:var(--bg);
+  border-radius:9px;
+  padding:7px 10px;
+  font-family:inherit;
+  font-size:13px;
+  outline:none;
+}
+
+.inp:focus,.sel:focus{
+  border-color:var(--p);
+  box-shadow:0 0 0 3px rgba(0,112,35,.08);
+}
+
+.toolbar{
+  background:var(--s);
+  border:1px solid var(--bdl);
+  border-radius:var(--rad);
+  padding:10px 12px;
+  margin-bottom:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  align-items:center;
+  box-shadow:var(--sh);
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:3px 9px;
+  border-radius:6px;
+  font-size:11.5px;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.b-ok{background:#e8f5ec;color:#1f5f33;}
+.b-up{background:#fff7d6;color:var(--wt);}
+.b-ex{background:var(--rt);color:var(--r);}
+.b-mi{background:#f5dede;color:#7a1f1e;}
+.b-pe{background:var(--bt);color:var(--b);}
+.b-dn{background:#e8f5ec;color:#1f5f33;}
+
 .loading{
+  padding:42px;
+  color:var(--t3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
   text-align:center;
-  padding:40px;
-  color:var(--t3)
 }
 
 .spin{
-  display:inline-block;
-  width:15px;
-  height:15px;
+  width:16px;
+  height:16px;
   border:2px solid var(--bdl);
   border-top-color:var(--p);
   border-radius:50%;
-  animation:spin .65s linear infinite
+  animation:spin .65s linear infinite;
 }
 
 @keyframes spin{
-  to{transform:rotate(360deg)}
+  to{transform:rotate(360deg);}
+}
+
+.empty{
+  padding:32px;
+  text-align:center;
+  color:var(--t3);
+  font-size:13px;
+}
+
+.emsg{
+  background:var(--rt);
+  color:var(--r);
+  padding:10px 12px;
+  border-radius:9px;
+  border:1px solid #f3b9b9;
+  margin:8px 0;
+  font-size:13px;
+}
+
+.omsg{
+  background:var(--pt);
+  color:#1f5f33;
+  padding:10px 12px;
+  border-radius:9px;
+  border:1px solid #c7e7d0;
+  margin:8px 0;
+  font-size:13px;
+}
+
+.tw{
+  border:1px solid var(--bdl);
+  border-radius:var(--rad);
+  overflow:auto;
+  background:#fff;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th{
+  text-align:left;
+  padding:11px 13px;
+  font-size:10px;
+  color:var(--t3);
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  background:var(--bg);
+  border-bottom:1px solid var(--bdl);
+}
+
+td{
+  padding:11px 13px;
+  border-bottom:1px solid var(--bdl);
+  font-size:12.5px;
+}
+
+tr:last-child td{
+  border-bottom:none;
+}
+
+tr:hover td{
+  background:rgba(0,112,35,.018);
 }
 </style>
 </head>
 
 <body>
 
-<aside class="sb">
+<aside class="sb" id="sb">
 
   <div class="sb-brand">
     <div class="sb-mark">PR</div>
@@ -321,13 +634,12 @@ body{
     <button class="nb on" data-tab="dashboard">
       <span class="nb-ic">
         <svg viewBox="0 0 24 24">
-          <rect x="3" y="3" width="7" height="7" rx="1"/>
-          <rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/>
-          <rect x="14" y="14" width="7" height="7" rx="1"/>
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
         </svg>
       </span>
-
       <span class="nb-lbl">Visão executiva</span>
     </button>
   </div>
@@ -342,7 +654,6 @@ body{
           <polyline points="14 2 14 8 20 8"/>
         </svg>
       </span>
-
       <span class="nb-lbl">Central documental</span>
     </button>
 
@@ -353,7 +664,6 @@ body{
           <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12"/>
         </svg>
       </span>
-
       <span class="nb-lbl">Ativos</span>
     </button>
 
@@ -364,7 +674,6 @@ body{
           <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"/>
         </svg>
       </span>
-
       <span class="nb-lbl">Condicionantes</span>
     </button>
   </div>
@@ -380,21 +689,29 @@ body{
           <line x1="6" y1="20" x2="6" y2="14"/>
         </svg>
       </span>
-
       <span class="nb-lbl">Gestão financeira</span>
     </button>
   </div>
 
   <div class="sb-foot">
     <div class="sb-ver">v6</div>
+    <div class="sb-ft">EnvLicense · Premium</div>
   </div>
 
 </aside>
 
-<div class="main-wrap">
+<div class="main-wrap" id="mainWrap">
 
   <div class="topbar">
-    <div class="tb-ttl" id="tb-ttl">Visão executiva</div>
+    <div class="tb-ttl" id="tbTitle">Visão executiva</div>
+
+    <button class="search-btn" onclick="openSearch()">
+      <svg viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      Buscar ativos, licenças, campos...
+    </button>
   </div>
 
   <div class="cnt">
@@ -408,10 +725,25 @@ body{
 
 </div>
 
+<div id="modalRoot"></div>
+
 <script>
 const API = "https://envlicense-backend.onrender.com";
 
-let passiveDissolutionYears = 5;
+let currentTab = "dashboard";
+let assetPage = 0;
+let assetSearch = "";
+let assetStatus = "";
+let assetField = "";
+let assetSituation = "";
+
+let condFilter = "all";
+let condField = "";
+let condAgency = "";
+let condExpanded = new Set();
+
+let passiveYears = 5;
+let planningOnly = "all";
 
 const TABS = {
   dashboard:"Visão executiva",
@@ -421,82 +753,208 @@ const TABS = {
   planning:"Gestão financeira"
 };
 
-async function sf(url,opts={}){
+const CAT_COLOR = {
+  monitoring:"#125E81",
+  effluent:"#4EA72E",
+  reporting:"#007023",
+  infrastructure:"#F9CE29",
+  other:"#86868b"
+};
+
+const CAT_NAME = {
+  monitoring:"Monitoramento",
+  effluent:"Efluentes",
+  reporting:"Relatórios",
+  infrastructure:"Infraestrutura",
+  other:"Outros"
+};
+
+/* ============================================================
+   UTILS
+============================================================ */
+
+async function sf(url, opts = {}) {
   const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), opts.timeout || 25000);
 
-  const t = setTimeout(
-    ()=>ctrl.abort(),
-    opts.timeout || 18000
-  );
-
-  try{
-    const r = await fetch(url,{
+  try {
+    const res = await fetch(url, {
       ...opts,
-      signal:ctrl.signal
+      signal: ctrl.signal
     });
 
-    clearTimeout(t);
+    clearTimeout(timer);
 
-    const txt = await r.text();
+    const txt = await res.text();
 
     let data = null;
 
-    try{
+    try {
       data = txt ? JSON.parse(txt) : null;
-    }catch(e){
-      console.error("Resposta não JSON",url,txt);
+    } catch (e) {
+      console.error("Resposta não JSON:", url, txt);
       return null;
     }
 
-    if(!r.ok){
-      console.error("API error",r.status,url,data);
+    if (!res.ok) {
+      console.error("Erro API:", res.status, url, data);
       return null;
     }
 
     return data;
 
-  }catch(e){
-    clearTimeout(t);
-    console.error("fetch failed",url,e.message);
+  } catch (e) {
+    clearTimeout(timer);
+    console.error("Falha fetch:", url, e.message);
     return null;
   }
-}function fmtBRL(v){
-  return "R$ " + Number(v || 0).toLocaleString(
-    "pt-BR",
-    {
-      minimumFractionDigits:0,
-      maximumFractionDigits:0
-    }
-  );
 }
 
-function setTab(tab){
-  document.querySelectorAll(".nb")
-    .forEach(b=>b.classList.remove("on"));
+function fmtBRL(v) {
+  const n = Number(v || 0);
 
-  const btn = document.querySelector(`[data-tab="${tab}"]`);
+  if (n >= 1000000000) return "R$ " + (n/1000000000).toFixed(1) + "B";
+  if (n >= 1000000) return "R$ " + (n/1000000).toFixed(1) + "M";
+  if (n >= 1000) return "R$ " + (n/1000).toFixed(0) + "k";
 
-  if(btn) btn.classList.add("on");
-
-  document.getElementById("tb-ttl").textContent =
-    TABS[tab] || tab;
-
-  if(tab==="dashboard") renderDashboard();
-  if(tab==="assets") renderAssets();
-  if(tab==="conditions") renderConditions();
-  if(tab==="docs") renderDocs();
-  if(tab==="planning") renderPlanning();
-}
-
-document.querySelectorAll(".nb")
-  .forEach(btn=>{
-    btn.onclick = ()=>setTab(btn.dataset.tab);
+  return "R$ " + n.toLocaleString("pt-BR", {
+    minimumFractionDigits:0,
+    maximumFractionDigits:0
   });
+}
 
-/* DASHBOARD */
+function fmtBRLFull(v) {
+  return "R$ " + Number(v || 0).toLocaleString("pt-BR", {
+    minimumFractionDigits:0,
+    maximumFractionDigits:0
+  });
+}
 
-async function renderDashboard(){
+function pct(v) {
+  return Math.round(Number(v || 0)) + "%";
+}
 
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function showToast(msg) {
+  const t = document.createElement("div");
+
+  t.textContent = msg;
+
+  t.style.position = "fixed";
+  t.style.bottom = "24px";
+  t.style.right = "24px";
+  t.style.background = "var(--t1)";
+  t.style.color = "#fff";
+  t.style.padding = "12px 18px";
+  t.style.borderRadius = "12px";
+  t.style.fontSize = "13px";
+  t.style.fontWeight = "700";
+  t.style.zIndex = "9999";
+  t.style.boxShadow = "var(--shl)";
+
+  document.body.appendChild(t);
+
+  setTimeout(()=>t.remove(),2600);
+}
+
+function badge(status) {
+  const map = {
+    ok:["Licença ativa","b-ok"],
+    active:["Licença ativa","b-ok"],
+    missing:["Sem licença","b-mi"],
+    expired:["Licença vencida","b-ex"],
+    upcoming:["Próxima ao vencimento","b-up"],
+    pending:["Pendente","b-pe"],
+    completed:["Concluída","b-dn"],
+    partial:["Parcial","b-up"]
+  };
+
+  const [txt, cls] = map[status] || [status || "—","b-pe"];
+
+  return `<span class="badge ${cls}">${txt}</span>`;
+}
+
+function openModal(html) {
+  const root = document.getElementById("modalRoot");
+
+  root.innerHTML = `
+    <div
+      onclick="if(event.target===this)closeModal()"
+      style="
+        position:fixed;
+        inset:0;
+        z-index:500;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:rgba(0,0,0,.32);
+        backdrop-filter:blur(8px);
+        padding:20px
+      "
+    >
+      <div style="
+        background:#fff;
+        border-radius:16px;
+        width:100%;
+        max-width:520px;
+        box-shadow:var(--shl);
+        overflow:hidden
+      ">
+        ${html}
+      </div>
+    </div>
+  `;
+}
+
+function closeModal() {
+  document.getElementById("modalRoot").innerHTML = "";
+}
+
+function openSearch() {
+  showToast("Busca global será carregada na próxima etapa.");
+}
+
+/* ============================================================
+   NAV
+============================================================ */
+
+document.querySelectorAll(".nb").forEach(btn => {
+  btn.onclick = () => showTab(btn.dataset.tab);
+});
+
+function showTab(tab) {
+  currentTab = tab;
+
+  document.querySelectorAll(".nb").forEach(b => b.classList.remove("on"));
+
+  const active = document.querySelector(`[data-tab="${tab}"]`);
+  if (active) active.classList.add("on");
+
+  document.getElementById("tbTitle").textContent = TABS[tab] || tab;
+  document.getElementById("mainWrap").scrollTop = 0;
+
+  const app = document.getElementById("app");
+  app.innerHTML = `<div class="loading"><span class="spin"></span> Carregando</div>`;
+
+  if (tab === "dashboard") renderDashboard();
+  if (tab === "docs") renderDocs();
+  if (tab === "assets") renderAssets();
+  if (tab === "conditions") renderConditions();
+  if (tab === "planning") renderPlanning();
+}
+/* ============================================================
+   DASHBOARD
+============================================================ */
+
+async function renderDashboard() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -506,380 +964,129 @@ async function renderDashboard(){
     </div>
   `;
 
-  const data = await sf(`${API}/executive/overview`);
+  const [overview, byField, thermo] = await Promise.all([
+    sf(`${API}/executive/overview`),
+    sf(`${API}/compliance/by_field`),
+    sf(`${API}/conditions/conformity-indicator`)
+  ]);
 
-  if(!data){
-    app.innerHTML = `
-      <div style="color:var(--r)">
-        Erro ao carregar dashboard
-      </div>
-    `;
+  if (!overview) {
+    app.innerHTML = `<div class="emsg">Erro ao carregar visão executiva.</div>`;
     return;
   }
 
-  app.innerHTML = `
-    <div style="margin-bottom:18px">
-      <div style="font-size:26px;font-weight:700">
-        Visão executiva
-      </div>
+  const fields = byField?.all_fields || [];
+  const condFields = byField?.conditions_by_field || [];
+  const th = thermo || {};
 
-      <div style="color:var(--t2)">
-        Monitoramento regulatório consolidado
-      </div>
-    </div>
+  const maxWells = Math.max(1, ...fields.map(f => Number(f.total_wells || 0)));
+  const maxCond = Math.max(1, ...condFields.map(f => Number(f.total_conditions || 0)));
 
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:12px;
-      margin-bottom:18px
-    ">
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Conformidade Geral
-        </div>
-
-        <div style="
-          font-size:38px;
-          font-weight:700;
-          color:var(--p)
-        ">
-          ${data.conformidade_geral || 0}%
-        </div>
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Poços Operacionais
-        </div>
-
-        <div style="
-          font-size:38px;
-          font-weight:700;
-          color:var(--wg)
-        ">
-          ${data.operacionais_ok || 0}%
-        </div>
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Passivo Mapeado
-        </div>
-
-        <div style="
-          font-size:28px;
-          font-weight:700
-        ">
-          ${fmtBRL(data.passivo_total)}
-        </div>
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Ativos Sem Licença
-        </div>
-
-        <div style="
-          font-size:38px;
-          font-weight:700;
-          color:var(--r)
-        ">
-          ${data.sem_licenca || 0}
-        </div>
-      </div>
-
-    </div>
-
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      padding:20px;
-      box-shadow:var(--sh)
-    ">
-
-      <div style="
-        font-size:13px;
-        font-weight:600;
-        margin-bottom:10px
-      ">
-        Resumo executivo
-      </div>
-
-      <div style="
-        color:var(--t2);
-        line-height:1.7
-      ">
-        ${data.resumo || "Sem resumo"}
-      </div>
-
-    </div>
-  `;
-}
-
-/* CONDICIONANTES */
-
-let condExpanded = new Set();
-
-async function renderConditions(){
-
-  const app = document.getElementById("app");
-
-  app.innerHTML = `
-    <div class="loading">
-      <span class="spin"></span>
-      Carregando condicionantes
-    </div>
-  `;
-
-  const data = await sf(`${API}/conditions/panel`);
-
-  if(!data){
-    app.innerHTML = `
-      <div style="color:var(--r)">
-        Erro ao carregar condicionantes
-      </div>
-    `;
-    return;
-  }
-
-  const items = data.items || [];
-
-  app.innerHTML = `
-
-    <div style="margin-bottom:18px">
-      <div style="font-size:26px;font-weight:700">
-        Condicionantes
-      </div>
-
-      <div style="color:var(--t2)">
-        Gestão operacional de atendimento
-      </div>
-    </div>
-
-    <div id="cond-list"></div>
-  `;
-
-  renderCondCards(items);
-}
-
-function renderCondCards(items){
-
-  const div = document.getElementById("cond-list");
-
-  div.innerHTML = items.map(item=>{
-
-    const expanded = condExpanded.has(item.id);
+  const fieldBars = fields.slice(0,7).map(f => {
+    const total = Number(f.total_wells || 0);
+    const licensed = Number(f.wells_licensed || 0);
+    const p = total ? Math.round(licensed / total * 100) : 0;
 
     return `
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        margin-bottom:10px;
-        overflow:hidden;
-        box-shadow:var(--sh)
-      ">
-
-        <div
-          onclick="toggleCond(${item.id})"
-          style="
-            padding:16px;
-            cursor:pointer
-          "
-        >
-
-          <div style="
-            display:flex;
-            justify-content:space-between;
-            gap:10px
-          ">
-
-            <div>
-
-              <div style="
-                font-size:12px;
-                color:var(--t3);
-                margin-bottom:6px
-              ">
-                ${item.field || "—"}
-              </div>
-
-              <div style="
-                font-size:14px;
-                font-weight:600;
-                line-height:1.6
-              ">
-                ${item.description || ""}
-              </div>
-
-            </div>
-
-            <div style="
-              color:var(--t3);
-              font-size:12px
-            ">
-              ${expanded ? "▲" : "▼"}
-            </div>
-
-          </div>
-
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:120px;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(f.field)}</div>
+        <div style="flex:1;height:6px;background:var(--bdl);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${Math.round(total/maxWells*100)}%;background:${p>=90 ? "var(--p)" : p>=70 ? "var(--wg)" : "var(--r)"}"></div>
         </div>
-
-        ${
-          expanded
-          ? `
-            <div style="
-              border-top:1px solid var(--bdl);
-              padding:16px;
-              background:var(--bg)
-            ">
-
-              ${(item.assets || []).map(a=>`
-
-                <div style="
-                  display:flex;
-                  align-items:center;
-                  justify-content:space-between;
-                  gap:10px;
-                  padding:10px 0;
-                  border-bottom:1px solid var(--bdl)
-                ">
-
-                  <div>
-                    <div style="font-weight:600">
-                      ${a.code || "—"}
-                    </div>
-
-                    <div style="
-                      font-size:12px;
-                      color:var(--t3)
-                    ">
-                      ${a.field || "—"}
-                    </div>
-                  </div>
-
-                  ${
-                    a.status==="completed"
-                    ? `
-                      <div style="
-                        color:var(--p);
-                        font-size:12px;
-                        font-weight:600
-                      ">
-                        Concluído
-                      </div>
-                    `
-                    : `
-                      <button
-                        onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id})"
-                        style="
-                          border:none;
-                          background:var(--p);
-                          color:#fff;
-                          padding:7px 14px;
-                          border-radius:8px;
-                          cursor:pointer;
-                          font-weight:600
-                        "
-                      >
-                        Dar baixa
-                      </button>
-                    `
-                  }
-
-                </div>
-
-              `).join("")}
-
-            </div>
-          `
-          : ""
-        }
-
-      </div>
-    `;
-
+        <div style="width:80px;text-align:right;font-size:11.5px;color:var(--t2)">${licensed}/${total}</div>
+      </div>`;
   }).join("");
+
+  const condBars = condFields.slice(0,7).map(f => {
+    const total = Number(f.total_conditions || 0);
+    const overdue = Number(f.expired_conditions || 0);
+    const ok = Math.max(0,total-overdue);
+
+    return `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:120px;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(f.field)}</div>
+        <div style="flex:1;height:6px;background:var(--bdl);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${Math.round(total/maxCond*100)}%;background:var(--p)"></div>
+        </div>
+        <div style="width:80px;text-align:right;font-size:11.5px;color:var(--t2)">${ok}/${total}</div>
+      </div>`;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="ph">
+      <h1>Visão executiva</h1>
+      <p>Conformidade regulatória, ativos operacionais e passivo mapeado</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi green">
+        <div class="kl">Ativos monitorados</div>
+        <div class="kv">${overview.total_assets || 0}</div>
+        <div class="ks">${overview.total_licenses || 0} licenças cadastradas</div>
+      </div>
+
+      <div class="kpi ${Number(overview.sem_licenca || 0)>0 ? "red" : "green"}">
+        <div class="kl">Ativos sem licença</div>
+        <div class="kv" style="color:${Number(overview.sem_licenca || 0)>0 ? "var(--r)" : "var(--p)"}">${overview.sem_licenca || 0}</div>
+        <div class="ks">Sem documento vinculado</div>
+      </div>
+
+      <div class="kpi ${Number(overview.operacao_protegida || 0)>=90 ? "green" : "amber"}">
+        <div class="kl">Operação protegida</div>
+        <div class="kv" style="color:${Number(overview.operacao_protegida || 0)>=90 ? "var(--p)" : "var(--w)"}">${pct(overview.operacao_protegida)}</div>
+        <div class="ks">${overview.operational_ok || 0}/${overview.operational_total || 0} poços ativos cobertos</div>
+      </div>
+
+      <div class="kpi amber">
+        <div class="kl">Passivo mapeado</div>
+        <div class="kv" style="font-size:22px">${fmtBRL(overview.passivo_total)}</div>
+        <div class="ks">Base para orçamento e simulador</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Resumo executivo</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.75">
+        ${escapeHtml(overview.resumo || "Sem resumo disponível.")}
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px">
+        <div>
+          <div class="ct" style="margin-bottom:4px">Indicador de conformidade de condicionantes</div>
+          <div style="font-size:13px;color:var(--t2)">${escapeHtml(th.label || "Sem dados")}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:34px;font-weight:800;color:${th.level==="green" ? "var(--p)" : th.level==="red" ? "var(--r)" : "var(--wg)"}">${th.pct || 0}%</div>
+          <div style="font-size:11px;color:var(--t3)">${th.completed || 0}/${th.total || 0} concluídas</div>
+        </div>
+      </div>
+      <div style="height:7px;background:var(--bdl);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${Number(th.pct || 0)}%;background:${th.level==="green" ? "var(--p)" : th.level==="red" ? "var(--r)" : "var(--wg)"}"></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">Ativos licenciados por campo</div>
+        ${fieldBars || '<div class="empty">Sem dados</div>'}
+      </div>
+
+      <div class="card">
+        <div class="ct">Condicionantes por campo</div>
+        ${condBars || '<div class="empty">Sem dados</div>'}
+      </div>
+    </div>
+  `;
 }
 
-function toggleCond(id){
 
-  if(condExpanded.has(id))
-    condExpanded.delete(id);
-  else
-    condExpanded.add(id);
+/* ============================================================
+   ATIVOS
+============================================================ */
 
-  renderConditions();
-}
-
-function openBaixaModal(condId,assetId){
-
-  const ok = confirm(
-    "Confirmar baixa desta condicionante?"
-  );
-
-  if(!ok) return;
-
-  doBaixa(condId,assetId);
-}
-
-async function doBaixa(condId,assetId){
-
-  const r = await sf(
-    `${API}/conditions/${condId}/assets/${assetId}/complete`,
-    {
-      method:"PATCH",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        completed_by:"Sistema"
-      })
-    }
-  );
-
-  if(r && r.ok){
-    alert("Baixa realizada");
-    renderConditions();
-  }else{
-    alert("Erro ao dar baixa");
-  }
-}
-/* ATIVOS */
-
-let assetPage = 0;
-let assetSearch = "";
-let assetStatus = "";
-
-async function renderAssets(){
-
+async function renderAssets() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -889,241 +1096,116 @@ async function renderAssets(){
     </div>
   `;
 
-  const [summary, data] = await Promise.all([
+  const query = new URLSearchParams();
+
+  query.set("limit","50");
+  query.set("offset",String(assetPage*50));
+
+  if (assetSearch) query.set("search",assetSearch);
+  if (assetStatus) query.set("compliance_status",assetStatus);
+  if (assetField) query.set("field",assetField);
+  if (assetSituation) query.set("operational",assetSituation);
+
+  const [summary, filters, data] = await Promise.all([
     sf(`${API}/assets/summary`),
-    sf(`${API}/assets/unified?limit=50&offset=${assetPage*50}&search=${encodeURIComponent(assetSearch)}&compliance_status=${encodeURIComponent(assetStatus)}`)
+    sf(`${API}/assets/filters`),
+    sf(`${API}/assets/unified?${query}`)
   ]);
 
-  if(!data){
-    app.innerHTML = `
-      <div style="color:var(--r)">
-        Erro ao carregar ativos
-      </div>
-    `;
+  if (!data) {
+    app.innerHTML = `<div class="emsg">Erro ao carregar ativos.</div>`;
     return;
   }
 
   const items = data.items || [];
+  const fields = filters?.fields || [];
+  const situations = filters?.situations || [];
+  const total = Number(data.total || 0);
+  const maxPage = Math.max(0,Math.ceil(total/50)-1);
 
   app.innerHTML = `
+    <div class="ph">
+      <h1>Ativos</h1>
+      <p>Status regulatório dos ativos cadastrados</p>
+    </div>
 
-    <div style="margin-bottom:18px">
-      <div style="font-size:26px;font-weight:700">
-        Ativos
+    <div class="kpis">
+      <div class="kpi green">
+        <div class="kl">Total de ativos</div>
+        <div class="kv">${summary?.total || total}</div>
+        <div class="ks">Base cadastrada</div>
       </div>
 
-      <div style="color:var(--t2)">
-        Status regulatório dos ativos cadastrados
+      <div class="kpi green">
+        <div class="kl">Produzindo</div>
+        <div class="kv" style="color:var(--p)">${summary?.producing || 0}</div>
+        <div class="ks">Poços em produção</div>
+      </div>
+
+      <div class="kpi blue">
+        <div class="kl">Injetando</div>
+        <div class="kv" style="color:var(--b)">${summary?.injecting || 0}</div>
+        <div class="ks">Poços injetores</div>
+      </div>
+
+      <div class="kpi ${Number(summary?.missing || 0)>0 ? "red" : "green"}">
+        <div class="kl">Sem licença</div>
+        <div class="kv" style="color:${Number(summary?.missing || 0)>0 ? "var(--r)" : "var(--p)"}">${summary?.missing || 0}</div>
+        <div class="ks">Sem documento vinculado</div>
       </div>
     </div>
 
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:12px;
-      margin-bottom:16px
-    ">
+    <div class="toolbar">
+      <input class="inp" id="assetSearchInp" placeholder="Buscar ativo ou campo..." value="${escapeHtml(assetSearch)}" style="flex:1;min-width:180px">
 
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Total de ativos
-        </div>
+      <select class="sel" id="assetFieldSel">
+        <option value="">Campo: todos</option>
+        ${fields.map(f=>`<option value="${escapeHtml(f)}" ${assetField===f?"selected":""}>${escapeHtml(f)}</option>`).join("")}
+      </select>
 
-        <div style="font-size:30px;font-weight:700">
-          ${summary?.total || data.total || 0}
-        </div>
-      </div>
+      <select class="sel" id="assetSituationSel">
+        <option value="">Situação: todas</option>
+        ${situations.map(s=>`<option value="${escapeHtml(s)}" ${assetSituation===s?"selected":""}>${escapeHtml(s)}</option>`).join("")}
+      </select>
 
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Produzindo
-        </div>
-
-        <div style="
-          font-size:30px;
-          font-weight:700;
-          color:var(--p)
-        ">
-          ${summary?.producing || 0}
-        </div>
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Injetando
-        </div>
-
-        <div style="
-          font-size:30px;
-          font-weight:700;
-          color:var(--b)
-        ">
-          ${summary?.injecting || 0}
-        </div>
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Sem licença
-        </div>
-
-        <div style="
-          font-size:30px;
-          font-weight:700;
-          color:var(--r)
-        ">
-          ${summary?.missing || 0}
-        </div>
-      </div>
-
-    </div>
-
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      padding:12px;
-      margin-bottom:14px;
-      box-shadow:var(--sh);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap
-    ">
-
-      <input
-        id="assetSearch"
-        placeholder="Buscar ativo ou campo..."
-        value="${assetSearch}"
-        style="
-          flex:1;
-          min-width:180px;
-          border:1px solid var(--bdl);
-          border-radius:8px;
-          padding:8px 10px;
-          font-family:inherit
-        "
-      >
-
-      <select
-        id="assetStatus"
-        style="
-          border:1px solid var(--bdl);
-          border-radius:8px;
-          padding:8px 10px;
-          font-family:inherit
-        "
-      >
-        <option value="">Todos os status</option>
+      <select class="sel" id="assetStatusSel">
+        <option value="">Status: todos</option>
         <option value="ok" ${assetStatus==="ok"?"selected":""}>Licença ativa</option>
         <option value="missing" ${assetStatus==="missing"?"selected":""}>Sem licença</option>
         <option value="expired" ${assetStatus==="expired"?"selected":""}>Licença vencida</option>
         <option value="upcoming" ${assetStatus==="upcoming"?"selected":""}>Próxima ao vencimento</option>
       </select>
 
-      <button
-        onclick="applyAssetFilter()"
-        style="
-          border:none;
-          background:var(--p);
-          color:#fff;
-          padding:8px 16px;
-          border-radius:8px;
-          cursor:pointer;
-          font-weight:600
-        "
-      >
-        Filtrar
-      </button>
-
+      <button class="btn" onclick="applyAssetsFilter()">Filtrar</button>
     </div>
 
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      overflow:auto;
-      box-shadow:var(--sh)
-    ">
-      <table style="
-        width:100%;
-        border-collapse:collapse;
-        min-width:760px
-      ">
+    <div class="tw">
+      <table>
         <thead>
-          <tr style="background:var(--bg)">
-            <th style="text-align:left;padding:12px">Código</th>
-            <th style="text-align:left;padding:12px">Campo</th>
-            <th style="text-align:left;padding:12px">Situação</th>
-            <th style="text-align:left;padding:12px">Status</th>
-            <th style="text-align:left;padding:12px">Validade</th>
-            <th style="text-align:left;padding:12px">PDF</th>
+          <tr>
+            <th>Código</th>
+            <th>Campo</th>
+            <th>Situação</th>
+            <th>Status</th>
+            <th>Validade</th>
+            <th>Licença</th>
+            <th>PDF</th>
           </tr>
         </thead>
-
         <tbody>
           ${items.map(a=>`
-            <tr style="border-top:1px solid var(--bdl)">
-              <td style="padding:12px;font-weight:600">
-                ${a.code || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${a.field || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${a.situation || "—"}
-              </td>
-
-              <td style="padding:12px">
-                ${assetBadge(a.compliance_status)}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${a.expiry_date || "—"}
-              </td>
-
-              <td style="padding:12px">
+            <tr>
+              <td><strong>${escapeHtml(a.code || "—")}</strong></td>
+              <td style="color:var(--t2)">${escapeHtml(a.field || "—")}</td>
+              <td style="color:var(--t2)">${escapeHtml(a.situation || "—")}</td>
+              <td>${badge(a.compliance_status)}</td>
+              <td style="color:var(--t2)">${escapeHtml(a.expiry_date || "—")}</td>
+              <td style="color:var(--t2)">${escapeHtml(a.license_number || "—")}</td>
+              <td>
                 ${
                   a.pdf_url
-                  ? `
-                    <a
-                      href="${a.pdf_url}"
-                      target="_blank"
-                      style="
-                        color:var(--r);
-                        text-decoration:none;
-                        font-weight:600
-                      "
-                    >
-                      PDF
-                    </a>
-                  `
-                  : "—"
+                  ? `<a href="${escapeHtml(a.pdf_url)}" target="_blank" style="color:var(--r);font-weight:800;text-decoration:none">PDF</a>`
+                  : `<span style="color:var(--t4)">—</span>`
                 }
               </td>
             </tr>
@@ -1132,236 +1214,102 @@ async function renderAssets(){
       </table>
     </div>
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:12px;
-      color:var(--t2);
-      font-size:13px
-    ">
-
-      <div>
-        Página ${assetPage+1}
-      </div>
-
-      <div style="display:flex;gap:8px">
-
-        <button
-          onclick="prevAssetPage()"
-          ${assetPage===0?"disabled":""}
-          style="
-            border:1px solid var(--bd);
-            background:#fff;
-            border-radius:8px;
-            padding:7px 12px
-          "
-        >
-          Anterior
-        </button>
-
-        <button
-          onclick="nextAssetPage(${data.total || 0})"
-          style="
-            border:1px solid var(--bd);
-            background:#fff;
-            border-radius:8px;
-            padding:7px 12px
-          "
-        >
-          Próxima
-        </button>
-
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--t2);font-size:12.5px">
+      <span>Mostrando ${items.length} de ${total} · Página ${assetPage+1}</span>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g btn-sm" ${assetPage===0?"disabled":""} onclick="prevAssets()">← Anterior</button>
+        <button class="btn btn-g btn-sm" ${assetPage>=maxPage?"disabled":""} onclick="nextAssets(${maxPage})">Próxima →</button>
       </div>
     </div>
   `;
 }
 
-function assetBadge(status){
-
-  const map = {
-    ok:["Licença ativa","var(--p)","#e8f5ec"],
-    missing:["Sem licença","var(--r)","#fbeded"],
-    expired:["Licença vencida","var(--r)","#fbeded"],
-    upcoming:["Próxima ao vencimento","var(--wt)","#fff7d6"]
-  };
-
-  const [txt,col,bg] = map[status] || ["—","var(--t2)","var(--bdl)"];
-
-  return `
-    <span style="
-      display:inline-flex;
-      padding:3px 9px;
-      border-radius:6px;
-      background:${bg};
-      color:${col};
-      font-size:12px;
-      font-weight:600
-    ">
-      ${txt}
-    </span>
-  `;
-}
-
-function applyAssetFilter(){
-
-  assetSearch = document.getElementById("assetSearch").value || "";
-  assetStatus = document.getElementById("assetStatus").value || "";
+function applyAssetsFilter() {
+  assetSearch = document.getElementById("assetSearchInp").value || "";
+  assetField = document.getElementById("assetFieldSel").value || "";
+  assetSituation = document.getElementById("assetSituationSel").value || "";
+  assetStatus = document.getElementById("assetStatusSel").value || "";
   assetPage = 0;
-
   renderAssets();
 }
 
-function prevAssetPage(){
-
-  if(assetPage>0){
+function prevAssets() {
+  if (assetPage > 0) {
     assetPage--;
     renderAssets();
   }
 }
 
-function nextAssetPage(total){
-
-  const maxPage = Math.ceil((total || 0)/50)-1;
-
-  if(assetPage < maxPage){
+function nextAssets(maxPage) {
+  if (assetPage < maxPage) {
     assetPage++;
     renderAssets();
   }
 }
+ /* ============================================================
+   CENTRAL DOCUMENTAL
+============================================================ */
 
-/* CENTRAL DOCUMENTAL */
-
-async function renderDocs(){
-
+async function renderDocs() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-    <div style="margin-bottom:18px">
-      <div style="font-size:26px;font-weight:700">
-        Central documental
-      </div>
-
-      <div style="color:var(--t2)">
-        Upload de licenças e boletos
-      </div>
+    <div class="ph">
+      <h1>Central documental</h1>
+      <p>Upload de licenças, boletos e controle documental regulatório</p>
     </div>
 
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-      margin-bottom:18px
-    ">
-
-      <div style="
-        background:var(--s);
-        border:1px dashed var(--bd);
-        border-radius:14px;
-        padding:24px;
-        text-align:center;
-        box-shadow:var(--sh)
-      ">
-
-        <div style="font-size:34px;margin-bottom:8px">
-          📄
-        </div>
-
-        <div style="font-weight:700;margin-bottom:6px">
-          Upload de Licença
-        </div>
-
-        <div style="
-          font-size:13px;
-          color:var(--t2);
-          margin-bottom:14px
-        ">
+    <div class="g2">
+      <div class="card" style="text-align:center;border-style:dashed">
+        <div style="font-size:34px;margin-bottom:8px">📄</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px">Upload de Licença</div>
+        <div style="font-size:12.5px;color:var(--t2);margin-bottom:14px">
           PDF da licença ambiental
         </div>
 
-        <input
-          type="file"
-          id="pdfFile"
-          accept=".pdf"
-          style="display:none"
-          onchange="uploadDoc('license')"
-        >
+        <input type="file" id="pdfFile" accept=".pdf" style="display:none" onchange="uploadDoc('license')">
 
-        <button
-          onclick="document.getElementById('pdfFile').click()"
-          style="
-            border:none;
-            background:var(--p);
-            color:#fff;
-            padding:9px 16px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:600
-          "
-        >
+        <button class="btn" onclick="document.getElementById('pdfFile').click()">
           Selecionar PDF
         </button>
 
         <div id="upStatus" style="margin-top:12px"></div>
       </div>
 
-      <div style="
-        background:var(--s);
-        border:1px dashed var(--bd);
-        border-radius:14px;
-        padding:24px;
-        text-align:center;
-        box-shadow:var(--sh)
-      ">
-
-        <div style="font-size:34px;margin-bottom:8px">
-          🧾
+      <div class="card" style="text-align:center;border-style:dashed">
+        <div style="font-size:34px;margin-bottom:8px">🧾</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px">Upload de Boleto</div>
+        <div style="font-size:12.5px;color:var(--t2);margin-bottom:14px">
+          PDF do boleto de taxa. Ao subir um boleto, o valor real sobrescreve o valor histórico daquele ativo/licença.
         </div>
 
-        <div style="font-weight:700;margin-bottom:6px">
-          Upload de Boleto
-        </div>
+        <input type="file" id="billetFile" accept=".pdf" style="display:none" onchange="uploadDoc('billet')">
 
-        <div style="
-          font-size:13px;
-          color:var(--t2);
-          margin-bottom:14px
-        ">
-          PDF do boleto de taxa
-        </div>
-
-        <input
-          type="file"
-          id="billetFile"
-          accept=".pdf"
-          style="display:none"
-          onchange="uploadDoc('billet')"
-        >
-
-        <button
-          onclick="document.getElementById('billetFile').click()"
-          style="
-            border:none;
-            background:var(--wg);
-            color:#fff;
-            padding:9px 16px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:600
-          "
-        >
+        <button class="btn" style="background:var(--wg)" onclick="document.getElementById('billetFile').click()">
           Selecionar boleto
         </button>
 
         <div id="billetStatus" style="margin-top:12px"></div>
       </div>
-
     </div>
 
-    <div id="docList">
-      <div class="loading">
-        <span class="spin"></span>
-        Carregando documentos
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px">
+        <div>
+          <div class="ct" style="margin-bottom:4px">Documentos cadastrados</div>
+          <div style="font-size:12.5px;color:var(--t2)">Licenças, boletos e vínculos com ativos</div>
+        </div>
+
+        <button class="btn btn-g btn-sm" onclick="openCostTooltip()">
+          Valores históricos
+        </button>
+      </div>
+
+      <div id="docList">
+        <div class="loading">
+          <span class="spin"></span>
+          Carregando documentos
+        </div>
       </div>
     </div>
   `;
@@ -1369,139 +1317,105 @@ async function renderDocs(){
   loadDocs();
 }
 
-async function uploadDoc(type){
+async function uploadDoc(type) {
+  const input = document.getElementById(type === "license" ? "pdfFile" : "billetFile");
+  const status = document.getElementById(type === "license" ? "upStatus" : "billetStatus");
 
-  const input = document.getElementById(
-    type==="license" ? "pdfFile" : "billetFile"
-  );
+  const file = input?.files?.[0];
 
-  const status = document.getElementById(
-    type==="license" ? "upStatus" : "billetStatus"
-  );
+  if (!file) return;
 
-  const file = input.files[0];
-
-  if(!file) return;
-
-  status.innerHTML = `
-    <div style="color:var(--t2)">
-      Enviando e processando...
-    </div>
-  `;
+  status.innerHTML = `<div class="loading" style="padding:10px"><span class="spin"></span> Processando documento...</div>`;
 
   const fd = new FormData();
   fd.append("file",file);
 
-  const r = await fetch(
-    `${API}/licenses/upload?doc_type=${type}`,
-    {
-      method:"POST",
-      body:fd
-    }
-  ).then(r=>r.json()).catch(()=>null);
+  const result = await fetch(`${API}/licenses/upload?doc_type=${type}`, {
+    method:"POST",
+    body:fd
+  }).then(r=>r.json()).catch(()=>null);
 
-  if(r && !r.error){
-    status.innerHTML = `
-      <div style="color:var(--p);font-weight:600">
-        Upload concluído
-      </div>
-    `;
-
-    loadDocs();
-  }else{
-    status.innerHTML = `
-      <div style="color:var(--r)">
-        Erro no upload
-      </div>
-    `;
+  if (!result || result.error) {
+    status.innerHTML = `<div class="emsg">Erro no upload: ${escapeHtml(result?.error || "sem resposta")}</div>`;
+    return;
   }
+
+  if (type === "billet") {
+    status.innerHTML = `
+      <div class="omsg">
+        Boleto processado. Valor identificado: <strong>${fmtBRLFull(result.valor || 0)}</strong>.
+        ${result.linked ? "Valor histórico atualizado para o ativo/licença." : "Nenhuma licença correspondente foi localizada."}
+      </div>
+    `;
+  } else {
+    status.innerHTML = `<div class="omsg">Licença carregada com sucesso.</div>`;
+  }
+
+  await loadDocs();
 }
 
-async function loadDocs(){
-
+async function loadDocs() {
   const div = document.getElementById("docList");
 
   const docs = await sf(`${API}/licenses`);
 
-  if(!docs){
-    div.innerHTML = `
-      <div style="color:var(--r)">
-        Erro ao carregar documentos
-      </div>
-    `;
+  if (!docs) {
+    div.innerHTML = `<div class="emsg">Erro ao carregar documentos.</div>`;
+    return;
+  }
+
+  if (!docs.length) {
+    div.innerHTML = `<div class="empty">Nenhum documento cadastrado.</div>`;
     return;
   }
 
   div.innerHTML = `
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      overflow:auto;
-      box-shadow:var(--sh)
-    ">
-      <table style="
-        width:100%;
-        border-collapse:collapse;
-        min-width:800px
-      ">
+    <div class="tw">
+      <table>
         <thead>
-          <tr style="background:var(--bg)">
-            <th style="text-align:left;padding:12px">Número</th>
-            <th style="text-align:left;padding:12px">Tipo</th>
-            <th style="text-align:left;padding:12px">Órgão</th>
-            <th style="text-align:left;padding:12px">Validade</th>
-            <th style="text-align:left;padding:12px">Ativo</th>
-            <th style="text-align:left;padding:12px">Cond.</th>
-            <th style="text-align:left;padding:12px">PDF</th>
+          <tr>
+            <th>Número</th>
+            <th>Tipo</th>
+            <th>Órgão</th>
+            <th>Validade</th>
+            <th>Ativo</th>
+            <th>Cond.</th>
+            <th>Custo</th>
+            <th>PDF</th>
+            <th>Boleto</th>
+            <th></th>
           </tr>
         </thead>
-
         <tbody>
-          ${(docs || []).map(l=>`
-            <tr style="border-top:1px solid var(--bdl)">
-              <td style="padding:12px;font-weight:600">
-                ${l.number || "—"}
+          ${docs.map(l=>`
+            <tr>
+              <td><strong>${escapeHtml(l.number || "—")}</strong></td>
+              <td>${escapeHtml(l.type || "—")}</td>
+              <td style="color:var(--t2)">${escapeHtml(l.agency || "—")}</td>
+              <td style="color:var(--t2)">${escapeHtml(l.expiry_date || "—")}</td>
+              <td style="color:var(--t2)">${escapeHtml(l.asset_code || "—")}</td>
+              <td>${l.n_conditions || 0}</td>
+              <td style="font-weight:700;color:var(--p)">
+                ${fmtBRLFull(l.billet_cost || l.acquisition_cost || l.renewal_cost || 0)}
               </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${l.type || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${l.agency || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${l.expiry_date || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${l.asset_code || "—"}
-              </td>
-
-              <td style="padding:12px;color:var(--t2)">
-                ${l.n_conditions || 0}
-              </td>
-
-              <td style="padding:12px">
+              <td>
                 ${
                   l.pdf_url
-                  ? `
-                    <a
-                      href="${l.pdf_url}"
-                      target="_blank"
-                      style="
-                        color:var(--r);
-                        font-weight:600;
-                        text-decoration:none
-                      "
-                    >
-                      PDF
-                    </a>
-                  `
-                  : "—"
+                  ? `<a href="${escapeHtml(l.pdf_url)}" target="_blank" style="font-weight:800;color:var(--r);text-decoration:none">PDF</a>`
+                  : `<span style="color:var(--t4)">—</span>`
                 }
+              </td>
+              <td>
+                ${
+                  l.billet_url
+                  ? `<a href="${escapeHtml(l.billet_url)}" target="_blank" style="font-weight:800;color:var(--wt);text-decoration:none">Boleto</a>`
+                  : `<span style="color:var(--t4)">—</span>`
+                }
+              </td>
+              <td style="text-align:right">
+                <button class="btn btn-r btn-xs" onclick="deleteLicense('${escapeHtml(l.id)}')">
+                  Apagar
+                </button>
               </td>
             </tr>
           `).join("")}
@@ -1510,36 +1424,508 @@ async function loadDocs(){
     </div>
   `;
 }
-/* GESTÃO FINANCEIRA */
 
-function getBudgetStore(){
+async function deleteLicense(id) {
+  if (!id) return;
 
-  try{
-    return JSON.parse(
-      localStorage.getItem("envlicense_budget_v6") || "{}"
-    );
-  }catch(e){
+  const ok = confirm("Apagar esta licença e suas condicionantes vinculadas? Esta ação não pode ser desfeita.");
+
+  if (!ok) return;
+
+  const result = await sf(`${API}/licenses/${id}`, {
+    method:"DELETE"
+  });
+
+  if (result && result.ok) {
+    showToast("Licença apagada com sucesso.");
+    await loadDocs();
+
+    if (currentTab === "assets") renderAssets();
+    if (currentTab === "dashboard") renderDashboard();
+  } else {
+    alert("Erro ao apagar licença.");
+  }
+}
+
+async function openCostTooltip() {
+  const data = await sf(`${API}/cost-reference/tooltip`);
+
+  if (!data) {
+    openModal(`
+      <div style="padding:22px">
+        <div class="emsg">Não foi possível carregar valores históricos.</div>
+        <div style="text-align:right;margin-top:14px">
+          <button class="btn btn-g" onclick="closeModal()">Fechar</button>
+        </div>
+      </div>
+    `);
+    return;
+  }
+
+  const licRows = (data.licenses || []).map(r=>`
+    <tr>
+      <td>${escapeHtml(r.tipo || "—")}</td>
+      <td>${escapeHtml(r.campo || "—")}</td>
+      <td>${escapeHtml(r.asset_id || "—")}</td>
+      <td><strong>${fmtBRLFull(r.valor_real_mais_recente || r.valor_historico || 0)}</strong></td>
+      <td>${escapeHtml(r.fonte || "histórico")}</td>
+    </tr>
+  `).join("");
+
+  const condRows = (data.conditions || []).map(r=>`
+    <tr>
+      <td>${escapeHtml(r.tipo || "—")}</td>
+      <td>${escapeHtml(r.campo || "—")}</td>
+      <td>${escapeHtml(r.asset_id || "—")}</td>
+      <td><strong>${fmtBRLFull(r.valor_real_mais_recente || r.valor_historico || 0)}</strong></td>
+      <td>${escapeHtml(r.fonte || "histórico")}</td>
+    </tr>
+  `).join("");
+
+  openModal(`
+    <div style="padding:22px">
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px">
+        Valores históricos de referência
+      </div>
+
+      <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:14px">
+        ${escapeHtml(data.message || "Valores usados nos painéis de custo e simulador.")}
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;margin-bottom:8px">
+        Licenciamento
+      </div>
+
+      <div class="tw" style="max-height:180px;margin-bottom:14px">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Campo</th>
+              <th>Ativo</th>
+              <th>Valor</th>
+              <th>Fonte</th>
+            </tr>
+          </thead>
+          <tbody>${licRows || `<tr><td colspan="5">Sem referências</td></tr>`}</tbody>
+        </table>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;margin-bottom:8px">
+        Condicionantes
+      </div>
+
+      <div class="tw" style="max-height:180px">
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Campo</th>
+              <th>Ativo</th>
+              <th>Valor</th>
+              <th>Fonte</th>
+            </tr>
+          </thead>
+          <tbody>${condRows || `<tr><td colspan="5">Sem referências</td></tr>`}</tbody>
+        </table>
+      </div>
+
+      <div style="text-align:right;margin-top:16px">
+        <button class="btn btn-g" onclick="closeModal()">Fechar</button>
+      </div>
+    </div>
+  `);
+} 
+ /* ============================================================
+   CONDICIONANTES
+============================================================ */
+
+async function renderConditions() {
+  const app = document.getElementById("app");
+
+  app.innerHTML = `
+    <div class="loading">
+      <span class="spin"></span>
+      Carregando condicionantes
+    </div>
+  `;
+
+  const [fields, filters] = await Promise.all([
+    sf(`${API}/conditions/fields`),
+    sf(`${API}/assets/filters`)
+  ]);
+
+  const query = new URLSearchParams();
+
+  if (condField) query.set("field",condField);
+  if (condAgency) query.set("agency",condAgency);
+
+  if (condFilter !== "all" && condFilter !== "queue") {
+    query.set("status_filter",condFilter);
+  }
+
+  const endpoint = condFilter === "queue"
+    ? `${API}/conditions/queue?${query}`
+    : `${API}/conditions/panel?${query}`;
+
+  const data = await sf(endpoint);
+
+  if (!data) {
+    app.innerHTML = `<div class="emsg">Erro ao carregar condicionantes.</div>`;
+    return;
+  }
+
+  const items = data.items || [];
+  const summary = data.summary || {};
+  const agencies = filters?.agencies || [];
+
+  app.innerHTML = `
+    <div class="ph">
+      <h1>Condicionantes</h1>
+      <p>Gestão operacional de conformidade, baixa e priorização</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi green">
+        <div class="kl">Total filtrado</div>
+        <div class="kv">${summary.total || items.length}</div>
+        <div class="ks">Condicionantes no recorte</div>
+      </div>
+
+      <div class="kpi green">
+        <div class="kl">Concluídas</div>
+        <div class="kv" style="color:var(--p)">${summary.completed || 0}</div>
+        <div class="ks">Atendidas</div>
+      </div>
+
+      <div class="kpi amber">
+        <div class="kl">Pendentes</div>
+        <div class="kv" style="color:var(--w)">${summary.pending || 0}</div>
+        <div class="ks">A executar</div>
+      </div>
+
+      <div class="kpi ${Number(summary.overdue || 0)>0 ? "red" : "green"}">
+        <div class="kl">Vencidas</div>
+        <div class="kv" style="color:${Number(summary.overdue || 0)>0 ? "var(--r)" : "var(--p)"}">${summary.overdue || 0}</div>
+        <div class="ks">Fora do prazo</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-sm ${condFilter==="all"?"":"btn-g"}" onclick="setCondFilter('all')">Todas</button>
+      <button class="btn btn-sm ${condFilter==="overdue"?"":"btn-g"}" onclick="setCondFilter('overdue')">Vencidas</button>
+      <button class="btn btn-sm ${condFilter==="upcoming"?"":"btn-g"}" onclick="setCondFilter('upcoming')">Próximos 30d</button>
+      <button class="btn btn-sm ${condFilter==="operational"?"":"btn-g"}" onclick="setCondFilter('operational')">Ativos operacionais</button>
+      <button class="btn btn-sm ${condFilter==="pending"?"":"btn-g"}" onclick="setCondFilter('pending')">Pendentes</button>
+      <button class="btn btn-sm ${condFilter==="completed"?"":"btn-g"}" onclick="setCondFilter('completed')">Concluídas</button>
+      <button class="btn btn-sm ${condFilter==="queue"?"":"btn-g"}" onclick="setCondFilter('queue')">Fila operacional</button>
+    </div>
+
+    <div class="toolbar">
+      <select class="sel" id="condFieldSel">
+        <option value="">Campo: todos</option>
+        ${(fields || []).map(f=>`
+          <option value="${escapeHtml(f)}" ${condField===f?"selected":""}>${escapeHtml(f)}</option>
+        `).join("")}
+      </select>
+
+      <select class="sel" id="condAgencySel">
+        <option value="">Órgão: todos</option>
+        ${agencies.map(a=>`
+          <option value="${escapeHtml(a)}" ${condAgency===a?"selected":""}>${escapeHtml(a)}</option>
+        `).join("")}
+      </select>
+
+      <button class="btn" onclick="applyCondFilters()">Aplicar</button>
+      <button class="btn btn-g" onclick="collapseAllConditions()">Recolher</button>
+      <button class="btn btn-g" onclick="expandAllConditions()">Expandir</button>
+      <button class="btn btn-g" onclick="exportConditions()">Exportar CSV</button>
+    </div>
+
+    <div id="condList">
+      ${items.length ? items.map(renderConditionCard).join("") : `<div class="empty">Nenhuma condicionante encontrada.</div>`}
+    </div>
+  `;
+}
+
+function setCondFilter(f) {
+  condFilter = f;
+  renderConditions();
+}
+
+function applyCondFilters() {
+  condField = document.getElementById("condFieldSel").value || "";
+  condAgency = document.getElementById("condAgencySel").value || "";
+  renderConditions();
+}
+
+function expandAllConditions() {
+  document.querySelectorAll("[data-condition-card]").forEach(el=>{
+    condExpanded.add(String(el.dataset.conditionCard));
+  });
+  renderConditions();
+}
+
+function collapseAllConditions() {
+  condExpanded.clear();
+  renderConditions();
+}
+
+function exportConditions() {
+  const q = new URLSearchParams();
+
+  if (condField) q.set("field",condField);
+  if (condAgency) q.set("agency",condAgency);
+  if (condFilter !== "all") q.set("status_filter",condFilter);
+
+  window.open(`${API}/conditions/export?${q}`,"_blank");
+}
+
+function renderConditionCard(item) {
+  const id = String(item.id);
+  const expanded = condExpanded.has(id);
+  const color = item.status === "completed"
+    ? "var(--p)"
+    : item.due_status === "Vencida"
+      ? "var(--r)"
+      : item.due_status === "Vencendo"
+        ? "var(--w)"
+        : "var(--bd)";
+
+  const category = item.category || "other";
+
+  return `
+    <div
+      data-condition-card="${escapeHtml(id)}"
+      style="
+        background:var(--s);
+        border:1px solid var(--bdl);
+        border-left:4px solid ${color};
+        border-radius:var(--rad);
+        margin-bottom:10px;
+        box-shadow:var(--sh);
+        overflow:hidden
+      "
+    >
+      <div
+        onclick="toggleCondition('${escapeHtml(id)}')"
+        style="
+          padding:14px 16px;
+          cursor:pointer
+        "
+      >
+        <div style="display:flex;justify-content:space-between;gap:12px">
+          <div style="min-width:0;flex:1">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px">
+              <span class="badge" style="background:${CAT_COLOR[category] || "#eee"}18;color:${CAT_COLOR[category] || "var(--t2)"}">
+                ${escapeHtml(CAT_NAME[category] || category)}
+              </span>
+              ${badge(item.status)}
+              ${item.due_status==="Vencida" ? `<span class="badge b-ex">Vencida</span>` : ""}
+              ${item.due_status==="Vencendo" ? `<span class="badge b-up">Vencendo</span>` : ""}
+              <span style="font-size:11px;color:var(--t3)">Lic. ${escapeHtml(item.license_number || "—")}</span>
+              <span style="font-size:11px;color:var(--t3)">${escapeHtml(item.field || "—")}</span>
+            </div>
+
+            <div style="
+              font-size:13px;
+              line-height:1.6;
+              color:var(--t1)
+            ">
+              ${escapeHtml(item.description || "Sem descrição")}
+            </div>
+
+            <div style="display:flex;align-items:center;gap:9px;margin-top:10px">
+              <div style="flex:1;height:5px;background:var(--bdl);border-radius:3px;overflow:hidden">
+                <div style="height:100%;width:${Number(item.progress_pct || 0)}%;background:${Number(item.progress_pct || 0)>=100 ? "var(--p)" : "var(--w)"}"></div>
+              </div>
+              <div style="font-size:11px;color:var(--t2)">
+                ${item.n_completed || 0}/${item.n_assets || 0} · ${Math.round(Number(item.progress_pct || 0))}%
+              </div>
+            </div>
+          </div>
+
+          <div style="color:var(--t3);font-size:12px;padding-top:4px">
+            ${expanded ? "▲" : "▼"}
+          </div>
+        </div>
+      </div>
+
+      ${
+        expanded
+        ? `
+          <div style="
+            border-top:1px solid var(--bdl);
+            background:var(--bg);
+            padding:14px 16px
+          ">
+            <div style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              gap:10px;
+              margin-bottom:10px
+            ">
+              <div>
+                <div style="font-size:11px;color:var(--t3);font-weight:800;text-transform:uppercase">
+                  Ativos vinculados
+                </div>
+                <div style="font-size:12px;color:var(--t2)">
+                  Custo estimado: <strong>${fmtBRLFull(item.estimated_cost || 0)}</strong>
+                  · Fonte: ${escapeHtml(item.cost_reference?.fonte || "histórico")}
+                </div>
+              </div>
+
+              ${
+                item.status !== "completed"
+                ? `<button class="btn btn-sm" onclick="event.stopPropagation();completeConditionAll('${escapeHtml(id)}')">Dar baixa em todos</button>`
+                : ""
+              }
+            </div>
+
+            <div>
+              ${(item.assets || []).map(a=>`
+                <div style="
+                  display:flex;
+                  align-items:center;
+                  justify-content:space-between;
+                  gap:10px;
+                  background:#fff;
+                  border:1px solid var(--bdl);
+                  border-radius:10px;
+                  padding:10px 12px;
+                  margin-bottom:7px
+                ">
+                  <div>
+                    <div style="font-weight:800">${escapeHtml(a.code || "—")}</div>
+                    <div style="font-size:12px;color:var(--t3)">
+                      ${escapeHtml(a.field || "—")} · ${escapeHtml(a.situation || "—")}
+                    </div>
+                  </div>
+
+                  ${
+                    a.status === "completed"
+                    ? `<span class="badge b-dn">Concluído</span>`
+                    : `<button class="btn btn-sm" onclick="event.stopPropagation();openConditionCloseModal('${escapeHtml(id)}','${escapeHtml(a.id)}','${escapeHtml(a.code || "")}',${Number(item.estimated_cost || 0)})">Dar baixa</button>`
+                  }
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `
+        : ""
+      }
+    </div>
+  `;
+}
+
+function toggleCondition(id) {
+  if (condExpanded.has(id)) condExpanded.delete(id);
+  else condExpanded.add(id);
+
+  renderConditions();
+}
+
+function openConditionCloseModal(conditionId, assetId, assetCode, estimatedCost) {
+  openModal(`
+    <div style="padding:22px">
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px">
+        Dar baixa na condicionante
+      </div>
+
+      <div style="font-size:13px;color:var(--t2);margin-bottom:14px">
+        Ativo: <strong>${escapeHtml(assetCode || "—")}</strong>
+      </div>
+
+      <div style="display:grid;gap:10px">
+        <label style="font-size:12px;color:var(--t2)">
+          Responsável
+          <input id="closeResponsible" class="inp" style="width:100%;margin-top:4px" placeholder="Nome do responsável">
+        </label>
+
+        <label style="font-size:12px;color:var(--t2)">
+          Custo real executado
+          <input id="closeCost" class="inp" type="number" style="width:100%;margin-top:4px" value="${Number(estimatedCost || 0)}">
+        </label>
+
+        <label style="font-size:12px;color:var(--t2)">
+          Observação
+          <textarea id="closeObs" class="inp" style="width:100%;height:72px;margin-top:4px;resize:vertical" placeholder="Observação opcional"></textarea>
+        </label>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
+        <button class="btn btn-g" onclick="closeModal()">Cancelar</button>
+        <button class="btn" onclick="completeConditionAsset('${conditionId}','${assetId}')">Confirmar baixa</button>
+      </div>
+    </div>
+  `);
+}
+
+async function completeConditionAsset(conditionId, assetId) {
+  const payload = {
+    completed_by: document.getElementById("closeResponsible")?.value || "sistema",
+    observation: document.getElementById("closeObs")?.value || "",
+    custo_real: Number(document.getElementById("closeCost")?.value || 0)
+  };
+
+  const result = await sf(`${API}/conditions/${conditionId}/assets/${assetId}/complete`, {
+    method:"PATCH",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(payload)
+  });
+
+  if (result && result.ok) {
+    showToast("Baixa realizada com sucesso.");
+    closeModal();
+    condExpanded.add(String(conditionId));
+    await renderConditions();
+  } else {
+    alert("Erro ao dar baixa.");
+  }
+}
+
+async function completeConditionAll(conditionId) {
+  const ok = confirm("Dar baixa em todos os ativos desta condicionante?");
+
+  if (!ok) return;
+
+  const result = await sf(`${API}/conditions/${conditionId}/complete-all`, {
+    method:"PATCH",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      completed_by:"sistema"
+    })
+  });
+
+  if (result && result.ok) {
+    showToast("Condicionante concluída.");
+    await renderConditions();
+  } else {
+    alert("Erro ao concluir condicionante.");
+  }
+}
+ /* ============================================================
+   GESTÃO FINANCEIRA E SIMULADOR
+============================================================ */
+
+function getBudgetStore() {
+  try {
+    return JSON.parse(localStorage.getItem("envlicense_budget_v6") || "{}");
+  } catch(e) {
     return {};
   }
 }
 
-function setBudgetStore(obj){
-
-  localStorage.setItem(
-    "envlicense_budget_v6",
-    JSON.stringify(obj || {})
-  );
+function setBudgetStore(obj) {
+  localStorage.setItem("envlicense_budget_v6", JSON.stringify(obj || {}));
 }
 
-function budgetForMonth(label){
-
-  return Number(
-    getBudgetStore()[String(label || "").trim()] || 0
-  );
+function budgetForMonth(label) {
+  return Number(getBudgetStore()[String(label || "").trim()] || 0);
 }
 
-async function renderPlanning(){
-
+async function renderPlanning() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
@@ -1549,749 +1935,329 @@ async function renderPlanning(){
     </div>
   `;
 
-  const data = await sf(
-    `${API}/financial/overview?years=${passiveDissolutionYears}`,
-    {timeout:30000}
-  );
+  const [summary, months, byField, byCat, projection] = await Promise.all([
+    sf(`${API}/financial/summary`),
+    sf(`${API}/financial/by_month`),
+    sf(`${API}/financial/by_field`),
+    sf(`${API}/financial/by_category`),
+    sf(`${API}/financial/projection?years=${passiveYears}&only=${planningOnly}`)
+  ]);
 
-  if(!data || data.error){
-
-    app.innerHTML = `
-      <div style="color:var(--r)">
-        Erro ao carregar financeiro:
-        ${data?.error || "sem resposta"}
-      </div>
-    `;
-
+  if (!summary || !projection) {
+    app.innerHTML = `<div class="emsg">Erro ao carregar gestão financeira.</div>`;
     return;
   }
 
-  const summary = data.summary || {};
-  const months = Array.isArray(data.monthly) ? data.monthly : [];
-  const fields = Array.isArray(data.by_field) ? data.by_field : [];
-  const cats = Array.isArray(data.by_category) ? data.by_category : [];
+  const monthRows = Array.isArray(months) ? months : [];
+  const fieldRows = Array.isArray(byField) ? byField : [];
+  const catRows = Array.isArray(byCat) ? byCat : [];
+  const projRows = Array.isArray(projection.rows) ? projection.rows : [];
 
-  const simulation = data.simulation || {};
-  const scenarios = simulation.scenarios || {};
-  const rows = simulation.annual_comparison || [];
+  window.__planningMonths = monthRows;
 
-  window.__planningMonths = months;
-
-  const budgetTotal = months.reduce(
-    (s,m)=>s + budgetForMonth(m.label),
-    0
-  );
-
-  const realizado = Number(summary.total_realizado || 0);
-  const passivo = Number(summary.total_provisionado || 0);
-  const operacional = Number(summary.operational_liability_total || 0);
-
-  const saldoBudget = budgetTotal - realizado;
+  const budgetTotal = monthRows.reduce((s,m)=>s + budgetForMonth(m.label),0);
+  const realized = Number(summary.total_realizado || 0);
+  const passive = Number(projection.summary?.mapped_total || summary.total_provisionado || 0);
+  const operational = Number(projection.summary?.operational_total || 0);
+  const balance = budgetTotal - realized;
 
   const maxMonth = Math.max(
     1,
-    ...months.map(m=>
-      Math.max(
-        Number(m.realizado || 0),
-        budgetForMonth(m.label)
-      )
-    )
+    ...monthRows.map(m=>Math.max(
+      Number(m.realizado || 0),
+      Number(m.budget || 0),
+      budgetForMonth(m.label)
+    ))
   );
 
-  const monthBars = months.map(m=>{
-
+  const monthBars = monthRows.map(m=>{
     const real = Number(m.realizado || 0);
-    const budget = budgetForMonth(m.label);
-
-    const rh = Math.max(
-      2,
-      Math.round(real / maxMonth * 120)
-    );
-
-    const bh = budget > 0
-      ? Math.max(2,Math.round(budget / maxMonth * 120))
-      : 0;
-
-    const over = real > budget && budget > 0;
+    const budget = Number(m.budget || 0) || budgetForMonth(m.label);
+    const rH = real > 0 ? Math.max(3,Math.round(real/maxMonth*118)) : 2;
+    const bH = budget > 0 ? Math.max(3,Math.round(budget/maxMonth*118)) : 0;
+    const over = budget > 0 && real > budget;
 
     return `
-      <div style="
-        flex:1;
-        min-width:0;
-        text-align:center
-      ">
-
-        <div style="
-          height:124px;
-          display:flex;
-          align-items:flex-end;
-          justify-content:center;
-          gap:2px
-        ">
-
+      <div style="flex:1;min-width:0;text-align:center">
+        <div style="height:122px;display:flex;align-items:flex-end;justify-content:center;gap:2px">
           ${
             budget > 0
-            ? `
-              <div
-                title="Budget: ${fmtBRL(budget)}"
-                style="
-                  width:40%;
-                  height:${bh}px;
-                  background:var(--bt);
-                  border:1.5px dashed var(--b);
-                  border-radius:4px 4px 0 0
-                "
-              ></div>
-            `
+            ? `<div title="Budget: ${fmtBRLFull(budget)}" style="width:42%;height:${bH}px;background:var(--bt);border:1.5px dashed var(--b);border-radius:5px 5px 0 0"></div>`
             : ""
           }
-
-          <div
-            title="Realizado: ${fmtBRL(real)}"
-            style="
-              width:40%;
-              height:${rh}px;
-              background:${over ? "var(--r)" : "var(--p)"};
-              border-radius:4px 4px 0 0
-            "
-          ></div>
+          <div title="Realizado: ${fmtBRLFull(real)}" style="width:42%;height:${rH}px;background:${over ? "var(--r)" : "var(--p)"};border-radius:5px 5px 0 0"></div>
         </div>
-
-        <div style="
-          font-size:9px;
-          color:var(--t4);
-          margin-top:5px
-        ">
-          ${m.label}
-        </div>
-
+        <div style="font-size:9px;color:var(--t4);margin-top:5px;white-space:nowrap;overflow:hidden">${escapeHtml(m.label || "")}</div>
+        ${over ? `<div style="font-size:9px;color:var(--r);font-weight:800">+${fmtBRL(real-budget)}</div>` : ""}
       </div>
     `;
   }).join("");
 
-  const maxField = Math.max(
-    1,
-    ...fields.map(f=>Number(f.total || 0))
-  );
-
-  const fieldBars = fields.slice(0,8).map(f=>`
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px
-    ">
-      <div style="
-        width:120px;
-        color:var(--t2);
-        font-size:12px
-      ">
-        ${f.field || "—"}
+  const maxField = Math.max(1,...fieldRows.map(f=>Number(f.total || 0)));
+  const fieldBars = fieldRows.slice(0,8).map(f=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="width:120px;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(f.field || "—")}</div>
+      <div style="flex:1;height:6px;background:var(--bdl);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${Math.round(Number(f.total || 0)/maxField*100)}%;background:var(--p)"></div>
       </div>
-
-      <div style="
-        flex:1;
-        height:6px;
-        background:var(--bdl);
-        border-radius:4px;
-        overflow:hidden
-      ">
-        <div style="
-          height:100%;
-          width:${Math.round(Number(f.total || 0)/maxField*100)}%;
-          background:var(--p)
-        "></div>
-      </div>
-
-      <div style="
-        width:70px;
-        text-align:right;
-        font-size:12px;
-        color:var(--t2)
-      ">
-        ${fmtBRL(f.total)}
-      </div>
+      <div style="width:72px;text-align:right;font-size:11.5px;color:var(--t2)">${fmtBRL(f.total)}</div>
     </div>
   `).join("");
 
-  const maxCat = Math.max(
-    1,
-    ...cats.map(c=>Number(c.estimado || 0))
-  );
-
-  const catBars = cats.map(c=>`
-    <div style="
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px
-    ">
-      <div style="
-        width:120px;
-        color:var(--t2);
-        font-size:12px
-      ">
-        ${c.label || c.category || "—"}
+  const maxCat = Math.max(1,...catRows.map(c=>Number(c.estimado || 0)));
+  const catBars = catRows.map(c=>{
+    const color = CAT_COLOR[c.category] || "var(--wg)";
+    return `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <div style="width:120px;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.label || c.category || "—")}</div>
+        <div style="flex:1;height:6px;background:var(--bdl);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${Math.round(Number(c.estimado || 0)/maxCat*100)}%;background:${color}"></div>
+        </div>
+        <div style="width:72px;text-align:right;font-size:11.5px;color:var(--t2)">${fmtBRL(c.estimado)}</div>
       </div>
-
-      <div style="
-        flex:1;
-        height:6px;
-        background:var(--bdl);
-        border-radius:4px;
-        overflow:hidden
-      ">
-        <div style="
-          height:100%;
-          width:${Math.round(Number(c.estimado || 0)/maxCat*100)}%;
-          background:var(--wg)
-        "></div>
-      </div>
-
-      <div style="
-        width:70px;
-        text-align:right;
-        font-size:12px;
-        color:var(--t2)
-      ">
-        ${fmtBRL(c.estimado)}
-      </div>
-    </div>
-  `).join("");
-
-  const buttons = [1,2,3,4,5].map(y=>`
-    <button
-      onclick="passiveDissolutionYears=${y};renderPlanning()"
-      style="
-        border:${passiveDissolutionYears===y ? "none" : "1px solid var(--bd)"};
-        background:${passiveDissolutionYears===y ? "var(--p)" : "#fff"};
-        color:${passiveDissolutionYears===y ? "#fff" : "var(--t2)"};
-        padding:7px 13px;
-        border-radius:8px;
-        cursor:pointer;
-        font-weight:600
-      "
-    >
-      ${y} ano${y>1?"s":""}
-    </button>
-  `).join("");
+    `;
+  }).join("");
 
   app.innerHTML = `
-    <div style="margin-bottom:18px">
-      <div style="font-size:26px;font-weight:700">
-        Gestão financeira regulatória
-      </div>
+    <div class="ph">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <h1>Gestão financeira regulatória</h1>
+          <p>Passivo mapeado, budget, valores históricos e simulador real</p>
+        </div>
 
-      <div style="color:var(--t2)">
-        Passivo mapeado, budget e simulação de dissolução
+        <button class="btn btn-g btn-sm" onclick="openCostTooltip()">
+          Valores históricos
+        </button>
       </div>
     </div>
 
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:12px;
-      margin-bottom:16px
-    ">
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Realizado
-        </div>
-
-        <div style="font-size:26px;font-weight:700">
-          ${fmtBRL(realizado)}
-        </div>
-
-        <div style="font-size:12px;color:var(--t3)">
-          Executado no período
-        </div>
+    <div class="kpis">
+      <div class="kpi green">
+        <div class="kl">Realizado</div>
+        <div class="kv" style="font-size:22px">${fmtBRL(realized)}</div>
+        <div class="ks">Executado no período</div>
       </div>
 
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Saldo vs budget
+      <div class="kpi ${budgetTotal>0 ? (balance>=0 ? "green" : "red") : "amber"}">
+        <div class="kl">Saldo vs budget</div>
+        <div class="kv" style="font-size:22px;color:${budgetTotal>0 ? (balance>=0 ? "var(--p)" : "var(--r)") : "var(--t3)"}">
+          ${budgetTotal>0 ? fmtBRL(balance) : "—"}
         </div>
-
-        <div style="
-          font-size:26px;
-          font-weight:700;
-          color:${budgetTotal>0 ? saldoBudget>=0 ? "var(--p)" : "var(--r)" : "var(--t3)"}
-        ">
-          ${budgetTotal>0 ? fmtBRL(saldoBudget) : "—"}
-        </div>
-
-        <div style="font-size:12px;color:var(--t3)">
-          ${budgetTotal>0 ? saldoBudget>=0 ? "Dentro do budget" : "Acima do budget" : "Informe o budget"}
-        </div>
+        <div class="ks">${budgetTotal>0 ? (balance>=0 ? "Dentro do budget" : "Acima do budget") : "Informe o budget mensal"}</div>
       </div>
 
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Passivo mapeado
-        </div>
-
-        <div style="font-size:26px;font-weight:700">
-          ${fmtBRL(passivo)}
-        </div>
-
-        <div style="font-size:12px;color:var(--t3)">
-          Base da simulação
-        </div>
+      <div class="kpi amber">
+        <div class="kl">Passivo mapeado</div>
+        <div class="kv" style="font-size:22px">${fmtBRL(passive)}</div>
+        <div class="ks">Condicionantes + licenças</div>
       </div>
 
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:16px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-size:11px;color:var(--t3)">
-          Passivo operacional
-        </div>
-
-        <div style="
-          font-size:26px;
-          font-weight:700;
-          color:${operacional>0 ? "var(--r)" : "var(--p)"}
-        ">
-          ${fmtBRL(operacional)}
-        </div>
-
-        <div style="font-size:12px;color:var(--t3)">
-          Poços produzindo/injetando
-        </div>
+      <div class="kpi ${operational>0 ? "red" : "green"}">
+        <div class="kl">Passivo operacional</div>
+        <div class="kv" style="font-size:22px;color:${operational>0 ? "var(--r)" : "var(--p)"}">${fmtBRL(operational)}</div>
+        <div class="ks">Poços produzindo/injetando</div>
       </div>
-
     </div>
 
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      padding:18px;
-      margin-bottom:16px;
-      box-shadow:var(--sh)
-    ">
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin-bottom:10px
-      ">
-        <div style="font-weight:700">
-          Curva financeira mensal
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px">
+        <div>
+          <div class="ct" style="margin-bottom:4px">Curva financeira mensal</div>
+          <div style="font-size:12.5px;color:var(--t2)">
+            Realizado versus budget e custos previstos por vencimento/prazo.
+          </div>
         </div>
 
-        <button
-          onclick="openBudgetModal(window.__planningMonths || [])"
-          style="
-            border:1px solid var(--bd);
-            background:#fff;
-            color:var(--t2);
-            padding:6px 12px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:600
-          "
-        >
+        <button class="btn btn-g btn-sm" onclick="openBudgetModal(window.__planningMonths || [])">
           + Budget
         </button>
       </div>
 
-      <div style="
-        display:flex;
-        align-items:flex-end;
-        gap:4px;
-        height:132px
-      ">
-        ${monthBars}
+      ${
+        monthRows.length
+        ? `
+          <div style="display:flex;align-items:flex-end;gap:5px;height:132px">
+            ${monthBars}
+          </div>
+
+          <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px">
+            <div style="font-size:12px;color:var(--t2)"><span style="display:inline-block;width:9px;height:9px;background:var(--p);border-radius:3px"></span> Realizado</div>
+            <div style="font-size:12px;color:var(--t2)"><span style="display:inline-block;width:9px;height:9px;background:var(--bt);border:1px dashed var(--b);border-radius:3px"></span> Budget/previsão</div>
+            <div style="font-size:12px;color:var(--t2)"><span style="display:inline-block;width:9px;height:9px;background:var(--r);border-radius:3px"></span> Acima do budget</div>
+          </div>
+        `
+        : `<div class="empty">Sem dados mensais.</div>`
+      }
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ct">Custo por campo</div>
+        ${fieldBars || `<div class="empty">Sem dados por campo.</div>`}
+      </div>
+
+      <div class="card">
+        <div class="ct">Custo por categoria</div>
+        ${catBars || `<div class="empty">Sem dados por categoria.</div>`}
       </div>
     </div>
 
-    <div style="
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-      gap:14px;
-      margin-bottom:16px
-    ">
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-weight:700;margin-bottom:14px">
-          Custo por campo
-        </div>
-
-        ${fieldBars || "Sem dados"}
-      </div>
-
-      <div style="
-        background:var(--s);
-        border:1px solid var(--bdl);
-        border-radius:14px;
-        padding:18px;
-        box-shadow:var(--sh)
-      ">
-        <div style="font-weight:700;margin-bottom:14px">
-          Custo por categoria
-        </div>
-
-        ${catBars || "Sem dados"}
-      </div>
-
-    </div>
-
-    <div style="
-      background:var(--s);
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      padding:18px;
-      box-shadow:var(--sh)
-    ">
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        flex-wrap:wrap;
-        gap:12px;
-        margin-bottom:18px
-      ">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px">
         <div>
-          <div style="font-weight:700">
-            Simulador de dissolução do passivo
-          </div>
-
-          <div style="
-            color:var(--t2);
-            font-size:13px
-          ">
-            Compare cenário atual, continuidade operacional e excelência
+          <div class="ct" style="margin-bottom:4px">Simulador de dissolução do passivo</div>
+          <div style="font-size:12.5px;color:var(--t2)">
+            Simulação baseada em condicionantes pendentes, licenças a renovar e custos históricos reais.
           </div>
         </div>
 
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          ${buttons}
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <select class="sel" id="planningOnlySel" onchange="planningOnly=this.value;renderPlanning()">
+            <option value="all" ${planningOnly==="all"?"selected":""}>Todos</option>
+            <option value="conditions" ${planningOnly==="conditions"?"selected":""}>Condicionantes</option>
+            <option value="licenses" ${planningOnly==="licenses"?"selected":""}>Licenças</option>
+          </select>
+
+          ${[1,2,3,4,5].map(y=>`
+            <button class="btn btn-sm ${passiveYears===y?"":"btn-g"}" onclick="passiveYears=${y};renderPlanning()">
+              ${y} ano${y>1?"s":""}
+            </button>
+          `).join("")}
         </div>
       </div>
 
-      <div style="
-        display:grid;
-        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-        gap:14px
-      ">
-
-        ${renderScenarioCard("Cenário atual",scenarios.current,"var(--b)",rows,"current")}
-
-        ${renderScenarioCard("Continuidade operacional",scenarios.operational,"var(--wg)",rows,"operational")}
-
-        ${renderScenarioCard("Excelência operacional",scenarios.excellence,"var(--p)",rows,"excellence")}
-
+      <div class="g3" style="margin-bottom:0">
+        ${renderProjectionCard("Cenário atual","current",projection,projRows,"var(--b)")}
+        ${renderProjectionCard("Continuidade operacional","operational",projection,projRows,"var(--wg)")}
+        ${renderProjectionCard("Excelência operacional","excellence",projection,projRows,"var(--p)")}
       </div>
 
-      <div style="
-        font-size:11px;
-        color:var(--t3);
-        margin-top:14px
-      ">
-        * Não considera multas, deterioração, novos vencimentos ou peso por ativo.
+      <div style="font-size:11px;color:var(--t3);margin-top:12px;line-height:1.6">
+        * O simulador usa custos reais quando disponíveis. Se houver boleto vinculado, o valor do boleto sobrescreve o valor histórico daquele ativo/licença.
+        Não considera multas ou deterioração.
       </div>
-
     </div>
   `;
 }
 
-function renderScenarioCard(title,sc,color,rows,key){
+function renderProjectionCard(title,key,projection,rows,color) {
+  const summary = projection.summary || {};
 
-  sc = sc || {};
+  const annualKey = key + "_annual";
+  const finishKey = key + "_finish_year";
 
-  const max = Math.max(
-    1,
-    ...rows.map(r=>Number(r[key] || 0))
-  );
+  const annual = Number(summary[annualKey] || 0);
+  const finish = summary[finishKey] || "—";
+
+  const last = rows.length ? rows[rows.length-1][key] : {};
+  const remaining = Number(last?.remaining || 0);
+  const conclusion = Number(last?.conclusion_pct || 0);
+
+  const maxInvest = Math.max(1,...rows.map(r=>Number(r[key]?.investment || 0)));
 
   const bars = rows.map(r=>{
-
-    const invest = Number(r[key] || 0);
-    const residual = Number(r[`${key}_residual`] || 0);
-
-    const h = invest > 0
-      ? Math.max(5,Math.round(invest/max*62))
-      : 3;
+    const invest = Number(r[key]?.investment || 0);
+    const rem = Number(r[key]?.remaining || 0);
+    const h = invest>0 ? Math.max(5,Math.round(invest/maxInvest*62)) : 3;
 
     return `
       <div style="flex:1;text-align:center">
-        <div
-          title="${r.year}: ${fmtBRL(invest)}"
-          style="
-            width:70%;
-            margin:0 auto;
-            height:${h}px;
-            background:${invest>0 ? color : "var(--bdl)"};
-            border-radius:5px 5px 0 0
-          "
-        ></div>
-
-        <div style="
-          font-size:9px;
-          color:var(--t3);
-          margin-top:4px
-        ">
-          ${invest>0 ? fmtBRL(invest) : residual<=0 ? "Zerado" : "—"}
+        <div title="${r.year}: ${fmtBRLFull(invest)} investido | ${fmtBRLFull(rem)} residual"
+          style="height:${h}px;width:72%;margin:0 auto;background:${invest>0 ? color : "var(--bdl)"};border-radius:5px 5px 0 0;opacity:${invest>0?".9":".5"}">
         </div>
-
-        <div style="
-          font-size:9px;
-          color:var(--t4)
-        ">
-          ${String(r.year).slice(2)}
+        <div style="font-size:9px;color:${invest>0?"var(--t2)":"var(--t4)"};margin-top:4px">
+          ${invest>0 ? fmtBRL(invest) : rem<=0 ? "Zerado" : "—"}
         </div>
+        <div style="font-size:9px;color:var(--t4)">${String(r.year).slice(2)}</div>
       </div>
     `;
   }).join("");
 
   return `
-    <div style="
-      border:1px solid var(--bdl);
-      border-radius:14px;
-      padding:16px;
-      background:var(--bg)
-    ">
-
-      <div style="
-        color:${color};
-        font-size:11px;
-        font-weight:700;
-        text-transform:uppercase;
-        margin-bottom:8px
-      ">
+    <div style="background:var(--bg);border:1px solid var(--bdl);border-radius:14px;padding:16px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:${color};letter-spacing:.06em;margin-bottom:8px">
         ${title}
       </div>
 
-      <div style="
-        display:grid;
-        gap:8px;
-        margin-bottom:12px
-      ">
-
-        <div style="
-          background:#fff;
-          border:1px solid var(--bdl);
-          border-radius:10px;
-          padding:10px
-        ">
-          <div style="font-size:10px;color:var(--t3)">
-            Investimento total
-          </div>
-
-          <div style="font-weight:700">
-            ${fmtBRL(sc.investment)}
-          </div>
+      <div style="display:grid;gap:8px;margin-bottom:12px">
+        <div style="background:#fff;border:1px solid var(--bdl);border-radius:10px;padding:10px">
+          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:800">Aporte anual</div>
+          <div style="font-size:16px;font-weight:800">${fmtBRLFull(annual)}</div>
         </div>
 
-        <div style="
-          background:#fff;
-          border:1px solid var(--bdl);
-          border-radius:10px;
-          padding:10px
-        ">
-          <div style="font-size:10px;color:var(--t3)">
-            Passivo residual
-          </div>
-
-          <div style="
-            font-weight:700;
-            color:${Number(sc.final_passive || 0)>0 ? "var(--r)" : "var(--p)"}
-          ">
-            ${fmtBRL(sc.final_passive)}
-          </div>
+        <div style="background:#fff;border:1px solid var(--bdl);border-radius:10px;padding:10px">
+          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:800">Passivo residual</div>
+          <div style="font-size:16px;font-weight:800;color:${remaining>0?"var(--r)":"var(--p)"}">${fmtBRLFull(remaining)}</div>
         </div>
 
-        <div style="
-          background:#fff;
-          border:1px solid var(--bdl);
-          border-radius:10px;
-          padding:10px
-        ">
-          <div style="font-size:10px;color:var(--t3)">
-            Conclusão
-          </div>
-
-          <div style="font-weight:700">
-            ${sc.completion_year || "Não zera"}
-          </div>
+        <div style="background:#fff;border:1px solid var(--bdl);border-radius:10px;padding:10px">
+          <div style="font-size:10px;color:var(--t3);text-transform:uppercase;font-weight:800">Conclusão</div>
+          <div style="font-size:16px;font-weight:800">${pct(conclusion)} · ${finish}</div>
         </div>
-
       </div>
 
-      <div style="
-        display:flex;
-        align-items:flex-end;
-        gap:4px;
-        height:86px
-      ">
+      <div style="display:flex;align-items:flex-end;gap:5px;height:86px">
         ${bars}
       </div>
     </div>
   `;
 }
 
-function openBudgetModal(months){
-
-  const b = getBudgetStore();
+function openBudgetModal(months) {
+  const store = getBudgetStore();
 
   const rows = (months || []).map(m=>{
-
     const key = String(m.label || "").trim();
 
     return `
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        gap:10px;
-        padding:8px 0;
-        border-bottom:1px solid var(--bdl)
-      ">
-        <span>${m.label}</span>
-
-        <input
-          data-budget-key="${key}"
-          value="${b[key] || 0}"
-          type="number"
-          style="
-            border:1px solid var(--bdl);
-            border-radius:8px;
-            padding:6px 8px;
-            width:120px;
-            text-align:right
-          "
-        >
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdl)">
+        <div style="font-size:13px;font-weight:700">${escapeHtml(m.label || "Mês")}</div>
+        <input class="inp" type="number" data-budget-key="${escapeHtml(key)}" value="${store[key] || 0}" style="width:130px;text-align:right">
       </div>
     `;
   }).join("");
 
-  const html = `
+  openModal(`
     <div style="padding:22px">
-
-      <div style="
-        font-size:18px;
-        font-weight:700;
-        margin-bottom:6px
-      ">
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px">
         Budget mensal
       </div>
 
-      <div style="
-        color:var(--t2);
-        font-size:13px;
-        margin-bottom:16px
-      ">
-        Informe o budget planejado por mês.
+      <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:14px">
+        Informe o budget mensal planejado. O gráfico compara o realizado com o budget.
       </div>
 
-      <div>${rows}</div>
+      <div style="max-height:360px;overflow:auto">
+        ${rows || `<div class="empty">Sem meses disponíveis.</div>`}
+      </div>
 
-      <div style="
-        display:flex;
-        justify-content:flex-end;
-        gap:8px;
-        margin-top:18px
-      ">
-        <button onclick="closeMod()">Cancelar</button>
-        <button onclick="saveBudgetModal()">Salvar</button>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+        <button class="btn btn-g" onclick="closeModal()">Cancelar</button>
+        <button class="btn" onclick="saveBudgetModal()">Salvar budget</button>
       </div>
     </div>
-  `;
-
-  openMod(html);
+  `);
 }
 
-function saveBudgetModal(){
-
+function saveBudgetModal() {
   const obj = getBudgetStore();
 
-  document.querySelectorAll("[data-budget-key]")
-    .forEach(inp=>{
-      obj[inp.dataset.budgetKey] = Number(inp.value) || 0;
-    });
+  document.querySelectorAll("[data-budget-key]").forEach(inp=>{
+    obj[inp.dataset.budgetKey] = Number(inp.value || 0);
+  });
 
   setBudgetStore(obj);
-
-  closeMod();
+  closeModal();
+  showToast("Budget salvo.");
   renderPlanning();
 }
 
-function openMod(html){
+/* ============================================================
+   START
+============================================================ */
 
-  let modal = document.getElementById("modal");
-
-  if(!modal){
-
-    modal = document.createElement("div");
-    modal.id = "modal";
-
-    modal.style.position = "fixed";
-    modal.style.inset = "0";
-    modal.style.background = "rgba(0,0,0,.35)";
-    modal.style.display = "flex";
-    modal.style.alignItems = "center";
-    modal.style.justifyContent = "center";
-    modal.style.zIndex = "999";
-
-    document.body.appendChild(modal);
-  }
-
-  modal.innerHTML = `
-    <div style="
-      background:#fff;
-      border-radius:14px;
-      max-width:480px;
-      width:92%;
-      box-shadow:var(--shl)
-    ">
-      ${html}
-    </div>
-  `;
-
-  modal.onclick = e=>{
-    if(e.target===modal) closeMod();
-  };
-}
-
-function closeMod(){
-
-  const modal = document.getElementById("modal");
-
-  if(modal) modal.remove();
-}
-
-setTab("dashboard");
+showTab("dashboard");
 </script>
 </body>
-</html>  
+</html> 
