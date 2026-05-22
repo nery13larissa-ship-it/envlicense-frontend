@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ENVLICENSE</title>
 
 <style>
@@ -18,7 +18,9 @@
   --red:#A6403A;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -27,7 +29,9 @@ body{
   color:var(--text);
 }
 
-.hidden{display:none}
+.hidden{
+  display:none!important;
+}
 
 .login{
   min-height:100vh;
@@ -39,7 +43,7 @@ body{
 
 .login-card{
   width:100%;
-  max-width:420px;
+  max-width:430px;
   background:white;
   border-radius:28px;
   padding:34px;
@@ -50,6 +54,7 @@ body{
   margin:0 0 8px;
   color:var(--green);
   letter-spacing:-1px;
+  font-size:38px;
 }
 
 .login-card p{
@@ -99,7 +104,7 @@ button{
 .logo{
   font-weight:900;
   color:var(--green);
-  font-size:20px;
+  font-size:22px;
   margin-bottom:28px;
 }
 
@@ -131,8 +136,13 @@ button{
   margin:0;
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
 
 h2{
   margin:0 0 6px;
@@ -169,7 +179,7 @@ h2{
 }
 
 .kpi-value{
-  font-size:30px;
+  font-size:28px;
   font-weight:900;
   margin-top:10px;
   color:var(--green);
@@ -181,12 +191,22 @@ h2{
   border-radius:999px;
   font-size:12px;
   font-weight:700;
-  background:#EEF2F0;
 }
 
-.ok{background:#E8F4EE;color:var(--green)}
-.warn{background:#FFF4D8;color:#8A640B}
-.risk{background:#F8EAEA;color:var(--red)}
+.ok{
+  background:#E8F4EE;
+  color:var(--green);
+}
+
+.warn{
+  background:#FFF4D8;
+  color:#8A640B;
+}
+
+.risk{
+  background:#F8EAEA;
+  color:var(--red);
+}
 
 table{
   width:100%;
@@ -230,7 +250,7 @@ th{
   position:fixed;
   right:24px;
   bottom:96px;
-  width:360px;
+  width:380px;
   max-width:calc(100vw - 40px);
   background:white;
   border:1px solid var(--line);
@@ -240,21 +260,54 @@ th{
   display:none;
 }
 
-.jey-panel.open{display:block}
+.jey-panel.open{
+  display:block;
+}
+
+.statusbar{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:12px;
+}
 
 @media(max-width:900px){
-  .app{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .kpis{grid-template-columns:1fr}
-  .main{padding:18px}
-  table,thead,tbody,tr,td,th{display:block}
-  thead{display:none}
+
+  .app{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
+  .kpis{
+    grid-template-columns:1fr;
+  }
+
+  .main{
+    padding:18px;
+  }
+
+  .top{
+    flex-direction:column;
+  }
+
+  table,thead,tbody,tr,td,th{
+    display:block;
+  }
+
+  thead{
+    display:none;
+  }
+
   tr{
     border:1px solid var(--line);
     border-radius:18px;
     margin-bottom:12px;
     padding:8px;
+    background:white;
   }
+
 }
 </style>
 </head>
@@ -262,57 +315,125 @@ th{
 <body>
 
 <section id="login" class="login">
+
   <div class="login-card">
+
     <h1>ENVLICENSE</h1>
-    <p>Cockpit executivo regulatório, ambiental e financeiro.</p>
+
+    <p>
+      Cockpit executivo regulatório, ambiental e financeiro.
+    </p>
 
     <label>Matrícula</label>
-    <input id="matricula" value="1234" />
+    <input id="matricula" value="1234"/>
 
     <label>Senha</label>
-    <input id="senha" type="password" value="123" />
+    <input id="senha" type="password" value="123"/>
 
-    <button class="primary" style="width:100%" onclick="login()">Entrar</button>
+    <button class="primary" style="width:100%" onclick="login()">
+      Entrar
+    </button>
+
     <p id="loginError" style="color:#A6403A"></p>
+
+    <div class="statusbar">
+      Sistema MVP com login local habilitado.
+    </div>
+
   </div>
+
 </section>
 
 <section id="app" class="app hidden">
+
   <aside class="sidebar">
-    <div class="logo">ENVLICENSE</div>
-    <div class="nav">
-      <button class="active" onclick="openPage('executiva',this)">Visão Executiva</button>
-      <button onclick="openPage('licencas',this)">Licenças</button>
-      <button onclick="openPage('condicionantes',this)">Condicionantes</button>
-      <button onclick="openPage('documentos',this)">Central Documental</button>
-      <button onclick="openPage('planejamento',this)">Planejamento</button>
-      <button onclick="openPage('custos',this)">Custos</button>
+
+    <div class="logo">
+      ENVLICENSE
     </div>
+
+    <div class="nav">
+
+      <button class="active" onclick="openPage('executiva',this)">
+        Visão Executiva
+      </button>
+
+      <button onclick="openPage('licencas',this)">
+        Licenças
+      </button>
+
+      <button onclick="openPage('condicionantes',this)">
+        Condicionantes
+      </button>
+
+      <button onclick="openPage('documentos',this)">
+        Central Documental
+      </button>
+
+      <button onclick="openPage('planejamento',this)">
+        Planejamento
+      </button>
+
+      <button onclick="openPage('custos',this)">
+        Custos
+      </button>
+
+    </div>
+
   </aside>
 
   <main class="main">
+
     <div class="top">
-      <input id="searchInput" class="search" placeholder="Busque por licenças, condicionantes, Miranga..." />
-      <button class="secondary" onclick="search()">Buscar</button>
-      <button class="secondary" onclick="startVoice()">🎙</button>
+
+      <input
+        id="searchInput"
+        class="search"
+        placeholder="Busque por licenças, condicionantes, Miranga..."
+      />
+
+      <button class="secondary" onclick="search()">
+        Buscar
+      </button>
+
+      <button class="secondary" onclick="startVoice()">
+        🎙
+      </button>
+
     </div>
 
     <section id="executiva" class="page active">
+
       <h2>Visão Executiva</h2>
-      <div class="subtitle">Cockpit de conformidade, operação protegida e passivo regulatório.</div>
+
+      <div class="subtitle">
+        Cockpit de conformidade e passivo regulatório.
+      </div>
+
       <div id="kpis" class="grid kpis"></div>
 
       <div class="card" style="margin-top:16px">
-        <h3>Resumo executivo</h3>
+
+        <h3>Resumo Executivo</h3>
+
         <div id="executiveSummary"></div>
+
       </div>
+
     </section>
 
     <section id="licencas" class="page">
+
       <h2>Licenças</h2>
-      <div class="subtitle">Vencimentos, status e alertas regulatórios.</div>
+
+      <div class="subtitle">
+        Vencimentos, status e alertas regulatórios.
+      </div>
+
       <div class="card">
+
         <table>
+
           <thead>
             <tr>
               <th>Número</th>
@@ -324,19 +445,35 @@ th{
               <th>Alerta</th>
             </tr>
           </thead>
+
           <tbody id="licensesTable"></tbody>
+
         </table>
+
       </div>
+
     </section>
 
     <section id="condicionantes" class="page">
+
       <h2>Condicionantes</h2>
-      <div class="subtitle">Gestão operacional simples, com baixa individual e em grupo.</div>
+
+      <div class="subtitle">
+        Gestão operacional simples e intuitiva.
+      </div>
+
       <div class="card">
+
         <div class="actions" style="margin-bottom:14px">
-          <button class="primary" onclick="completeSelected()">Baixar selecionadas</button>
+
+          <button class="primary" onclick="completeSelected()">
+            Baixar selecionadas
+          </button>
+
         </div>
+
         <table>
+
           <thead>
             <tr>
               <th></th>
@@ -349,293 +486,682 @@ th{
               <th>Ação</th>
             </tr>
           </thead>
+
           <tbody id="conditionsTable"></tbody>
+
         </table>
+
       </div>
+
     </section>
 
     <section id="documentos" class="page">
+
       <h2>Central Documental</h2>
-      <div class="subtitle">Upload de licenças, evidências e documentos financeiros.</div>
-      <div class="card">
-        <input type="file" id="fileInput" />
-        <button class="primary" onclick="upload()">Processar documento</button>
-        <pre id="uploadResult"></pre>
+
+      <div class="subtitle">
+        Upload de documentos e licenças.
       </div>
+
+      <div class="card">
+
+        <input type="file" id="fileInput"/>
+
+        <button class="primary" onclick="upload()">
+          Processar Documento
+        </button>
+
+        <pre id="uploadResult"></pre>
+
+      </div>
+
     </section>
 
     <section id="planejamento" class="page">
+
       <h2>Planejamento Regulatório</h2>
-      <div class="subtitle">Simulador orçamentário para tratamento de passivo.</div>
+
+      <div class="subtitle">
+        Simulador de provisão e passivo regulatório.
+      </div>
+
       <div class="card">
-        <label>Passivo total</label>
-        <input id="passivo" type="number" value="100000" />
+
+        <label>Passivo Total</label>
+        <input id="passivo" type="number" value="100000"/>
 
         <label>Horizonte em anos</label>
-        <input id="anos" type="number" value="5" />
+        <input id="anos" type="number" value="5"/>
 
-        <button class="primary" onclick="simulate()">Simular</button>
+        <button class="primary" onclick="simulate()">
+          Simular
+        </button>
+
         <div id="simulationResult" style="margin-top:18px"></div>
+
       </div>
+
     </section>
 
     <section id="custos" class="page">
+
       <h2>Custos Regulatórios</h2>
-      <div class="subtitle">Base para custos estimados e reais.</div>
-      <div class="card">
-        <p>Cadastre custos médios históricos no backend/Supabase para alimentar o simulador.</p>
+
+      <div class="subtitle">
+        Gestão financeira regulatória.
       </div>
+
+      <div class="card">
+
+        <p>
+          Área preparada para integração futura com Supabase.
+        </p>
+
+      </div>
+
     </section>
+
   </main>
+
 </section>
 
-<button class="jey hidden" id="jeyBtn" onclick="toggleJey()">✦</button>
+<button class="jey hidden" id="jeyBtn" onclick="toggleJey()">
+  ✦
+</button>
 
 <div id="jeyPanel" class="jey-panel">
+
   <h3>Jey</h3>
-  <p id="jeyAnswer">Olá, sou a Jey. Como posso ajudar?</p>
-  <input id="jeyInput" placeholder="Pergunte algo..." />
-  <button class="primary" onclick="askJey()" style="width:100%;margin-top:10px">Perguntar</button>
+
+  <p id="jeyAnswer">
+    Olá, sou a Jey. Como posso ajudar?
+  </p>
+
+  <input id="jeyInput" placeholder="Pergunte algo..."/>
+
+  <button
+    class="primary"
+    onclick="askJey()"
+    style="width:100%;margin-top:10px"
+  >
+    Perguntar
+  </button>
+
 </div>
 
 <script>
-const API = "https://envlicense-backend.onrender.com";
+
+const executive = {
+  conformidade_geral:33.3,
+  operacao_protegida:0,
+  licencas_vencidas:1,
+  licencas_vencendo:1,
+  condicionantes_totais:3,
+  condicionantes_atendidas:1,
+  condicionantes_pendentes:2,
+  passivo_regulatorio_total:85000,
+  cenario:"Exposição Regulatória"
+};
+
+let licenses = [
+  {
+    numero:"LIC-001",
+    tipo:"LO",
+    orgao_ambiental:"INEMA",
+    campo:"Miranga",
+    data_vencimento:"2026-08-01",
+    status:"Ativa",
+    alerta:"-"
+  },
+  {
+    numero:"LIC-002",
+    tipo:"LO",
+    orgao_ambiental:"INEMA",
+    campo:"Miranga",
+    data_vencimento:"2025-01-01",
+    status:"Vencida",
+    alerta:"Licença vencida. Requer ação."
+  }
+];
+
+let conditions = [
+  {
+    id:1,
+    tipo:"Monitoramento",
+    campo:"Miranga",
+    descricao:"Monitoramento ambiental semestral.",
+    prazo:"2026-07-01",
+    status:"Pendente",
+    custo:50000
+  },
+  {
+    id:2,
+    tipo:"Relatório",
+    campo:"Miranga",
+    descricao:"Relatório anual.",
+    prazo:"2026-04-01",
+    status:"Atendida",
+    custo:15000
+  },
+  {
+    id:3,
+    tipo:"Resíduos",
+    campo:"Miranga",
+    descricao:"Gestão de resíduos.",
+    prazo:"2026-09-15",
+    status:"Pendente",
+    custo:35000
+  }
+];
 
 function money(v){
-  return Number(v || 0).toLocaleString("pt-BR", {
-    style:"currency",
-    currency:"BRL"
-  });
+  return Number(v).toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
 }
 
-async function api(path, options = {}){
-  const res = await fetch(API + path, options);
-  if(!res.ok){
-    throw new Error(await res.text());
-  }
-  return res.json();
-}
+function login(){
 
-async function login(){
-  const matricula = document.getElementById("matricula").value;
-  const senha = document.getElementById("senha").value;
+  const matricula =
+    document.getElementById("matricula").value;
 
-  try{
-    await api("/login", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({matricula, senha})
-    });
+  const senha =
+    document.getElementById("senha").value;
 
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("app").classList.remove("hidden");
-    document.getElementById("jeyBtn").classList.remove("hidden");
+  if(
+    matricula === "1234"
+    &&
+    senha === "123"
+  ){
+
+    document
+      .getElementById("login")
+      .classList
+      .add("hidden");
+
+    document
+      .getElementById("app")
+      .classList
+      .remove("hidden");
+
+    document
+      .getElementById("jeyBtn")
+      .classList
+      .remove("hidden");
 
     loadAll();
-  }catch(e){
-    document.getElementById("loginError").innerText = "Login inválido ou backend indisponível.";
+
+    return;
+
   }
+
+  document
+    .getElementById("loginError")
+    .innerText =
+    "Login inválido.";
+
 }
 
-function openPage(id, btn){
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+function openPage(id,btn){
 
-  document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
+  document
+    .querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
+
+  document
+    .getElementById(id)
+    .classList
+    .add("active");
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(b=>b.classList.remove("active"));
+
+  if(btn){
+    btn.classList.add("active");
+  }
+
 }
 
-async function loadAll(){
+function loadAll(){
+
   loadExecutive();
   loadLicenses();
   loadConditions();
+
 }
 
-async function loadExecutive(){
-  const d = await api("/executive");
+function loadExecutive(){
 
-  document.getElementById("kpis").innerHTML = `
-    <div class="card">
-      <div class="kpi-label">Conformidade geral</div>
-      <div class="kpi-value">${d.conformidade_geral}%</div>
-    </div>
-    <div class="card">
-      <div class="kpi-label">Operação protegida</div>
-      <div class="kpi-value">${d.operacao_protegida}%</div>
-    </div>
-    <div class="card">
-      <div class="kpi-label">Licenças vencidas</div>
-      <div class="kpi-value">${d.licencas_vencidas}</div>
-    </div>
-    <div class="card">
-      <div class="kpi-label">Passivo regulatório</div>
-      <div class="kpi-value">${money(d.passivo_regulatorio_total)}</div>
-    </div>
-  `;
+  document
+    .getElementById("kpis")
+    .innerHTML = `
+      <div class="card">
+        <div class="kpi-label">Conformidade Geral</div>
+        <div class="kpi-value">
+          ${executive.conformidade_geral}%
+        </div>
+      </div>
 
-  document.getElementById("executiveSummary").innerHTML = `
-    <p><b>Cenário atual:</b> ${d.cenario}</p>
-    <p><b>Condicionantes totais:</b> ${d.condicionantes_totais}</p>
-    <p><b>Condicionantes atendidas:</b> ${d.condicionantes_atendidas}</p>
-    <p><b>Condicionantes pendentes:</b> ${d.condicionantes_pendentes}</p>
-    <p><b>Licenças vencendo:</b> ${d.licencas_vencendo}</p>
-  `;
+      <div class="card">
+        <div class="kpi-label">Operação Protegida</div>
+        <div class="kpi-value">
+          ${executive.operacao_protegida}%
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-label">Licenças Vencidas</div>
+        <div class="kpi-value">
+          ${executive.licencas_vencidas}
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kpi-label">Passivo Regulatório</div>
+        <div class="kpi-value">
+          ${money(executive.passivo_regulatorio_total)}
+        </div>
+      </div>
+    `;
+
+  document
+    .getElementById("executiveSummary")
+    .innerHTML = `
+      <p>
+        <b>Cenário Atual:</b>
+        ${executive.cenario}
+      </p>
+
+      <p>
+        <b>Condicionantes Pendentes:</b>
+        ${executive.condicionantes_pendentes}
+      </p>
+
+      <p>
+        <b>Licenças vencendo:</b>
+        ${executive.licencas_vencendo}
+      </p>
+    `;
+
 }
 
-async function loadLicenses(){
-  const data = await api("/licenses");
+function loadLicenses(){
 
-  document.getElementById("licensesTable").innerHTML = data.map(l => `
-    <tr>
-      <td>${l.numero}</td>
-      <td>${l.tipo}</td>
-      <td>${l.orgao_ambiental}</td>
-      <td>${l.campo}</td>
-      <td>${l.data_vencimento}</td>
-      <td><span class="badge ${l.status === "Vencida" ? "risk" : "ok"}">${l.status}</span></td>
-      <td>${l.alerta || "-"}</td>
-    </tr>
-  `).join("");
+  document
+    .getElementById("licensesTable")
+    .innerHTML =
+    licenses.map(l=>`
+
+      <tr>
+
+        <td>${l.numero}</td>
+
+        <td>${l.tipo}</td>
+
+        <td>${l.orgao_ambiental}</td>
+
+        <td>${l.campo}</td>
+
+        <td>${l.data_vencimento}</td>
+
+        <td>
+          <span class="
+            badge
+            ${l.status === "Vencida" ? "risk" : "ok"}
+          ">
+            ${l.status}
+          </span>
+        </td>
+
+        <td>${l.alerta}</td>
+
+      </tr>
+
+    `).join("");
+
 }
 
-async function loadConditions(){
-  const data = await api("/conditions");
+function loadConditions(){
 
-  document.getElementById("conditionsTable").innerHTML = data.map(c => `
-    <tr>
-      <td><input type="checkbox" class="cond-check" value="${c.id}" /></td>
-      <td>${c.tipo}</td>
-      <td>${c.campo}</td>
-      <td>${c.descricao}</td>
-      <td>${c.prazo}</td>
-      <td><span class="badge ${c.status === "Atendida" ? "ok" : "warn"}">${c.status}</span></td>
-      <td>${money(c.custo_estimado)}</td>
-      <td>
-        ${c.status !== "Atendida"
-          ? `<button class="secondary" onclick="completeOne(${c.id})">Baixar</button>`
-          : "-"
-        }
-      </td>
-    </tr>
-  `).join("");
+  document
+    .getElementById("conditionsTable")
+    .innerHTML =
+    conditions.map(c=>`
+
+      <tr>
+
+        <td>
+          <input
+            type="checkbox"
+            class="cond-check"
+            value="${c.id}"
+          />
+        </td>
+
+        <td>${c.tipo}</td>
+
+        <td>${c.campo}</td>
+
+        <td>${c.descricao}</td>
+
+        <td>${c.prazo}</td>
+
+        <td>
+          <span class="
+            badge
+            ${c.status === "Atendida" ? "ok" : "warn"}
+          ">
+            ${c.status}
+          </span>
+        </td>
+
+        <td>${money(c.custo)}</td>
+
+        <td>
+
+          ${
+            c.status !== "Atendida"
+            ?
+            `
+            <button
+              class="secondary"
+              onclick="completeOne(${c.id})"
+            >
+              Baixar
+            </button>
+            `
+            :
+            "-"
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
 }
 
-async function completeOne(id){
-  await api("/conditions/complete", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ids:[id]})
-  });
+function completeOne(id){
 
-  loadConditions();
+  conditions =
+    conditions.map(c=>{
+
+      if(c.id === id){
+        c.status = "Atendida";
+      }
+
+      return c;
+
+    });
+
+  refreshIndicators();
+
+}
+
+function completeSelected(){
+
+  const ids =
+    [...document.querySelectorAll(".cond-check:checked")]
+    .map(x=>Number(x.value));
+
+  conditions =
+    conditions.map(c=>{
+
+      if(ids.includes(c.id)){
+        c.status = "Atendida";
+      }
+
+      return c;
+
+    });
+
+  refreshIndicators();
+
+}
+
+function refreshIndicators(){
+
+  executive.condicionantes_atendidas =
+    conditions.filter(c=>c.status==="Atendida").length;
+
+  executive.condicionantes_pendentes =
+    conditions.filter(c=>c.status!=="Atendida").length;
+
+  executive.conformidade_geral =
+    (
+      executive.condicionantes_atendidas
+      /
+      conditions.length
+    ) * 100;
+
+  executive.passivo_regulatorio_total =
+    conditions
+      .filter(c=>c.status!=="Atendida")
+      .reduce((s,c)=>s+c.custo,0);
+
   loadExecutive();
-}
-
-async function completeSelected(){
-  const ids = [...document.querySelectorAll(".cond-check:checked")]
-    .map(x => Number(x.value));
-
-  if(!ids.length){
-    alert("Selecione pelo menos uma condicionante.");
-    return;
-  }
-
-  await api("/conditions/complete", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ids})
-  });
-
   loadConditions();
-  loadExecutive();
+
 }
 
-async function upload(){
-  const file = document.getElementById("fileInput").files[0];
+function upload(){
+
+  const file =
+    document.getElementById("fileInput").files[0];
 
   if(!file){
+
     alert("Selecione um arquivo.");
     return;
+
   }
 
-  const form = new FormData();
-  form.append("file", file);
+  document
+    .getElementById("uploadResult")
+    .innerText =
+    `
+Arquivo processado:
 
-  const data = await api("/upload", {
-    method:"POST",
-    body:form
-  });
+${file.name}
 
-  document.getElementById("uploadResult").innerText =
-    JSON.stringify(data, null, 2);
+Órgão ambiental:
+INEMA
+
+Tipo:
+LO
+
+Status:
+Leitura MVP concluída.
+`;
+
 }
 
-async function simulate(){
-  const passivo_total = Number(document.getElementById("passivo").value);
-  const horizonte_anos = Number(document.getElementById("anos").value);
+function simulate(){
 
-  const data = await api("/simulation", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({passivo_total, horizonte_anos})
-  });
+  const passivo =
+    Number(
+      document.getElementById("passivo").value
+    );
 
-  document.getElementById("simulationResult").innerHTML = `
-    <h3>Resultado</h3>
-    <p><b>Investimento anual necessário:</b> ${money(data.investimento_anual)}</p>
-    <p><b>Investimento total:</b> ${money(data.investimento_total)}</p>
-    <p><b>Horizonte:</b> ${data.horizonte_anos} anos</p>
-  `;
+  const anos =
+    Number(
+      document.getElementById("anos").value
+    );
+
+  const anual = passivo / anos;
+
+  document
+    .getElementById("simulationResult")
+    .innerHTML = `
+      <h3>Resultado</h3>
+
+      <p>
+        <b>Investimento anual:</b>
+        ${money(anual)}
+      </p>
+
+      <p>
+        <b>Investimento total:</b>
+        ${money(passivo)}
+      </p>
+
+      <p>
+        <b>Horizonte:</b>
+        ${anos} anos
+      </p>
+    `;
+
 }
 
-async function search(){
-  const q = document.getElementById("searchInput").value;
+function search(){
 
-  if(!q) return;
+  const q =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
 
-  const data = await api("/search?q=" + encodeURIComponent(q));
-  alert(JSON.stringify(data, null, 2));
+  if(q.includes("miranga")){
+
+    alert(
+      "Campo Miranga encontrado."
+    );
+
+    return;
+
+  }
+
+  if(q.includes("licen")){
+
+    openPage(
+      "licencas",
+      document.querySelectorAll(".nav button")[1]
+    );
+
+    return;
+
+  }
+
+  if(q.includes("condicion")){
+
+    openPage(
+      "condicionantes",
+      document.querySelectorAll(".nav button")[2]
+    );
+
+    return;
+
+  }
+
+  alert("Nenhum resultado encontrado.");
+
 }
 
 function toggleJey(){
-  document.getElementById("jeyPanel").classList.toggle("open");
+
+  document
+    .getElementById("jeyPanel")
+    .classList
+    .toggle("open");
+
 }
 
-async function askJey(){
-  const question = document.getElementById("jeyInput").value;
+function askJey(){
 
-  const data = await api("/jey?question=" + encodeURIComponent(question));
+  const question =
+    document.getElementById("jeyInput")
+    .value
+    .toLowerCase();
 
-  document.getElementById("jeyAnswer").innerText = data.response;
+  let response =
+    "O cenário atual é Exposição Regulatória.";
+
+  if(question.includes("miranga")){
+
+    response =
+      "Miranga apresenta condicionantes pendentes e requer ação.";
+
+  }
+
+  if(question.includes("licen")){
+
+    response =
+      "Existe uma licença vencida e uma vencendo em até 180 dias.";
+
+  }
+
+  if(question.includes("condicion")){
+
+    response =
+      "Existem condicionantes pendentes que impactam o passivo regulatório.";
+
+  }
+
+  document
+    .getElementById("jeyAnswer")
+    .innerText =
+    response;
 
   if("speechSynthesis" in window){
-    const utterance = new SpeechSynthesisUtterance(data.response);
-    utterance.lang = "pt-BR";
-    speechSynthesis.speak(utterance);
+
+    const u =
+      new SpeechSynthesisUtterance(response);
+
+    u.lang = "pt-BR";
+
+    speechSynthesis.speak(u);
+
   }
+
 }
 
 function startVoice(){
-  const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
 
-  if(!SpeechRecognition){
-    alert("Reconhecimento de voz não disponível neste navegador.");
+  const SR =
+    window.SpeechRecognition
+    ||
+    window.webkitSpeechRecognition;
+
+  if(!SR){
+
+    alert(
+      "Reconhecimento de voz não disponível."
+    );
+
     return;
+
   }
 
-  const recognition = new SpeechRecognition();
-  recognition.lang = "pt-BR";
+  const r = new SR();
 
-  recognition.onresult = function(event){
-    const text = event.results[0][0].transcript;
-    document.getElementById("searchInput").value = text;
-    document.getElementById("jeyInput").value = text;
+  r.lang = "pt-BR";
+
+  r.onresult = e=>{
+
+    const text =
+      e.results[0][0].transcript;
+
+    document
+      .getElementById("searchInput")
+      .value = text;
+
+    document
+      .getElementById("jeyInput")
+      .value = text;
+
     askJey();
+
   };
 
-  recognition.start();
+  r.start();
+
 }
+
 </script>
 
 </body>
