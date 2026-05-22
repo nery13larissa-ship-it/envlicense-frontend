@@ -1,1688 +1,458 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>EnvLicense — PetroRecôncavo</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
-
-:root {
-  --p:#00722A;--ph:#005a1f;--pl:#34a853;--pt:#e6f4ea;--pth:#c8e6c9;
-  --wg:#7cb518;--w:#f59e0b;--wt:#78350f;--wl:#fffbeb;
-  --r:#c0392b;--rh:#a93226;--rt:#fdf2f2;--rl:#fde8e8;
-  --b:#1a56db;--bt:#eff6ff;
-  --t1:#0f172a;--t2:#475569;--t3:#94a3b8;--t4:#cbd5e1;
-  --bd:#e2e8f0;--bdl:#f1f5f9;--bg:#f8fafc;--s:#ffffff;
-  --rad:14px;--rads:9px;--radxs:6px;
-  --ease:cubic-bezier(.4,0,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);
-  --sh:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
-  --shl:0 8px 40px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);
-  --shxl:0 24px 64px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.08);
-  --sw:60px;--se:232px;
-  font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-body{background:var(--bg);color:var(--t1);font-size:14px;line-height:1.55;display:flex;overflow:hidden}
-
-/* ─── SIDEBAR ─── */
-.sb{width:var(--sw);background:var(--s);border-right:1px solid var(--bdl);display:flex;flex-direction:column;height:100vh;position:fixed;left:0;top:0;z-index:100;overflow:hidden;transition:width .26s var(--ease);flex-shrink:0}
-.sb:hover{width:var(--se)}
-.sb-brand{display:flex;align-items:center;gap:11px;padding:18px 16px;border-bottom:1px solid var(--bdl);min-height:62px;overflow:hidden;white-space:nowrap}
-.sb-mark{width:30px;height:30px;min-width:30px;background:linear-gradient(135deg,var(--p) 0%,var(--pl) 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:11px;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,114,42,.35)}
-.sb-txt{opacity:0;transform:translateX(-6px);transition:all .2s var(--ease)}
-.sb:hover .sb-txt{opacity:1;transform:none}
-.sb-name{font-weight:600;font-size:13.5px;letter-spacing:-.025em;color:var(--t1);white-space:nowrap}
-.sb-sub{font-size:10.5px;color:var(--t3);margin-top:1px;font-weight:400}
-.sb-sec{padding:5px 0}
-.sb-lbl{font-size:9px;color:var(--t4);text-transform:uppercase;letter-spacing:.1em;font-weight:700;padding:8px 18px 3px;opacity:0;transition:opacity .2s var(--ease);white-space:nowrap}
-.sb:hover .sb-lbl{opacity:1}
-.nb{width:100%;background:transparent;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:12px;color:var(--t3);transition:all .15s var(--ease);min-height:40px;overflow:hidden;white-space:nowrap;position:relative}
-.nb:hover{background:var(--bdl);color:var(--t2)}
-.nb.on{background:var(--pt);color:var(--p)}
-.nb.on::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:22px;background:var(--p);border-radius:0 3px 3px 0}
-.nb-ic{width:20px;height:20px;min-width:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nb-ic svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.nb-lbl{font-size:13px;opacity:0;transform:translateX(-4px);transition:all .2s var(--ease);white-space:nowrap;font-weight:500}
-.sb:hover .nb-lbl{opacity:1;transform:none}
-.nb.on .nb-lbl{font-weight:600}
-.sb-foot{margin-top:auto;padding:12px 16px;border-top:1px solid var(--bdl);overflow:hidden;white-space:nowrap;display:flex;align-items:center;gap:10px}
-.sb-ver{width:28px;height:28px;min-width:28px;background:var(--bdl);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3);font-family:'DM Mono',monospace}
-.sb-ft{font-size:10px;color:var(--t4);opacity:0;transition:opacity .2s var(--ease)}
-.sb:hover .sb-ft{opacity:1}
-
-/* ─── MAIN ─── */
-.main-wrap{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;overflow-x:hidden;transition:margin-left .26s var(--ease);display:flex;flex-direction:column;scroll-behavior:smooth}
-.sb:hover~.main-wrap{margin-left:var(--se)}
-.topbar{background:rgba(248,250,252,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--bdl);padding:0 32px;height:56px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:50;flex-shrink:0}
-.tb-ttl{font-size:14px;font-weight:600;letter-spacing:-.025em;flex:1;color:var(--t1)}
-.sp-btn{display:flex;align-items:center;gap:8px;background:var(--s);border:1px solid var(--bd);border-radius:10px;padding:7px 13px;cursor:pointer;color:var(--t3);font-size:12.5px;font-family:inherit;transition:all .15s var(--ease);width:280px;box-shadow:var(--sh)}
-.sp-btn:hover{border-color:var(--t3);color:var(--t2)}
-.sp-btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.sp-ph{flex:1;text-align:left}
-.sp-kc{font-size:10.5px;background:var(--bdl);border:1px solid var(--bd);padding:1px 6px;border-radius:4px;color:var(--t3);font-family:'DM Mono',monospace}
-.cnt{padding:28px 32px 96px;flex:1}
-
-/* ─── BASE COMPONENTS ─── */
-.ph{margin-bottom:20px}
-.ph h1{font-size:26px;font-weight:700;letter-spacing:-.04em;margin-bottom:3px;color:var(--t1)}
-.ph .sub{font-size:13px;color:var(--t3);font-weight:400}
-
-/* KPIS */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px}
-.kpi{background:var(--s);padding:18px 20px;border-radius:var(--rad);border:1px solid var(--bdl);box-shadow:var(--sh);transition:box-shadow .15s var(--ease);position:relative;overflow:hidden}
-.kpi:hover{box-shadow:var(--shl)}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--bdl);border-radius:var(--rad) var(--rad) 0 0}
-.kpi.accent-green::before{background:linear-gradient(90deg,var(--p),var(--pl))}
-.kpi.accent-red::before{background:var(--r)}
-.kpi.accent-amber::before{background:var(--w)}
-.kpi.accent-blue::before{background:var(--b)}
-.kl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px}
-.kv{font-size:27px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--t1)}
-.ks{font-size:11.5px;color:var(--t3);margin-top:5px;font-weight:400}
-.kdelta{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:5px;margin-top:5px}
-.dg{background:var(--pt);color:#1a5c2a}.dr{background:var(--rl);color:var(--r)}.df{background:var(--bdl);color:var(--t2)}
-
-/* GRID */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
-.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:14px}
-@media(max-width:1100px){.g2{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
-@media(max-width:720px){.g3{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
-
-.card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:20px;box-shadow:var(--sh)}
-.ct{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
-
-/* THERMOMETER */
-.thermo{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:20px 24px;margin-bottom:14px;box-shadow:var(--sh)}
-.th-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px}
-.th-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
-.th-pct{font-size:32px;font-weight:700;letter-spacing:-.05em;line-height:1}
-.th-label{font-size:12.5px;color:var(--t2);margin-top:4px}
-.th-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;font-size:11.5px;font-weight:600;cursor:help;position:relative;white-space:nowrap}
-.th-tooltip{display:none;position:absolute;right:0;top:calc(100%+8px);background:var(--t1);color:#fff;font-size:11px;padding:10px 14px;border-radius:10px;z-index:20;width:260px;white-space:normal;line-height:1.6;box-shadow:var(--shxl)}
-.th-badge:hover .th-tooltip{display:block}
-.th-bar-bg{height:6px;background:var(--bdl);border-radius:4px;overflow:hidden;margin:12px 0 10px}
-.th-bar{height:100%;border-radius:4px;transition:width 1s var(--ease)}
-.th-meta{display:flex;gap:18px;flex-wrap:wrap}
-.th-stat{font-size:11.5px;color:var(--t2)}
-.th-stat strong{color:var(--t1);font-weight:600}
-
-/* BARS */
-.blist{list-style:none;display:flex;flex-direction:column;gap:10px}
-.bitem{display:flex;align-items:center;gap:10px}
-.blbl{font-size:12px;font-weight:500;min-width:108px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--t2)}
-.btrack{flex:1;height:5px;background:var(--bdl);border-radius:3px;overflow:hidden}
-.bfill{height:100%;border-radius:3px;transition:width .8s var(--ease)}
-.bval{font-size:11.5px;color:var(--t2);min-width:60px;text-align:right;font-variant-numeric:tabular-nums;font-family:'DM Mono',monospace;font-size:11px}
-
-/* BADGES */
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;letter-spacing:.01em}
-.b-ok{background:#dcfce7;color:#15803d}
-.b-up{background:#fef9c3;color:#854d0e}
-.b-ex{background:var(--rl);color:var(--r)}
-.b-mi{background:#fce7e7;color:#991b1b}
-.b-cr{background:#fee2e2;color:#b91c1c}
-.b-pt{background:#fff7ed;color:#9a3412}
-.b-pe{background:#eff6ff;color:#1d4ed8}
-.b-dn{background:#dcfce7;color:#15803d}
-.b-ot{background:var(--bdl);color:var(--t2)}
-
-/* PDF BTN */
-.pdf-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:var(--rl);color:var(--r);font-size:11px;font-weight:600;text-decoration:none;transition:all .15s var(--ease);border:1px solid #fca5a5}
-.pdf-btn:hover{background:var(--r);color:#fff;border-color:var(--r);transform:translateY(-1px);box-shadow:0 4px 12px rgba(192,57,43,.25)}
-.pdf-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.pdf-empty{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;background:var(--bdl);color:var(--t4);font-size:11px;cursor:default;border:1px dashed var(--bd)}
-
-/* TOOLBAR */
-.toolbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:10px 13px;margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;box-shadow:var(--sh)}
-.inp{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;transition:border-color .15s var(--ease),box-shadow .15s var(--ease);flex:1;min-width:140px}
-.inp:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(0,114,42,.08)}
-.sel{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:7px 11px;font-size:13px;color:var(--t1);outline:none;font-family:inherit;min-width:130px;cursor:pointer;transition:border-color .15s var(--ease)}
-.sel:focus{border-color:var(--p)}
-.btn{background:var(--p);color:#fff;border:none;padding:7px 16px;border-radius:var(--rads);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s var(--ease);font-family:inherit;display:inline-flex;align-items:center;gap:6px;letter-spacing:-.01em}
-.btn:hover{background:var(--ph);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,114,42,.25)}
-.btn:active{transform:none;box-shadow:none}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-.btn svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.btn-g{background:var(--s);color:var(--t2);border:1px solid var(--bd);box-shadow:var(--sh)}.btn-g:hover{background:var(--bdl);color:var(--t1);box-shadow:none}
-.btn-r{background:var(--r)}.btn-r:hover{background:var(--rh)}
-.btn-a{background:var(--pl)}.btn-a:hover{background:#2e9549}
-.btn-b{background:var(--b)}.btn-b:hover{background:#1548b5}
-.btn-sm{padding:5px 12px;font-size:12px}
-.btn-xs{padding:3px 9px;font-size:11px}
-.ib{background:transparent;border:none;cursor:pointer;padding:5px;border-radius:6px;color:var(--t3);transition:all .15s var(--ease);display:inline-flex;align-items:center}
-.ib:hover{background:var(--rl);color:var(--r)}
-.ib svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-
-/* FILTER CHIPS */
-.fchips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
-.fchip{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s var(--ease);border:1px solid var(--bdl);background:var(--s);color:var(--t2);white-space:nowrap}
-.fchip:hover{border-color:var(--bd);color:var(--t1);background:var(--bg)}
-.fchip.on{background:var(--t1);color:#fff;border-color:var(--t1)}
-.fchip.red.on{background:var(--r);border-color:var(--r)}
-.fchip.amber.on{background:var(--w);color:#fff;border-color:var(--w)}
-.fchip.green.on{background:var(--pl);border-color:var(--pl)}
-.fchip.blue.on{background:var(--b);border-color:var(--b)}
-.fchip-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
-
-/* CONDITION CARDS */
-.ccard{background:var(--s);border:1px solid var(--bdl);border-left:3px solid var(--bd);border-radius:var(--rad);margin-bottom:9px;box-shadow:var(--sh);overflow:hidden;transition:box-shadow .15s var(--ease),border-left-color .15s var(--ease)}
-.ccard:hover{box-shadow:var(--shl)}
-.ccard-head{padding:13px 16px;cursor:pointer;display:flex;align-items:flex-start;gap:10px}
-.ccard-meta{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-.ccat{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
-.ccard-title{font-size:13px;font-weight:400;color:var(--t1);line-height:1.55}
-.ccard-prog{display:flex;align-items:center;gap:9px;margin-top:9px}
-.cpbar{flex:1;height:4px;background:var(--bdl);border-radius:2px;overflow:hidden}
-.cpfill{height:100%;border-radius:2px;transition:width .6s var(--ease)}
-.cplbl{font-size:11px;color:var(--t2);white-space:nowrap}
-.ccard-body{border-top:1px solid var(--bdl);padding:16px;background:var(--bg)}
-.ccard-full-desc{font-size:13px;color:var(--t1);line-height:1.7;margin-bottom:14px}
-.ccard-asset-list{display:flex;flex-direction:column;gap:7px}
-.cas-item{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads)}
-.cas-code{font-size:13px;font-weight:600;color:var(--t1);min-width:115px;font-family:'DM Mono',monospace;font-size:12px}
-.cas-field{font-size:12px;color:var(--t3);flex:1}
-.cas-done{display:flex;align-items:center;gap:5px;color:#15803d;font-size:12px;font-weight:600}
-.cas-done svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.cas-btn{background:var(--p);color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;transition:all .15s var(--ease);white-space:nowrap}
-.cas-btn:hover{background:var(--ph)}
-.cas-btn svg{width:11px;height:11px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
-
-/* DONUT CHART */
-.donut-wrap{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
-.donut-svg-wrap{position:relative;flex-shrink:0}
-.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
-.donut-center-val{font-size:22px;font-weight:700;letter-spacing:-.04em;color:var(--t1)}
-.donut-center-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:1px}
-.donut-legend{display:flex;flex-direction:column;gap:9px;flex:1;min-width:140px}
-.donut-leg-item{display:flex;align-items:center;gap:9px;cursor:pointer;padding:3px 0;transition:opacity .15s var(--ease)}
-.donut-leg-item:hover{opacity:.8}
-.donut-leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.donut-leg-text{flex:1}
-.donut-leg-name{font-size:12px;font-weight:500;color:var(--t2)}
-.donut-leg-val{font-size:11px;color:var(--t3);margin-top:1px;font-family:'DM Mono',monospace}
-
-/* UPLOAD */
-.upzone{border:1.5px dashed var(--bd);border-radius:var(--rad);padding:24px 20px;text-align:center;margin-bottom:16px;cursor:pointer;transition:all .2s var(--ease);background:var(--bg)}
-.upzone:hover,.upzone.dov{border-color:var(--p);background:var(--pt);border-style:solid}
-#pdfFile,#billetFile{display:none}
-
-/* COST REF */
-.cref-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bdl)}
-.cref-row:last-child{border-bottom:none}
-.cref-lbl{flex:1;font-size:12.5px;color:var(--t1)}
-.cref-inp{background:var(--bg);border:1px solid var(--bdl);border-radius:6px;padding:5px 9px;font-size:12.5px;color:var(--t1);outline:none;width:120px;text-align:right;font-family:'DM Mono',monospace;transition:border-color .15s}
-.cref-inp:focus{border-color:var(--p)}
-.cref-save{background:var(--p);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:11.5px;cursor:pointer;font-family:inherit;font-weight:600;transition:background .15s}
-.cref-save:hover{background:var(--ph)}
-
-/* FINANCIAL CHART */
-.fin-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
-.fin-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px}
-.fin-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t2)}
-.fin-leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-
-/* SCENARIO CARD */
-.sc-card{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:20px;box-shadow:var(--sh);transition:box-shadow .15s}
-.sc-card:hover{box-shadow:var(--shl)}
-.sc-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.sc-name{font-size:15px;font-weight:700;letter-spacing:-.025em;margin-bottom:3px}
-.sc-desc{font-size:12px;color:var(--t3);margin-bottom:16px;line-height:1.5}
-.sc-metric{background:var(--bg);border:1px solid var(--bdl);border-radius:var(--rads);padding:10px 12px;margin-bottom:8px}
-.sc-metric-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:4px}
-.sc-metric-val{font-size:14px;font-weight:700;letter-spacing:-.025em}
-
-/* TABLE */
-.tw{border:1px solid var(--bdl);border-radius:var(--rad);overflow:hidden;overflow-x:auto;background:var(--s)}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:11px 14px;font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;border-bottom:1px solid var(--bdl);background:var(--bg);white-space:nowrap}
-td{padding:12px 14px;border-bottom:1px solid var(--bdl);font-size:13px;color:var(--t1);vertical-align:middle}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(0,114,42,.015)}
-
-/* SPOTLIGHT */
-.spov{position:fixed;inset:0;background:rgba(15,23,42,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding-top:10vh}
-.spov.on{display:flex}
-.spbox{background:var(--s);border-radius:16px;width:100%;max-width:600px;box-shadow:var(--shxl);overflow:hidden;border:1px solid var(--bdl)}
-.sp-iw{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bdl)}
-.sp-iw svg{width:16px;height:16px;stroke:var(--t3);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.sp-i{flex:1;border:none;outline:none;font-size:15px;font-family:inherit;color:var(--t1);background:transparent}
-.sp-esc{font-size:10px;background:var(--bdl);padding:2px 8px;border-radius:5px;color:var(--t2);cursor:pointer;border:none;font-family:'DM Mono',monospace}
-.sp-res{max-height:52vh;overflow-y:auto;padding:5px 0}
-.sp-sec{font-size:9.5px;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;font-weight:700;padding:8px 20px 4px}
-.sp-it{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;transition:background .12s}
-.sp-it:hover{background:var(--bg)}
-.sp-ico{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
-.sp-ico.a{background:var(--pt);color:var(--p)}.sp-ico.l{background:var(--bt);color:var(--b)}.sp-ico.c{background:#fef9c3;color:var(--wt)}
-.sp-t{font-size:13px;font-weight:500;color:var(--t1)}
-.sp-s{font-size:11px;color:var(--t3);margin-top:1px}
-.sp-empty{padding:28px 20px;text-align:center;color:var(--t3);font-size:13px}
-.hints{padding:10px 20px;border-top:1px solid var(--bdl)}
-.hint{display:inline-block;background:var(--bg);border:1px solid var(--bdl);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--t3);margin:2px;cursor:pointer;transition:all .12s}
-.hint:hover{background:var(--pt);color:var(--p);border-color:var(--pth)}
-
-/* MODAL */
-.mov{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
-.mov.on{display:flex}
-.mbox{background:var(--s);border-radius:16px;width:100%;max-width:500px;box-shadow:var(--shxl);overflow:hidden}
-.mhead{padding:24px 24px 12px}
-.mic{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:13px}
-.mic svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.mttl{font-size:17px;font-weight:700;letter-spacing:-.03em;margin-bottom:4px}
-.msub{font-size:13px;color:var(--t2);line-height:1.55}
-.mbody{padding:6px 24px 0}
-.minfo{background:var(--bg);border:1px solid var(--bdl);border-radius:10px;padding:13px 15px;font-size:12.5px;color:var(--t2);margin:10px 0}
-.mrow{display:flex;justify-content:space-between;padding:2px 0;gap:10px}
-.mrow strong{color:var(--t1);font-weight:600}
-.mact{padding:18px 24px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bdl);margin-top:16px;flex-wrap:wrap}
-
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;background:var(--t1);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:500;opacity:0;transform:translateY(10px);transition:all .28s var(--spring);pointer-events:none;box-shadow:var(--shxl);letter-spacing:-.01em}
-.toast.show{opacity:1;transform:none}
-
-/* MISC */
-.loading{text-align:center;padding:40px;color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;gap:10px}
-.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--bdl);border-top-color:var(--p);border-radius:50%;animation:spin .65s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.empty{padding:40px;text-align:center;color:var(--t3);font-size:13px}
-.emsg{background:var(--rl);color:var(--r);padding:10px 14px;border-radius:var(--rads);font-size:12.5px;border:1px solid #fca5a5;margin:8px 0}
-.omsg{background:var(--pt);color:#15803d;padding:10px 14px;border-radius:var(--rads);font-size:12.5px;border:1px solid var(--pth);margin:8px 0}
-.wmsg{background:var(--wl);color:var(--wt);padding:10px 14px;border-radius:var(--rads);font-size:12.5px;border:1px solid #fde68a;margin:8px 0}
-.pag{display:flex;justify-content:space-between;align-items:center;padding:10px 2px;color:var(--t2);font-size:12.5px}
-.sbar{background:var(--s);border:1px solid var(--bdl);border-radius:var(--rads);padding:9px 13px;margin-bottom:10px;font-size:12.5px;color:var(--t2)}
-.sbar strong{color:var(--t1);font-weight:600}
-.divider{height:1px;background:var(--bdl);margin:16px 0}
-.mono{font-family:'DM Mono',monospace;font-size:12px}
-
-/* TREND SPARKLINE */
-.trend-line{display:flex;align-items:flex-end;gap:2px;height:24px}
-.trend-bar{flex:1;border-radius:2px;min-width:3px;min-height:2px;transition:height .5s var(--ease)}
-</style>
-</head>
-<body>
-
-<aside class="sb" id="sb">
-  <div class="sb-brand">
-    <div class="sb-mark">PR</div>
-    <div class="sb-txt">
-      <div class="sb-name">EnvLicense</div>
-      <div class="sb-sub">PetroRecôncavo</div>
-    </div>
-  </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">Visão geral</div>
-    <button class="nb on" data-tab="dashboard">
-      <span class="nb-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
-      <span class="nb-lbl">Visão executiva</span>
-    </button>
-  </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">Documentos</div>
-    <button class="nb" data-tab="docs">
-      <span class="nb-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
-      <span class="nb-lbl">Central documental</span>
-    </button>
-    <button class="nb" data-tab="assets">
-      <span class="nb-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></span>
-      <span class="nb-lbl">Ativos</span>
-    </button>
-    <button class="nb" data-tab="conditions">
-      <span class="nb-ic"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
-      <span class="nb-lbl">Condicionantes</span>
-    </button>
-  </div>
-  <div class="sb-sec">
-    <div class="sb-lbl">Financeiro</div>
-    <button class="nb" data-tab="planning">
-      <span class="nb-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
-      <span class="nb-lbl">Gestão financeira</span>
-    </button>
-  </div>
-  <div class="sb-foot">
-    <div class="sb-ver">v6</div>
-    <div class="sb-ft">EnvLicense · v6.0</div>
-  </div>
-</aside>
-
-<div class="main-wrap" id="main-wrap">
-  <div class="topbar">
-    <div class="tb-ttl" id="tb-ttl">Visão executiva</div>
-    <button class="sp-btn" onclick="openSp()">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span class="sp-ph">Buscar ativos, licenças, campos…</span>
-      <span class="sp-kc">⌘K</span>
-    </button>
-  </div>
-  <div class="cnt"><div id="app"><div class="loading"><span class="spin"></span> Carregando</div></div></div>
-</div>
-
-<!-- SPOTLIGHT -->
-<div class="spov" id="spov" onclick="if(event.target===this)closeSp()">
-  <div class="spbox">
-    <div class="sp-iw">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input class="sp-i" id="sp-i" placeholder="Buscar ou tentar: 'ativos sem licença'…">
-      <button class="sp-esc" onclick="closeSp()">esc</button>
-    </div>
-    <div class="sp-res" id="sp-r"></div>
-  </div>
-</div>
-
-<!-- MODAL -->
-<div class="mov" id="mov" onclick="if(event.target===this)closeMod()">
-  <div class="mbox" id="mbox"></div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<script>
-const API = "https://envlicense-backend.onrender.com";
-let filterCache = null;
-let assetState = { page: 0, filters: {}, search: "" };
-let spT = null, pendingFile = null;
-let condState = { filter: "all", field: "", agency: "", expandedIds: new Set(), allItems: [], indicator: null };
-let assetDonutData = null;
-let condDonutData = null;
-
-const TABS = { dashboard:"Visão executiva", docs:"Central documental", assets:"Ativos", conditions:"Condicionantes", planning:"Gestão financeira regulatória" };
-const CAT_COLOR = { monitoring:"#1a56db", effluent:"#34a853", reporting:"#00722A", infrastructure:"#f59e0b", other:"#94a3b8" };
-const CAT_NAME = { monitoring:"Monitoramento", effluent:"Efluentes", reporting:"Relatórios", infrastructure:"Infraestrutura", other:"Outros" };
-const OPERATIONAL = ["PRODUZINDO","INJETANDO"];
-
-// ── UTILS ──
-async function sf(url, opts = {}) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), opts.timeout || 20000);
-  try {
-    const r = await fetch(url, { ...opts, signal: ctrl.signal });
-    clearTimeout(t);
-    if (!r.ok) return null;
-    return await r.json();
-  } catch(e) { clearTimeout(t); return null; }
-}
-
-function fmtBRL(v) {
-  if (v === null || v === undefined) return "—";
-  if (v === 0) return "R$ 0";
-  const n = Number(v);
-  if (n >= 1e9) return "R$ " + (n/1e9).toFixed(1) + "B";
-  if (n >= 1e6) return "R$ " + (n/1e6).toFixed(1) + "M";
-  if (n >= 1e3) return "R$ " + (n/1e3).toFixed(0) + "k";
-  return "R$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
-function fmtBRLFull(v) {
-  if (!v) return "R$ 0";
-  return "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-}
-
-function showToast(msg, dur = 2800) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), dur);
-}
-
-fetch(`${API}/health`).catch(() => {});
-
-// ── NAV ──
-document.querySelectorAll(".nb").forEach(b => b.addEventListener("click", () => show(b.dataset.tab, b)));
-
-async function show(tab, btn) {
-  document.querySelectorAll(".nb").forEach(b => b.classList.remove("on"));
-  if (btn) btn.classList.add("on");
-  else { const s = document.querySelector(`.nb[data-tab="${tab}"]`); if (s) s.classList.add("on"); }
-  document.getElementById("tb-ttl").textContent = TABS[tab] || tab;
-  document.getElementById("main-wrap").scrollTop = 0;
-  const app = document.getElementById("app");
-  app.innerHTML = '<div class="loading"><span class="spin"></span> Carregando</div>';
-  try {
-    if (tab === "dashboard") await renderDashboard();
-    else if (tab === "docs") await renderDocs();
-    else if (tab === "assets") await renderAssets();
-    else if (tab === "conditions") await renderConditions();
-    else if (tab === "planning") await renderPlanning();
-  } catch(e) { app.innerHTML = `<div class="emsg">Erro: ${e.message}</div>`; }
-}
-
-// ── SPOTLIGHT ──
-function openSp() { document.getElementById("spov").classList.add("on"); setTimeout(() => document.getElementById("sp-i").focus(), 50); }
-function closeSp() { document.getElementById("spov").classList.remove("on"); document.getElementById("sp-i").value = ""; showHints(); }
-function showHints() { document.getElementById("sp-r").innerHTML = `<div class="hints"><div style="font-size:9.5px;color:var(--t4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;font-weight:700">Sugestões</div><span class="hint" onclick="runHint('ativos sem licença')">ativos sem licença</span><span class="hint" onclick="runHint('licenças vencendo')">licenças vencendo</span><span class="hint" onclick="runHint('INEMA')">INEMA</span><span class="hint" onclick="runHint('PRODUZINDO')">em produção</span></div>`; }
-showHints();
-function runHint(q) { document.getElementById("sp-i").value = q; doSearch(q); }
-document.getElementById("sp-i").addEventListener("input", e => { const q = e.target.value.trim(); clearTimeout(spT); if (q.length < 2) { showHints(); return; } spT = setTimeout(() => doSearch(q), 250); });
-document.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); openSp(); } if (e.key === "Escape") { closeSp(); closeMod(); } });
-async function doSearch(q) {
-  const div = document.getElementById("sp-r");
-  div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-  const ql = q.toLowerCase(); let extra = "";
-  if (ql.includes("sem licença")) extra = "missing";
-  else if (ql.includes("vencendo") || ql.includes("vencida")) extra = "expired";
-  const r = await sf(`${API}/search?q=${encodeURIComponent(q)}`);
-  if (!r) { div.innerHTML = '<div class="sp-empty">Erro na busca</div>'; return; }
-  let html = "";
-  if (extra) html += `<div class="sp-sec">Ação rápida</div><div class="sp-it" onclick="closeSp();assetState={page:0,filters:{aSt:'${extra}'},search:''};show('assets')"><div class="sp-ico a">→</div><div><div class="sp-t">Ver ativos: ${extra === "missing" ? "sem licença" : "licença vencida"}</div><div class="sp-s">Filtrar automaticamente</div></div></div>`;
-  if (r.assets?.length) { html += `<div class="sp-sec">Ativos</div>`; html += r.assets.map(a => `<div class="sp-it" onclick="closeSp();assetState={page:0,filters:{},search:'${a.code}'};show('assets')"><div class="sp-ico a">AT</div><div><div class="sp-t">${a.code || '—'}</div><div class="sp-s">${a.field || '—'} · ${a.state || '—'}</div></div></div>`).join(''); }
-  if (r.licenses?.length) { html += `<div class="sp-sec">Licenças</div>`; html += r.licenses.map(l => `<div class="sp-it" onclick="closeSp();show('docs')"><div class="sp-ico l">LI</div><div><div class="sp-t">${l.number || '—'}</div><div class="sp-s">${l.agency || '—'}</div></div></div>`).join(''); }
-  if (r.conditions?.length) { html += `<div class="sp-sec">Condicionantes</div>`; html += r.conditions.map(c => `<div class="sp-it" onclick="closeSp();show('conditions')"><div class="sp-ico c">CD</div><div><div class="sp-t">${(c.description || '').slice(0, 60)}…</div></div></div>`).join(''); }
-  if (!html) html = `<div class="sp-empty">Nenhum resultado para "${q}"</div>`;
-  div.innerHTML = html;
-}
-
-// ── MODAL ──
-function openMod(html) { document.getElementById("mbox").innerHTML = html; document.getElementById("mov").classList.add("on"); }
-function closeMod() { document.getElementById("mov").classList.remove("on"); }
-
-// ── VISUAL HELPERS ──
-function bComp(s) {
-  const m = { ok:["b-ok","Licença ativa"], upcoming:["b-up","Próxima ao venc."], expired:["b-ex","Licença vencida"], missing:["b-mi","Sem licença"], critical:["b-cr","⚠ Crítico"] };
-  const [c,t] = m[s] || ["b-ot", s];
-  return `<span class="badge ${c}">${t}</span>`;
-}
-function bSit(s) {
-  if (!s) return '<span class="badge b-ot">—</span>';
-  const m = { "PRODUZINDO":"b-ok","INJETANDO":"b-pe","EM INTERVENÇÃO":"b-up" };
-  return `<span class="badge ${m[s] || 'b-ot'}">${s.slice(0,16)}</span>`;
-}
-
-// ── DONUT CHART ──
-function buildDonut(data, size = 130) {
-  // data = [{label, value, color}]
-  const total = data.reduce((s, d) => s + d.value, 0);
-  if (total === 0) return { svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${size/2-14}" fill="none" stroke="#e2e8f0" stroke-width="14"/></svg>`, total: 0 };
-  const cx = size / 2, cy = size / 2, r = size / 2 - 14;
-  const circ = 2 * Math.PI * r;
-  let offset = -circ / 4; // start at top
-  let paths = '';
-  for (const d of data) {
-    const pct = d.value / total;
-    const dash = pct * circ;
-    const gap = circ - dash;
-    paths += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${d.color}" stroke-width="14" stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}" stroke-dashoffset="${-offset.toFixed(2)}" stroke-linecap="butt"/>`;
-    offset += dash;
-  }
-  return {
-    svg: `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform:rotate(0deg)">${paths}</svg>`,
-    total
-  };
-}
-
-function renderDonutSection(title, data, centerLabel = "total") {
-  const { svg, total } = buildDonut(data, 130);
-  const legend = data.map(d => `
-    <div class="donut-leg-item">
-      <div class="donut-leg-dot" style="background:${d.color}"></div>
-      <div class="donut-leg-text">
-        <div class="donut-leg-name">${d.label}</div>
-        <div class="donut-leg-val">${d.value} · ${total > 0 ? Math.round(d.value/total*100) : 0}%</div>
-      </div>
-    </div>`).join('');
-  return `
-    <div class="card">
-      <div class="ct">${title}</div>
-      <div class="donut-wrap">
-        <div class="donut-svg-wrap">
-          ${svg}
-          <div class="donut-center">
-            <div class="donut-center-val">${total}</div>
-            <div class="donut-center-lbl">${centerLabel}</div>
-          </div>
-        </div>
-        <div class="donut-legend">${legend}</div>
-      </div>
-    </div>`;
-}
-
-// ── THERMO ──
-function renderThermo(th, compact = false) {
-  const cols = { green:"#00722A","yellow-green":"#7cb518", yellow:"#f59e0b", red:"#c0392b", gray:"#94a3b8" };
-  const bgs = { green:"#e6f4ea","yellow-green":"#f0f9e0", yellow:"#fffbeb", red:"#fdf2f2", gray:"var(--bdl)" };
-  const col = cols[th.level] || "#94a3b8";
-  const bg = bgs[th.level] || "var(--bdl)";
-  const badge = th.level === "green" ? "Adequado" : th.level === "yellow-green" ? "Operacionais OK" : th.level === "red" ? "Crítico" : "Atenção";
-  const pct = th.pct || 0;
-  const meta = `<div class="th-meta">
-    <span class="th-stat"><strong>${th.completed || 0}</strong>/${th.total || 0} concluídas</span>
-    <span class="th-stat">Poços ativos: <strong style="color:${col}">${th.pct_active || 0}%</strong></span>
-    ${th.critical_overdue > 0 ? `<span class="th-stat" style="color:var(--r)">⚠ ${th.critical_overdue} críticas vencidas</span>` : ''}
-    ${th.overdue > 0 ? `<span class="th-stat" style="color:var(--r)">${th.overdue} vencidas</span>` : ''}
-  </div>`;
-  return `<div class="thermo">
-    <div class="th-top">
-      <div>
-        <div class="th-title">Indicador de conformidade de condicionantes</div>
-        <div class="th-pct" style="color:${col};font-size:${compact?'24px':'32px'}">${pct}%</div>
-        <div class="th-label">${th.label || '—'}</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        <div class="th-badge" style="background:${bg};color:${col}">
-          <span style="width:7px;height:7px;border-radius:50%;background:${col};display:inline-block"></span>
-          ${badge}
-          <div class="th-tooltip">${th.tooltip || th.label || '—'}</div>
-        </div>
-        ${th.overdue > 0 ? `<div style="font-size:11.5px;color:var(--r);margin-top:6px;font-weight:600">${th.overdue} vencidas</div>` : ''}
-      </div>
-    </div>
-    <div class="th-bar-bg"><div class="th-bar" style="width:${pct}%;background:${col}"></div></div>
-    ${compact ? '' : meta}
-  </div>`;
-}
-
-// ═══════════════════════════════════════════
-// DASHBOARD
-// ═══════════════════════════════════════════
-async function renderDashboard() {
-  const app = document.getElementById("app");
-  const [dash, comp, byField, thermo, finSum, byMonth] = await Promise.all([
-    sf(`${API}/dashboard`),
-    sf(`${API}/compliance/summary`),
-    sf(`${API}/compliance/by_field`),
-    sf(`${API}/conditions/conformity-indicator`),
-    sf(`${API}/financial/summary`),
-    sf(`${API}/financial/by_month`)
-  ]);
-  const d = dash || {};
-  const c = comp || {};
-  const sc = c.status_counts || {};
-  const th = thermo || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
-  const bf = byField || { all_fields:[], conditions_by_field:[] };
-  const fs = finSum || { total_realizado:0, total_provisionado:0 };
-  const months = (byMonth || []).slice(-6);
-
-  // KPI executivo: % ativos operacionais protegidos
-  const prodTotal = c.producing?.total || 0;
-  const prodOk = prodTotal - (c.producing?.non_compliance || 0);
-  const injTotal = c.injecting?.total || 0;
-  const injOk = injTotal - (c.injecting?.non_compliance || 0);
-  const opTotal = prodTotal + injTotal;
-  const opOk = prodOk + injOk;
-  const opPct = opTotal > 0 ? Math.round(opOk / opTotal * 100) : 0;
-  const opColor = opPct === 100 ? "var(--p)" : opPct >= 70 ? "var(--w)" : "var(--r)";
-  const opAccent = opPct === 100 ? "accent-green" : opPct >= 70 ? "accent-amber" : "accent-red";
-
-  const nCrit = (sc.critical || 0) + (sc.expired || 0) + (sc.missing || 0);
-  const topField = (bf.all_fields || []).find(f => f.wells_critical > 0);
-  let exec = `<strong>${d.total_assets || 0}</strong> ativos monitorados.`;
-  if (th.critical_overdue > 0) exec += ` <span style="color:var(--r);font-weight:600">${th.critical_overdue} condicionantes críticas vencidas.</span>`;
-  if (nCrit > 0) exec += ` ${nCrit} ativos sem cobertura regulatória.`;
-  if (topField) exec += ` Campo <strong>${topField.field}</strong> com maior exposição.`;
-  exec += ` Conformidade: <strong style="color:${th.level==='green'?'var(--p)':th.level==='red'?'var(--r)':'var(--wt)'}">${th.pct}%</strong>.`;
-
-  const maxW = Math.max(1, ...(bf.all_fields || []).map(x => x.total_wells || 0));
-  const fieldBars = (bf.all_fields || []).slice(0, 7).map(f => {
-    const lic = f.wells_licensed || 0;
-    const pct = Math.round(lic / f.total_wells * 100);
-    const col = pct === 100 ? "var(--p)" : pct >= 70 ? "var(--wg)" : "var(--r)";
-    return `<li class="bitem"><span class="blbl" title="${f.field}">${(f.field || '').slice(0, 16)}</span><span class="btrack"><span class="bfill" style="width:${Math.round(lic/maxW*100)}%;background:${col}"></span></span><span class="bval">${lic}/${f.total_wells} (${pct}%)</span></li>`;
-  }).join('') || '<div class="empty">Sem dados</div>';
-
-  const maxC = Math.max(1, ...(bf.conditions_by_field || []).map(x => x.total_conditions || 0));
-  const condBars = (bf.conditions_by_field || []).slice(0, 7).map(f => {
-    const atd = f.total_conditions - (f.expired_conditions || 0);
-    return `<li class="bitem"><span class="blbl" title="${f.field}">${(f.field || '').slice(0, 16)}</span><span class="btrack"><span class="bfill" style="width:${maxC ? Math.round(atd/maxC*100) : 0}%;background:var(--pl)"></span></span><span class="bval">${atd}/${f.total_conditions}</span></li>`;
-  }).join('') || '<div class="empty">Sem dados</div>';
-
-  // Sparkline tendência mensal
-  const sparkVals = months.map(m => m.realizado || 0);
-  const sparkMax = Math.max(1, ...sparkVals);
-  const sparkHTML = sparkVals.length ? `<div class="trend-line">${sparkVals.map((v,i) => {
-    const h = Math.max(2, Math.round(v/sparkMax*24));
-    const last = i === sparkVals.length - 1;
-    return `<div class="trend-bar" style="height:${h}px;background:${last?'var(--p)':'var(--pth)'}"></div>`;
-  }).join('')}</div>` : '';
-
-  app.innerHTML = `
-    <div class="ph"><h1>Visão executiva</h1><p class="sub">Conformidade regulatória · ${d.total_assets || 0} ativos monitorados</p></div>
-
-    <div style="background:var(--s);border:1px solid var(--bdl);border-radius:var(--rad);padding:13px 18px;margin-bottom:14px;font-size:13px;color:var(--t2);line-height:1.7;box-shadow:var(--sh)">${exec}</div>
-
-    <div class="kpis">
-      <div class="kpi accent-green">
-        <div class="kl">Ativos</div>
-        <div class="kv">${d.total_assets || 0}</div>
-        <div class="ks">${d.total_licenses || 0} licenças cadastradas</div>
-      </div>
-      <div class="kpi">
-        <div class="kl">Condicionantes</div>
-        <div class="kv">${d.total_conditions || 0}</div>
-        ${(d.overdue || 0) > 0 ? `<span class="kdelta dr">▼ ${d.overdue} vencidas</span>` : '<div class="ks">Conformidade monitorada</div>'}
-      </div>
-      <div class="kpi ${c.producing?.non_compliance > 0 ? 'accent-red' : 'accent-green'}">
-        <div class="kl">Em produção</div>
-        <div class="kv" style="color:var(--p)">${prodTotal}</div>
-        <div class="ks" style="color:${(c.producing?.non_compliance || 0) > 0 ? 'var(--r)' : 'var(--t3)'}">${c.producing?.non_compliance || 0} sem cobertura</div>
-      </div>
-      <div class="kpi ${c.injecting?.non_compliance > 0 ? 'accent-red' : 'accent-blue'}">
-        <div class="kl">Em injeção</div>
-        <div class="kv" style="color:var(--b)">${injTotal}</div>
-        <div class="ks" style="color:${(c.injecting?.non_compliance || 0) > 0 ? 'var(--r)' : 'var(--t3)'}">${c.injecting?.non_compliance || 0} sem cobertura</div>
-      </div>
-      <div class="kpi ${opAccent}">
-        <div class="kl">Operação protegida</div>
-        <div class="kv" style="color:${opColor}">${opPct}%</div>
-        <div class="ks">${opOk}/${opTotal} ativos operacionais cobertos</div>
-        ${sparkHTML ? `<div style="margin-top:8px">${sparkHTML}</div>` : ''}
-      </div>
-    </div>
-
-    ${renderThermo(th)}
-
-    <div class="g2">
-      <div class="card"><div class="ct">Ativos licenciados por campo</div><ul class="blist">${fieldBars}</ul></div>
-      <div class="card"><div class="ct">Condicionantes por campo</div><ul class="blist">${condBars}</ul></div>
-    </div>`;
-}
-
-// ═══════════════════════════════════════════
-// CONDITIONS
-// ═══════════════════════════════════════════
-async function renderConditions() {
-  const app = document.getElementById("app");
-  condState.expandedIds = new Set();
-  app.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-  const [fields, agencies] = await Promise.all([
-    sf(`${API}/conditions/fields`),
-    sf(`${API}/assets/filters`)
-  ]);
-  const fopts = (fields || []).map(f => `<option value="${f}">${f}</option>`).join('');
-  const agopts = (agencies?.agencies || []).map(a => `<option value="${a}">${a}</option>`).join('');
-
-  app.innerHTML = `
-    <div class="ph"><h1>Condicionantes</h1><p class="sub">Painel operacional de conformidade</p></div>
-    <div id="cond-thermo"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;flex-wrap:wrap">
-      <div class="fchips" style="margin-bottom:0">
-        <span class="fchip on" data-f="all" onclick="setCondFilter('all')">Todas</span>
-        <span class="fchip red" data-f="overdue" onclick="setCondFilter('overdue')"><span class="fchip-dot"></span>Vencidas</span>
-        <span class="fchip amber" data-f="upcoming" onclick="setCondFilter('upcoming')">Próximos 30d</span>
-        <span class="fchip" data-f="operational" onclick="setCondFilter('operational')">Ativos operacionais</span>
-        <span class="fchip" data-f="pending" onclick="setCondFilter('pending')">Pendentes</span>
-        <span class="fchip green" data-f="completed" onclick="setCondFilter('completed')">Concluídas</span>
-        <span class="fchip blue" data-f="queue" onclick="setCondFilter('queue')">Poços ativos</span>
-      </div>
-      <button class="btn btn-g btn-sm" onclick="exportCondXLSX()">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Exportar XLSX
-      </button>
-    </div>
-    <div class="toolbar" style="gap:8px">
-      <select class="sel" id="condField" style="min-width:150px" onchange="applyCondFilters()">
-        <option value="">Campo: todos</option>${fopts}
-      </select>
-      <select class="sel" id="condAgency" style="min-width:140px" onchange="applyCondFilters()">
-        <option value="">Órgão: todos</option>${agopts}
-      </select>
-      <button class="btn btn-g btn-sm" onclick="collapseAll()">Recolher todos</button>
-      <button class="btn btn-sm btn-a" onclick="expandAll()">Expandir todos</button>
-    </div>
-    <div id="cond-donut-row" style="margin-bottom:14px"></div>
-    <div id="cond-summary" style="margin-bottom:10px"></div>
-    <div id="cond-list"><div class="loading"><span class="spin"></span></div></div>`;
-
-  await loadConditions();
-}
-
-async function loadConditions() {
-  const thermoDiv = document.getElementById("cond-thermo");
-  const listDiv = document.getElementById("cond-list");
-  const summDiv = document.getElementById("cond-summary");
-  const donutDiv = document.getElementById("cond-donut-row");
-  if (listDiv) listDiv.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-
-  const field = condState.field;
-  const agency = condState.agency;
-  const isQueue = condState.filter === "queue";
-  const sf_filter = isQueue ? null : condState.filter === "all" ? null : condState.filter;
-  const params = new URLSearchParams();
-  if (field) params.set("field", field);
-  if (sf_filter) params.set("status_filter", sf_filter);
-
-  const [panelData, indicator] = await Promise.all([
-    isQueue ? sf(`${API}/conditions/queue${field ? '?field=' + encodeURIComponent(field) : ''}`) : sf(`${API}/conditions/panel?${params}`),
-    sf(`${API}/conditions/conformity-indicator?${field ? 'field=' + encodeURIComponent(field) : ''}`)
-  ]);
-
-  let items = (panelData?.items) || [];
-  // Filter by agency client-side
-  if (agency) items = items.filter(i => (i.license_agency || '').toUpperCase().includes(agency.toUpperCase()));
-
-  const summ = (panelData?.summary) || {};
-  condState.allItems = items;
-  condState.indicator = indicator || { pct:0, level:"gray", label:"Sem dados", tooltip:"", pct_active:0, critical_overdue:0, total:0, completed:0, overdue:0 };
-
-  if (thermoDiv) thermoDiv.innerHTML = renderThermo(condState.indicator, true);
-
-  // Donut data
-  const completed = items.filter(i => i.status === "completed").length;
-  const pending = items.filter(i => i.status === "pending").length;
-  const partial = items.filter(i => i.status === "partial").length;
-  const overdue = items.filter(i => i.days_until_due !== null && i.days_until_due < 0 && i.status !== "completed").length;
-  const critical = items.filter(i => i.is_critical && i.status !== "completed").length;
-
-  if (donutDiv) {
-    const donutData = [
-      { label:"Concluídas", value:completed, color:"#00722A" },
-      { label:"Pendentes", value:pending, color:"#94a3b8" },
-      { label:"Parciais", value:partial, color:"#f59e0b" },
-      { label:"Vencidas", value:overdue, color:"#c0392b" },
-      { label:"Críticas", value:critical, color:"#7c1515" },
-    ].filter(d => d.value > 0);
-    donutDiv.innerHTML = renderDonutSection("Distribuição de condicionantes", donutData, "total");
-  }
-
-  if (summDiv) {
-    if (isQueue) {
-      summDiv.innerHTML = `<div class="sbar">🔴 <strong>Poços ativos</strong> — condicionantes priorizadas por urgência · <strong>${items.length}</strong> item${items.length !== 1 ? 's' : ''}</div>`;
-    } else {
-      summDiv.innerHTML = `<div class="sbar"><strong>${summ.total || 0}</strong> condicionantes · <strong style="color:var(--p)">${summ.completed || 0}</strong> concluídas · <strong style="color:var(--wt)">${summ.partial || 0}</strong> parciais · <strong style="color:var(--r)">${summ.overdue || 0}</strong> vencidas</div>`;
+# ================================
+# ENVLICENSE | main.py
+# Backend MVP Enterprise
+# FastAPI + Supabase
+# ================================
+
+import os
+import json
+from datetime import datetime, timedelta
+from typing import Optional, List
+
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# ==========================================
+# CONFIG
+# ==========================================
+
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
+
+app = FastAPI(
+    title="ENVLICENSE API",
+    version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ==========================================
+# MOCK DATABASE (MVP)
+# ==========================================
+
+USERS = [
+    {
+        "id": 1,
+        "matricula": "1234",
+        "senha": "123",
+        "nome": "Administrador MVP",
+        "perfil": "Administrador",
+        "primeiro_acesso": True,
     }
-  }
+]
 
-  if (!items.length) {
-    if (listDiv) listDiv.innerHTML = '<div class="card"><div class="empty">Nenhuma condicionante encontrada para este filtro</div></div>';
-    return;
-  }
-  renderCondList(items, listDiv);
-}
+ASSETS = [
+    {
+        "id": 1,
+        "nome": "Poco MGA-01",
+        "tipo": "Poço",
+        "campo": "Miranga",
+        "status_operacional": "Produzindo",
+        "status_poco": "Ativo",
+        "orgao_ambiental": "INEMA",
+    },
+    {
+        "id": 2,
+        "nome": "Poco MGA-02",
+        "tipo": "Poço",
+        "campo": "Miranga",
+        "status_operacional": "Produzindo",
+        "status_poco": "Arrasado",
+        "orgao_ambiental": "INEMA",
+    },
+]
 
-function renderCondList(items, container) {
-  if (!container) return;
-  container.innerHTML = items.map(item => renderCondCard(item)).join('');
-}
+LICENSES = [
+    {
+        "id": 1,
+        "numero": "LIC-001",
+        "tipo": "LO",
+        "orgao_ambiental": "INEMA",
+        "data_emissao": "2025-01-01",
+        "data_vencimento": "2026-08-01",
+        "status": "Ativa",
+        "campo": "Miranga",
+        "asset_id": 1,
+        "custo_real": 120000,
+    },
+    {
+        "id": 2,
+        "numero": "LIC-002",
+        "tipo": "LO",
+        "orgao_ambiental": "INEMA",
+        "data_emissao": "2023-01-01",
+        "data_vencimento": "2025-01-01",
+        "status": "Vencida",
+        "campo": "Miranga",
+        "asset_id": 2,
+        "custo_real": 60000,
+    },
+]
 
-function renderCondCard(item) {
-  const isExp = condState.expandedIds.has(item.id);
-  const cc = CAT_COLOR[item.category] || "#94a3b8";
-  const cn = CAT_NAME[item.category] || item.category;
-  let bCol = "var(--bd)", sBadge = '<span class="badge b-pe">Pendente</span>';
-  if (item.status === "completed") { bCol = "var(--pl)"; sBadge = '<span class="badge b-dn">Concluída</span>'; }
-  else if (item.status === "partial") { bCol = "var(--w)"; sBadge = `<span class="badge b-pt">Parcial ${item.n_completed}/${item.n_assets}</span>`; }
-  else if (item.is_critical && item.days_until_due !== null && item.days_until_due < 0) { bCol = "var(--r)"; sBadge = '<span class="badge b-cr">⚠ Crítica vencida</span>'; }
-  else if (item.days_until_due !== null && item.days_until_due < 0) { bCol = "var(--r)"; sBadge = '<span class="badge b-ex">Vencida</span>'; }
-  else if (item.days_until_due !== null && item.days_until_due <= 30) { bCol = "var(--w)"; sBadge = `<span class="badge b-up">${item.days_until_due}d</span>`; }
+CONDITIONS = [
+    {
+        "id": 1,
+        "license_id": 1,
+        "asset_id": 1,
+        "campo": "Miranga",
+        "descricao": "Monitoramento ambiental",
+        "tipo": "Monitoramento",
+        "prazo": "2026-07-01",
+        "status": "Pendente",
+        "custo_estimado": 50000,
+    },
+    {
+        "id": 2,
+        "license_id": 1,
+        "asset_id": 1,
+        "campo": "Miranga",
+        "descricao": "Relatório anual",
+        "tipo": "Relatório",
+        "prazo": "2026-04-01",
+        "status": "Atendida",
+        "custo_estimado": 15000,
+    },
+]
 
-  const pct = item.progress_pct || 0;
-  const progCol = pct === 100 ? "var(--pl)" : pct > 0 ? "var(--w)" : "var(--bd)";
-  const desc = item.description || '';
-  const shortDesc = desc.length > 160 ? desc.slice(0, 160) + '…' : desc;
-  const progHtml = item.n_assets > 0
-    ? `<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:${pct}%;background:${progCol}"></div></div><span class="cplbl">${item.n_completed}/${item.n_assets} ativos · ${pct}%</span></div>`
-    : item.status === "completed" ? `<div class="ccard-prog"><div class="cpbar"><div class="cpfill" style="width:100%;background:var(--pl)"></div></div><span class="cplbl">Concluída</span></div>` : '';
+# ==========================================
+# MODELS
+# ==========================================
 
-  const bodyHtml = isExp ? `
-    <div class="ccard-body">
-      <div class="ccard-full-desc">${desc}</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
-        <div style="font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Ativos vinculados (${item.n_assets})</div>
-        ${item.status !== "completed" && item.n_assets > 1 ? `<button class="btn btn-sm btn-a" onclick="doCompleteAll(${item.id},event)">✓ Dar baixa em todos</button>` : ''}
-      </div>
-      <div class="ccard-asset-list">${renderAssetList(item)}</div>
-      ${item.status !== "completed" && item.n_assets === 0 ? `<button class="btn btn-sm" style="margin-top:10px" onclick="doSingleBaixa(${item.id})">Dar baixa</button>` : ''}
-    </div>` : '';
+class LoginRequest(BaseModel):
+    matricula: str
+    senha: str
 
-  return `<div class="ccard" id="ccard-${item.id}" style="border-left-color:${bCol}">
-    <div class="ccard-head" onclick="toggleCard(${item.id})">
-      <div style="flex:1;min-width:0">
-        <div class="ccard-meta">
-          <span class="ccat" style="background:${cc}18;color:${cc}">${cn}</span>
-          ${sBadge}
-          ${item.is_critical ? '<span class="badge b-cr">Crítica</span>' : ''}
-          ${item.due_date ? `<span style="font-size:11px;color:var(--t3)">Vence ${item.due_date}</span>` : ''}
-          <span style="font-size:11px;color:var(--t3)">Lic. <strong>${item.license_number || '—'}</strong></span>
-          ${item.license_agency ? `<span style="font-size:11px;color:var(--t3)">${item.license_agency}</span>` : ''}
-          ${item.field ? `<span style="font-size:11px;color:var(--t3)">${item.field}</span>` : ''}
-        </div>
-        <div class="ccard-title">${isExp ? desc : shortDesc}</div>
-        ${progHtml}
-      </div>
-      <div style="flex-shrink:0;padding-left:10px;color:var(--t3);font-size:11px">${isExp ? '▲' : '▼'}</div>
-    </div>
-    ${bodyHtml}
-  </div>`;
-}
+class ConditionUpdate(BaseModel):
+    ids: List[int]
 
-function renderAssetList(item) {
-  return item.assets.map(a => {
-    const done = a.status === "completed";
-    const isOp = OPERATIONAL.includes(a.situation);
-    return `<div class="cas-item">
-      <div class="cas-code">${a.code}</div>
-      <div class="cas-field">${a.field || '—'} ${isOp ? `<span class="badge b-ok" style="font-size:10px">${(a.situation || '').slice(0, 10)}</span>` : ''}</div>
-      <div>${done
-        ? `<div class="cas-done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Concluído${a.completed_at ? ` <span style="font-size:10px;color:var(--t3)">${a.completed_at.slice(0, 10)}</span>` : ''}</div>`
-        : `<button class="cas-btn" onclick="event.stopPropagation();openBaixaModal(${item.id},${a.id},'${a.code.replace(/'/g, "")}','${(item.license_number || '').replace(/'/g, "")}')"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dar baixa</button>`
-      }</div>
-    </div>`;
-  }).join('');
-}
+class SimulationRequest(BaseModel):
+    horizonte_anos: int
+    passivo_total: float
 
-function toggleCard(id) {
-  if (condState.expandedIds.has(id)) condState.expandedIds.delete(id);
-  else condState.expandedIds.add(id);
-  const item = condState.allItems.find(i => i.id === id);
-  if (!item) return;
-  const el = document.getElementById(`ccard-${id}`);
-  if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); }
-}
-function collapseAll() { condState.expandedIds.clear(); renderCondList(condState.allItems, document.getElementById("cond-list")); }
-function expandAll() { condState.expandedIds = new Set(condState.allItems.map(i => i.id)); renderCondList(condState.allItems, document.getElementById("cond-list")); }
-function setCondFilter(f) { condState.filter = f; document.querySelectorAll(".fchip").forEach(c => { c.classList.toggle("on", c.dataset.f === f); }); loadConditions(); }
-function applyCondFilters() { condState.field = document.getElementById("condField").value; condState.agency = document.getElementById("condAgency")?.value || ""; loadConditions(); }
+# ==========================================
+# HELPERS
+# ==========================================
 
-function exportCondXLSX() {
-  const field = condState.field;
-  const filter = condState.filter === "all" ? "" : condState.filter;
-  const params = new URLSearchParams();
-  if (field) params.set("field", field);
-  if (filter) params.set("status_filter", filter);
-  window.open(`${API}/conditions/export?${params}`, '_blank');
-  showToast("Exportação iniciada…");
-}
+def vencendo_180(data):
+    try:
+        d = datetime.strptime(data, "%Y-%m-%d")
+        return d <= datetime.now() + timedelta(days=180)
+    except:
+        return False
 
-function openBaixaModal(condId, assetId, assetCode, licNum) {
-  openMod(`<div class="mhead">
-    <div class="mic" style="background:var(--pt);color:var(--p)"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <div class="mttl">Dar baixa na condicionante</div>
-    <div class="msub">Ativo: <strong>${assetCode}</strong> · Licença: <strong>${licNum}</strong></div>
-  </div>
-  <div class="mbody">
-    <div class="minfo">
-      <div class="mrow"><span>Responsável</span><input id="bx-resp" style="border:1px solid var(--bdl);border-radius:6px;padding:4px 9px;font-size:12.5px;font-family:inherit;outline:none;width:170px" placeholder="Nome (opcional)"></div>
-      <div class="mrow" style="margin-top:7px;align-items:flex-start"><span style="padding-top:3px">Observação</span><textarea id="bx-obs" style="border:1px solid var(--bdl);border-radius:6px;padding:5px 9px;font-size:12.5px;font-family:inherit;outline:none;width:210px;resize:vertical;height:56px" placeholder="Opcional"></textarea></div>
-    </div>
-    <div style="font-size:12px;color:var(--t3)">✓ O card permanece aberto para os demais ativos após confirmar.</div>
-  </div>
-  <div class="mact">
-    <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
-    <button class="btn" onclick="doBaixaAtivo(${condId},${assetId},'${assetCode}')">Confirmar baixa</button>
-  </div>`);
-}
+def vencida(data):
+    try:
+        d = datetime.strptime(data, "%Y-%m-%d")
+        return d < datetime.now()
+    except:
+        return False
 
-async function doBaixaAtivo(condId, assetId, assetCode) {
-  const resp = document.getElementById("bx-resp")?.value || "";
-  const obs = document.getElementById("bx-obs")?.value || "";
-  closeMod();
-  const r = await sf(`${API}/conditions/${condId}/assets/${assetId}/complete`, {
-    method:"PATCH", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ completed_by:resp, observation:obs, evidence_url:"" })
-  });
-  if (r && r.ok) {
-    showToast(`✓ ${assetCode} concluído`);
-    const item = condState.allItems.find(i => i.id === condId);
-    if (item) {
-      const a = item.assets.find(x => x.id === assetId);
-      if (a) { a.status = "completed"; a.completed_at = new Date().toISOString(); }
-      item.n_completed = item.assets.filter(x => x.status === "completed").length;
-      item.progress_pct = item.n_assets > 0 ? Math.round(item.n_completed / item.n_assets * 100) : 100;
-      if (item.n_completed >= item.n_assets) item.status = "completed";
-      else if (item.n_completed > 0) item.status = "partial";
-      condState.expandedIds.add(condId);
-      const el = document.getElementById(`ccard-${condId}`);
-      if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); }
+# ==========================================
+# AUTH
+# ==========================================
+
+@app.post("/login")
+def login(data: LoginRequest):
+
+    for user in USERS:
+        if (
+            user["matricula"] == data.matricula
+            and user["senha"] == data.senha
+        ):
+            return {
+                "success": True,
+                "user": user
+            }
+
+    raise HTTPException(
+        status_code=401,
+        detail="Credenciais inválidas"
+    )
+
+# ==========================================
+# EXECUTIVE DASHBOARD
+# ==========================================
+
+@app.get("/executive")
+def executive_dashboard():
+
+    total_cond = len(CONDITIONS)
+
+    atendidas = len([
+        c for c in CONDITIONS
+        if c["status"] == "Atendida"
+    ])
+
+    pendentes = len([
+        c for c in CONDITIONS
+        if c["status"] == "Pendente"
+    ])
+
+    conformidade = (
+        round((atendidas / total_cond) * 100, 1)
+        if total_cond > 0 else 0
+    )
+
+    licencas_vencidas = len([
+        l for l in LICENSES
+        if vencida(l["data_vencimento"])
+    ])
+
+    vencendo = len([
+        l for l in LICENSES
+        if vencendo_180(l["data_vencimento"])
+    ])
+
+    passivo_total = sum([
+        c.get("custo_estimado", 0)
+        for c in CONDITIONS
+        if c["status"] != "Atendida"
+    ])
+
+    ativos_operacionais = [
+        a for a in ASSETS
+        if a["status_operacional"] in [
+            "Produzindo",
+            "Injetando"
+        ]
+    ]
+
+    ativos_protegidos = 0
+
+    for ativo in ativos_operacionais:
+
+        pendencia = any(
+            c["asset_id"] == ativo["id"]
+            and c["status"] != "Atendida"
+            for c in CONDITIONS
+        )
+
+        if not pendencia:
+            ativos_protegidos += 1
+
+    operacao_protegida = (
+        round(
+            (ativos_protegidos / len(ativos_operacionais)) * 100,
+            1
+        )
+        if ativos_operacionais else 0
+    )
+
+    return {
+        "conformidade_geral": conformidade,
+        "operacao_protegida": operacao_protegida,
+        "licencas_vencidas": licencas_vencidas,
+        "licencas_vencendo": vencendo,
+        "condicionantes_totais": total_cond,
+        "condicionantes_atendidas": atendidas,
+        "condicionantes_pendentes": pendentes,
+        "passivo_regulatorio_total": passivo_total,
+        "cenario": (
+            "Excelência Operacional"
+            if conformidade == 100
+            else "Continuidade Operacional"
+            if operacao_protegida == 100
+            else "Exposição Regulatória"
+        )
     }
-    sf(`${API}/conditions/conformity-indicator`).then(ind => {
-      if (ind) { condState.indicator = ind; const td = document.getElementById("cond-thermo"); if (td) td.innerHTML = renderThermo(condState.indicator, true); }
-    });
-  } else { alert("Erro: " + (r?.error || "sem resposta")); }
-}
 
-async function doCompleteAll(condId, event) {
-  event.stopPropagation();
-  if (!confirm("Dar baixa em TODOS os ativos desta condicionante?")) return;
-  const r = await sf(`${API}/conditions/${condId}/complete-all`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ completed_by:"sistema", observation:"" }) });
-  if (r && r.ok) {
-    showToast(`✓ ${r.assets_completed} ativos concluídos`);
-    const item = condState.allItems.find(i => i.id === condId);
-    if (item) { item.assets.forEach(a => { a.status = "completed"; a.completed_at = new Date().toISOString(); }); item.n_completed = item.n_assets; item.progress_pct = 100; item.status = "completed"; condState.expandedIds.add(condId); const el = document.getElementById(`ccard-${condId}`); if (el) { const tmp = document.createElement('div'); tmp.innerHTML = renderCondCard(item); el.replaceWith(tmp.firstChild); } }
-  } else alert("Erro: " + (r?.error || "sem resposta"));
-}
+# ==========================================
+# LICENSES
+# ==========================================
 
-async function doSingleBaixa(condId) {
-  if (!confirm("Dar baixa nesta condicionante?")) return;
-  const r = await sf(`${API}/conditions/${condId}/complete-all`, { method:"PATCH", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ completed_by:"sistema", observation:"" }) });
-  if (r && r.ok) { showToast("✓ Condicionante concluída"); loadConditions(); }
-  else alert("Erro");
-}
+@app.get("/licenses")
+def get_licenses():
 
-// ═══════════════════════════════════════════
-// ASSETS
-// ═══════════════════════════════════════════
-async function renderAssets() {
-  if (!filterCache) filterCache = await sf(`${API}/assets/filters`) || { agencies:[], situations:[] };
+    result = []
 
-  const app = document.getElementById("app");
-  const opt = arr => (arr || []).map(v => `<option value="${v}">${v}</option>`).join('');
+    for lic in LICENSES:
 
-  app.innerHTML = `
-    <div class="ph"><h1>Ativos</h1><p class="sub">Status regulatório dos ativos cadastrados</p></div>
+        asset = next(
+            (
+                a for a in ASSETS
+                if a["id"] == lic["asset_id"]
+            ),
+            None
+        )
 
-    <div class="toolbar">
-      <input class="inp" id="aS" placeholder="Código ou campo…" value="${assetState.search}">
-      <select class="sel" id="aAg"><option value="">Órgão: todos</option>${opt(filterCache.agencies)}</select>
-      <select class="sel" id="aOp"><option value="">Situação: todas</option>${opt(filterCache.situations)}</select>
-      <select class="sel" id="aSt">
-        <option value="">Status: todos</option>
-        <option value="ok">Licença ativa</option>
-        <option value="upcoming">Próxima ao venc.</option>
-        <option value="expired">Licença vencida</option>
-        <option value="missing">Sem licença</option>
-        <option value="critical">Crítico</option>
-      </select>
-      <button class="btn" id="aAp">Filtrar</button>
-      <button class="btn btn-g" id="aEx">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        CSV
-      </button>
-    </div>
+        alerta = None
 
-    <div id="asset-donut-row" style="margin-bottom:14px"></div>
-    <div id="aRes"><div class="loading"><span class="spin"></span></div></div>`;
+        if (
+            asset
+            and asset["status_poco"] in [
+                "Arrasado",
+                "Abandono Permanente"
+            ]
+            and lic["status"] == "Ativa"
+        ):
+            alerta = (
+                "Licença ativa vinculada "
+                "a poço arrasado."
+            )
 
-  ["aAg","aOp","aSt"].forEach(id => {
-    if (assetState.filters[id]) document.getElementById(id).value = assetState.filters[id];
-  });
+        item = lic.copy()
+        item["alerta"] = alerta
 
-  document.getElementById("aAp").onclick = () => {
-    assetState.filters = {
-      aAg: document.getElementById("aAg").value,
-      aOp: document.getElementById("aOp").value,
-      aSt: document.getElementById("aSt").value
-    };
-    assetState.search = document.getElementById("aS").value;
-    assetState.page = 0;
-    loadAssets();
-  };
+        result.append(item)
 
-  document.getElementById("aS").addEventListener("keypress", e => {
-    if (e.key === "Enter") document.getElementById("aAp").click();
-  });
+    return result
 
-  document.getElementById("aEx").onclick = exportAssets;
-  loadAssets();
-}
-function exportAssets() { window.open(`${API}/assets/export?${buildAP()}`, '_blank'); }
-  
-function buildAP() {
-  const p = new URLSearchParams();
-  if (assetState.filters.aAg) p.set("agency", assetState.filters.aAg);
-  if (assetState.filters.aOp) p.set("operational", assetState.filters.aOp);
-  if (assetState.filters.aSt) p.set("compliance_status", assetState.filters.aSt);
-  if (assetState.search) p.set("search", assetState.search);
-  return p;
-}
+# ==========================================
+# CONDITIONS
+# ==========================================
 
-async function fetchAllFilteredAssets() {
-  const all = [];
-  let offset = 0;
-  const limit = 200;
-  let total = 0;
+@app.get("/conditions")
+def get_conditions():
+    return CONDITIONS
 
-  while (true) {
-    const p = buildAP();
-    p.set("limit", String(limit));
-    p.set("offset", String(offset));
+@app.post("/conditions/complete")
+def complete_conditions(data: ConditionUpdate):
 
-    const r = await sf(`${API}/assets/unified?${p}`, { timeout: 30000 });
-    const items = r?.items || [];
+    updated = 0
 
-    if (offset === 0) total = r?.total || 0;
-    if (!items.length) break;
+    for condition in CONDITIONS:
+        if condition["id"] in data.ids:
+            condition["status"] = "Atendida"
+            updated += 1
 
-    all.push(...items);
-    offset += items.length;
-
-    if (offset >= total) break;
-  }
-
-  return { items: all, total: total || all.length };
-}
-
-function countStatus(items) {
-  const counts = { ok:0, upcoming:0, expired:0, missing:0 };
-
-  items.forEach(a => {
-    const st = a.compliance_status;
-    if (st === "ok") counts.ok++;
-    else if (st === "upcoming") counts.upcoming++;
-    else if (st === "expired") counts.expired++;
-    else if (st === "missing" || st === "critical") counts.missing++;
-  });
-
-  return counts;
-}
-
-function operationalSummary(items, situation) {
-  const group = items.filter(a => a.situation === situation);
-  const counts = countStatus(group);
-  const total = group.length;
-  const conformidade = total > 0 ? Math.round((counts.ok / total) * 100) : 0;
-
-  return { total, ...counts, conformidade };
-}
-
-function renderOpBox(title, data, color) {
-  return `
-    <div style="border:1px solid var(--bdl);border-radius:12px;padding:14px 16px;background:var(--bg);flex:1;min-width:220px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-        <span style="width:9px;height:9px;border-radius:50%;background:${color};display:inline-block"></span>
-        <strong style="font-size:13px">${title}</strong>
-      </div>
-      <div style="font-size:28px;font-weight:700;line-height:1;color:var(--t1)">${data.total}</div>
-      <div style="font-size:11.5px;color:var(--t3);margin-bottom:10px">poços ativos</div>
-      <div style="font-size:12px;color:var(--t2);line-height:1.8">
-        <div>Licença ativa: <strong style="color:var(--p)">${data.ok}</strong></div>
-        <div>Sem licença/crítico: <strong style="color:var(--r)">${data.missing}</strong></div>
-        <div>Vencida ou vencendo: <strong style="color:var(--w)">${data.expired + data.upcoming}</strong></div>
-        <div>Conformidade: <strong style="color:${data.conformidade === 100 ? 'var(--p)' : data.conformidade >= 70 ? 'var(--w)' : 'var(--r)'}">${data.conformidade}%</strong></div>
-      </div>
-    </div>`;
-}
-
-function updateAssetStatusCard(items) {
-  const donutDiv = document.getElementById("asset-donut-row");
-  if (!donutDiv) return;
-
-  const counts = countStatus(items);
-  const prod = operationalSummary(items, "PRODUZINDO");
-  const inj = operationalSummary(items, "INJETANDO");
-
-  const donutData = [
-    { label: "Licença ativa", value: counts.ok, color: "#43A631" },
-    { label: "Próxima ao vencimento", value: counts.upcoming, color: "#FACC15" },
-    { label: "Licença vencida", value: counts.expired, color: "#B52B2B" },
-    { label: "Sem licença", value: counts.missing, color: "#7A1515" }
-  ];
-
-  const { svg, total } = buildDonut(donutData, 130);
-
-  const legend = donutData.map(d => `
-    <div class="donut-leg-item">
-      <div class="donut-leg-dot" style="background:${d.color}"></div>
-      <div class="donut-leg-text">
-        <div class="donut-leg-name">${d.label}</div>
-        <div class="donut-leg-val">${d.value} · ${total > 0 ? Math.round(d.value / total * 100) : 0}%</div>
-      </div>
-    </div>`).join('');
-
-  donutDiv.innerHTML = `
-    <div class="card">
-      <div class="ct">Status regulatório</div>
-      <div style="display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:center">
-        <div class="donut-wrap">
-          <div class="donut-svg-wrap">
-            ${svg}
-            <div class="donut-center">
-              <div class="donut-center-val">${total}</div>
-              <div class="donut-center-lbl">total</div>
-            </div>
-          </div>
-          <div class="donut-legend">${legend}</div>
-        </div>
-
-        <div>
-          <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px">
-            Status de licença dos poços ativos
-          </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            ${renderOpBox("Produtores", prod, "var(--p)")}
-            ${renderOpBox("Injetores", inj, "var(--b)")}
-          </div>
-        </div>
-      </div>
-    </div>`;
-}
-
-async function loadAssets() {
-  const div = document.getElementById("aRes");
-  div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-
-  const data = await fetchAllFilteredAssets();
-  const allItems = data.items || [];
-
-  updateAssetStatusCard(allItems);
-
-  if (!allItems.length) {
-    div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>';
-    return;
-  }
-
-  const pageSize = 50;
-  const start = assetState.page * pageSize;
-  const pageItems = allItems.slice(start, start + pageSize);
-
-  const crit = pageItems.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
-
-  const rows = pageItems.map(a => {
-    const pdfBtn = a.pdf_url
-      ? `<a class="pdf-btn" href="${a.pdf_url}" target="_blank" rel="noopener" title="Abrir licença PDF"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`
-      : `<span class="pdf-empty" title="Sem documento"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#cbd5e1;stroke-width:2;fill:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>`;
-
-    return `<tr>
-      <td><strong class="mono">${a.code || '—'}</strong></td>
-      <td style="color:var(--t2)">${a.field || '—'}</td>
-      <td style="color:var(--t2)">${a.agency || '—'}</td>
-      <td>${bSit(a.situation)}</td>
-      <td>${bComp(a.compliance_status)}</td>
-      <td style="font-size:12px;color:var(--t2);font-family:'DM Mono',monospace">${a.expiry_date || '—'}</td>
-      <td>${pdfBtn}</td>
-    </tr>`;
-  }).join('');
-
-  const tp = Math.max(1, Math.ceil(allItems.length / pageSize));
-  const cur = assetState.page + 1;
-
-  div.innerHTML = `
-    <div class="sbar">
-      Mostrando <strong>${pageItems.length}</strong> de <strong>${allItems.length}</strong> ·
-      <strong style="color:${crit > 0 ? 'var(--r)' : 'var(--t2)'}">${crit}</strong> críticos nesta página
-    </div>
-    <div class="tw">
-      <table>
-        <thead>
-          <tr><th>Código</th><th>Campo</th><th>Órgão</th><th>Situação</th><th>Status</th><th>Validade</th><th>PDF</th></tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-    <div class="pag">
-      <span>Página ${cur} de ${tp}</span>
-      <div style="display:flex;gap:7px">
-        <button class="btn btn-g btn-sm" id="aPv" ${assetState.page === 0 ? "disabled" : ""}>← Anterior</button>
-        <button class="btn btn-g btn-sm" id="aNx" ${cur >= tp ? "disabled" : ""}>Próxima →</button>
-      </div>
-    </div>`;
-
-  document.getElementById("aPv").onclick = () => {
-    if (assetState.page > 0) {
-      assetState.page--;
-      loadAssets();
+    return {
+        "success": True,
+        "updated": updated
     }
-  };
 
-  document.getElementById("aNx").onclick = () => {
-    if (cur < tp) {
-      assetState.page++;
-      loadAssets();
+# ==========================================
+# SMART SEARCH
+# ==========================================
+
+@app.get("/search")
+def smart_search(q: str):
+
+    q_lower = q.lower()
+
+    if "licença" in q_lower:
+        return {
+            "type": "licenses",
+            "results": LICENSES
+        }
+
+    if "condicionante" in q_lower:
+        return {
+            "type": "conditions",
+            "results": CONDITIONS
+        }
+
+    if "miranga" in q_lower:
+        return {
+            "type": "field",
+            "field": "Miranga",
+            "licenses": LICENSES,
+            "conditions": CONDITIONS
+        }
+
+    return {
+        "message": "Nenhum resultado encontrado."
     }
-  };
-}
 
-function buildAP() {
-  const p = new URLSearchParams();
-  if (assetState.filters.aAg) p.set("agency", assetState.filters.aAg);
-  if (assetState.filters.aOp) p.set("operational", assetState.filters.aOp);
-  if (assetState.filters.aSt) p.set("compliance_status", assetState.filters.aSt);
-  if (assetState.search) p.set("search", assetState.search);
-  return p;
-}
+# ==========================================
+# SIMULATION
+# ==========================================
 
-async function loadAssets() {
-  const p = buildAP();
-  p.set("limit", "50");
-  p.set("offset", String(assetState.page * 50));
-  const div = document.getElementById("aRes");
-  div.innerHTML = '<div class="loading"><span class="spin"></span></div>';
-  const r = await sf(`${API}/assets/unified?${p}`, { timeout:30000 });
-  if (!r?.items?.length) { div.innerHTML = '<div class="tw"><div class="empty">Nenhum ativo encontrado</div></div>'; await updateAssetDonut(); return; }
+@app.post("/simulation")
+def simulation(data: SimulationRequest):
 
-  await updateAsset();
+    investimento_anual = (
+        data.passivo_total / data.horizonte_anos
+        if data.horizonte_anos > 0
+        else 0
+    )
 
-  const crit = r.items.filter(i => ["expired","missing","critical"].includes(i.compliance_status)).length;
-  const rows = r.items.map(a => {
-    const pdfBtn = a.pdf_url
-      ? `<a class="pdf-btn" href="${a.pdf_url}" target="_blank" rel="noopener" title="Abrir licença PDF"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>`
-      : `<span class="pdf-empty" title="Sem documento"><svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:#cbd5e1;stroke-width:2;fill:none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>`;
-    return `<tr><td><strong class="mono">${a.code || '—'}</strong></td><td style="color:var(--t2)">${a.field || '—'}</td><td style="color:var(--t2)">${a.agency || '—'}</td><td>${bSit(a.situation)}</td><td>${bComp(a.compliance_status)}</td><td style="font-size:12px;color:var(--t2);font-family:'DM Mono',monospace">${a.expiry_date || '—'}</td><td>${pdfBtn}</td></tr>`;
-  }).join('');
+    return {
+        "investimento_anual": round(
+            investimento_anual,
+            2
+        ),
+        "investimento_total": data.passivo_total,
+        "horizonte_anos": data.horizonte_anos,
+    }
 
-  const tp = Math.ceil(r.total / 50), cur = assetState.page + 1;
-  div.innerHTML = `<div class="sbar">Mostrando <strong>${r.items.length}</strong> de <strong>${r.total}</strong> · <strong style="color:${crit>0?'var(--r)':'var(--t2)'}">${crit}</strong> críticos</div>
-    <div class="tw"><table><thead><tr><th>Código</th><th>Campo</th><th>Órgão</th><th>Situação</th><th>Status</th><th>Validade</th><th>PDF</th></tr></thead><tbody>${rows}</tbody></table></div>
-    <div class="pag"><span>Página ${cur} de ${tp}</span><div style="display:flex;gap:7px"><button class="btn btn-g btn-sm" id="aPv" ${assetState.page === 0 ? "disabled" : ""}>← Anterior</button><button class="btn btn-g btn-sm" id="aNx" ${cur >= tp ? "disabled" : ""}>Próxima →</button></div></div>`;
-  document.getElementById("aPv").onclick = () => { if (assetState.page > 0) { assetState.page--; loadAssets(); } };
-  document.getElementById("aNx").onclick = () => { if (cur < tp) { assetState.page++; loadAssets(); } };
-}
+# ==========================================
+# UPLOAD
+# ==========================================
 
-async function updateAssetDonut() {
-  const donutDiv = document.getElementById("asset-donut-row");
-  if (!donutDiv) return;
+@app.post("/upload")
+async def upload_document(
+    file: UploadFile = File(...)
+):
 
-  const comp = await sf(`${API}/compliance/summary`);
-  const sc = comp?.status_counts || {};
+    content = await file.read()
 
-  const donutData = [
-    { label: "Licença ativa", value: sc.ok || 0, color: "#00722A" },
-    { label: "Próxima ao vencimento", value: sc.upcoming || 0, color: "#facc15" },
-    { label: "Licença vencida", value: sc.expired || 0, color: "#b91c1c" },
-    { label: "Sem licença", value: sc.missing || 0, color: "#7f1d1d" }
-  ];
+    extracted = {
+        "orgao_ambiental": "INEMA",
+        "tipo_licenca": "LO",
+        "confianca": 0.91,
+    }
 
-  donutDiv.innerHTML = renderDonutSection(
-    "Status das licenças",
-    donutData,
-    "ativos"
-  );
-}
+    return {
+        "success": True,
+        "filename": file.filename,
+        "size": len(content),
+        "dados_extraidos": extracted,
+    }
 
-function exportAssets() { window.open(`${API}/assets/export?${buildAP()}`, '_blank'); }
+# ==========================================
+# JEY ASSISTANT
+# ==========================================
 
-// ═══════════════════════════════════════════
-// CENTRAL DOCUMENTAL
-// ═══════════════════════════════════════════
-async function renderDocs() {
-  const app = document.getElementById("app");
-  app.innerHTML = `
-    <div class="ph"><h1>Central documental</h1><p class="sub">Upload de licenças e boletos — IA extrai dados e vincula ativos automaticamente</p></div>
-    <div class="g2" style="margin-bottom:16px">
-      <div class="upzone" onclick="document.getElementById('pdfFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'license')">
-        <div style="font-size:32px;margin-bottom:8px">📄</div>
-        <div style="font-size:15px;font-weight:600;margin-bottom:4px">Upload de Licença</div>
-        <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">PDF da licença ambiental</div>
-        <input type="file" id="pdfFile" accept=".pdf" onchange="uploadDoc('license')">
-        <button class="btn btn-sm" onclick="event.stopPropagation();document.getElementById('pdfFile').click()">Selecionar PDF</button>
-        <div id="upStatus" style="margin-top:10px"></div>
-      </div>
-      <div class="upzone" onclick="document.getElementById('billetFile').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="handleDrop(event,'billet')">
-        <div style="font-size:32px;margin-bottom:8px">🧾</div>
-        <div style="font-size:15px;font-weight:600;margin-bottom:4px">Upload de Boleto</div>
-        <div style="font-size:12.5px;color:var(--t2);margin-bottom:12px">PDF do boleto de taxa</div>
-        <input type="file" id="billetFile" accept=".pdf" onchange="uploadDoc('billet')">
-        <button class="btn btn-sm" style="background:var(--wg)" onclick="event.stopPropagation();document.getElementById('billetFile').click()">Selecionar Boleto</button>
-        <div id="billetStatus" style="margin-top:10px"></div>
-      </div>
-    </div>
-    <div id="docList"><div class="loading"><span class="spin"></span></div></div>`;
-  await loadDocList();
-}
+@app.get("/jey")
+def jey(question: str):
 
-async function loadDocList() {
-  const list = await sf(`${API}/licenses`) || [];
-  const div = document.getElementById("docList");
-  if (!list?.length) { div.innerHTML = '<div class="tw"><div class="empty">Nenhum documento cadastrado</div></div>'; return; }
-  const trash = '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
-  const rows = list.map(l => {
-    const pdf = l.pdf_url ? `<a class="pdf-btn" href="${l.pdf_url}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>PDF</a>` : '<span class="pdf-empty">—</span>';
-    const bol = l.billet_url ? `<a class="pdf-btn" href="${l.billet_url}" target="_blank" rel="noopener" style="background:var(--wl);color:#854d0e;border-color:#fde68a">Boleto</a>` : '—';
-    const cost = l.billet_cost ? `<span style="color:var(--p);font-weight:600">${fmtBRL(l.billet_cost)}</span>` : l.acquisition_cost ? fmtBRL(l.acquisition_cost) : '—';
-    const lj = JSON.stringify(l).replace(/"/g, '&quot;');
-    return `<tr><td><strong class="mono">${l.number}</strong></td><td><span class="badge b-pe">${l.type}</span></td><td style="color:var(--t2)">${l.agency || '—'}</td><td class="mono" style="font-size:12px">${l.expiry_date || '—'}</td><td style="color:${l.asset_code ? 'var(--t1)' : 'var(--t3)'}"><small class="mono">${l.asset_code || 'não vinculado'}</small></td><td style="text-align:center">${l.n_conditions}</td><td>${cost}</td><td>${pdf}</td><td>${bol}</td><td><button class="ib" data-lic="${lj}">${trash}</button></td></tr>`;
-  }).join('');
-  div.innerHTML = `<div class="tw"><table><thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Validade</th><th>Ativo(s)</th><th>Cond.</th><th>Custo</th><th>PDF</th><th>Boleto</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
-  document.querySelectorAll(".ib[data-lic]").forEach(b => { b.onclick = () => { try { confirmDel(JSON.parse(b.getAttribute("data-lic").replace(/&quot;/g, '"'))); } catch(e) { alert("Erro"); } }; });
-}
+    q = question.lower()
 
-function handleDrop(e, type) { e.preventDefault(); const z = document.querySelector('.upzone.dov'); if (z) z.classList.remove('dov'); const f = e.dataTransfer.files[0]; if (f && f.type === "application/pdf") { const dt = new DataTransfer(); dt.items.add(f); document.getElementById(type === "license" ? "pdfFile" : "billetFile").files = dt.files; uploadDoc(type); } }
+    if "miranga" in q:
+        return {
+            "response":
+            "O campo Miranga apresenta "
+            "83% de conformidade de "
+            "condicionantes. Existem "
+            "pendências associadas "
+            "a ativos operacionais."
+        }
 
-async function uploadDoc(docType) {
-  const fi = document.getElementById(docType === "license" ? "pdfFile" : "billetFile");
-  const stat = document.getElementById(docType === "license" ? "upStatus" : "billetStatus");
-  const file = fi?.files[0]; if (!file) return;
-  pendingFile = file;
-  stat.innerHTML = '<div class="loading" style="padding:8px 0"><span class="spin"></span> IA analisando… (30–90s)</div>';
-  const fd = new FormData(); fd.append("file", file);
-  try {
-    const r = await fetch(`${API}/licenses/upload?on_duplicate=ask&doc_type=${docType}`, { method:"POST", body:fd }).then(r => r.json());
-    if (r.error) stat.innerHTML = `<div class="emsg">Erro: ${r.error}</div>`;
-    else if (r.type === "billet") { stat.innerHTML = `<div class="omsg">✓ Boleto ${r.linked ? "vinculado" : "salvo"}. Valor: <strong>${fmtBRLFull(r.valor)}</strong></div>`; setTimeout(() => loadDocList(), 1500); }
-    else if (r.duplicate) { stat.innerHTML = ''; showDupModal(r.existing, r.new_data); }
-    else if (r.cancelled) stat.innerHTML = '<div class="emsg">Cancelado.</div>';
-    else { const lnk = r.assets_linked?.length ? ` Vinculada a: <strong>${r.assets_linked.map(a => a.code).join(', ')}</strong>.` : ''; stat.innerHTML = `<div class="omsg">✓ ${r.conditions_extracted} condicionantes extraídas.${lnk}</div>`; pendingFile = null; setTimeout(() => loadDocList(), 1600); }
-  } catch(e) { stat.innerHTML = `<div class="emsg">Erro: ${e.message}</div>`; }
-}
+    if "licenças" in q:
+        return {
+            "response":
+            "Existem licenças vencendo "
+            "nos próximos 180 dias."
+        }
 
-function showDupModal(ex, nw) { openMod(`<div class="mhead"><div class="mic" style="background:var(--wl);color:var(--wt)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="mttl">Licença duplicada</div><div class="msub">Já existe uma licença com este número.</div></div><div class="mbody"><div class="minfo"><div class="mrow"><span>Existente</span><strong>${ex.number} · ${ex.n_conditions} cond.</strong></div><div class="mrow"><span>Novo</span><strong>${nw.n_conditions_extracted} cond. extraídas</strong></div>${nw.assets_found?.length ? `<div class="mrow"><span>Ativos</span><strong style="color:var(--p)">${nw.assets_found.map(a=>a.code).join(', ')}</strong></div>` : ''}</div></div><div class="mact"><button class="btn btn-g" onclick="closeMod();pendingFile=null">Cancelar</button><button class="btn btn-g" onclick="closeMod();uploadWith('keep_both')">Manter ambas</button><button class="btn btn-r" onclick="closeMod();uploadWith('replace')">Substituir</button></div>`); }
+    return {
+        "response":
+        "Consulta processada com sucesso."
+    }
 
-async function uploadWith(dup) {
-  if (!pendingFile) return;
-  const fd = new FormData(); fd.append("file", pendingFile);
-  const stat = document.getElementById("upStatus");
-  stat.innerHTML = '<div class="loading" style="padding:8px 0"><span class="spin"></span></div>';
-  try {
-    const r = await fetch(`${API}/licenses/upload?on_duplicate=${dup}&doc_type=license`, { method:"POST", body:fd }).then(r => r.json());
-    if (r.error) stat.innerHTML = `<div class="emsg">${r.error}</div>`;
-    else { stat.innerHTML = `<div class="omsg">✓ ${r.conditions_extracted || 0} condicionantes.</div>`; pendingFile = null; setTimeout(() => loadDocList(), 1500); }
-  } catch(e) { stat.innerHTML = `<div class="emsg">${e.message}</div>`; }
-}
+# ==========================================
+# HEALTH
+# ==========================================
 
-function confirmDel(l) {
-  openMod(`<div class="mhead"><div class="mic" style="background:var(--rl);color:var(--r)"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="mttl">Excluir licença?</div><div class="msub">Esta ação é irreversível e removerá todas as condicionantes vinculadas.</div></div>
-  <div class="mbody"><div class="minfo"><div class="mrow"><span>Número</span><strong>${l.number}</strong></div><div class="mrow"><span>Condicionantes</span><strong style="color:var(--r)">${l.n_conditions}</strong></div></div></div>
-  <div class="mact"><button class="btn btn-g" onclick="closeMod()">Cancelar</button><button class="btn btn-r" onclick="doDelLic(${l.id})">Excluir</button></div>`);
-}
-async function doDelLic(id) { closeMod(); await sf(`${API}/licenses/${id}`, { method:"DELETE" }); await loadDocList(); }
+@app.get("/")
+def health():
+    return {
+        "status": "online",
+        "system": "ENVLICENSE"
+    }
 
-// ═══════════════════════════════════════════
-// GESTÃO FINANCEIRA
-// ═══════════════════════════════════════════
-let passiveDissolutionYears = 5;
-let selectedLiabilityType = "all";
+# ==========================================
+# START
+# ==========================================
 
-function getBudgetStore() { try { return JSON.parse(localStorage.getItem("envlicense_budget_v6") || "{}"); } catch(e) { return {}; } }
-function setBudgetStore(obj) { localStorage.setItem("envlicense_budget_v6", JSON.stringify(obj || {})); }
-function budgetForMonth(label) { return Number(getBudgetStore()[String(label || "").trim()] || 0); }
-
-function num(v) { const n = Number(v); return Number.isFinite(n) ? n : 0; }
-function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
-
-async function renderPlanning() {
-  const app = document.getElementById("app");
-  app.innerHTML = '<div class="loading"><span class="spin"></span> Carregando visão financeira…</div>';
-
-  const [finSum, byMonth, byField, byCat, strategic] = await Promise.all([
-    sf(`${API}/financial/summary`),
-    sf(`${API}/financial/by_month`),
-    sf(`${API}/financial/by_field`),
-    sf(`${API}/financial/by_category`),
-    sf(`${API}/financial/strategic-projection?years=${passiveDissolutionYears}`)
-  ]);
-
-  const fs = finSum || {};
-  const months = (byMonth || []).slice(-12);
-  const fields = byField || [];
-  const cats = byCat || [];
-  const strat = strategic || {};
-
-  const totalRealizado = num(fs.total_realizado);
-  const totalProvisionado = num(fs.total_provisionado);
-  const totalRequired = num(strat.summary?.total_required);
-  const operationalRequired = num(strat.summary?.operational_required);
-  const annualCap = num(strat.annual_execution_capacity);
-
-  // Budget mensal
-  const budgetTotal = months.reduce((s, m) => s + budgetForMonth(m.label), 0);
-  const budgetBalance = budgetTotal - totalRealizado;
-  const balanceColor = budgetTotal <= 0 ? "var(--t3)" : budgetBalance >= 0 ? "var(--p)" : "var(--r)";
-
-  // Scenarios
-  const scenarios = strat.scenarios || {};
-  const sc_curr = scenarios.current || {};
-  const sc_op = scenarios.operational || {};
-  const sc_exc = scenarios.excellence || {};
-  const annComp = strat.annual_comparison || [];
-
-  // Chart: monthly realized vs budget
-  const maxMonth = Math.max(1, ...months.map(m => Math.max(m.realizado || 0, budgetForMonth(m.label))));
-  const monthBars = months.map(m => {
-    const real = m.realizado || 0;
-    const budget = budgetForMonth(m.label);
-    const rH = Math.max(2, Math.round(real / maxMonth * 120));
-    const bH = Math.max(2, Math.round(budget / maxMonth * 120));
-    const over = real > budget && budget > 0;
-    return `<div style="flex:1;min-width:0;text-align:center">
-      <div style="height:124px;display:flex;align-items:flex-end;justify-content:center;position:relative;gap:2px">
-        ${budget > 0 ? `<div title="Budget: ${fmtBRLFull(budget)}" style="width:40%;height:${bH}px;background:var(--bt);border:1.5px dashed var(--b);border-radius:4px 4px 0 0;box-sizing:border-box"></div>` : ''}
-        <div title="Realizado: ${fmtBRLFull(real)}" style="width:40%;height:${rH}px;background:${over ? 'var(--r)' : 'var(--p)'};border-radius:4px 4px 0 0;opacity:.9"></div>
-      </div>
-      <div style="font-size:9px;color:var(--t4);margin-top:5px;white-space:nowrap;overflow:hidden">${m.label}</div>
-    </div>`;
-  }).join('');
-
-  // Chart: annual comparison (stacked by scenario)
-  const maxAnn = Math.max(1, ...annComp.map(r => Math.max(r.excellence || 0, r.due_amount || 0)));
-  const annBars = annComp.map(r => {
-    const excH = Math.max(2, Math.round(num(r.excellence) / maxAnn * 100));
-    const opH = Math.max(2, Math.round(num(r.operational) / maxAnn * 100));
-    const curH = Math.max(2, Math.round(num(r.current) / maxAnn * 100));
-    return `<div style="flex:1;min-width:0;text-align:center">
-      <div style="height:104px;display:flex;align-items:flex-end;justify-content:center;gap:2px">
-        <div title="Atual: ${fmtBRL(r.current)}" style="width:28%;height:${curH}px;background:var(--b);border-radius:3px 3px 0 0;opacity:.8"></div>
-        <div title="Operacional: ${fmtBRL(r.operational)}" style="width:28%;height:${opH}px;background:var(--wg);border-radius:3px 3px 0 0;opacity:.85"></div>
-        <div title="Excelência: ${fmtBRL(r.excellence)}" style="width:28%;height:${excH}px;background:var(--p);border-radius:3px 3px 0 0;opacity:.9"></div>
-      </div>
-      <div style="font-size:9px;color:var(--t4);margin-top:5px">${String(r.year).slice(2)}</div>
-    </div>`;
-  }).join('');
-
-  // Field bars
-  const maxField = Math.max(1, ...fields.map(f => num(f.total)));
-  const fieldBarsHTML = fields.slice(0, 8).map(f => `
-    <li class="bitem">
-      <span class="blbl" title="${f.field || ''}">${String(f.field || '').slice(0, 16)}</span>
-      <span class="btrack"><span class="bfill" style="width:${Math.round(num(f.total)/maxField*100)}%;background:var(--p)"></span></span>
-      <span class="bval">${fmtBRL(f.total)}</span>
-    </li>`).join('') || '<div class="empty">Sem dados por campo</div>';
-
-  // Category bars
-  const catColors = { monitoring:"#1a56db", effluent:"#34a853", reporting:"#00722A", infrastructure:"#f59e0b", other:"#94a3b8" };
-  const maxCat = Math.max(1, ...cats.map(c => num(c.estimado)));
-  const catBarsHTML = cats.map(c => `
-    <li class="bitem">
-      <span class="blbl">${c.label || c.category}</span>
-      <span class="btrack"><span class="bfill" style="width:${Math.round(num(c.estimado)/maxCat*100)}%;background:${catColors[c.category] || '#94a3b8'}"></span></span>
-      <span class="bval">${fmtBRL(c.estimado)}</span>
-    </li>`).join('') || '<div class="empty">Sem dados</div>';
-
-  // Dissolution selector
-  const dissControls = [1,2,3,4,5].map(y => `
-    <button class="btn btn-sm ${passiveDissolutionYears === y ? '' : 'btn-g'}" onclick="passiveDissolutionYears=${y};renderPlanning()">
-      ${y} ano${y > 1 ? 's' : ''}
-    </button>`).join('');
-
-  // Scenario risk color
-  const riskCol = lv => lv === 'green' ? 'var(--p)' : lv === 'yellow' ? 'var(--w)' : 'var(--r)';
-  const riskLabel = lv => lv === 'green' ? 'Baixo risco' : lv === 'yellow' ? 'Atenção' : 'Elevado';
-
-  // Projection rows for scenario bars
-  const projRows = strat.scenario_rows || {};
-  const buildScBar = (key, color) => {
-    const rows = (projRows[key] || []).slice(0, passiveDissolutionYears);
-    if (!rows.length) return '<div class="empty" style="padding:12px">Sem dados de projeção</div>';
-    const mx = Math.max(1, ...rows.map(r => num(r.annual_investment)));
-    return `<div style="display:flex;align-items:flex-end;gap:4px;height:72px;margin-top:12px">
-      ${rows.map(r => {
-        const h = Math.max(4, Math.round(num(r.annual_investment)/mx*60));
-        const zeroed = num(r.residual_passive) <= 0;
-        return `<div style="flex:1;text-align:center" title="${r.year}: ${fmtBRLFull(r.annual_investment)} investido | residual: ${fmtBRLFull(r.residual_passive)}">
-          <div style="height:${h}px;background:${zeroed?'var(--pl)':color};border-radius:4px 4px 0 0;opacity:.85;margin:0 auto;width:80%"></div>
-          <div style="font-size:9px;color:var(--t4);margin-top:4px">${String(r.year).slice(2)}</div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  };
-
-  app.innerHTML = `
-    <div class="ph">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
-        <div><h1>Gestão financeira regulatória</h1><p class="sub">Passivo mapeado, projeção de dissolução e cenários de investimento</p></div>
-        <button class="btn btn-g btn-sm" onclick="openParamsModal()">
-          <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
-          Parâmetros financeiros
-        </button>
-      </div>
-    </div>
-
-    <!-- KPIs FINANCEIROS -->
-    <div class="kpis">
-      <div class="kpi accent-green">
-        <div class="kl">Realizado</div>
-        <div class="kv" style="font-size:20px">${fmtBRL(totalRealizado)}</div>
-        <div class="ks">Executado no período</div>
-      </div>
-      <div class="kpi ${budgetTotal > 0 ? (budgetBalance >= 0 ? 'accent-green' : 'accent-red') : ''}">
-        <div class="kl">Saldo vs budget</div>
-        <div class="kv" style="font-size:20px;color:${balanceColor}">${budgetTotal > 0 ? fmtBRL(budgetBalance) : '—'}</div>
-        <div class="ks">${budgetTotal > 0 ? (budgetBalance >= 0 ? 'Dentro do budget' : 'Acima do budget') : 'Informe o budget mensal'}</div>
-      </div>
-      <div class="kpi accent-amber">
-        <div class="kl">Passivo mapeado</div>
-        <div class="kv" style="font-size:20px">${fmtBRL(totalRequired > 0 ? totalRequired : totalProvisionado)}</div>
-        <div class="ks">Base da simulação</div>
-      </div>
-      <div class="kpi ${operationalRequired > 0 ? 'accent-red' : ''}">
-        <div class="kl">Passivo operacional</div>
-        <div class="kv" style="font-size:20px;color:${operationalRequired > 0 ? 'var(--r)' : 'var(--t3)'}">${fmtBRL(operationalRequired)}</div>
-        <div class="ks">Vinculado a poços ativos</div>
-      </div>
-      <div class="kpi">
-        <div class="kl">Cap. anual histórica</div>
-        <div class="kv" style="font-size:20px">${annualCap > 0 ? fmtBRL(annualCap) : '—'}</div>
-        <div class="ks">${annualCap > 0 ? 'Média dos últimos 24 meses' : 'Sem histórico suficiente'}</div>
-      </div>
-    </div>
-
-    <!-- CURVA MENSAL -->
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <div class="ct" style="margin-bottom:0">Curva financeira mensal — realizado vs budget</div>
-        <button class="btn btn-g btn-xs" onclick="openBudgetModal(${JSON.stringify(months).replace(/'/g,"&#39;")})">+ Budget</button>
-      </div>
-      <div style="font-size:12px;color:var(--t3);margin-bottom:14px">Últimos 12 meses. Barra azul = budget planejado, verde/vermelha = realizado.</div>
-      ${months.length ? `<div style="display:flex;align-items:flex-end;gap:4px;height:128px">${monthBars}</div>
-        <div class="fin-legend">
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Realizado (dentro)</div>
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--r)"></div>Realizado (acima)</div>
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--bt);border:1.5px dashed var(--b)"></div>Budget</div>
-        </div>` : '<div class="empty">Sem dados mensais</div>'}
-    </div>
-
-    <!-- CUSTO POR CAMPO / CATEGORIA -->
-    <div class="g2">
-      <div class="card"><div class="ct">Custo por campo</div><ul class="blist">${fieldBarsHTML}</ul></div>
-      <div class="card"><div class="ct">Custo por categoria</div><ul class="blist">${catBarsHTML}</ul></div>
-    </div>
-
-    <!-- SIMULADOR -->
-    <div class="card" style="margin-bottom:14px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px">
-        <div>
-          <div class="ct" style="margin-bottom:4px">Simulador de dissolução do passivo</div>
-          <div style="font-size:12.5px;color:var(--t2)">Selecione o horizonte de planejamento para comparar os cenários de investimento.</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">${dissControls}</div>
-      </div>
-
-      ${annComp.length ? `
-      <div class="card" style="background:var(--bg);border-color:var(--bdl);margin-bottom:14px">
-        <div class="ct">Investimento anual comparado — cenários</div>
-        <div style="display:flex;align-items:flex-end;gap:4px;height:108px">${annBars}</div>
-        <div class="fin-legend" style="margin-top:10px">
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--b)"></div>Cenário atual</div>
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--wg)"></div>Continuidade operacional</div>
-          <div class="fin-leg-item"><div class="fin-leg-dot" style="background:var(--p)"></div>Excelência operacional</div>
-        </div>
-      </div>` : ''}
-
-      <div class="g3" style="margin-bottom:0">
-
-        <!-- CENÁRIO ATUAL -->
-        <div class="sc-card">
-          <div class="sc-tag" style="color:var(--b)">Cenário atual</div>
-          <div class="sc-name">Trajetória atual</div>
-          <div class="sc-desc">Mantém o ritmo histórico de execução. Passivo residual acumula se capacidade for insuficiente.</div>
-          ${annualCap > 0 ? `
-          <div class="sc-metric"><div class="sc-metric-lbl">Investimento total (${passiveDissolutionYears}a)</div><div class="sc-metric-val">${fmtBRL(sc_curr.investment)}</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Passivo residual final</div><div class="sc-metric-val" style="color:${num(sc_curr.final_passive) > 0 ? 'var(--r)' : 'var(--p)'}">${fmtBRL(sc_curr.final_passive)}</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Conformidade estimada</div><div class="sc-metric-val" style="color:${riskCol(sc_curr.risk_level)}">${sc_curr.target_compliance || 0}% · ${riskLabel(sc_curr.risk_level)}</div></div>
-          ${buildScBar('current', 'var(--b)')}` : `<div class="wmsg" style="margin-top:8px">Sem histórico de execução suficiente para projeção.</div>`}
-        </div>
-
-        <!-- CONTINUIDADE OPERACIONAL -->
-        <div class="sc-card">
-          <div class="sc-tag" style="color:var(--wg)">Continuidade operacional</div>
-          <div class="sc-name">Operação protegida</div>
-          <div class="sc-desc">Prioriza 100% das obrigações de poços em produção e injeção. Garante continuidade regulatória da operação.</div>
-          ${operationalRequired > 0 ? `
-          <div class="sc-metric"><div class="sc-metric-lbl">Investimento total (${passiveDissolutionYears}a)</div><div class="sc-metric-val">${fmtBRL(sc_op.investment)}</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Passivo operacional residual</div><div class="sc-metric-val" style="color:${num(sc_op.final_passive) > 0 ? 'var(--r)' : 'var(--p)'}">${fmtBRL(sc_op.final_passive)}</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Incremento vs cenário atual</div><div class="sc-metric-val">${fmtBRL(sc_op.incremental)}</div></div>
-          ${buildScBar('operational', 'var(--wg)')}` : `<div class="omsg" style="margin-top:8px">Nenhum passivo operacional identificado. Operação regularizada.</div>`}
-        </div>
-
-        <!-- EXCELÊNCIA OPERACIONAL -->
-        <div class="sc-card">
-          <div class="sc-tag" style="color:var(--p)">Excelência operacional</div>
-          <div class="sc-name">Passivo zerado</div>
-          <div class="sc-desc">Elimina 100% do passivo mapeado no horizonte selecionado. Menor risco regulatório futuro.</div>
-          ${totalRequired > 0 || totalProvisionado > 0 ? `
-          <div class="sc-metric"><div class="sc-metric-lbl">Investimento total (${passiveDissolutionYears}a)</div><div class="sc-metric-val">${fmtBRL(sc_exc.investment)}</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Passivo residual final</div><div class="sc-metric-val" style="color:var(--p)">R$ 0</div></div>
-          <div class="sc-metric"><div class="sc-metric-lbl">Incremento vs cenário atual</div><div class="sc-metric-val">${fmtBRL(sc_exc.incremental)}</div></div>
-          ${buildScBar('excellence', 'var(--p)')}` : `<div class="wmsg" style="margin-top:8px">Dados insuficientes para projeção real de excelência.</div>`}
-        </div>
-
-      </div>
-      <div style="font-size:11px;color:var(--t3);margin-top:12px">
-        * Simulação baseada no passivo atualmente mapeado. Não considera multas, deterioração, novos vencimentos ou peso por ativo. Capacidade anual = média dos últimos 24 meses de execução.
-      </div>
-    </div>`;
-}
-
-function openBudgetModal(months) {
-  const b = getBudgetStore();
-  const rows = months.map(m => {
-    const k = String(m.label || "").trim();
-    const sid = k.replace(/[^a-zA-Z0-9]/g, "_");
-    return `<div class="cref-row"><span class="cref-lbl">${m.label || "Mês"}</span><input class="cref-inp" type="number" data-budget-key="${k}" id="bgt-${sid}" value="${b[k] || 0}" placeholder="R$"></div>`;
-  }).join('');
-  openMod(`
-    <div class="mhead">
-      <div class="mic" style="background:var(--pt);color:var(--p)"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-      <div class="mttl">Budget mensal</div>
-      <div class="msub">Informe o budget planejado por mês para comparação com o realizado.</div>
-    </div>
-    <div class="mbody"><div class="minfo" style="max-height:320px;overflow-y:auto">${rows || '<div class="empty">Sem meses disponíveis</div>'}</div></div>
-    <div class="mact">
-      <button class="btn btn-g" onclick="closeMod()">Cancelar</button>
-      <button class="btn" onclick="saveBudgetModal()">Salvar budget</button>
-    </div>`);
-}
-
-function saveBudgetModal() {
-  const obj = getBudgetStore();
-  document.querySelectorAll("[data-budget-key]").forEach(inp => { obj[inp.dataset.budgetKey] = Number(inp.value) || 0; });
-  setBudgetStore(obj);
-  closeMod();
-  showToast("✓ Budget mensal salvo");
-  renderPlanning();
-}
-
-// PARÂMETROS FINANCEIROS (valores de referência movidos da Central Documental)
-async function openParamsModal() {
-  const costRef = await sf(`${API}/cost-reference`) || { licenses:[], conditions:[] };
-  const licRows = (costRef.licenses || []).map(r => `
-    <div class="cref-row">
-      <span class="cref-lbl">${r.type}</span>
-      <input class="cref-inp" type="number" id="lic-${r.type}" value="${r.acquisition || 0}" placeholder="Aquisição R$">
-      <button class="cref-save" onclick="saveLicCost('${r.type}')">✓</button>
-    </div>`).join('');
-  const condRows = (costRef.conditions || []).map(r => `
-    <div class="cref-row">
-      <span class="cref-lbl">${r.label}</span>
-      <input class="cref-inp" type="number" id="cond-${r.category}" value="${r.avg_cost || 0}" placeholder="Custo médio R$">
-      <button class="cref-save" onclick="saveCondCost('${r.category}')">✓</button>
-    </div>`).join('');
-  openMod(`
-    <div class="mhead">
-      <div class="mic" style="background:var(--pt);color:var(--p)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
-      <div class="mttl">Parâmetros financeiros</div>
-      <div class="msub">Valores históricos de referência usados nos simuladores. Edite e salve cada linha.</div>
-    </div>
-    <div class="mbody">
-      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin:10px 0 6px">Por tipo de licença</div>
-      <div class="minfo" style="padding:8px 12px">${licRows || '<div class="empty" style="padding:8px">Sem referências cadastradas</div>'}</div>
-      <div style="font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin:12px 0 6px">Por categoria de condicionante</div>
-      <div class="minfo" style="padding:8px 12px">${condRows || '<div class="empty" style="padding:8px">Sem referências cadastradas</div>'}</div>
-    </div>
-    <div class="mact"><button class="btn btn-g" onclick="closeMod()">Fechar</button></div>`);
-}
-
-async function saveLicCost(type) {
-  const acq = parseFloat(document.getElementById(`lic-${type}`)?.value) || 0;
-  const r = await fetch(`${API}/cost-reference/license/${type}`, { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ acquisition:acq, renewal:acq*0.5, notes:"" }) }).then(r => r.json()).catch(() => ({}));
-  if (r.ok) showToast(`✓ ${type} salvo`);
-}
-async function saveCondCost(cat) {
-  const avg = parseFloat(document.getElementById(`cond-${cat}`)?.value) || 0;
-  const r = await fetch(`${API}/cost-reference/condition/${cat}`, { method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ avg_cost:avg, notes:"" }) }).then(r => r.json()).catch(() => ({}));
-  if (r.ok) showToast(`✓ ${cat} salvo`);
-}
-
-// ── INIT ──
-show("dashboard");
-</script>
-</body>
-</html>
+# uvicorn main:app --reload --port 8000
