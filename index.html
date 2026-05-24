@@ -633,7 +633,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
         <div class="table-hdr"><span class="table-hdr-title">Lista de Licenças</span><span style="font-size:.72rem;color:var(--n500)" id="lic-count">–</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Campo</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th>Dias</th><th></th></tr></thead>
+            <thead><tr><th>Número</th><th>Tipo</th><th>Órgão</th><th>Campo</th><th>Ativos / Poços</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th>Dias</th><th></th></tr></thead>
             <tbody id="lic-tbody"><tr><td colspan="9"><div class="loading"><div class="spinner"></div><span>Carregando…</span></div></td></tr></tbody>
           </table>
         </div>
@@ -1462,11 +1462,21 @@ function renderLicTable(lics) {
     const d = l.days_until_expiry;
     const dcol = d==null?'':d<0?'color:var(--r500);font-weight:600':d<=90?'color:var(--y600);font-weight:600':'';
     const dtxt = d==null?'—':d<0?`${Math.abs(d)}d vencida`:`${d}d`;
+    // Ativos vinculados
+    const codes = l.asset_codes_list || [];
+    const assetsTxt = codes.length > 0
+      ? codes.slice(0,3).join(', ') + (codes.length > 3 ? ` +${codes.length-3}` : '')
+      : '—';
+    const assetsMatch = l.assets_matched||0;
     return `<tr>
       <td class="td-mono">${l.number||'—'}</td>
       <td style="font-size:.74rem">${l.type||'—'}</td>
       <td><span class="badge bg-gray" style="font-size:.64rem">${l.agency||'—'}</span></td>
       <td style="font-size:.76rem">${l.campo||'—'}</td>
+      <td style="font-size:.72rem;max-width:160px">
+        <span title="${codes.join(', ')}">${assetsTxt}</span>
+        ${assetsMatch>0?`<span style="font-size:.62rem;color:var(--g600);margin-left:3px">(${assetsMatch} ✓)</span>`:''}
+      </td>
       <td class="td-mono">${fmtD(l.issue_date)}</td>
       <td class="td-mono">${fmtD(l.expiry_date)}</td>
       <td>${licBadge(l.computed_status)}</td>
@@ -1714,7 +1724,11 @@ async function doUpload(file) {
     const d = await r.json();
     $('up-bar').style.width='100%';
     tx('up-status', d.has_text ? 'Extração concluída!' : 'PDF sem texto — preencha manualmente');
-    S.currentDocId = d.document_id; S.currentExtracted = d.extracted||{};
+    S.currentDocId       = d.document_id;
+    S.currentExtracted   = d.extracted||{};
+    S.matchedAssets      = d.matched_assets||[];
+    S.assetsFound        = d.assets_found||0;
+    S.assetsNotFound     = d.assets_not_found||0;
     setTimeout(()=>{
       $('upload-progress').classList.add('hidden');
       renderExtPreview(d.extracted, file.name);
@@ -1729,6 +1743,8 @@ async function doUpload(file) {
 }
 function renderExtPreview(ext, fname) {
   if(!ext){ht('ext-form','<p style="color:var(--n400);font-size:.78rem;padding:10px 0">Não foi possível extrair dados deste documento. Preencha manualmente.</p>');return;}
+
+  // ── CAMPOS BÁSICOS DA LICENÇA ──
   const fields=[
     {lbl:'Número da Licença',  key:'numero_licenca',   type:'text'},
     {lbl:'Tipo',               key:'tipo_licenca',      type:'text'},
@@ -1737,10 +1753,64 @@ function renderExtPreview(ext, fname) {
     {lbl:'Data de Emissão',    key:'data_emissao',      type:'date'},
     {lbl:'Data de Vencimento', key:'data_vencimento',   type:'date'},
   ];
-  let html = '<div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">'
+  let html = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px">'
     + fields.map(f=>`<div class="form-group"><label class="form-label">${f.lbl}</label><input type="${f.type}" class="form-input" id="xf-${f.key}" value="${ext[f.key]||''}"></div>`).join('')
     + '</div>';
 
+  // ── ATIVOS / POÇOS CORRELACIONADOS ──
+  const matchedAssets = S.matchedAssets || [];
+  const matched   = matchedAssets.filter(a=>a.matched);
+  const unmatched = matchedAssets.filter(a=>!a.matched);
+  const rawCodes  = ext.ativos_relacionados || [];
+
+  if(rawCodes.length > 0 || matchedAssets.length > 0){
+    const sitColors = {
+      'PRODUZINDO':'var(--g600)','INJETANDO':'var(--b600)',
+      'ABANDONADO TEMPO':'var(--n400)','ABANDONADO POR LIMITE':'var(--n400)',
+      'ABANDONADO PERMANENTEMENTE':'var(--r500)','ARRASADO':'var(--r500)'
+    };
+    html += `<div style="margin-bottom:14px;border:1.5px solid ${matched.length>0?'var(--g200)':'var(--n200)'};border-radius:var(--r-md);overflow:hidden">
+      <div style="padding:8px 14px;background:${matched.length>0?'var(--g050)':'var(--n050)'};display:flex;align-items:center;justify-content:space-between;gap:10px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${matched.length>0?'var(--g600)':'var(--n500)'}" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          <strong style="font-size:.74rem;color:var(--n800)">Poços / Ativos extraídos do PDF</strong>
+        </div>
+        <div style="display:flex;gap:8px">
+          ${matched.length>0?`<span class="badge bg-green">${matched.length} vinculados ao banco</span>`:''}
+          ${unmatched.length>0?`<span class="badge bg-gray">${unmatched.length} não encontrados</span>`:''}
+          ${rawCodes.length>0&&matchedAssets.length===0?`<span class="badge bg-yellow">${rawCodes.length} extraídos (sem banco local)</span>`:''}
+        </div>
+      </div>
+      <div style="padding:10px 14px;max-height:150px;overflow-y:auto;display:flex;flex-wrap:wrap;gap:5px">`;
+
+    if(matchedAssets.length > 0){
+      matchedAssets.forEach(a => {
+        const sitCol = sitColors[(a.situation||'').toUpperCase()] || 'var(--n500)';
+        const bg = a.matched ? 'var(--g050)' : 'var(--n100)';
+        const border = a.matched ? 'var(--g200)' : 'var(--n300)';
+        html += `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;background:${bg};border:1px solid ${border};font-size:.68rem;font-weight:600">
+          <span style="width:5px;height:5px;border-radius:50%;background:${a.matched?sitCol:'var(--n400)'};flex-shrink:0"></span>
+          <span style="color:var(--n800)">${a.asset_code}</span>
+          ${a.field_name?`<span style="color:var(--n500);font-weight:400">${a.field_name}</span>`:''}
+          ${a.matched?'':'<span style="color:var(--n400)">?</span>'}
+        </span>`;
+      });
+    } else {
+      // Só extração sem banco
+      rawCodes.forEach(code => {
+        html += `<span style="padding:2px 8px;border-radius:99px;background:var(--b100);border:1px solid var(--b100);font-size:.68rem;font-weight:600;color:var(--b600)">${code}</span>`;
+      });
+    }
+    html += `</div>`;
+    if(unmatched.length > 0){
+      html += `<div style="padding:6px 14px;background:var(--y100);border-top:1px solid #e8d060;font-size:.68rem;color:var(--y600)">
+        ⚠ ${unmatched.length} código(s) não encontrado(s) no banco de ativos. Serão salvos como referência.
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  // ── CONDICIONANTES ──
   const conds = ext.condicionantes || [];
   const catLabels = {
     monitoramento:'Monitoramento', relatorio:'Relatórios', infraestrutura:'Infraestrutura',
@@ -1753,21 +1823,34 @@ function renderExtPreview(ext, fname) {
     prazo_legal:'var(--r600)', outro:'var(--n500)'
   };
   if(conds.length){
-    html += `<div class="form-group"><label class="form-label">${IC.check} ${conds.length} condicionante(s) extraída(s) pela IA</label>
-    <div style="max-height:180px;overflow-y:auto;background:var(--n050);border-radius:var(--r-md);padding:8px 10px;border:1px solid var(--n100)">
-    ${conds.map((c,i)=>{
-      const cat = c.categoria||c.category||'outro';
-      const catLbl = catLabels[cat]||cat;
-      const catCol = catColors[cat]||'var(--n500)';
-      const desc = c.descricao||c.description||'';
-      return `<div style="display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid var(--n100)">
-        <span style="font-size:.64rem;font-weight:700;padding:2px 7px;border-radius:99px;background:${catCol}18;color:${catCol};white-space:nowrap;flex-shrink:0;margin-top:1px">${catLbl}</span>
-        <span style="font-size:.72rem;color:var(--n700);line-height:1.4"><strong>${c.numero||i+1}.</strong> ${desc.substring(0,120)}${desc.length>120?'…':''}</span>
-      </div>`;
-    }).join('')}
-    </div></div>`;
+    // Agrupar por categoria
+    const bycat = {};
+    conds.forEach(c => { const cat = c.categoria||c.category||'outro'; (bycat[cat]=bycat[cat]||[]).push(c); });
+    html += `<div style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label class="form-label" style="margin:0">${IC.check} ${conds.length} condicionante(s) extraída(s) pela IA</label>
+        <div style="display:flex;gap:5px;flex-wrap:wrap">
+          ${Object.entries(bycat).map(([cat,arr])=>`<span style="font-size:.64rem;padding:1px 7px;border-radius:99px;background:${catColors[cat]}18;color:${catColors[cat]};font-weight:600">${catLabels[cat]||cat}: ${arr.length}</span>`).join('')}
+        </div>
+      </div>
+      <div style="max-height:200px;overflow-y:auto;background:var(--n050);border-radius:var(--r-md);padding:8px 10px;border:1px solid var(--n100)">
+      ${conds.map((c,i)=>{
+        const cat = c.categoria||c.category||'outro';
+        return `<div style="display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid var(--n100)">
+          <span style="font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:99px;background:${catColors[cat]}18;color:${catColors[cat]};white-space:nowrap;flex-shrink:0;margin-top:1px">${catLabels[cat]||cat}</span>
+          <span style="font-size:.72rem;color:var(--n700);line-height:1.4;flex:1">
+            <strong>${c.numero||i+1}.</strong> ${(c.descricao||c.description||'').substring(0,160)}${(c.descricao||c.description||'').length>160?'…':''}
+          </span>
+          ${c.prazo?`<span style="font-size:.64rem;color:var(--n400);white-space:nowrap;flex-shrink:0">${c.prazo}</span>`:''}
+        </div>`;
+      }).join('')}
+      </div>
+    </div>`;
   } else {
-    html += `<div class="form-group"><label class="form-label">Condicionantes</label><p style="font-size:.76rem;color:var(--n400);padding:8px;background:var(--n050);border-radius:var(--r-md)">Nenhuma condicionante identificada no documento. Se existirem, serão adicionadas manualmente após confirmação.</p></div>`;
+    html += `<div class="form-group"><label class="form-label">Condicionantes</label>
+      <p style="font-size:.76rem;color:var(--n400);padding:8px;background:var(--n050);border-radius:var(--r-md)">
+        Nenhuma condicionante identificada. Se existirem no documento, confira se o PDF possui texto selecionável.
+      </p></div>`;
   }
 
   const conf = ext.confianca ? Math.round(ext.confianca*100) : 0;
@@ -1782,22 +1865,31 @@ function renderExtPreview(ext, fname) {
 }
 async function confirmExtraction() {
   const data = {
-    numero_licenca:    $('xf-numero_licenca')?.value  || null,
-    tipo_licenca:      $('xf-tipo_licenca')?.value    || null,
-    orgao_ambiental:   $('xf-orgao_ambiental')?.value || null,
-    campo:             $('xf-campo')?.value            || null,
-    data_emissao:      $('xf-data_emissao')?.value    || null,
-    data_vencimento:   $('xf-data_vencimento')?.value || null,
-    condicionantes:    S.currentExtracted?.condicionantes || [],
-    confianca:         S.currentExtracted?.confianca || 0.5
+    numero_licenca:      $('xf-numero_licenca')?.value  || null,
+    tipo_licenca:        $('xf-tipo_licenca')?.value    || null,
+    orgao_ambiental:     $('xf-orgao_ambiental')?.value || null,
+    campo:               $('xf-campo')?.value            || null,
+    data_emissao:        $('xf-data_emissao')?.value    || null,
+    data_vencimento:     $('xf-data_vencimento')?.value || null,
+    condicionantes:      S.currentExtracted?.condicionantes      || [],
+    ativos_relacionados: S.currentExtracted?.ativos_relacionados || [],
+    confianca:           S.currentExtracted?.confianca || 0.5
   };
   if(!data.data_vencimento && !confirm('Data de vencimento não preenchida. Confirmar mesmo assim?')) return;
   try {
     const r = await post('/api/documents/upload/confirm', {document_id: S.currentDocId, data});
     if(r?.success) {
-      toast(`✓ Licença ${data.numero_licenca||'salva'}! ${r.conditions_created} condicionante(s) criada(s).`);
+      const numConds  = r.conditions_created || 0;
+      const numAssets = r.assets_linked || 0;
+      const numMatch  = r.assets_matched || 0;
+      let msg = `✓ Licença ${data.numero_licenca||'salva'}!`;
+      if(numConds > 0)   msg += ` ${numConds} condicionante(s).`;
+      if(numAssets > 0)  msg += ` ${numMatch}/${numAssets} poços vinculados.`;
+      toast(msg);
       $('extraction-preview').classList.add('hidden');
-      S.currentDocId = null; S.currentExtracted = null; $('file-inp').value = '';
+      S.currentDocId = null; S.currentExtracted = null;
+      S.matchedAssets = []; S.assetsFound = 0; S.assetsNotFound = 0;
+      $('file-inp').value = '';
       loadDocs(); loadLicenses(); updateBadges();
     }
   } catch(e) { toast(`Erro: ${e.message}`, 'error'); }
