@@ -1214,13 +1214,22 @@ async function loadExec() {
   const qp = campo ? `?campo=${encodeURIComponent(campo)}` : '';
   tx('exec-ts', `Atualizado ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}`);
   try {
-    const [sum, tl, aband, risk] = await Promise.all([
+    const [sum, tl, risk] = await Promise.all([
       req(`/api/dashboard/summary${qp}`),
       req('/api/dashboard/timeline'),
-      req('/api/licenses/alerts/abandoned'),
       req('/api/dashboard/risk-ranking?limit=8'),
     ]);
-    if (!sum) { toast('Backend indisponível — dados de demonstração', 'warning'); }
+    // Verifica se sistema tem dados reais
+    const hasData = sum && (
+      (sum.licenses?.total||0) > 0 ||
+      (sum.conditions?.total||0) > 0 ||
+      (sum.total_assets||0) > 0
+    );
+    if (!hasData) {
+      renderEmptyExec();
+      renderTbScenario('sem_dados');
+      return;
+    }
     renderBanner(sum);
     renderKPIs(sum);
     renderConf(sum);
@@ -1233,14 +1242,33 @@ async function loadExec() {
   } catch(e) { toast('Erro ao carregar dashboard', 'error'); }
 }
 
+function renderEmptyExec() {
+  const emptyHtml = `<div style="padding:56px 24px;text-align:center;background:#fff;border-radius:var(--r-lg);border:2px dashed var(--n200);margin-bottom:18px">
+    <div style="font-size:48px;margin-bottom:16px">📋</div>
+    <div style="font-size:1.1rem;font-weight:700;color:var(--n700);margin-bottom:8px">Nenhum dado cadastrado</div>
+    <div style="font-size:.82rem;color:var(--n500);max-width:420px;margin:0 auto 20px;line-height:1.6">Faça upload de uma licença ambiental na Central Documental. A IA extrai automaticamente número, datas, ativos e condicionantes.</div>
+    <button class="btn btn-primary btn-sm" onclick="navigate('documents')">→ Ir para Central Documental</button>
+  </div>`;
+  ht('exec-banner', '');
+  ht('exec-kpis', emptyHtml);
+  ht('exec-conf', '<div class="empty-state"><div class="es-title">Sem dados de conformidade</div><div class="es-text">Importe uma licença para ver indicadores</div></div>');
+  ht('exec-op', '<div class="empty-state"><div class="es-title">—</div></div>');
+  ht('exec-lic-status', '<div class="empty-state"><div class="es-title">Nenhuma licença cadastrada</div></div>');
+  ht('exec-financial', '<div class="empty-state"><div class="es-title">Sem passivo financeiro estimado</div></div>');
+  ht('exec-risk-ranking', `<div class="empty-state"><div class="es-icon">${IC.chart}</div><div class="es-title">Sem dados de risco por campo</div><div class="es-text">Vincule licenças a campos para gerar o ranking.</div></div>`);
+  ht('exec-timeline', `<div class="empty-state"><div class="es-icon">${IC.clock}</div><div class="es-title">Nenhum vencimento cadastrado</div></div>`);
+}
+
 function renderBanner(d) {
   const sc = d?.scenario || 'exposicao';
   const mp = {
     excelencia:   { cls:'sb-excelencia',   h3:'Excelência Operacional',     p:'Todos os ativos operacionais estão em plena conformidade regulatória.' },
     continuidade: { cls:'sb-continuidade', h3:'Continuidade Operacional',   p:'Ativos produtores protegidos. Existe passivo residual em ativos não operacionais.' },
     exposicao:    { cls:'sb-exposicao',    h3:'Exposição Regulatória',       p:'Passivos relevantes identificados. Acesse o Simulador para planejar ações corretivas.' },
+    sem_dados:    null,
   };
-  const m = mp[sc] || mp.exposicao;
+  if (sc === 'sem_dados' || !mp[sc]) { ht('exec-banner', ''); return; }
+  const m = mp[sc];
   ht('exec-banner', `<div class="scenario-banner ${m.cls}"><div><h3>${m.h3}</h3><p>${m.p}</p></div><div><button class="btn btn-white btn-sm" onclick="navigate('simulator')">Simular →</button></div></div>`);
 }
 
@@ -1391,7 +1419,12 @@ function renderTimeline(items) {
 
 function renderTbScenario(sc) {
   const el = $('tb-scenario'); if (!el) return;
-  const m = { excelencia:{cls:'sc-excelencia',txt:'Excelência'}, continuidade:{cls:'sc-continuidade',txt:'Continuidade'}, exposicao:{cls:'sc-exposicao',txt:'Exposição'} };
+  const m = {
+    excelencia:   {cls:'sc-excelencia',  txt:'Excelência'},
+    continuidade: {cls:'sc-continuidade',txt:'Continuidade'},
+    exposicao:    {cls:'sc-exposicao',   txt:'Exposição'},
+    sem_dados:    {cls:'sc-exposicao',   txt:'Sem dados'},
+  };
   const v = m[sc] || m.exposicao;
   el.className = `tb-scenario ${v.cls}`; el.textContent = v.txt; el.classList.remove('hidden');
 }
@@ -1424,7 +1457,7 @@ function renderLicKPIs(r) {
   ].map(k=>`<div class="kpi-card ${k.cls}"><div class="kpi-label">${k.lbl}</div><div class="kpi-value">${k.val}</div><div class="kpi-sub">${k.sub}</div></div>`).join(''));
 }
 function renderLicTable(lics) {
-  if (!lics.length) { ht('lic-tbody','<tr><td colspan="9"><div class="empty-state"><div class="es-icon">'+IC.file+'</div><div class="es-title">Nenhuma licença encontrada</div><div class="es-text">Ajuste os filtros ou faça upload na Central Documental</div></div></td></tr>'); return; }
+  if (!lics.length) { ht('lic-tbody','<tr><td colspan="10"><div class="empty-state"><div class="es-icon">'+IC.file+'</div><div class="es-title">Nenhuma licença encontrada</div><div class="es-text">Ajuste os filtros ou faça upload na Central Documental</div></div></td></tr>'); return; }
   ht('lic-tbody', lics.map(l => {
     const d = l.days_until_expiry;
     const dcol = d==null?'':d<0?'color:var(--r500);font-weight:600':d<=90?'color:var(--y600);font-weight:600':'';
@@ -1438,9 +1471,29 @@ function renderLicTable(lics) {
       <td class="td-mono">${fmtD(l.expiry_date)}</td>
       <td>${licBadge(l.computed_status)}</td>
       <td><span class="td-mono" style="${dcol}">${dtxt}</span></td>
-      <td><div class="td-actions"><button class="btn btn-ghost btn-xs" onclick="toast('Detalhe em breve','info')">Ver</button></div></td>
+      <td><div class="td-actions">
+        <button class="btn btn-ghost btn-xs" onclick="openLicDetail(${l.id})">Ver</button>
+        <button class="btn btn-danger btn-xs" onclick="confirmDeleteLic(${l.id},'${(l.number||l.id).toString().replace(/'/g,'')}')">🗑</button>
+      </div></td>
     </tr>`;
   }).join(''));
+}
+async function confirmDeleteLic(id, num) {
+  if(!confirm(`Excluir licença ${num}? Isso removerá também todas as condicionantes vinculadas. Esta ação não pode ser desfeita.`)) return;
+  try {
+    const r = await req(`/api/licenses/${id}`, {method:'DELETE'});
+    if(r?.success){ toast(`Licença ${num} excluída`); loadLicenses(); updateBadges(); }
+  } catch(e){ toast(`Erro: ${e.message}`,'error'); }
+}
+async function openLicDetail(id) {
+  try {
+    const l = await req(`/api/licenses/${id}`);
+    if(!l) return;
+    const condsTxt = (l.conditions||[]).length > 0
+      ? `<br><strong>Condicionantes (${l.conditions.length}):</strong> ${l.conditions.slice(0,3).map(c=>c.description?.substring(0,60)+'…').join('; ')}`
+      : '';
+    alert(`Licença ${l.number||l.id}\nÓrgão: ${l.agency||'—'}\nCampo: ${l.campo||'—'}\nVencimento: ${fmtD(l.expiry_date)}\nStatus: ${l.computed_status||'—'}\nCondicionantes: ${(l.conditions||[]).length}`);
+  } catch(e){ toast('Erro ao carregar detalhes','error'); }
 }
 function renderLicPag(r) {
   const info=$('lic-pag-info'), btns=$('lic-pag-btns'); if(!info||!btns) return;
@@ -1533,7 +1586,14 @@ function renderCondProg(d) {
   const bar=$('cond-prog'); if(bar){bar.style.width=`${pct}%`;bar.style.background=col;}
 }
 function renderCondItems(items) {
-  if(!items.length){ht('cond-items',`<div class="empty-state"><div class="es-icon">${IC.check}</div><div class="es-title">Nenhuma condicionante encontrada</div><div class="es-text">Ajuste os filtros</div></div>`);return;}
+  if(!items.length){
+    ht('cond-items',`<div class="empty-state">
+      <div class="es-icon">${IC.check}</div>
+      <div class="es-title">Nenhuma condicionante encontrada</div>
+      <div class="es-text">As condicionantes são extraídas automaticamente ao importar uma licença PDF na Central Documental. Ajuste os filtros caso já existam dados.</div>
+    </div>`);
+    return;
+  }
   // Agrupar por categoria
   const groups = {};
   items.forEach(c => { const g=c.category||'Sem Categoria'; (groups[g]=groups[g]||[]).push(c); });
@@ -1635,62 +1695,112 @@ async function doUpload(file) {
   if(!file.name.toLowerCase().endsWith('.pdf')){toast('Apenas arquivos PDF são suportados','error');return;}
   $('upload-progress').classList.remove('hidden');
   $('extraction-preview').classList.add('hidden');
-  tx('up-fname',file.name); tx('up-status','Lendo PDF…'); $('up-bar').style.width='25%';
-  const fd=new FormData();
-  fd.append('file',file);
-  fd.append('tipo_documento',$('doc-tipo').value||'licenca');
-  const campo=$('doc-campo-sel')?.value||'';
-  if(campo) fd.append('campo',campo);
-  if(S.user?.id) fd.append('user_id',S.user.id);
+  tx('up-fname', file.name);
+  tx('up-status', 'Lendo PDF…'); $('up-bar').style.width='15%';
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('tipo_documento', $('doc-tipo').value||'licenca');
+  const campo = $('doc-campo-sel')?.value||'';
+  if(campo) fd.append('campo', campo);
+  if(S.user?.id) fd.append('user_id', S.user.id);
   try {
-    const r=await fetch(`${API}/api/documents/upload`,{method:'POST',body:fd,headers:S.token?{'Authorization':`Bearer ${S.token}`}:{}});
-    $('up-bar').style.width='85%'; tx('up-status','Analisando…');
-    if(!r.ok) throw new Error('Erro no upload');
-    const d=await r.json();
-    $('up-bar').style.width='100%'; tx('up-status','Concluído!');
-    S.currentDocId=d.document_id; S.currentExtracted=d.extracted||{};
+    tx('up-status', 'Enviando para o servidor…'); $('up-bar').style.width='35%';
+    const r = await fetch(`${API}/api/documents/upload`, {
+      method:'POST', body:fd,
+      headers: S.token ? {'Authorization':`Bearer ${S.token}`} : {}
+    });
+    tx('up-status', 'IA analisando licença…'); $('up-bar').style.width='75%';
+    if(!r.ok) throw new Error('Erro no upload: ' + r.status);
+    const d = await r.json();
+    $('up-bar').style.width='100%';
+    tx('up-status', d.has_text ? 'Extração concluída!' : 'PDF sem texto — preencha manualmente');
+    S.currentDocId = d.document_id; S.currentExtracted = d.extracted||{};
     setTimeout(()=>{
       $('upload-progress').classList.add('hidden');
-      renderExtPreview(d.extracted,file.name);
+      renderExtPreview(d.extracted, file.name);
       $('extraction-preview').classList.remove('hidden');
-    },500);
+    }, 600);
     loadDocs();
-  } catch(e){ tx('up-status','Erro'); toast(`Erro: ${e.message}`,'error');}
+  } catch(e) {
+    tx('up-status','Erro'); $('up-bar').style.background='var(--r400)';
+    toast(`Erro no upload: ${e.message}`, 'error');
+    setTimeout(()=>{ $('upload-progress').classList.add('hidden'); $('up-bar').style.background=''; }, 2500);
+  }
 }
-function renderExtPreview(ext,fname) {
-  if(!ext){ht('ext-form','<p style="color:var(--n400);font-size:.78rem;padding:10px 0">Não foi possível extrair dados deste documento.</p>');return;}
+function renderExtPreview(ext, fname) {
+  if(!ext){ht('ext-form','<p style="color:var(--n400);font-size:.78rem;padding:10px 0">Não foi possível extrair dados deste documento. Preencha manualmente.</p>');return;}
   const fields=[
-    {lbl:'Número da Licença',key:'numero_licenca',type:'text'},
-    {lbl:'Tipo',key:'tipo_licenca',type:'text'},
-    {lbl:'Órgão Ambiental',key:'orgao_ambiental',type:'text'},
-    {lbl:'Campo',key:'campo',type:'text'},
-    {lbl:'Data de Emissão',key:'data_emissao',type:'date'},
-    {lbl:'Data de Vencimento',key:'data_vencimento',type:'date'},
+    {lbl:'Número da Licença',  key:'numero_licenca',   type:'text'},
+    {lbl:'Tipo',               key:'tipo_licenca',      type:'text'},
+    {lbl:'Órgão Ambiental',    key:'orgao_ambiental',   type:'text'},
+    {lbl:'Campo / Área',       key:'campo',             type:'text'},
+    {lbl:'Data de Emissão',    key:'data_emissao',      type:'date'},
+    {lbl:'Data de Vencimento', key:'data_vencimento',   type:'date'},
   ];
-  let html=fields.map(f=>`<div class="form-group"><label class="form-label">${f.lbl}</label><input type="${f.type}" class="form-input" id="xf-${f.key}" value="${ext[f.key]||''}"></div>`).join('');
-  const conds=ext.condicionantes||[];
-  if(conds.length) html+=`<div class="form-group" style="grid-column:1/-1"><label class="form-label">Condicionantes extraídas (${conds.length})</label><div style="max-height:140px;overflow-y:auto;background:var(--n050);border-radius:var(--r-md);padding:10px">${conds.map((c,i)=>`<div style="font-size:.74rem;padding:4px 0;border-bottom:1px solid var(--n100)"><strong>${c.numero||i+1}.</strong> ${c.descricao||c}</div>`).join('')}</div></div>`;
-  const conf=ext.confianca?Math.round(ext.confianca*100):0;
-  const ccol=conf>=70?'var(--g500)':conf>=40?'var(--y500)':'var(--r500)';
-  html+=`<div style="grid-column:1/-1;display:flex;align-items:center;gap:9px;padding-top:5px"><span style="font-size:.7rem;color:var(--n500);white-space:nowrap">Confiança IA:</span><div class="prog-bar" style="flex:1;height:5px"><div class="prog-fill" style="width:${conf}%;background:${ccol}"></div></div><span style="font-size:.74rem;font-weight:700;color:${ccol}">${conf}%</span></div>`;
-  ht('ext-form',html);
+  let html = '<div class="form-row" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">'
+    + fields.map(f=>`<div class="form-group"><label class="form-label">${f.lbl}</label><input type="${f.type}" class="form-input" id="xf-${f.key}" value="${ext[f.key]||''}"></div>`).join('')
+    + '</div>';
+
+  const conds = ext.condicionantes || [];
+  const catLabels = {
+    monitoramento:'Monitoramento', relatorio:'Relatórios', infraestrutura:'Infraestrutura',
+    documental:'Documental', ambiental:'Ambiental', operacional:'Operacional',
+    prazo_legal:'Prazo Legal', outro:'Outro'
+  };
+  const catColors = {
+    monitoramento:'var(--b600)', relatorio:'var(--g600)', infraestrutura:'var(--y600)',
+    documental:'#655078', ambiental:'var(--g500)', operacional:'var(--r500)',
+    prazo_legal:'var(--r600)', outro:'var(--n500)'
+  };
+  if(conds.length){
+    html += `<div class="form-group"><label class="form-label">${IC.check} ${conds.length} condicionante(s) extraída(s) pela IA</label>
+    <div style="max-height:180px;overflow-y:auto;background:var(--n050);border-radius:var(--r-md);padding:8px 10px;border:1px solid var(--n100)">
+    ${conds.map((c,i)=>{
+      const cat = c.categoria||c.category||'outro';
+      const catLbl = catLabels[cat]||cat;
+      const catCol = catColors[cat]||'var(--n500)';
+      const desc = c.descricao||c.description||'';
+      return `<div style="display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px solid var(--n100)">
+        <span style="font-size:.64rem;font-weight:700;padding:2px 7px;border-radius:99px;background:${catCol}18;color:${catCol};white-space:nowrap;flex-shrink:0;margin-top:1px">${catLbl}</span>
+        <span style="font-size:.72rem;color:var(--n700);line-height:1.4"><strong>${c.numero||i+1}.</strong> ${desc.substring(0,120)}${desc.length>120?'…':''}</span>
+      </div>`;
+    }).join('')}
+    </div></div>`;
+  } else {
+    html += `<div class="form-group"><label class="form-label">Condicionantes</label><p style="font-size:.76rem;color:var(--n400);padding:8px;background:var(--n050);border-radius:var(--r-md)">Nenhuma condicionante identificada no documento. Se existirem, serão adicionadas manualmente após confirmação.</p></div>`;
+  }
+
+  const conf = ext.confianca ? Math.round(ext.confianca*100) : 0;
+  const ccol = conf>=70?'var(--g500)':conf>=40?'var(--y500)':'var(--r500)';
+  html += `<div style="display:flex;align-items:center;gap:9px;padding-top:5px">
+    <span style="font-size:.7rem;color:var(--n500);white-space:nowrap">Confiança IA:</span>
+    <div class="prog-bar" style="flex:1;height:5px"><div class="prog-fill" style="width:${conf}%;background:${ccol}"></div></div>
+    <span style="font-size:.74rem;font-weight:700;color:${ccol}">${conf}%</span>
+    ${conf<50?'<span style="font-size:.68rem;color:var(--y600)">⚠ Revise os dados antes de confirmar</span>':''}
+  </div>`;
+  ht('ext-form', html);
 }
 async function confirmExtraction() {
-  const data={
-    numero_licenca:$('xf-numero_licenca')?.value, tipo_licenca:$('xf-tipo_licenca')?.value,
-    orgao_ambiental:$('xf-orgao_ambiental')?.value, campo:$('xf-campo')?.value,
-    data_emissao:$('xf-data_emissao')?.value, data_vencimento:$('xf-data_vencimento')?.value,
-    condicionantes:S.currentExtracted?.condicionantes||[], confianca:S.currentExtracted?.confianca||0.5
+  const data = {
+    numero_licenca:    $('xf-numero_licenca')?.value  || null,
+    tipo_licenca:      $('xf-tipo_licenca')?.value    || null,
+    orgao_ambiental:   $('xf-orgao_ambiental')?.value || null,
+    campo:             $('xf-campo')?.value            || null,
+    data_emissao:      $('xf-data_emissao')?.value    || null,
+    data_vencimento:   $('xf-data_vencimento')?.value || null,
+    condicionantes:    S.currentExtracted?.condicionantes || [],
+    confianca:         S.currentExtracted?.confianca || 0.5
   };
+  if(!data.data_vencimento && !confirm('Data de vencimento não preenchida. Confirmar mesmo assim?')) return;
   try {
-    const r=await post('/api/documents/upload/confirm',{document_id:S.currentDocId,data});
-    if(r?.success){
-      toast(`Licença salva! ${r.conditions_created} condicionante(s) criada(s).`);
+    const r = await post('/api/documents/upload/confirm', {document_id: S.currentDocId, data});
+    if(r?.success) {
+      toast(`✓ Licença ${data.numero_licenca||'salva'}! ${r.conditions_created} condicionante(s) criada(s).`);
       $('extraction-preview').classList.add('hidden');
-      S.currentDocId=null; S.currentExtracted=null; $('file-inp').value='';
-      loadDocs(); loadLicenses();
+      S.currentDocId = null; S.currentExtracted = null; $('file-inp').value = '';
+      loadDocs(); loadLicenses(); updateBadges();
     }
-  } catch(e){toast(`Erro: ${e.message}`,'error');}
+  } catch(e) { toast(`Erro: ${e.message}`, 'error'); }
 }
 function cancelExtraction() {
   $('extraction-preview').classList.add('hidden');
