@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="theme-color" content="#0a0e1a"/>
-<title>EcoSentinel · Compliance Ambiental</title>
+<title>EnvLicense · Compliance Ambiental</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -71,7 +71,7 @@ tailwind.config = { theme: { extend: {
     <div class="flex items-center gap-3 mb-8">
       <div class="w-10 h-10 rounded-lg bg-moss-500 grid place-items-center text-ink-950 font-bold display text-xl">E</div>
       <div>
-        <h1 class="display text-2xl font-semibold leading-none">EcoSentinel</h1>
+        <h1 class="display text-2xl font-semibold leading-none">EnvLicense</h1>
         <p class="text-ink-300 text-xs mt-1">Compliance ambiental inteligente</p>
       </div>
     </div>
@@ -102,7 +102,7 @@ tailwind.config = { theme: { extend: {
     <div class="p-5 flex items-center gap-3 border-b border-ink-700">
       <div class="w-9 h-9 rounded-lg bg-moss-500 grid place-items-center text-ink-950 font-bold display">E</div>
       <div>
-        <div class="display font-semibold text-lg leading-none">EcoSentinel</div>
+        <div class="display font-semibold text-lg leading-none">EnvLicense</div>
         <div class="text-[10px] uppercase tracking-wider text-ink-400 mt-1">Compliance Hub</div>
       </div>
     </div>
@@ -193,7 +193,7 @@ tailwind.config = { theme: { extend: {
       </div>
     </div>
     <form id="aiForm" class="p-4 border-t border-ink-100 flex gap-2">
-      <input id="aiInput" type="text" placeholder="Pergunte ao EcoSentinel..." autocomplete="off"
+      <input id="aiInput" type="text" placeholder="Pergunte..." autocomplete="off"
              class="flex-1 bg-ink-50 border border-ink-100 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-moss-500"/>
       <button class="bg-ink-900 text-white rounded-lg px-4 text-sm font-medium hover:bg-ink-800">Enviar</button>
     </form>
@@ -206,9 +206,9 @@ tailwind.config = { theme: { extend: {
 <script>
 /* =========== CONFIG =========== */
 const CFG = {
-  SUPABASE_URL:  (window.ECOSENTINEL_CFG?.SUPABASE_URL)  || 'https://YOUR-PROJECT.supabase.co',
-  SUPABASE_ANON: (window.ECOSENTINEL_CFG?.SUPABASE_ANON) || 'YOUR-ANON-KEY',
-  API_URL:       (window.ECOSENTINEL_CFG?.API_URL)       || 'http://localhost:8000',
+  SUPABASE_URL:  (window.ENVLICENSE_CFG?.SUPABASE_URL)  || 'https://YOUR-PROJECT.supabase.co',
+  SUPABASE_ANON: (window.ENVLICENSE_CFG?.SUPABASE_ANON) || 'YOUR-ANON-KEY',
+  API_URL:       (window.ENVLICENSE_CFG?.API_URL)       || 'http://localhost:8000',
 };
 const sb = supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON, { auth:{persistSession:true,autoRefreshToken:true} });
 const state = { user:null, session:null, view:'dashboard', charts:{}, map:null };
